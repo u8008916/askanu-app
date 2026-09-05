@@ -1,0 +1,23 @@
+.root {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.bubble {
+  background: var(--gold-tint);
+  border-radius: var(--radius-lg);
+  color: var(--ink);
+  max-width: min(42rem, 88%);
+  padding: var(--space-3) var(--space-4);
+}
+
+.text {
+  white-space: pre-wrap;
+}
+
+.label {
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+}

@@ -1,0 +1,95 @@
+/* Desktop and active-conversation shell: one surface panel on the paper ground. */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  padding: var(--space-5);
+}
+
+.panelHeader {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-4);
+  justify-content: space-between;
+  padding-bottom: var(--space-4);
+}
+
+.headerActions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-2);
+}
+
+.scroll {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-5) 0;
+}
+
+.turns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.composerSlot {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/*
+ * --ink-2, not --ink-3: this is safety copy people are meant to read, and
+ * --ink-3 is 3.79:1 on white (below AA 4.5:1 for normal text). The palette
+ * scopes --ink-3 to meta/placeholder/labels only.
+ */
+.disclaimer {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+/* Confirmed mobile home: one scrolling column of cards on the paper ground. */
+.mobileHome {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.mobileIntro {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.greeting {
+  color: var(--ink);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+/* The mobile home input sits on the inset surface, not on white-on-white. */
+.mobileIntro form {
+  background: var(--surface-2);
+}

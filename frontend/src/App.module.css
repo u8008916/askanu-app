@@ -1,0 +1,47 @@
+.root {
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0 auto;
+  max-width: var(--shell-max-width);
+  min-width: 0;
+}
+
+.main {
+  display: grid;
+  flex: 1 1 auto;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+/*
+ * V3 desktop layout: chat is primary and on the left; navigation and
+ * resources sit on the right. Below the breakpoint the rail is not rendered
+ * at all — its content is reached through the drawer and the mobile home
+ * scroll — so nothing is duplicated in the accessibility tree.
+ */
+.rail {
+  min-width: 0;
+  overflow-y: auto;
+}
+
+@media (min-width: 900px) {
+  .main {
+    gap: var(--space-5);
+    grid-template-columns: minmax(0, 1fr) var(--rail-width);
+    overflow: hidden;
+    padding: var(--space-5);
+  }
+}

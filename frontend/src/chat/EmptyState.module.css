@@ -1,0 +1,66 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.heading {
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.suggestions {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+}
+
+.suggestion {
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--text-sm);
+  gap: var(--space-3);
+  height: 100%;
+  line-height: var(--leading-body);
+  min-height: var(--touch-target-min);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  width: 100%;
+}
+
+.suggestion:hover {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+.suggestionIcon {
+  align-items: center;
+  background: var(--gold-tint);
+  border-radius: var(--radius-md);
+  color: var(--gold-deep);
+  display: flex;
+  flex: 0 0 auto;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.suggestionText {
+  color: var(--ink);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.suggestionChevron {
+  color: var(--ink-3);
+  margin-top: 0.3em;
+}
