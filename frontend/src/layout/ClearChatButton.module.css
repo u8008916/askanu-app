@@ -1,0 +1,31 @@
+/*
+ * Filled brand control. Uses the --brand-btn-* pair, not --gold: white text on
+ * #BE830E is 3.26:1 and fails WCAG AA. See the contrast rules in tokens.css.
+ */
+.root {
+  align-items: center;
+  background: var(--brand-btn-bg);
+  border: 1px solid var(--brand-btn-bg);
+  border-radius: var(--radius-pill);
+  color: var(--brand-btn-fg);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: var(--space-2);
+  justify-content: center;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-5);
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.root:hover {
+  background: var(--brand-btn-bg-hover);
+  border-color: var(--brand-btn-bg-hover);
+}
+
+.block {
+  width: 100%;
+}

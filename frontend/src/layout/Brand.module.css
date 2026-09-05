@@ -1,0 +1,30 @@
+.root {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wordmark {
+  color: var(--ink);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: var(--leading-tight);
+}
+
+/* Large display text is the one place --gold is permitted for type. */
+.wordmarkAccent {
+  color: var(--gold);
+}
+
+.tagline {
+  color: var(--ink-3);
+  font-size: var(--text-sm);
+}

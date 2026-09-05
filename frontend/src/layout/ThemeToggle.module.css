@@ -1,0 +1,22 @@
+.root {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--ink-2);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.root:hover {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+  color: var(--gold-deep);
+}
