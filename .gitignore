@@ -12,3 +12,26 @@ coverage/
 Thumbs.db
 .vscode/
 .idea/
+
+# Credentials and private keys
+*service-account*.json
+*service_account*.json
+*serviceAccount*.json
+credentials.json
+credentials-*.json
+client_secret*.json
+application_default_credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+secrets/
+.secrets/
+credentials/
+.credentials/
+.gcloud/
