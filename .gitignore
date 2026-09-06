@@ -35,3 +35,5 @@ secrets/
 credentials/
 .credentials/
 .gcloud/
+/docs/evidence/DAY_01_APP_BOOTSTRAP.md
+/docs/evidence/DAY_02_CHAT_RENDERING.md

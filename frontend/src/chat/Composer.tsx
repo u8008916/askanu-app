@@ -10,6 +10,8 @@ interface ComposerProps {
   onSubmit: (value: string) => void;
   /** The mobile home input carries the search affordance. */
   showSearchIcon?: boolean;
+  /** True while a question is in flight. One question at a time. */
+  disabled?: boolean;
 }
 
 export function Composer({
@@ -17,11 +19,12 @@ export function Composer({
   onChange,
   onSubmit,
   showSearchIcon = false,
+  disabled = false,
 }: ComposerProps) {
   const [showCounter, setShowCounter] = useState(false);
 
   const overLimit = value.length > QUESTION_MAX_CHARS;
-  const canSend = value.trim() !== '' && !overLimit;
+  const canSend = value.trim() !== '' && !overLimit && !disabled;
 
   function submit(event: FormEvent) {
     event.preventDefault();

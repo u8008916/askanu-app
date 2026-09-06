@@ -1,18 +1,22 @@
 import { useState } from 'react';
+import { FixturePicker } from '../dev/FixturePicker';
 import { Brand } from '../layout/Brand';
 import { ClearChatButton } from '../layout/ClearChatButton';
 import { ThemeToggle } from '../layout/ThemeToggle';
 import { ResourceCards } from '../resources/ResourceCards';
 import type { ResolvedTheme } from '../theme/useTheme';
 import type { ChatTurn } from './useChatSession';
+import { AssistantTurn } from './AssistantTurn';
 import { Composer } from './Composer';
 import { EmptyState } from './EmptyState';
+import { PendingTurn } from './PendingTurn';
 import { UserTurn } from './UserTurn';
 import styles from './ChatPanel.module.css';
 
 interface ChatPanelProps {
   turns: ChatTurn[];
   isDesktop: boolean;
+  isSending: boolean;
   onSend: (text: string) => void;
   onClearChat: () => void;
   theme: ResolvedTheme;
@@ -22,9 +26,21 @@ interface ChatPanelProps {
 const DISCLAIMER =
   'AskANU can make mistakes. Please double-check important information.';
 
+function renderTurn(turn: ChatTurn) {
+  switch (turn.kind) {
+    case 'user':
+      return <UserTurn content={turn.content} key={turn.id} />;
+    case 'pending':
+      return <PendingTurn key={turn.id} />;
+    case 'assistant':
+      return <AssistantTurn key={turn.id} response={turn.response} />;
+  }
+}
+
 export function ChatPanel({
   turns,
   isDesktop,
+  isSending,
   onSend,
   onClearChat,
   theme,
@@ -49,6 +65,7 @@ export function ChatPanel({
         <section className={styles.mobileIntro}>
           <h2 className={styles.greeting}>How can I help you today?</h2>
           <Composer
+            disabled={isSending}
             onChange={setDraft}
             onSubmit={handleSend}
             showSearchIcon
@@ -78,14 +95,20 @@ export function ChatPanel({
           <EmptyState onSelectSuggestion={handleSend} />
         ) : (
           <ul aria-label="Conversation" className={styles.turns}>
-            {turns.map((turn) => (
-              <UserTurn content={turn.content} key={turn.id} />
-            ))}
+            {turns.map(renderTurn)}
           </ul>
         )}
       </div>
       <div className={styles.composerSlot}>
-        <Composer onChange={setDraft} onSubmit={handleSend} value={draft} />
+        {/* Vite replaces this with `false` in a production build, so the
+            picker and its module are dropped from the bundle. */}
+        {import.meta.env.DEV && <FixturePicker />}
+        <Composer
+          disabled={isSending}
+          onChange={setDraft}
+          onSubmit={handleSend}
+          value={draft}
+        />
         <p className={styles.disclaimer}>{DISCLAIMER}</p>
       </div>
     </section>
