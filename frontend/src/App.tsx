@@ -9,7 +9,7 @@ import { useTheme } from './theme/useTheme';
 import styles from './App.module.css';
 
 export function App() {
-  const { turns, sendMessage, clearChat } = useChatSession();
+  const { turns, isSending, sendMessage, clearChat } = useChatSession();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerToggleRef = useRef<HTMLButtonElement>(null);
   const isDesktop = useIsDesktop();
@@ -37,6 +37,7 @@ export function App() {
         <div className={styles.chat}>
           <ChatPanel
             isDesktop={isDesktop}
+            isSending={isSending}
             onClearChat={clearChat}
             onSend={sendMessage}
             onToggleTheme={toggleTheme}

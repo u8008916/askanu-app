@@ -177,6 +177,22 @@ export const MoonIcon = (p: IconProps) => (
   </Svg>
 );
 
+export const InfoIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 11v5.5" />
+    <path d="M12 7.8h.01" />
+  </Svg>
+);
+
+export const AlertIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 4.2 21 19.5H3z" />
+    <path d="M12 10v4.2" />
+    <path d="M12 17.1h.01" />
+  </Svg>
+);
+
 export const StarIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="m12 4 2.4 5 5.6.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.6-.8z" />

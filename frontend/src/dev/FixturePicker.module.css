@@ -1,0 +1,30 @@
+/*
+ * Deliberately plain and unbranded: this is a development affordance, not part
+ * of the confirmed UI, and it should never be mistaken for one.
+ */
+.root {
+  align-items: center;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.label {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+}
+
+.select {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--text-xs);
+  max-width: 100%;
+  padding: var(--space-1) var(--space-2);
+}

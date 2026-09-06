@@ -1,0 +1,65 @@
+.root {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+}
+
+/*
+ * A fixed height keeps the scroller from resizing between the dots appearing
+ * and the first line of the answer replacing them.
+ */
+.bubble {
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  display: flex;
+  height: 2.75rem;
+  padding: 0 var(--space-4);
+}
+
+.dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dot {
+  animation: pulse 1.2s ease-in-out infinite;
+  background: var(--gold);
+  border-radius: 50%;
+  height: 7px;
+  width: 7px;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes pulse {
+  0%,
+  70%,
+  100% {
+    opacity: 0.28;
+  }
+  35% {
+    opacity: 1;
+  }
+}
+
+/* The dots stay visible, they just stop moving. */
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,87 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.heading {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: var(--leading-tight);
+  text-transform: uppercase;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.card {
+  align-items: flex-start;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  display: flex;
+  gap: var(--space-3);
+  min-height: var(--touch-target-min);
+  padding: var(--space-3);
+  text-decoration: none;
+  transition: border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+a.card:hover {
+  background: var(--surface);
+  border-color: var(--gold);
+}
+
+/* A record whose stored URL is not a safe web address. Not interactive. */
+.cardUnlinked {
+  color: var(--ink-2);
+}
+
+/*
+ * The evidence number. Gold fill behind dark ink, which the tokens.css contrast
+ * rules permit; small gold *text* would have to use --gold-deep.
+ */
+.index {
+  align-items: center;
+  background: var(--gold-tint);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  display: flex;
+  flex: 0 0 auto;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  height: 1.5rem;
+  justify-content: center;
+  width: 1.5rem;
+}
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+/* --ink-2, not --ink-3: --ink-3 is 3.79:1 on white and below AA. */
+.domain {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+}
+
+.external {
+  color: var(--gold-deep);
+  margin-top: 0.15em;
+}

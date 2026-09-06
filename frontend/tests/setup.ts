@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom/vitest';
+import { afterEach } from 'vitest';
+import { resetMockScenario } from '../src/chat/askTransport';
 
 /*
  * jsdom does not implement matchMedia. Report the desktop breakpoint as
@@ -18,3 +20,11 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
       dispatchEvent: () => false,
     }) as unknown as MediaQueryList;
 }
+
+/*
+ * The mock transport's selected scenario is module state, so a test that
+ * changes it must not leak into the next file.
+ */
+afterEach(() => {
+  resetMockScenario();
+});
