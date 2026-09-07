@@ -100,9 +100,11 @@ export function ChatPanel({
         )}
       </div>
       <div className={styles.composerSlot}>
-        {/* Vite replaces this with `false` in a production build, so the
-            picker and its module are dropped from the bundle. */}
-        {import.meta.env.DEV && <FixturePicker />}
+        {/* Only meaningful when the dev mock transport is selected. Vite
+            replaces both operands with literals, so a production build drops
+            the branch, the picker and the fixtures behind it. */}
+        {import.meta.env.DEV &&
+          import.meta.env.VITE_USE_MOCK_TRANSPORT === '1' && <FixturePicker />}
         <Composer
           disabled={isSending}
           onChange={setDraft}

@@ -37,3 +37,4 @@ credentials/
 .gcloud/
 /docs/evidence/DAY_01_APP_BOOTSTRAP.md
 /docs/evidence/DAY_02_CHAT_RENDERING.md
+/docs/evidence/DAY_03_API_INTEGRATION.md

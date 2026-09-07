@@ -3,7 +3,7 @@ import {
   MOCK_SCENARIOS,
   getMockScenarioId,
   setMockScenarioId,
-} from '../chat/askTransport';
+} from './mockTransport';
 import styles from './FixturePicker.module.css';
 
 /**
@@ -11,10 +11,11 @@ import styles from './FixturePicker.module.css';
  * transport returns, so every response state can be seen in a real browser
  * before the backend exists.
  *
- * Rendered behind `import.meta.env.DEV` at its call site, so Vite replaces the
- * condition with `false` for production and this module is dropped from the
- * bundle. It must never ship, and it must never be the thing that decides an
- * answer in the real send path.
+ * Rendered only when the dev mock transport is selected, so it appears exactly
+ * when it can do something. Vite replaces both operands at its call site with
+ * literals, so a production build drops the branch and this module with it. It
+ * must never ship, and it must never be the thing that decides an answer in the
+ * real send path.
  */
 export function FixturePicker() {
   const [scenarioId, setScenarioId] = useState(getMockScenarioId);

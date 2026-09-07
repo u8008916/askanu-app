@@ -76,16 +76,28 @@ export function AssistantTurn({ response }: AssistantTurnProps) {
       <span className={styles.label}>AskANU</span>
       <div className={styles.body}>
         {isNoticeStatus(status) || !hasContent ? (
-          <StatusNotice
-            answer={
-              hasAnswer
-                ? answer
-                : /* Client-side fallback for an envelope that carries nothing
-                     to display. Not backend copy. */
-                  'No response content was returned.'
-            }
-            status={isNoticeStatus(status) ? status : 'error'}
-          />
+          <>
+            <StatusNotice
+              answer={
+                hasAnswer
+                  ? answer
+                  : /* Client-side fallback for an envelope that carries nothing
+                       to display. Not backend copy. */
+                    'No response content was returned.'
+              }
+              status={isNoticeStatus(status) ? status : 'error'}
+            />
+            {/*
+              An abstention can still be evidence-backed. The real service
+              answers "prerequisites for COMP1110" with `insufficient_evidence`
+              plus the stored Programs and Courses record: the evidence exists,
+              it simply does not establish the fact that was asked for. Hiding
+              that source would drop provenance the backend supplied and leave
+              the student with no way to check. Renders nothing when the
+              envelope carries no sources, which is the usual case here.
+            */}
+            <SourceCards sources={sources} />
+          </>
         ) : (
           <>
             {hasAnswer && <p className={styles.answer}>{answer}</p>}

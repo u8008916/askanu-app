@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HISTORY_MAX_TURNS } from '../types/api';
 import type { AskRequest, AskResponse, Clarification, HistoryTurn } from '../types/api';
-import { askMock } from './askTransport';
+import { askTransport } from './askTransport';
 import type { AskTransport } from './askTransport';
 
 /**
@@ -61,14 +61,14 @@ function toHistory(turns: ChatTurn[]): HistoryTurn[] {
 /**
  * Current-session chat state.
  *
- * `transport` is the Day 3 seam: today it is the mock, and the real
- * `/api/v1/ask` client is written to the same type. The request built here is
- * already a real contract request so that Day 3 changes the transport only.
+ * `transport` defaults to the selected transport — the real `/api/v1/ask`
+ * client, or the dev mock when `VITE_USE_MOCK_TRANSPORT=1`. It stays a
+ * parameter so tests can inject their own without touching a component.
  *
  * CONVERSATION_CONTRACT.md: context is current-session only. Nothing here is
  * persisted, and no profile or account is involved.
  */
-export function useChatSession(transport: AskTransport = askMock) {
+export function useChatSession(transport: AskTransport = askTransport) {
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [pendingClarification, setPendingClarification] =
     useState<Clarification | null>(null);

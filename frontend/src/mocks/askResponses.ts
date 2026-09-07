@@ -3,10 +3,11 @@ import type { AskResponse } from '../types/api';
 /**
  * Fixtures shaped to the frozen `/api/v1/ask` envelope in `docs/API_CONTRACT.md`.
  *
- * These stand in for the RAG service until Day 3 wires the real endpoint. They
- * are reached only through `chat/askTransport.ts`, never imported by a
- * component, so replacing the transport on Day 3 removes them from the render
- * path in one edit.
+ * The real `/api/v1/ask` client is the production path. These fixtures back the
+ * UI test suite and the opt-in dev mock transport, so every response state can
+ * be exercised without the RAG service running. They are reached only through
+ * `dev/mockTransport.ts` and never imported by a component, which is why a
+ * production build drops them entirely.
  *
  * Answer text is deliberately placeholder copy. The App never authors answer
  * content, and inventing ANU facts here would breach the "do not invent backend

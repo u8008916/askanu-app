@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
-import { setMockScenarioId } from '../src/chat/askTransport';
+import { setMockScenarioId } from '../src/dev/mockTransport';
 
 async function ask(question: string) {
   const user = userEvent.setup();
