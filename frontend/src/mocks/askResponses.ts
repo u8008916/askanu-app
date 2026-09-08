@@ -191,13 +191,16 @@ export const hostileStringsResponse: AskResponse = {
     '- **<script>alert(6)</script>** hostile emphasis inside a list item',
     '',
     '1. <b>hostile numbered item</b>',
+    '',
+    // The literal string named by the Day 4 grounding/security gate (G6).
+    "<script>alert('x')</script>",
   ].join('\n'),
   items: [],
   sources: [
     {
       record_id: 'course:hostile:1',
       source_id: 'programs-and-courses',
-      title: '<img src=x onerror=alert(3)>Title that must render as text',
+      title: "<img src=x onerror=alert(3)><script>alert('x')</script>Title that must render as text",
       url: 'https://example.invalid/placeholder-course',
       domain: 'courses',
     },

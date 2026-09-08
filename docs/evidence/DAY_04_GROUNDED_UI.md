@@ -226,20 +226,22 @@ $ npm run test
  ✓ tests/themeToggle.test.tsx      (3 tests)
  ✓ tests/clearChat.test.tsx        (2 tests)
  ✓ tests/emptyState.test.tsx       (2 tests)
- ✓ tests/safeRendering.test.tsx    (6 tests)   <- +2
+ ✓ tests/safeRendering.test.tsx    (7 tests)   <- +3
  ✓ tests/responseStates.test.tsx   (8 tests)
 
  Test Files  9 passed (9)
-      Tests  94 passed (94)
+      Tests  95 passed (95)
 ```
 
-73 -> 94; every pre-existing test still passes and none needed rewriting.
+73 -> 95. One Day 2 assertion in `sourceCards.test.tsx` was updated, because the
+hostile fixture's source title now also carries the gate's literal string; its intent
+(title renders as text, no element created) is unchanged. Nothing else was rewritten.
 
 | Added test | Asserts |
 |---|---|
 | `answerBlocks` (16) | paragraph/bullet/number grouping; `1.` and `2)`; `-`, `*`, `•`; mixed blocks; a dash inside a sentence is **not** a list; `**` emphasis; unbalanced `**` and `****` stay literal; empty input yields no blocks; every non-marker character survives; hostile text passes through byte-for-byte with no escaping and no tag construction |
 | `assistantTurn` (+3) | grounded answer renders 3 paragraphs, a 3-item `<ul>`, a 2-item `<ol>` and one `<strong>`, with markers not printed; hierarchy answer → clarification → sources; a two-paragraph abstention stays compact and unannounced |
-| `safeRendering` (+2) | hostile list/emphasis content creates no `img`/`b`/`script` while still creating list structure, and `<strong>` contains escaped text; **every anchor on screen is inside the Sources region** |
+| `safeRendering` (+3) | hostile list/emphasis content creates no `img`/`b`/`script` while still creating list structure, and `<strong>` contains escaped text; **every anchor on screen is inside the Sources region**; the gate's literal `<script>alert('x')</script>` driven through all three untrusted channels at once — user input, answer content and a stored source title |
 
 The repo-wide scan for `dangerouslySetInnerHTML` / `.innerHTML =` still returns `[]`. It
 globs `src/**`, so it covers `answerBlocks.ts` and `AnswerBody.tsx` automatically —
@@ -392,3 +394,121 @@ boundary, source policy, status semantic or interaction rule changed, and no dep
 was added. The one thing built beyond the literal task list is the `scrollbar-gutter`
 fix in §4 — it is the direct result of the day's own "no layout shift" verification, and
 it is one CSS declaration.
+
+---
+
+# Part B — second verification pass against the full Day 4 task list
+
+Re-run item by item against the written Day 4 task list and acceptance criteria, after
+the first pass. Two gaps were found and closed; everything else was confirmed by
+measurement rather than by assertion.
+
+## B.1 Gap closed — the gate's literal string was not the one being tested
+
+The gate names `<script>alert('x')</script>`. The fixtures used
+`<script>alert(2)</script>` and friends — equivalent in kind, but not the literal
+string the gate asks for. That string is now in the fixture's answer **and** in a stored
+source title, and a new test drives it through all three untrusted channels at once.
+
+Live, with `window.alert` replaced by a spy and an `error` listener attached:
+
+```
+user input rendered   : &lt;script&gt;alert('x')&lt;/script&gt;      <- escaped by React
+answer body contains  : true    (as text)
+source title rendered : "<img src=x onerror=alert(3)><script>alert('x')</script>Title that must render as text"
+alert() calls fired   : []
+window errors         : []
+<script> elements containing alert('x') : 0
+```
+
+Also verified against the **real service** (mock flag off, fixture picker absent):
+typing `<script>alert('x')</script>` into the composer produced
+`<p>&lt;script&gt;alert('x')&lt;/script&gt;</p>` and no execution.
+
+## B.2 Gap closed — a Day 2 assertion pinned the old title
+
+Extending the hostile source title broke `sourceCards.test.tsx`'s regex. The assertion
+was updated to the current fixture; its intent is unchanged (title renders as text, no
+element created). Caught by the suite, not shipped.
+
+## B.3 Every frozen status renders a controlled, non-blank state — PASS
+
+All ten fixtures, driven one after another in the browser at 1280px:
+
+| Fixture | Status | Non-blank | Chars | Source rows / links | `role="alert"` | Injected nodes |
+|---|---|---|---|---|---|---|
+| `ok` | `ok` | yes | 161 | 1 / 1 | 0 | 0 |
+| `ok-multi` | `ok` | yes | 401 | 3 / 3 | 0 | 0 |
+| `grounded` | `ok` | yes | 535 | 1 / 1 | 0 | 0 |
+| `partial` | `partial` | yes | 162 | 1 / 1 | 0 | 0 |
+| `needs-clarification` | `needs_clarification` | yes | 120 | 0 / 0 | 0 | 0 |
+| `insufficient` | `insufficient_evidence` | yes | 135 | 0 / 0 | 0 | 0 |
+| `off-topic` | `off_topic` | yes | 117 | 0 / 0 | 0 | 0 |
+| `error` | `error` | yes | 65 | 0 / 0 | **1** | 0 |
+| `hostile` | `ok` | yes | 400 | **2 / 1** | 0 | 0 |
+| `reject` (transport failure) | `error` | yes | 76 | 0 / 0 | **1** | 0 |
+
+```
+alert() calls fired across the whole sweep : []
+window errors across the whole sweep       : []
+```
+
+The hostile row's `2 sources / 1 link` is the safe-URL guard working: the record whose
+stored URL is `javascript:alert(4)` is rendered as a card but **not** as a link.
+Document-wide check: `any href starting with "javascript:" : false`.
+
+## B.4 Loading, `Try asking` and `Clear Chat` — PASS
+
+One uninterrupted sequence, measured at each step (the mock's 350ms latency is what
+makes the in-flight frame observable):
+
+| Step | `Try asking` | Suggestion buttons | Turns | Note |
+|---|---|---|---|---|
+| empty state | present | 4 | 0 | |
+| in flight | **gone** | 0 | — | "AskANU is finding an answer" shown; Send disabled |
+| answered | gone | 0 | 2 | pending turn replaced in place |
+| after `Clear Chat` | **present** | 4 | 0 | composer also cleared |
+
+## B.5 Real COMP1110 source card opens the official ANU page — PASS
+
+Href read from the rendered card in the running app, then loaded:
+
+```
+card href : https://programsandcourses.anu.edu.au/2026/course/COMP1110
+target    : _blank      rel: noopener noreferrer      inline onclick: false
+
+loaded    : title "Structured Programming - ANU"
+            url   https://programsandcourses.anu.edu.au/2026/course/COMP1110
+            page  "PROGRAMS AND COURSES COURSES COMP1110 COURSE Structured Programming
+                   An undergraduate course offered by the School of Computing."
+```
+
+## B.6 Out-of-scope areas untouched — PASS
+
+```
+$ git diff --name-only main...HEAD | grep -E "src/(layout|resources|theme|ui)/|src/App|main.tsx|package.json|vite.config|\.env"
+(no output)
+```
+
+The right resource rail, navigation, mobile drawer, theme, `App.tsx`, `package.json`,
+`vite.config.ts` and every `.env*` file are unchanged. The diff is 13 files, all under
+`src/chat/`, `src/mocks/`, `src/dev/` and `tests/`.
+
+**No second chat architecture:** `useChatSession` is still referenced only by `App.tsx`,
+`ChatPanel.tsx` and its own module — one chat, one session, as V3 requires.
+
+**No unsafe rendering path:** the only three matches for `dangerouslySetInnerHTML` in
+`src/` are comments explaining that it is not used; the CI scan strips comments before
+searching and still returns `[]`. `isSafeHttpUrl` remains the single gate on every
+source link, and no component in `src/chat/` constructs an anchor except `SourceCards`.
+
+## B.7 Command gate — PASS
+
+```
+$ npm run test    ->  Test Files 9 passed (9)   Tests 95 passed (95)
+$ npm run build   ->  tsc --noEmit && vite build   ✓ built (219.01 kB JS / 18.15 kB CSS)
+$ git diff --check ; echo exit=$?
+exit=0
+
+dist leakage: example.invalid 0 · MOCK_SCENARIOS 0 · alert('x') 0 · onerror=alert 0 · req_mock 0
+```

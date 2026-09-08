@@ -149,4 +149,39 @@ describe('safe rendering', () => {
       expect(sources.contains(anchor)).toBe(true);
     }
   });
+  /*
+   * The literal string named by the Day 4 grounding/security gate (G6), driven
+   * through all three untrusted channels: user input, answer content and a
+   * stored source title.
+   */
+  it("renders <script>alert('x')</script> as text in every untrusted channel", async () => {
+    setMockScenarioId('hostile');
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+    const gateString = "<script>alert('x')</script>";
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      gateString,
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
+    );
+
+    // 1. the user's own message, 2. the answer body, 3. the source title.
+    expect(screen.getAllByText(gateString).length).toBeGreaterThanOrEqual(2);
+    expect(
+      screen.getByText(
+        "<img src=x onerror=alert(3)><script>alert('x')</script>Title that must render as text",
+      ),
+    ).toBeInTheDocument();
+
+    // Nothing anywhere became a script, and no executable node was created.
+    expect(container.querySelector('script')).toBeNull();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.innerHTML).not.toContain('<script>');
+    expect(container.innerHTML).toContain('&lt;script&gt;');
+  });
 });

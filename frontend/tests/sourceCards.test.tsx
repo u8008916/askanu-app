@@ -42,7 +42,7 @@ describe('source cards', () => {
     );
 
     expect(
-      screen.getByText(/<img src=x onerror=alert\(3\)>Title that must render/),
+      screen.getByText(/^<img src=x onerror=alert\(3\)><script>alert\('x'\)<\/script>Title that must render/),
     ).toBeInTheDocument();
     expect(container.querySelector('img')).toBeNull();
   });
