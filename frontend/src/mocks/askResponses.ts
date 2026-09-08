@@ -90,6 +90,44 @@ export const partialResponse: AskResponse = {
   request_id: 'req_mock_partial',
 };
 
+/**
+ * A grounded answer with the structure a synthesised response actually carries:
+ * paragraphs, a bulleted list, a numbered list and `**label**` emphasis.
+ *
+ * The copy is still placeholder text and the URLs are still `example.invalid`.
+ * The App never authors answer content and never guesses an ANU URL, so this
+ * fixture proves the *shape* renders, not any ANU fact.
+ */
+export const groundedResponse: AskResponse = {
+  status: 'ok',
+  answer: [
+    'Placeholder opening paragraph of a grounded answer, long enough to wrap onto a second line inside the chat column at a narrow width.',
+    '',
+    '**Placeholder label:** a short paragraph following an emphasised lead-in.',
+    '',
+    '- First placeholder list item.',
+    '- Second placeholder list item, written long enough that it wraps and the hanging indent under the marker is visible.',
+    '- Third placeholder list item.',
+    '',
+    'A closing paragraph before a numbered sequence:',
+    '',
+    '1. First placeholder step.',
+    '2. Second placeholder step.',
+  ].join('\n'),
+  items: [],
+  sources: [
+    {
+      record_id: 'course:COMP1110:2026',
+      source_id: 'programs-and-courses',
+      title: 'Placeholder course record title',
+      url: 'https://example.invalid/placeholder-course',
+      domain: 'courses',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_grounded',
+};
+
 export const needsClarificationResponse: AskResponse = {
   status: 'needs_clarification',
   answer: 'Do you mean COMP1110 or COMP1600?',
@@ -145,13 +183,24 @@ export const errorResponse: AskResponse = {
  */
 export const hostileStringsResponse: AskResponse = {
   status: 'ok',
-  answer: '<img src=x onerror=alert(1)><script>alert(2)</script><b>bold</b>',
+  answer: [
+    '<img src=x onerror=alert(1)><script>alert(2)</script><b>bold</b>',
+    '',
+    // The block formatter must not turn any of these into markup either.
+    '- <img src=x onerror=alert(5)> hostile list item',
+    '- **<script>alert(6)</script>** hostile emphasis inside a list item',
+    '',
+    '1. <b>hostile numbered item</b>',
+    '',
+    // The literal string named by the Day 4 grounding/security gate (G6).
+    "<script>alert('x')</script>",
+  ].join('\n'),
   items: [],
   sources: [
     {
       record_id: 'course:hostile:1',
       source_id: 'programs-and-courses',
-      title: '<img src=x onerror=alert(3)>Title that must render as text',
+      title: "<img src=x onerror=alert(3)><script>alert('x')</script>Title that must render as text",
       url: 'https://example.invalid/placeholder-course',
       domain: 'courses',
     },

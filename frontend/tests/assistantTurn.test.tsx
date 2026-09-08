@@ -165,4 +165,83 @@ describe('AssistantTurn', () => {
     expect(container.textContent).not.toContain(scenario.response.request_id);
     expect(container.querySelector('time')).toBeNull();
   });
+  /*
+   * Day 4: a grounded answer arrives with structure — paragraphs, lists and
+   * `**label**` emphasis. The turn must show that structure while keeping the
+   * information hierarchy V3 fixed: answer, then clarification, then evidence.
+   */
+  it('renders a grounded answer as paragraphs and real lists', () => {
+    const scenario = MOCK_SCENARIOS.find((s) => s.id === 'grounded')!;
+    const { container } = renderTurn(scenario.response);
+
+    // Scope inside the turn: renderTurn's own <ul> wrapper is not the answer.
+    const turn = container.querySelector('li')!;
+    expect(turn.querySelectorAll('p').length).toBeGreaterThanOrEqual(3);
+
+    const bullets = [...turn.querySelectorAll('ul')].find((list) =>
+      list.textContent!.includes('First placeholder list item.'),
+    )!;
+    expect(within(bullets).getAllByRole('listitem')).toHaveLength(3);
+
+    // The source block is an <ol> as well, so pick the list by its content.
+    const numbered = [...turn.querySelectorAll('ol')].find((list) =>
+      list.textContent!.includes('First placeholder step.'),
+    )!;
+    expect(within(numbered).getAllByRole('listitem')).toHaveLength(2);
+
+    // Emphasis is a <strong> element built from parsed text, not parsed markup.
+    const strong = container.querySelector('strong')!;
+    expect(strong.textContent).toBe('Placeholder label:');
+
+    // Markers are structure, not content: they are not printed.
+    expect(container.textContent).not.toContain('**');
+    expect(container.textContent).not.toContain('- First placeholder');
+  });
+
+  it('keeps the hierarchy: answer, then clarification, then sources', () => {
+    const { container } = renderTurn({
+      status: 'needs_clarification',
+      answer: 'Do you mean the first or the second?\n\n- one\n- two',
+      items: [],
+      sources: [
+        {
+          record_id: 'course:hierarchy:1',
+          source_id: 'programs-and-courses',
+          title: 'Placeholder record title',
+          url: 'https://example.invalid/placeholder',
+          domain: 'courses',
+        },
+      ],
+      clarification: {
+        id: 'clar-hierarchy',
+        type: 'entity_selection',
+        options: [
+          { id: 'a', label: 'First option' },
+          { id: 'b', label: 'Second option' },
+        ],
+        allow_multiple: false,
+      },
+      request_id: 'req_hierarchy',
+    });
+
+    const text = container.textContent!;
+    expect(text.indexOf('Do you mean')).toBeLessThan(text.indexOf('First option'));
+    expect(text.indexOf('First option')).toBeLessThan(text.indexOf('Sources'));
+  });
+
+  it('keeps a multi-paragraph abstention compact and structured', () => {
+    const { container } = renderTurn({
+      status: 'insufficient_evidence',
+      answer: 'First line of the service message.\n\nSecond line.',
+      items: [],
+      sources: [],
+      clarification: null,
+      request_id: 'req_multiline_abstention',
+    });
+
+    // Two paragraphs plus the notice heading, not one run-together block.
+    expect(container.querySelectorAll('p')).toHaveLength(3);
+    expect(screen.getByText('Second line.')).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
 });

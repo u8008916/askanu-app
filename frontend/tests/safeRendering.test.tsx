@@ -89,4 +89,99 @@ describe('safe rendering', () => {
 
     expect(offenders).toEqual([]);
   });
+  /*
+   * Day 4 added a formatter between the answer string and the DOM. Structure is
+   * the only thing it may create: hostile text inside a list item or inside
+   * `**...**` must still arrive as characters on screen, never as elements.
+   */
+  it('renders hostile list and emphasis content as text, not elements', async () => {
+    setMockScenarioId('hostile');
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      'Tell me about COMP1110',
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('<img src=x onerror=alert(5)> hostile list item'),
+      ).toBeInTheDocument(),
+    );
+
+    // The formatter did build real list structure from the markers...
+    expect(container.querySelector('li')).not.toBeNull();
+    // ...and built nothing at all from the HTML in the text.
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('b')).toBeNull();
+    expect(container.querySelector('script')).toBeNull();
+
+    // `**<script>...</script>**` becomes emphasis around literal characters.
+    const strong = screen.getByText('<script>alert(6)</script>');
+    expect(strong.tagName).toBe('STRONG');
+    expect(strong.innerHTML).toBe('&lt;script&gt;alert(6)&lt;/script&gt;');
+  });
+
+  it('cannot build an anchor from answer text', async () => {
+    setMockScenarioId('hostile');
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      'Tell me about COMP1110',
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
+    );
+
+    /*
+     * The provenance invariant: links come from stored source records only.
+     * Every anchor on screen must sit inside the source block, so nothing in the
+     * answer body can send a student anywhere.
+     */
+    const sources = screen.getByRole('region', { name: 'Sources' });
+    for (const anchor of container.querySelectorAll('a')) {
+      expect(sources.contains(anchor)).toBe(true);
+    }
+  });
+  /*
+   * The literal string named by the Day 4 grounding/security gate (G6), driven
+   * through all three untrusted channels: user input, answer content and a
+   * stored source title.
+   */
+  it("renders <script>alert('x')</script> as text in every untrusted channel", async () => {
+    setMockScenarioId('hostile');
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+    const gateString = "<script>alert('x')</script>";
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      gateString,
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
+    );
+
+    // 1. the user's own message, 2. the answer body, 3. the source title.
+    expect(screen.getAllByText(gateString).length).toBeGreaterThanOrEqual(2);
+    expect(
+      screen.getByText(
+        "<img src=x onerror=alert(3)><script>alert('x')</script>Title that must render as text",
+      ),
+    ).toBeInTheDocument();
+
+    // Nothing anywhere became a script, and no executable node was created.
+    expect(container.querySelector('script')).toBeNull();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.innerHTML).not.toContain('<script>');
+    expect(container.innerHTML).toContain('&lt;script&gt;');
+  });
 });
