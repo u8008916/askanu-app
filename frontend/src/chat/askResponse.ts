@@ -13,15 +13,9 @@ import type {
  * types vanish at runtime, so a real response from the network has to be
  * checked before it reaches React state and the renderer.
  *
- * Two rules decide how strict each field is:
- *
- * - `status` and `answer` are load-bearing. A response without them is not a
- *   contract response, so the whole envelope is rejected.
- * - `items`, `sources` and `clarification` are defaulted when **absent** and
- *   rejected when **present but malformed**. Being lenient about an omitted
- *   `null` keeps a working answer on screen during first integration; being
- *   strict about a wrong shape means a real contract mismatch surfaces loudly
- *   instead of being silently patched over, which is what Day 3 asks for.
+ * The frozen v1 response envelope requires `status`, `answer`, `items`,
+ * `sources`, `clarification` and `request_id`. Missing required fields are a
+ * contract mismatch, not something the App boundary should silently repair.
  *
  * A malformed source rejects the whole envelope rather than being dropped.
  * Quietly discarding evidence would leave a grounded-looking answer with
@@ -52,7 +46,9 @@ function parseSource(value: unknown): Source | null {
   if (!isRecord(value)) {
     return null;
   }
+
   const { record_id, source_id, title, url, domain } = value;
+
   if (
     !isString(record_id) ||
     !isString(source_id) ||
@@ -62,7 +58,7 @@ function parseSource(value: unknown): Source | null {
   ) {
     return null;
   }
-  // Rebuilt field by field: unknown keys from the wire never enter app state.
+
   return { record_id, source_id, title, url, domain };
 }
 
@@ -70,32 +66,46 @@ function parseOption(value: unknown): ClarificationOption | null {
   if (!isRecord(value)) {
     return null;
   }
+
   const { id, label } = value;
+
   return isString(id) && isString(label) ? { id, label } : null;
 }
 
-function parseClarification(value: unknown): Clarification | null | undefined {
-  if (value === null || value === undefined) {
+function parseClarification(
+  value: unknown,
+): Clarification | null | undefined {
+  if (value === null) {
     return null;
   }
-  if (!isRecord(value)) {
+
+  // `undefined` means the required contract field was omitted or malformed.
+  if (value === undefined || !isRecord(value)) {
     return undefined;
   }
+
   const { id, type, options, allow_multiple } = value;
+
   if (!isString(id) || !isString(type) || !Array.isArray(options)) {
     return undefined;
   }
+
   if (typeof allow_multiple !== 'boolean') {
     return undefined;
   }
+
   const parsedOptions: ClarificationOption[] = [];
+
   for (const option of options) {
     const parsed = parseOption(option);
+
     if (parsed === null) {
       return undefined;
     }
+
     parsedOptions.push(parsed);
   }
+
   // Order is significant: it is what `first` and `second` refer to.
   return { id, type, options: parsedOptions, allow_multiple };
 }
@@ -106,34 +116,49 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     return null;
   }
 
-  const { status, answer, items, sources, clarification, request_id } = value;
+  const {
+    status,
+    answer,
+    items,
+    sources,
+    clarification,
+    request_id,
+  } = value;
 
   if (!isString(status) || !STATUSES.includes(status)) {
     return null;
   }
+
   if (!isString(answer)) {
     return null;
   }
 
-  if (items !== undefined && !Array.isArray(items)) {
+  if (!Array.isArray(items)) {
+    return null;
+  }
+
+  if (!Array.isArray(sources)) {
+    return null;
+  }
+
+  if (!isString(request_id)) {
     return null;
   }
 
   const parsedSources: Source[] = [];
-  if (sources !== undefined) {
-    if (!Array.isArray(sources)) {
+
+  for (const source of sources) {
+    const parsed = parseSource(source);
+
+    if (parsed === null) {
       return null;
     }
-    for (const source of sources) {
-      const parsed = parseSource(source);
-      if (parsed === null) {
-        return null;
-      }
-      parsedSources.push(parsed);
-    }
+
+    parsedSources.push(parsed);
   }
 
   const parsedClarification = parseClarification(clarification);
+
   if (parsedClarification === undefined) {
     return null;
   }
@@ -141,10 +166,9 @@ export function parseAskResponse(value: unknown): AskResponse | null {
   return {
     status: status as AskStatus,
     answer,
-    items: items === undefined ? [] : items,
+    items,
     sources: parsedSources,
     clarification: parsedClarification,
-    // Internal identifier. Held for error reporting, never rendered.
-    request_id: isString(request_id) ? request_id : '',
+    request_id,
   };
 }

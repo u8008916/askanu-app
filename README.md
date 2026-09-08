@@ -52,14 +52,14 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[test]"
 ```
 
 ```bash
-.venv/Scripts/python -m uvicorn askanu_rag.main:app --app-dir src --host 127.0.0.1 --port 8000
+.venv/Scripts/python -m uvicorn askanu_rag.main:app --app-dir src --host 127.0.0.1 --port 8081
 ```
 
 Then use **proxy mode** in this repo's `.env`:
 
 ```bash
 VITE_API_BASE_URL=
-VITE_DEV_PROXY_TARGET=http://localhost:8000
+VITE_DEV_PROXY_TARGET=http://localhost:8081
 ```
 
 Proxy mode is the local default **because the RAG service sends no CORS
@@ -72,7 +72,7 @@ Direct mode still works against any boundary that does send CORS headers for
 `http://localhost:5173`:
 
 ```bash
-VITE_API_BASE_URL=http://localhost:8000
+VITE_API_BASE_URL=http://localhost:8080
 ```
 
 The proxy is dev-server configuration only. It has no effect on a build, and

@@ -187,13 +187,22 @@ describe('askApi response', () => {
     expect(response.sources[0]).not.toHaveProperty('vector_score');
   });
 
-  it('defaults items, sources and clarification when they are absent', async () => {
-    stubFetch(200, { status: 'ok', answer: 'Answer.', request_id: 'req_1' });
-    const response = await askApi(request());
+  it.each([
+    ['items', { items: undefined }],
+    ['sources', { sources: undefined }],
+    ['clarification', { clarification: undefined }],
+    ['request_id', { request_id: undefined }],
+  ])(
+    'throws when required response field %s is missing',
+    async (_field, override) => {
+      stubFetch(200, { ...OK_ENVELOPE, ...override });
+      await expect(askApi(request())).rejects.toThrow();
+    },
+  );
 
-    expect(response.items).toEqual([]);
-    expect(response.sources).toEqual([]);
-    expect(response.clarification).toBeNull();
+  it('throws when request_id is not a string', async () => {
+    stubFetch(200, { ...OK_ENVELOPE, request_id: 123 });
+    await expect(askApi(request())).rejects.toThrow();
   });
 
   it('keeps clarification option order', async () => {
