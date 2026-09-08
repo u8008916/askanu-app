@@ -1,21 +1,13 @@
 import type { AskRequest, AskResponse } from '../types/api';
-import {
-  errorResponse,
-  hostileStringsResponse,
-  insufficientEvidenceResponse,
-  needsClarificationResponse,
-  offTopicResponse,
-  okMultiSourceResponse,
-  okResponse,
-  partialResponse,
-} from '../mocks/askResponses';
+import { askApi } from './askApi';
+import { askMock } from '../dev/mockTransport';
 
 /**
- * The Day 3 seam.
+ * The transport seam.
  *
- * `useChatSession` depends on this signature, not on the mock. On Day 3 the
- * real `/api/v1/ask` client is written to the same type and swapped in here;
- * no component changes.
+ * `useChatSession` depends on this type, not on any particular implementation.
+ * Day 2 rendered every response state through the mock behind it; Day 3 put the
+ * real `/api/v1/ask` client behind it without changing a single component.
  */
 export type AskTransport = (
   request: AskRequest,
@@ -23,105 +15,19 @@ export type AskTransport = (
 ) => Promise<AskResponse>;
 
 /**
- * Mock scenarios.
+ * The transport the running app uses.
  *
- * The mock returns whichever scenario is selected — it never inspects the
- * question. Routing answers off question text would be hardcoding answer
- * content into the send path, which Day 3 explicitly forbids.
- */
-export interface MockScenario {
-  id: string;
-  label: string;
-  response: AskResponse;
-}
-
-export const MOCK_SCENARIOS: MockScenario[] = [
-  { id: 'ok', label: 'ok — one source', response: okResponse },
-  {
-    id: 'ok-multi',
-    label: 'ok — several sources',
-    response: okMultiSourceResponse,
-  },
-  { id: 'partial', label: 'partial', response: partialResponse },
-  {
-    id: 'needs-clarification',
-    label: 'needs_clarification',
-    response: needsClarificationResponse,
-  },
-  {
-    id: 'insufficient',
-    label: 'insufficient_evidence',
-    response: insufficientEvidenceResponse,
-  },
-  { id: 'off-topic', label: 'off_topic', response: offTopicResponse },
-  { id: 'error', label: 'error', response: errorResponse },
-  {
-    id: 'hostile',
-    label: 'ok — hostile strings',
-    response: hostileStringsResponse,
-  },
-  { id: 'reject', label: 'transport failure', response: errorResponse },
-];
-
-const DEFAULT_SCENARIO_ID = 'ok';
-
-let selectedScenarioId = DEFAULT_SCENARIO_ID;
-
-export function getMockScenarioId(): string {
-  return selectedScenarioId;
-}
-
-/** Set by the dev fixture picker and by tests. No production caller exists. */
-export function setMockScenarioId(id: string): void {
-  selectedScenarioId = id;
-}
-
-export function resetMockScenario(): void {
-  selectedScenarioId = DEFAULT_SCENARIO_ID;
-}
-
-/** Long enough for the loading state to be real, short enough not to drag. */
-export const MOCK_LATENCY_MS = 350;
-
-class AbortError extends Error {
-  constructor() {
-    super('The request was aborted.');
-    this.name = 'AbortError';
-  }
-}
-
-/**
- * Resolves the selected fixture after a short delay so the pending state is
- * genuinely exercised rather than skipped in a single tick.
+ * The real client is the production path. The mock is opt-in, dev only, and
+ * exists so the response states can be seen in a browser without the RAG
+ * service running:
  *
- * `request` is accepted and ignored on purpose: the App builds a real contract
- * request today so that Day 3 changes only the body of this function.
+ *     VITE_USE_MOCK_TRANSPORT=1 npm run dev
+ *
+ * Vite replaces both operands with literals at build time, so a production
+ * build folds this to `askApi` and drops `mockTransport` — and the fixtures it
+ * imports — from the bundle. Verified by grepping `dist/`, not assumed.
  */
-export const askMock: AskTransport = (_request, signal) =>
-  new Promise<AskResponse>((resolve, reject) => {
-    if (signal?.aborted) {
-      reject(new AbortError());
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      signal?.removeEventListener('abort', onAbort);
-      const scenario = MOCK_SCENARIOS.find(
-        (candidate) => candidate.id === selectedScenarioId,
-      );
-      // `transport failure` models a network/timeout error, where no envelope
-      // ever arrives. The session turns that into an `error` turn itself.
-      if (scenario?.id === 'reject') {
-        reject(new Error('Mock transport failure.'));
-        return;
-      }
-      resolve(scenario?.response ?? okResponse);
-    }, MOCK_LATENCY_MS);
-
-    function onAbort() {
-      clearTimeout(timer);
-      reject(new AbortError());
-    }
-
-    signal?.addEventListener('abort', onAbort, { once: true });
-  });
+export const askTransport: AskTransport =
+  import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_TRANSPORT === '1'
+    ? askMock
+    : askApi;

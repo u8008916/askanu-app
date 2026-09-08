@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { afterEach } from 'vitest';
-import { resetMockScenario } from '../src/chat/askTransport';
+import { resetMockScenario } from '../src/dev/mockTransport';
 
 /*
  * jsdom does not implement matchMedia. Report the desktop breakpoint as

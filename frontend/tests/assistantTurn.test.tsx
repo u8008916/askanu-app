@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
-import { MOCK_SCENARIOS } from '../src/chat/askTransport';
+import { MOCK_SCENARIOS } from '../src/dev/mockTransport';
 import type { AskResponse, AskStatus } from '../src/types/api';
 
 /** The turn is an <li>; give it the list its markup expects. */
@@ -81,12 +81,14 @@ describe('AssistantTurn', () => {
   });
 
   it.each(['insufficient', 'off-topic'] as const)(
-    'presents %s compactly, with no source block and no error styling',
+    'presents %s compactly and without error styling',
     (id) => {
       const scenario = MOCK_SCENARIOS.find((s) => s.id === id)!;
       renderTurn(scenario.response);
 
       expect(screen.getByText(scenario.response.answer)).toBeInTheDocument();
+      // These fixtures carry no evidence, so there is no source block to show.
+      expect(scenario.response.sources).toHaveLength(0);
       expect(
         screen.queryByRole('region', { name: 'Sources' }),
       ).not.toBeInTheDocument();
@@ -95,6 +97,44 @@ describe('AssistantTurn', () => {
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     },
   );
+
+  /*
+   * Regression, found during Day 3 integration against the real RAG service.
+   *
+   * "What are the prerequisites for COMP1110?" returns `insufficient_evidence`
+   * together with the stored Programs and Courses record: the evidence exists,
+   * it just does not establish the prerequisites. The turn previously rendered
+   * the notice alone and dropped the source, which lost provenance the backend
+   * had supplied and left the student with no official ANU link to check.
+   */
+  it('still shows evidence when an abstention carries sources', () => {
+    renderTurn({
+      status: 'insufficient_evidence',
+      answer:
+        'The stored evidence for COMP1110 (2026) does not establish its prerequisites.',
+      items: [],
+      sources: [
+        {
+          record_id: 'courses:course:COMP1110_2026',
+          source_id: 'courses_programs_and_courses',
+          title: 'COMP1110 representative fixture',
+          url: 'https://programsandcourses.anu.edu.au/2026/course/COMP1110',
+          domain: 'courses',
+        },
+      ],
+      clarification: null,
+      request_id: 'req_abstention_with_evidence',
+    });
+
+    const sources = screen.getByRole('region', { name: 'Sources' });
+    const link = within(sources).getByRole('link');
+    expect(link).toHaveAttribute(
+      'href',
+      'https://programsandcourses.anu.edu.au/2026/course/COMP1110',
+    );
+    // Abstaining is still not a fault.
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
 
   it('announces the error state', () => {
     const scenario = MOCK_SCENARIOS.find((s) => s.id === 'error')!;
