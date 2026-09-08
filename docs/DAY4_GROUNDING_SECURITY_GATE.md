@@ -94,9 +94,34 @@ Final live COMP1110 smoke verified:
 
 ## Ben — App
 - Issue: Day 4 — Polish grounded answer presentation and safe rendering
-- PR:
-- Commit reviewed:
-- Result: PENDING
+- PR: `askanu-app#20`
+- Commit reviewed: `52a2228d9af1cc7bd54c4a8e14ab495ed4a1fd81`
+- Merge commit: `10f3c027b5632937f55355f46e8dc8b322b47273`
+- Result: PASS
+
+### Review evidence
+Independent review confirmed:
+
+- grounded answers render as paragraphs and lists
+- answer formatting is derived from plain-text structure, not parsed HTML
+- no markdown renderer or `dangerouslySetInnerHTML` path was introduced
+- source cards remain programmatically controlled
+- source URLs still pass through the existing HTTP/HTTPS safety guard
+- `insufficient_evidence` and `off_topic` remain compact
+- scrollbar gutter fix prevents the measured 15px answer-arrival layout shift
+- literal `<script>alert('x')</script>` is rendered as text rather than executable markup
+- hostile content in user input, model answer text and source titles cannot create executable DOM nodes
+- answer text cannot create links; links remain confined to the Sources region
+- all frozen response states continue to render controlled visible UI states
+
+Independent verification on Qasim's machine:
+
+- `npm run test` -> 9/9 test files, 95/95 tests passed
+- `npm run build` -> PASS
+- TypeScript `tsc --noEmit` -> PASS
+- Vite production build -> PASS
+- `git diff --check main...HEAD` -> PASS with no output
+- working tree clean
 
 ---
 
@@ -281,19 +306,23 @@ Also test HTML/script-like content in a model response fixture if required.
 - no unsafe rendering path is introduced
 
 ### Evidence
-- browser result:
-- console behaviour:
-- screenshot/reference:
-- relevant automated test:
+- browser/result evidence: hostile strings are rendered as React text children; no executable HTML path introduced
+- console behaviour: no execution path created by the tested hostile content
+- evidence file: `docs/evidence/DAY_04_GROUNDED_UI.md`
+- relevant automated tests: `frontend/tests/safeRendering.test.tsx`
+- independent test result: 95/95 frontend tests passed
+- literal gate string tested: `<script>alert('x')</script>`
+- hostile content tested through user input, answer content and stored source title
+- answer-created anchors: prevented; links remain inside the Sources region
 
 ### Checks
-- [ ] User HTML does not execute
-- [ ] Assistant/model HTML does not execute
-- [ ] Source title/content cannot execute HTML
-- [ ] No unsafe `dangerouslySetInnerHTML` behaviour introduced
+- [x] User HTML does not execute
+- [x] Assistant/model HTML does not execute
+- [x] Source title/content cannot execute HTML
+- [x] No unsafe `dangerouslySetInnerHTML` behaviour introduced
 
 ### Result
-PENDING
+PASS
 
 ---
 
@@ -462,13 +491,33 @@ Notes:
 ## App
 Command:
 
+`npm run test`
+
 Result:
+
+PASS
 
 Tests passed:
 
+`95 passed` across `9` test files
+
+Command:
+
+`npm run build`
+
 Build result:
 
+PASS
+
 Notes:
+
+- TypeScript `tsc --noEmit` passed.
+- Vite production build passed.
+- Safe-rendering regression suite passed.
+- Literal `<script>alert('x')</script>` remained text in all tested untrusted channels.
+- Source-link safety tests passed.
+- All frozen response-state tests passed.
+- Independent verification was performed on Qasim's machine before merge.
 
 ## Diff checks
 
@@ -488,6 +537,8 @@ PASS — no output
 `git diff --check`
 
 Result:
+
+PASS — no output
 
 ---
 
@@ -518,7 +569,7 @@ None recorded yet.
 - [ ] G3 Unknown course — PASS
 - [ ] G4 Off-topic — PASS
 - [ ] G5 Prompt injection — PASS
-- [ ] G6 Unsafe HTML — PASS
+- [x] G6 Unsafe HTML — PASS
 - [ ] G7 Model failure — PASS
 
 ## Cross-cutting gates
