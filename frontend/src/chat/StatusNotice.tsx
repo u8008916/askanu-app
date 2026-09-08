@@ -1,4 +1,5 @@
 import { AlertIcon, InfoIcon } from '../ui/Icon';
+import { AnswerBody } from './AnswerBody';
 import styles from './StatusNotice.module.css';
 
 export type NoticeStatus = 'insufficient_evidence' | 'off_topic' | 'error';
@@ -25,6 +26,10 @@ interface StatusNoticeProps {
  *
  * `--red` is reserved for `error` alone. An abstention is correct behaviour,
  * not a fault, so it must not be coloured like one.
+ *
+ * The body runs through `AnswerBody` at its compact scale, so a service message
+ * that arrives as two short paragraphs or a small list reads as such instead of
+ * running together — without letting a no-answer state grow to answer size.
  */
 export function StatusNotice({ status, answer }: StatusNoticeProps) {
   const isError = status === 'error';
@@ -39,7 +44,7 @@ export function StatusNotice({ status, answer }: StatusNoticeProps) {
       <Icon className={styles.icon} size={18} />
       <div className={styles.body}>
         <p className={styles.heading}>{HEADINGS[status]}</p>
-        <p className={styles.text}>{answer}</p>
+        <AnswerBody answer={answer} size="compact" />
       </div>
     </div>
   );

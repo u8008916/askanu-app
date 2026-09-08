@@ -36,6 +36,14 @@
   min-height: 0;
   overflow-y: auto;
   padding: var(--space-5) 0;
+  /*
+   * Reserve the scrollbar gutter. Measured on Day 4: without it, the answer
+   * that first makes the conversation taller than the pane introduces a
+   * scrollbar and narrows the column by 15px, so the question already on
+   * screen re-wraps as the answer arrives. Reserving the space keeps the
+   * width constant from the moment the question is sent.
+   */
+  scrollbar-gutter: stable;
 }
 
 .turns {

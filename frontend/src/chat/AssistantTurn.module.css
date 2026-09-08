@@ -22,13 +22,10 @@
 }
 
 /*
- * Day 2 renders the answer as plain text: `pre-wrap` keeps the paragraph
- * breaks the service sends without parsing markup. Rich formatting is Day 4.
+ * Day 4: the answer is rendered by `AnswerBody`, which owns paragraph and list
+ * rhythm. The block structure comes from parsed plain text, never from parsed
+ * markup, so no HTML execution path was added to get it.
  */
-.answer {
-  color: var(--ink);
-  white-space: pre-wrap;
-}
 
 .clarification {
   display: flex;
