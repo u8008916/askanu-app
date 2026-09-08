@@ -56,9 +56,41 @@ The React source card was also manually verified to open the official ANU Progra
 
 ## Will — Scraper
 - Issue: Day 4 — Complete richer course evidence parsing and missing-field safety
-- PR:
-- Commit reviewed:
-- Result: PENDING
+- PR: `askanu-scraper#11`
+- Commit reviewed: `dfb01a4a1c7abff29029119404bdd455f24e16fa`
+- Merge commit: `81716ddd64a0941341a7042ecfd0a5192c84874b`
+- Result: PASS
+
+### Review evidence
+Initial PR fixtures passed, but independent live-source smoke testing against the real 2026 COMP1110 ANU page exposed two gaps:
+
+- `assumed_knowledge` returned `None`
+- `offerings` returned `None`
+
+The live page did contain both sections, so the PR was not accepted at that point.
+
+A live-layout fallback was then added for:
+
+- heading-based `Assumed Knowledge`
+- real `Offerings, Dates and Class Summary Links`
+- year-specific tab selection
+- source-backed enrolment/census/start/end date evidence
+- prevention of 2027/2028 offering leakage into the 2026 record
+
+Final live COMP1110 smoke verified:
+
+- `record_id`: `courses:course:COMP1110_2026`
+- `academic_year`: `2026`
+- prerequisites: `COMP1100 OR COMP1130 OR COMP1730`
+- incompatibilities: `COMP1140 or COMP6710 or COMP7710`
+- assumed knowledge: `MCOMP students from 2026 onwards must enrol in COMP7710 Programming Fundamentals.`
+- offerings:
+  - `First Semester, 2026` / `In Person`
+  - `Second Semester, 2026` / `In Person`
+- 2026 start/enrolment/census/end dates preserved in canonical `content`
+- 2027/2028 offering rows excluded from the 2026 normalized record
+- no frozen top-level schema change
+- corequisites/dates were not silently promoted into new shared structured metadata
 
 ## Ben — App
 - Issue: Day 4 — Polish grounded answer presentation and safe rendering
@@ -398,11 +430,34 @@ Notes:
 ## Scraper
 Command:
 
+`PYTHONPATH=src python -m pytest tests/test_courses_parser.py -q`
+
 Result:
+
+PASS
 
 Tests passed:
 
+`14 passed`
+
+Command:
+
+`PYTHONPATH=src python -m pytest -q`
+
+Result:
+
+PASS
+
+Tests passed:
+
+`86 passed`
+
 Notes:
+
+- Independent live COMP1110 smoke passed after live-layout fix.
+- `git diff --check` passed with no output.
+- Missing evidence remains missing rather than invented.
+- 2027/2028 offerings are excluded from the 2026 record.
 
 ## App
 Command:
@@ -426,6 +481,8 @@ Result:
 `git diff --check`
 
 Result:
+
+PASS — no output
 
 ### App
 `git diff --check`
