@@ -1,0 +1,59 @@
+/*
+ * Block rhythm for a grounded answer. The gap is what makes paragraphs and
+ * lists readable; the type scale is inherited so the answer keeps the same
+ * visual weight it had when it was a single paragraph.
+ */
+.root {
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  line-height: var(--leading-body);
+  min-width: 0;
+}
+
+/*
+ * Compact scale for the three no-answer notices: same structure, smaller type
+ * and tighter spacing, so an abstention never occupies more room than a real
+ * answer.
+ */
+.compact {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  gap: var(--space-2);
+}
+
+.paragraph {
+  /* Single newlines inside one paragraph are the service's own line breaks. */
+  white-space: pre-wrap;
+  /* A long unbroken URL or code token must not push the column wider. */
+  overflow-wrap: anywhere;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* Room for the marker inside the column, so 360px does not overflow. */
+  padding-left: var(--space-5);
+}
+
+.compact .list {
+  gap: var(--space-1);
+}
+
+ul.list {
+  list-style: disc;
+}
+
+ol.list {
+  list-style: decimal;
+}
+
+.item {
+  overflow-wrap: anywhere;
+}
+
+.item::marker {
+  color: var(--ink-3);
+}

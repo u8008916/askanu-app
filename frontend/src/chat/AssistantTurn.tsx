@@ -1,4 +1,5 @@
 import type { AskResponse, Clarification } from '../types/api';
+import { AnswerBody } from './AnswerBody';
 import { SourceCards } from './SourceCards';
 import { StatusNotice } from './StatusNotice';
 import type { NoticeStatus } from './StatusNotice';
@@ -65,6 +66,8 @@ interface AssistantTurnProps {
  * `answer` and every source field are untrusted model/stored strings. They are
  * rendered as React text children only — never `dangerouslySetInnerHTML`, and
  * never through a markdown renderer, which would reintroduce HTML execution.
+ * `AnswerBody` gives a grounded answer its paragraphs and lists under exactly
+ * that rule: it chooses elements from parsed structure, it never parses markup.
  */
 export function AssistantTurn({ response }: AssistantTurnProps) {
   const { status, answer, sources, clarification } = response;
@@ -100,7 +103,7 @@ export function AssistantTurn({ response }: AssistantTurnProps) {
           </>
         ) : (
           <>
-            {hasAnswer && <p className={styles.answer}>{answer}</p>}
+            {hasAnswer && <AnswerBody answer={answer} />}
             {clarification && (
               <ClarificationOptions clarification={clarification} />
             )}

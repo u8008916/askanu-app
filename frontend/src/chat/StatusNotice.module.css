@@ -5,6 +5,8 @@
   border-radius: var(--radius-md);
   display: flex;
   gap: var(--space-3);
+  /* A no-answer state must not stretch to the full answer column. */
+  max-width: 34rem;
   padding: var(--space-3);
 }
 
@@ -40,9 +42,9 @@
   line-height: var(--leading-tight);
 }
 
-/* --ink-2, not --ink-3: this is copy people are meant to read. */
-.text {
-  color: var(--ink-2);
-  font-size: var(--text-sm);
-  white-space: pre-wrap;
-}
+/*
+ * The body text is `AnswerBody` at its compact scale (--ink-2, --text-sm:
+ * quieter than an answer, but copy people are meant to read). Keeping the
+ * notice tight is a V3 rule — these states must be clear but must not take
+ * more room than a real answer.
+ */

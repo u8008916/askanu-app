@@ -2,6 +2,7 @@ import type { AskResponse } from '../types/api';
 import type { AskTransport } from '../chat/askTransport';
 import {
   errorResponse,
+  groundedResponse,
   hostileStringsResponse,
   insufficientEvidenceResponse,
   needsClarificationResponse,
@@ -37,6 +38,11 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'ok-multi',
     label: 'ok — several sources',
     response: okMultiSourceResponse,
+  },
+  {
+    id: 'grounded',
+    label: 'ok — grounded, paragraphs and lists',
+    response: groundedResponse,
   },
   { id: 'partial', label: 'partial', response: partialResponse },
   {
