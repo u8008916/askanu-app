@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { ResourceCards } from '../resources/ResourceCards';
 import { CloseIcon } from '../ui/Icon';
 import { ClearChatButton } from './ClearChatButton';
@@ -15,8 +15,15 @@ interface MobileDrawerProps {
  * Off-canvas navigation for mobile, in the order of the confirmed design:
  * close, Clear Chat, Explore, then the resource cards. V3 keeps mobile as the
  * same responsive website, so the components are shared with the desktop rail.
+ *
+ * Memoised for the same reason as the rail: the composer draft lives in App, so
+ * an unmemoised drawer would re-render on every keystroke.
  */
-export function MobileDrawer({ open, onClearChat, onClose }: MobileDrawerProps) {
+export const MobileDrawer = memo(function MobileDrawer({
+  open,
+  onClearChat,
+  onClose,
+}: MobileDrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -65,9 +72,9 @@ export function MobileDrawer({ open, onClearChat, onClose }: MobileDrawerProps) 
           </button>
         </div>
         <ClearChatButton block onClearChat={handleClearChat} />
-        <DomainNav bare />
+        <DomainNav bare onNavigate={onClose} />
         <ResourceCards />
       </div>
     </>
   );
-}
+});

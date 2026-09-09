@@ -13,6 +13,8 @@
 
 .wordmark {
   color: var(--ink);
+  /* Renders as a span in the app bar, where it is chrome rather than an h1. */
+  display: block;
   font-size: var(--text-2xl);
   font-weight: 700;
   letter-spacing: -0.015em;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { QUESTION_MAX_CHARS } from '../types/api';
 import { SearchIcon, SendIcon } from '../ui/Icon';
@@ -12,6 +12,12 @@ interface ComposerProps {
   showSearchIcon?: boolean;
   /** True while a question is in flight. One question at a time. */
   disabled?: boolean;
+  /**
+   * Changes when something outside the chat has put a question in the composer
+   * and wants the caret here. The value is a counter, not a boolean, so a
+   * repeated request still focuses.
+   */
+  focusSignal?: number;
 }
 
 export function Composer({
@@ -20,8 +26,23 @@ export function Composer({
   onSubmit,
   showSearchIcon = false,
   disabled = false,
+  focusSignal = 0,
 }: ComposerProps) {
   const [showCounter, setShowCounter] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (focusSignal === 0) {
+      return;
+    }
+    const input = inputRef.current;
+    if (!input) {
+      return;
+    }
+    input.focus();
+    // Caret to the end so the prefilled question can be edited immediately.
+    input.setSelectionRange(input.value.length, input.value.length);
+  }, [focusSignal]);
 
   const overLimit = value.length > QUESTION_MAX_CHARS;
   const canSend = value.trim() !== '' && !overLimit && !disabled;
@@ -57,6 +78,7 @@ export function Composer({
           onFocus={() => setShowCounter(true)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about courses, scholarships, accommodation, jobs, events or support services at ANU."
+          ref={inputRef}
           rows={showSearchIcon ? 3 : 2}
           value={value}
         />

@@ -1,0 +1,61 @@
+.link,
+.unlinked {
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  color: var(--ink);
+  display: flex;
+  gap: var(--space-3);
+  min-height: var(--touch-target-min);
+  padding: var(--space-3) var(--space-4);
+  text-decoration: none;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.link:hover {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+.link:active {
+  background: var(--gold-soft);
+}
+
+.unlinked {
+  color: var(--ink-2);
+}
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+/* --ink-2: read as copy, so it must clear AA. See tokens.css contrast rules. */
+.description {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-body);
+}
+
+.icon {
+  color: var(--ink-3);
+  flex: 0 0 auto;
+  margin-top: 0.15em;
+}
+
+.link:hover .icon {
+  color: var(--gold-deep);
+}
