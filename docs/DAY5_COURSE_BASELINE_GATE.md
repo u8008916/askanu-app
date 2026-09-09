@@ -516,33 +516,35 @@ This is sufficient for the App/UI lane to show that Ben did not bypass or replac
 
 ### Evidence
 
-HTTP status:
+HTTP status: `200`
 
-API status:
+API status: `ok`
 
-request_id:
+request_id: present in the frozen six-field response; value was not printed by the summarized integration harness
 
-retrieval route:
+retrieval route: `exact`
 
-record_id:
+record_id: `courses:course:COMP1110_2026`
 
-answer:
+answer: `The prerequisites for COMP1110 (2026) are: COMP1100 OR COMP1130 OR COMP1730`
 
-source URL:
+source URL: `https://programsandcourses.anu.edu.au/2026/course/comp1110`
 
-latency:
+latency: `2.970 s` through Vite -> `/api/v1/ask` -> RAG -> real Gemini
+
+The exact route did not permit semantic identity selection.
 
 ### Checks
 
-- [ ] Exact identifier used
-- [ ] No vector identity substitution
-- [ ] Correct stored entity returned
-- [ ] Correct evidence returned
-- [ ] Official stored source returned
+- [x] Exact identifier used
+- [x] No vector identity substitution
+- [x] Correct stored entity returned
+- [x] Correct evidence returned
+- [x] Official stored source returned
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -560,20 +562,22 @@ Both resolve to the same logical course identity as `COMP1110`.
 
 ### Evidence
 
-Result 1:
+Result 1: `comp1110` -> exact route -> `courses:course:COMP1110_2026` -> `ok`
 
-Result 2:
+Result 2: `comp 1110` -> exact route -> `courses:course:COMP1110_2026` -> `ok`
+
+Both plans reported `semantic_allowed = False`.
 
 ### Checks
 
-- [ ] Lowercase form normalized
-- [ ] Spaced form normalized
-- [ ] Same logical entity returned
-- [ ] No semantic nearest-match used for identity
+- [x] Lowercase form normalized
+- [x] Spaced form normalized
+- [x] Same logical entity returned
+- [x] No semantic nearest-match used for identity
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -592,23 +596,25 @@ Use an explicit known year, including:
 
 ### Evidence
 
-API status:
+API status: `ok`
 
-record_id:
+record_id: `courses:course:COMP1110_2026`
 
-academic year:
+academic year: `2026`
 
-source URL:
+source URL: `https://programsandcourses.anu.edu.au/2026/course/comp1110`
+
+The explicit-year request stayed on the deterministic exact route.
 
 ### Checks
 
-- [ ] Explicit year preserved
-- [ ] Correct entity version returned
-- [ ] No silent year inference
+- [x] Explicit year preserved
+- [x] Correct entity version returned
+- [x] No silent year inference
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -625,23 +631,25 @@ Use an academic year not present in the bounded dataset.
 
 ### Evidence
 
-Query:
+Query: `COMP1110 2025`
 
-API status:
+API status: `insufficient_evidence`
 
-answer:
+answer: `I could not find stored evidence matching all requested constraints.`
 
-sources:
+sources: `[]`
+
+The planner kept the exact route and did not silently fall back to the available 2026 record.
 
 ### Checks
 
-- [ ] Requested unavailable year is respected
-- [ ] Another year is not silently substituted
-- [ ] No fabricated source
+- [x] Requested unavailable year is respected
+- [x] Another year is not silently substituted
+- [x] No fabricated source
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -663,24 +671,30 @@ or equivalent frozen-contract clarification behaviour.
 
 ### Evidence
 
-Query:
+Query: `COMP1100`
 
-available years:
+available years: `2026`, `2027`
 
-API status:
+API status: `needs_clarification`
 
 clarification:
+- `courses:course:COMP1100_2026`
+- `courses:course:COMP1100_2027`
+
+Gemini calls: `0`
+
+The bounded live Day 5 smoke is 2026-only, so this behavioural test uses Carmen's committed schema-v1 Day 5 multi-year fixture. No live multi-year claim is made.
 
 ### Checks
 
-- [ ] Multiple years detected
-- [ ] No arbitrary year chosen
-- [ ] Clarification is controlled
-- [ ] Gemini does not choose the year
+- [x] Multiple years detected
+- [x] No arbitrary year chosen
+- [x] Clarification is controlled
+- [x] Gemini does not choose the year
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -698,23 +712,25 @@ Use an unambiguous course title from the bounded dataset.
 
 ### Evidence
 
-Query:
+Query: `Structured Programming`
 
-retrieval route:
+retrieval route: `name`
 
-record_id:
+record_id: `courses:course:COMP1110_2026`
 
-source URL:
+source URL: `https://programsandcourses.anu.edu.au/2026/course/comp1110`
+
+The title resolved deterministically with `semantic_allowed = False`.
 
 ### Checks
 
-- [ ] Correct course resolved
-- [ ] Deterministic route used when possible
-- [ ] Source remains stored/official
+- [x] Correct course resolved
+- [x] Deterministic route used when possible
+- [x] Source remains stored/official
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -733,24 +749,26 @@ Use a real program code from Will's bounded dataset.
 
 ### Evidence
 
-Program code:
+Program code: `BACCT`
 
-record_id:
+record_id: `courses:program:BACCT_2026`
 
-retrieval route:
+retrieval route: `exact`
 
-source URL:
+source URL: `https://programsandcourses.anu.edu.au/2026/program/bacct`
+
+This record came from Will's bounded live Day 5 catalogue output.
 
 ### Checks
 
-- [ ] Program code resolves deterministically
-- [ ] Correct entity type returned
-- [ ] No semantic identity override
-- [ ] Official stored source returned
+- [x] Program code resolves deterministically
+- [x] Correct entity type returned
+- [x] No semantic identity override
+- [x] Official stored source returned
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -770,31 +788,31 @@ Use a natural descriptive question that does not contain an exact course/program
 
 ### Evidence
 
-Query:
+Query: `Which course covers vulnerability research?`
 
-retrieval route:
+retrieval route: `semantic`
 
-retrieved records:
+retrieved records: `courses:course:COMP8703_2026`
 
-similarity/evidence notes:
+similarity/evidence notes: deterministic identity/name resolution was insufficient, so the bounded local TF-IDF retrieval path selected the approved stored COMP8703 record. No provider-generated identity or URL was accepted.
 
-answer:
+answer: grounded stored excerpt for `Vulnerability Research and Exploit Mitigation`
 
-source URL:
+source URL: `https://programsandcourses.anu.edu.au/2026/course/comp8703`
 
-latency:
+latency: `2.690 s` through Vite -> `/api/v1/ask` -> RAG -> real Gemini
 
 ### Checks
 
-- [ ] Semantic retrieval was genuinely needed
-- [ ] Search stayed inside approved stored records
-- [ ] Retrieved evidence supports the answer
-- [ ] Gemini added no unsupported facts
-- [ ] Source URL came from stored evidence
+- [x] Semantic retrieval was genuinely needed
+- [x] Search stayed inside approved stored records
+- [x] Retrieved evidence supports the answer
+- [x] Gemini added no unsupported facts
+- [x] Source URL came from stored evidence
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -812,24 +830,26 @@ Use a clearly non-existent course/program identifier.
 
 ### Evidence
 
-Query:
+Query: `ABCD9999`
 
-API status:
+API status: `insufficient_evidence`
 
-answer:
+answer: `I could not find stored evidence matching all requested constraints.`
 
-sources:
+sources: `[]`
+
+Route remained deterministic `exact`, `semantic_allowed = False`, and Gemini was not called.
 
 ### Checks
 
-- [ ] Exact unknown identifier recognised as unknown
-- [ ] Similar course/program not substituted
-- [ ] No fabricated entity
-- [ ] No fabricated source
+- [x] Exact unknown identifier recognised as unknown
+- [x] Similar course/program not substituted
+- [x] No fabricated entity
+- [x] No fabricated source
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -845,24 +865,31 @@ Ask for a factual field genuinely absent from retrieved evidence.
 
 ### Evidence
 
-Query:
+Query: `What are the prerequisites for ARCH8046?`
 
-API status:
+Verified stored field: `metadata_json.prerequisites = null`
 
-answer:
+API status: `insufficient_evidence`
 
-sources:
+answer: controlled missing-evidence response
+
+sources: stored official ARCH8046 source:
+`https://programsandcourses.anu.edu.au/2026/course/arch8046`
+
+Gemini calls: `0`
+
+The source is not fabricated: it identifies the retrieved course whose requested factual field is absent. The gate does not require sources to be empty on an insufficient-evidence response.
 
 ### Checks
 
-- [ ] Missing evidence recognised
-- [ ] No guess produced
-- [ ] No unsupported Gemini fact
-- [ ] No fabricated source
+- [x] Missing evidence recognised
+- [x] No guess produced
+- [x] No unsupported Gemini fact
+- [x] No fabricated source
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -874,23 +901,29 @@ Validate representative course and program source cards/links through API and Re
 
 ### Checks
 
-- [ ] API source record matches retrieved record
-- [ ] API URL equals stored canonical URL
-- [ ] React renders safe source card
-- [ ] Source card opens official ANU page
-- [ ] Model text cannot create/replace source link
+- [x] API source record matches retrieved record
+- [x] API URL equals stored canonical URL
+- [x] React renders safe source card
+- [x] Source card opens official ANU page
+- [x] Model text cannot create/replace source link
 
 ### Evidence
 
 Course source:
+`courses:course:COMP1110_2026`
+-> `https://programsandcourses.anu.edu.au/2026/course/comp1110`
 
 Program source:
+`courses:program:BACCT_2026`
+-> `https://programsandcourses.anu.edu.au/2026/program/bacct`
 
-Browser result:
+The BACCT API source object was compared field-for-field with the loaded stored record and matched exactly.
+
+React source-card/safe-link behaviour remains covered by the independently reviewed Ben Day 5 lane and the merged frontend suite (`113/113` tests). External URL rendering continues to use the approved safe-link boundary; model text does not own API source URLs.
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -898,18 +931,31 @@ Browser result:
 
 ### Checks
 
-- [ ] `record_id` remains stable
-- [ ] `entity_id` remains stable
-- [ ] course/program identities are not mixed
-- [ ] academic year remains part of versioned identity
-- [ ] duplicate canonical URLs are detected
-- [ ] duplicate logical entities are detected
-- [ ] repeated bounded discovery does not multiply logical records
-- [ ] semantic retrieval never mutates identity
+- [x] `record_id` remains stable
+- [x] `entity_id` remains stable
+- [x] course/program identities are not mixed
+- [x] academic year remains part of versioned identity
+- [x] duplicate canonical URLs are detected
+- [x] duplicate logical entities are detected
+- [x] repeated bounded discovery does not multiply logical records
+- [x] semantic retrieval never mutates identity
+
+### Evidence
+
+Integrated record set contained five validated real records: three courses and two programs.
+
+- all `record_id` values unique
+- all `entity_id` values unique
+- all canonical URLs unique
+- all URLs on the approved Programs & Courses host
+- year remains encoded in versioned record/entity identity
+- course and program namespaces remain separate
+
+Will's merged scraper tests additionally cover duplicate discovery/persistence behaviour and repeated bounded runs.
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -923,17 +969,29 @@ Browser result:
 
 ### Checks
 
-- [ ] Exact code never depends on vector similarity
-- [ ] Exact program code never depends on vector similarity
-- [ ] Explicit year constrains retrieval before semantic search
-- [ ] Unknown exact code cannot fall through to similar-code semantic retrieval
-- [ ] Course-name deterministic resolution occurs before semantic fallback
-- [ ] Semantic fallback is observable/testable
-- [ ] Vector results cannot override explicit constraints
+- [x] Exact code never depends on vector similarity
+- [x] Exact program code never depends on vector similarity
+- [x] Explicit year constrains retrieval before semantic search
+- [x] Unknown exact code cannot fall through to similar-code semantic retrieval
+- [x] Course-name deterministic resolution occurs before semantic fallback
+- [x] Semantic fallback is observable/testable
+- [x] Vector results cannot override explicit constraints
+
+### Evidence
+
+Observed routes:
+
+- `COMP1110`, `comp1110`, `comp 1110`, `COMP1110 2026` -> `exact`
+- `Structured Programming` -> `name`
+- `BACCT` -> `exact`
+- `ABCD9999` -> `exact` and abstain
+- descriptive vulnerability query -> `semantic`
+
+Exact/name routes reported `semantic_allowed = False`. The semantic route selected the real stored `COMP8703_2026` record only after deterministic resolution was insufficient.
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -941,19 +999,30 @@ Browser result:
 
 ### Checks
 
-- [ ] Retrieval remains factual authority
-- [ ] Gemini receives approved retrieved evidence
-- [ ] Gemini does not create entity identity
-- [ ] Gemini does not create source URLs
-- [ ] Final answer is supported by retrieved records
-- [ ] Unsupported facts abstain
-- [ ] Sources are programmatically attached
-- [ ] Official URLs remain canonical stored URLs
-- [ ] Day 4 prompt-injection protections remain intact
+- [x] Retrieval remains factual authority
+- [x] Gemini receives approved retrieved evidence
+- [x] Gemini does not create entity identity
+- [x] Gemini does not create source URLs
+- [x] Final answer is supported by retrieved records
+- [x] Unsupported facts abstain
+- [x] Sources are programmatically attached
+- [x] Official URLs remain canonical stored URLs
+- [x] Day 4 prompt-injection protections remain intact
+
+### Evidence
+
+Real Gemini exact and semantic integration both returned facts and source URLs from retrieved stored records.
+
+The real exact response preserved the COMP1110 prerequisites exactly:
+`COMP1100 OR COMP1130 OR COMP1730`.
+
+The real semantic response used stored `COMP8703_2026`.
+
+Missing supported evidence abstained before Gemini. API source objects remained RAG-owned and programmatically attached. Day 4 prompt-injection and strict-output protections remain covered by the merged RAG suite.
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -970,17 +1039,30 @@ Frozen `/api/v1/ask` response fields:
 
 ### Checks
 
-- [ ] All six fields remain required
-- [ ] Status enum preserved
-- [ ] App and RAG remain synchronised
-- [ ] No hidden dependency on undocumented fields
-- [ ] Clarification route remains contract-shaped
-- [ ] Semantic route uses same public contract
-- [ ] No shared contract drift introduced
+- [x] All six fields remain required
+- [x] Status enum preserved
+- [x] App and RAG remain synchronised
+- [x] No hidden dependency on undocumented fields
+- [x] Clarification route remains contract-shaped
+- [x] Semantic route uses same public contract
+- [x] No shared contract drift introduced
+
+### Evidence
+
+Every tested Day 5 response contained exactly the frozen six fields:
+
+- `status`
+- `answer`
+- `items`
+- `sources`
+- `clarification`
+- `request_id`
+
+The exact, semantic, insufficient-evidence and needs-clarification paths all used the same public response shape. Real requests successfully traversed the merged frontend dev proxy to the merged RAG service.
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -988,24 +1070,33 @@ Frozen `/api/v1/ask` response fields:
 
 ### Checks
 
-- [ ] Courses resource page works
-- [ ] It is not a second chatbot
-- [ ] Single AskANU chat architecture preserved
-- [ ] Official navigation/resource links used
-- [ ] CTA returns to main AskANU experience
-- [ ] Mouse interaction works
-- [ ] Keyboard interaction works
-- [ ] Touch/mobile interaction works
-- [ ] Focus state visible
-- [ ] Responsive at 360px
-- [ ] Responsive at 390px
-- [ ] Responsive at 430px
-- [ ] Clear Chat restores empty-state suggestions
-- [ ] Existing safe source rendering preserved
+- [x] Courses resource page works
+- [x] It is not a second chatbot
+- [x] Single AskANU chat architecture preserved
+- [x] Official navigation/resource links used
+- [x] CTA returns to main AskANU experience
+- [x] Mouse interaction works
+- [x] Keyboard interaction works
+- [x] Touch/mobile interaction works
+- [x] Focus state visible
+- [x] Responsive at 360px
+- [x] Responsive at 390px
+- [x] Responsive at 430px
+- [x] Clear Chat restores empty-state suggestions
+- [x] Existing safe source rendering preserved
+
+### Evidence
+
+Ben's merged Day 5 App lane independently passed all required Courses resource-page, single-chat, safe-link, mouse, keyboard, touch/mobile, focus, responsive and Clear Chat checks.
+
+Merged frontend verification:
+- `11` test files passed
+- `113/113` tests passed
+- production build passed
 
 ### Result
 
-`PENDING`
+`PASS`
 
 ---
 
@@ -1017,25 +1108,43 @@ These are observations, not invented pass thresholds unless the team explicitly 
 
 Query:
 
+`What are the prerequisites for COMP1110?`
+
 Latency:
 
+`2.970 s`
+
 Notes:
+
+Measured end-to-end through local Vite -> `/api/v1/ask` -> merged RAG -> real Gemini.
 
 ## Semantic/vector query
 
 Query:
 
+`Which course covers vulnerability research?`
+
 Latency:
 
+`2.690 s`
+
 Notes:
+
+The local bounded semantic route selected real `COMP8703_2026`, then real Gemini produced the grounded response.
 
 ## Gemini synthesis
 
 Representative model:
 
+configured Day 5 Gemini model (`gemini-3.5-flash-lite`)
+
 Observed latency:
 
+Representative full-request observations were `2.970 s` exact and `2.690 s` semantic.
+
 Notes:
+
+These are local end-to-end observations, not production SLOs.
 
 ---
 
@@ -1047,13 +1156,23 @@ Do not invent prices or token counts.
 
 Embedding/vector cost observation:
 
+Day 5 semantic fallback is the in-memory `LocalTfidfRetriever`; no external embedding/vector provider call was required by this gate.
+
 Gemini/model cost observation:
+
+Two representative real Gemini synthesis calls were made during the final App -> RAG integration run. The gate does not expose trustworthy billing/token-cost telemetry, so no monetary or token estimate is invented.
 
 Number of model calls for deterministic exact query:
 
+`1`
+
 Number of model calls for semantic query:
 
+`1`
+
 Notes:
+
+Cost evidence is recorded as actual provider-call count and retrieval architecture only.
 
 ---
 
@@ -1063,39 +1182,78 @@ Notes:
 
 Commands:
 
+`python -m pytest -q`
+
 Results:
+
+PASS
 
 Tests passed:
 
+`102/102`
+
 Diff check:
 
+PASS during independent Day 5 review.
+
 Notes:
+
+Merged scraper main:
+`fa41a4d70e7d532081c4aa2b0640a7295097ad1e`
 
 ## RAG
 
 Commands:
 
+full `pytest` suite plus focused hybrid-planner verification during independent review
+
 Results:
+
+PASS — all executed tests passed; `1` skipped and `0` failures during the reviewed Day 5 lane.
 
 Tests passed:
 
+Full merged Day 5 implementation was independently verified before squash merge.
+
 Diff check:
 
+PASS during independent review.
+
 Notes:
+
+Merged RAG main:
+`d0abeefb2150bf442a93093471571ad3a3e585f0`
+
+Final integration additionally exercised real exact and semantic HTTP requests against this merged commit.
 
 ## App
 
 Commands:
 
+`npm run test`
+
+`npm run build`
+
 Results:
+
+PASS
 
 Tests passed:
 
+`113/113`
+
 Build:
+
+PASS
 
 Diff check:
 
+PASS during independent Day 5 review.
+
 Notes:
+
+Merged App main:
+`94635cd5822ffc5e25d369357cec206b8bae54fb`
 
 ---
 
@@ -1117,8 +1275,8 @@ None recorded yet.
 
 # Carry-over
 
-- Successful end-to-end App -> RAG -> grounded response verification remains part of the final cross-repo integration gate.
 - Production deployment must provide SPA fallback/history routing so a fresh request to `/courses` serves the frontend entry point.
+- The bounded Day 5 live catalogue smoke is 2026-only. Multi-year planner behaviour is verified with the committed schema-v1 fixture; broader live multi-year catalogue breadth remains later work.
 
 ---
 
@@ -1132,33 +1290,33 @@ None recorded yet.
 
 ## Golden tests
 
-- [ ] D1 Exact course code — PASS
-- [ ] D2 Case/spacing normalization — PASS
-- [ ] D3 Explicit year — PASS
-- [ ] D4 Unavailable year — PASS
-- [ ] D5 Multi-year ambiguity — PASS
-- [ ] D6 Course-name lookup — PASS
-- [ ] D7 Exact program code — PASS
-- [ ] D8 Semantic description — PASS
-- [ ] D9 Unknown exact identifier — PASS
-- [ ] D10 Insufficient evidence — PASS
-- [ ] D11 Source-link validation — PASS
+- [x] D1 Exact course code — PASS
+- [x] D2 Case/spacing normalization — PASS
+- [x] D3 Explicit year — PASS
+- [x] D4 Unavailable year — PASS
+- [x] D5 Multi-year ambiguity — PASS
+- [x] D6 Course-name lookup — PASS
+- [x] D7 Exact program code — PASS
+- [x] D8 Semantic description — PASS
+- [x] D9 Unknown exact identifier — PASS
+- [x] D10 Insufficient evidence — PASS
+- [x] D11 Source-link validation — PASS
 
 ## Cross-cutting gates
 
-- [ ] Duplicate/identity safety — PASS
-- [ ] Deterministic-before-semantic routing — PASS
-- [ ] Grounding/provenance — PASS
-- [ ] API contract — PASS
-- [ ] Courses UI — PASS
-- [ ] Representative latency recorded
-- [ ] Representative cost observation recorded
-- [ ] No unapproved shared schema expansion
-- [ ] No P0/P1 blocker remains
+- [x] Duplicate/identity safety — PASS
+- [x] Deterministic-before-semantic routing — PASS
+- [x] Grounding/provenance — PASS
+- [x] API contract — PASS
+- [x] Courses UI — PASS
+- [x] Representative latency recorded
+- [x] Representative cost observation recorded
+- [x] No unapproved shared schema expansion
+- [x] No P0/P1 blocker remains
 
 ## Final decision
 
-`PENDING`
+`PASS`
 
 Allowed values:
 
@@ -1167,7 +1325,25 @@ Allowed values:
 
 ## Decision rationale
 
-To be completed after Day 5 integration testing.
+Day 5 PASS.
+
+All three implementation lanes are merged and independently reviewed.
+
+The final integration gate proved the required end-to-end course-domain baseline:
+
+- bounded real multi-course/program discovery with stable schema-v1 identities
+- duplicate/identity and approved-source provenance checks
+- deterministic exact, year, program-code and title routing before semantic fallback
+- explicit unavailable-year abstention and controlled multi-year clarification
+- real semantic fallback over approved stored records
+- grounded real Gemini synthesis for both exact and semantic requests
+- frozen six-field `/api/v1/ask` contract through the merged App -> RAG path
+- stored official source URLs remain programmatically authoritative
+- Courses resource UI and single-chat architecture remain intact
+
+D10 is PASS even though its `insufficient_evidence` response retains the stored course source: the requested field is absent, Gemini is not called, no factual guess is produced, and the attached source is the genuine retrieved course record rather than a fabricated source.
+
+The only recorded carry-overs are non-blocking deployment/history fallback work and broader future live multi-year catalogue breadth.
 
 ---
 
