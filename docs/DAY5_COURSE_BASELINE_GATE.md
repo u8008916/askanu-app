@@ -86,51 +86,88 @@ Issue:
 
 PR:
 
+`askanu-scraper#12` — Will/day5 catalogue discovery
+
 Commit reviewed:
+
+`57ff9125b90c0d99915fb1a2aa45b1f9d3dc2d4b` — final reviewed PR head after the live catalogue fix was integrated
+
+Live catalogue fix:
+
+`c8986ceadeb813db60303ffe5730a8b8f4d0f6b9` — `fix: support bounded live ANU catalogue discovery`
 
 Merge commit:
 
+`fa41a4d70e7d532081c4aa2b0640a7295097ad1e` — merge of `askanu-scraper#12` into `main`
+
 Result:
 
-`PENDING`
+`PASS`
 
 ### Required review evidence
 
-- [ ] More than one course discovered
-- [ ] More than one program discovered
-- [ ] Development sample is explicitly bounded
-- [ ] No uncontrolled crawl
-- [ ] Academic year preserved
-- [ ] Entity type preserved
-- [ ] Canonical URLs preserved
-- [ ] Stable logical IDs produced
-- [ ] Duplicate canonical entities detected
-- [ ] Duplicate logical entities detected
-- [ ] Duplicate records not silently inserted
-- [ ] Sanity counts available before broader write
-- [ ] Suspicious empty/invalid discovery fails safely
-- [ ] Repeated discovery produces stable logical results
-- [ ] No unapproved source added
-- [ ] No first-class major/minor/specialisation schema type added without approval
-- [ ] Existing scraper/parser tests remain green
-- [ ] New discovery tests pass
-- [ ] `git diff --check` passes
+- [x] More than one course discovered
+- [x] More than one program discovered
+- [x] Development sample is explicitly bounded
+- [x] No uncontrolled crawl
+- [x] Academic year preserved
+- [x] Entity type preserved
+- [x] Canonical URLs preserved
+- [x] Stable logical IDs produced
+- [x] Duplicate canonical entities detected
+- [x] Duplicate logical entities detected
+- [x] Duplicate records not silently inserted
+- [x] Sanity counts available before broader write
+- [x] Suspicious empty/invalid discovery fails safely
+- [x] Repeated discovery produces stable logical results
+- [x] No unapproved source added
+- [x] No first-class major/minor/specialisation schema type added without approval
+- [x] Existing scraper/parser tests remain green
+- [x] New discovery tests pass
+- [x] `git diff --check` passes
 
 ### Sanity counts
 
 Courses discovered:
 
+`2` in the bounded live 2026 verification sample
+
 Programs discovered:
+
+`2` in the bounded live 2026 verification sample
 
 Duplicates detected:
 
+`0` in the bounded live API sample; duplicate identity/canonical handling is covered by the automated discovery/collector tests
+
 Invalid/skipped:
+
+`0` in the successful bounded live API sample
 
 Sample limit:
 
+`4` persisted detail records total — `2` courses + `2` programs; one course API page, one undergraduate-program API page, no automatic pagination
+
 Repeated-run result:
 
+Fixture-driven repeated ingestion preserved stable record IDs and content hashes. The second bounded fixture run marked all four records unchanged.
+
 Notes:
+
+Independent reviewer verification completed with `102/102` tests passing.
+
+The live 2026 bounded end-to-end run completed with `SUCCESS`, `records_seen = 4`, and `records_added = 4`.
+
+Verified live records included:
+
+- `ARCH8046_2026` — Microanalysis in Archaeological Science
+- `COMP8703_2026` — Vulnerability Research and Exploit Mitigation
+- `BACCT_2026` — Bachelor of Accounting
+- `HACCT_2026` — Bachelor of Accounting (Honours)
+
+Production HTTP catalogue requests default to a minimum one-second spacing. Live discovery uses the ANU Programs & Courses catalogue JSON endpoints, remains bounded, performs no automatic pagination, and preflights all selected detail records before the first write.
+
+Majors, minors, and specialisations remain discovery-only and were not promoted to first-class schema-v1 persisted entity types.
 
 ---
 
@@ -1039,8 +1076,8 @@ None recorded yet.
 
 ## Implementation lanes
 
-- [ ] Will bounded discovery — PASS
-- [ ] Carmen hybrid retrieval — PASS
+- [x] Will bounded discovery — PASS
+- [x] Carmen hybrid retrieval — PASS
 - [ ] Ben Courses UI — PASS
 
 ## Golden tests
