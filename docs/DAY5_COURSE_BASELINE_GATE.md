@@ -142,51 +142,232 @@ Issue:
 
 PR:
 
+`askanu-rag#14` — Day 5 — Implement deterministic-first hybrid course and program query planning
+
 Commit reviewed:
+
+`f0348d74136d9dfbdbb9b7d0add9fe95c9afdcec`
+
+Implementation commit:
+
+`a0453a8` — `feat: add deterministic-first hybrid course and program retrieval`
 
 Merge commit:
 
+`PENDING — PR intentionally left open during independent gate`
+
 Result:
 
-`PENDING`
+`PASS`
 
 ### Required review evidence
 
-- [ ] Exact course code remains deterministic
-- [ ] Exact program code is deterministic
-- [ ] Case variation normalizes correctly
-- [ ] Spacing variation normalizes correctly
-- [ ] Explicit academic year preserved
-- [ ] Explicit unavailable year does not fall back
-- [ ] Multi-year ambiguity produces clarification
-- [ ] Unambiguous course-name lookup works deterministically
-- [ ] Unknown exact identifier never nearest-matches another identifier
-- [ ] Semantic/vector retrieval only runs after deterministic routes are insufficient
-- [ ] Vector retrieval is limited to approved stored records
-- [ ] Vector retrieval cannot override explicit identity constraints
-- [ ] Vector retrieval cannot override explicit year constraints
-- [ ] Gemini remains grounded on retrieved evidence
-- [ ] Source attachment remains programmatic
-- [ ] Frozen `/api/v1/ask` contract remains unchanged
-- [ ] Day 2–4 regression tests remain green
-- [ ] New hybrid retrieval tests pass
-- [ ] `git diff --check` passes
+- [x] Exact course code remains deterministic
+- [x] Exact program code is deterministic
+- [x] Case variation normalizes correctly
+- [x] Spacing variation normalizes correctly
+- [x] Explicit academic year preserved
+- [x] Explicit unavailable year does not fall back
+- [x] Multi-year ambiguity produces clarification
+- [x] Unambiguous course-name lookup works deterministically
+- [x] Unknown exact identifier never nearest-matches another identifier
+- [x] Lexical-vector fallback only runs after deterministic routes are insufficient
+- [x] Lexical-vector retrieval is limited to approved stored records
+- [x] Lexical-vector retrieval cannot override explicit identity constraints
+- [x] Lexical-vector retrieval cannot override explicit year constraints
+- [x] Gemini remains grounded on retrieved evidence
+- [x] Source attachment remains programmatic
+- [x] Frozen `/api/v1/ask` contract remains unchanged
+- [x] Day 2–4 regression tests remain green
+- [x] New hybrid retrieval tests pass
+- [x] `git diff --check` passes
 
 ### Retrieval routing evidence
 
 Exact code route:
 
+- `COMP1110`
+- `comp1110`
+- `comp 1110`
+- all planned as `route: exact`
+- all normalized to `COMP1110`
+- `semantic_allowed: False`
+
 Program code route:
+
+- `Tell me about BACCT 2026`
+- planned as `route: exact`
+- identifier `('program', 'BACCT')`
+- explicit year `2026`
+- `semantic_allowed: False`
+- resolved to `courses:program:BACCT_2026`
 
 Course-name route:
 
-Semantic route:
+- `Structured Programming`
+- planned as `route: name`
+- normalized title `structured programming`
+- `semantic_allowed: False`
+- resolved deterministically to `courses:course:COMP1110_2026`
+
+Lexical-vector fallback route:
+
+- `Which ANU course covers marine biodiversity?`
+- deterministic identifier/name routes were not applicable
+- lexical-vector fallback calls: `1`
+- candidate set was limited to approved stored course records
+- resolved to `courses:course:BIOL9001P_2026`
+- no identity/year constraint was overridden
 
 Unknown-code route:
 
+- `What are the prerequisites for ABCD9999?`
+- lexical-vector fallback calls: `0`
+- status: `insufficient_evidence`
+- no nearest-match course substituted
+- sources: empty
+
+Explicit-year route:
+
+- `Tell me about COMP1110 2026`
+- status: `ok`
+- returned only `courses:course:COMP1110_2026`
+
+Unavailable-year route:
+
+- `Tell me about COMP1110 2025`
+- status: `insufficient_evidence`
+- no fallback to 2026
+- lexical-vector fallback disabled
+
 Multi-year route:
 
-Notes:
+- `Tell me about COMP1100`
+- stored fixture contained 2026 and 2027
+- status: `needs_clarification`
+- both academic-year options returned
+- no arbitrary year selected
+- lexical-vector fallback disabled
+
+### API contract evidence
+
+Representative exact, unavailable-year, multi-year and lexical-vector requests were sent through `/api/v1/ask`.
+
+All returned exactly the frozen six fields:
+
+- `status`
+- `answer`
+- `items`
+- `sources`
+- `clarification`
+- `request_id`
+
+Observed statuses:
+
+- `COMP1110 2026` → `HTTP 200 / ok`
+- `COMP1110 2025` → `HTTP 200 / insufficient_evidence`
+- `COMP1100` → `HTTP 200 / needs_clarification`
+- marine-biodiversity descriptive query → `HTTP 200 / ok`
+
+The earlier HTTP 400 run was caused by an intentionally/inadvertently incomplete manual request body and was not recorded as an implementation defect; the controlled error envelope still preserved the six-field contract.
+
+### Source provenance evidence
+
+Program source round-trip checked against stored `BACCT_2026` record:
+
+- response `record_id` == stored `record_id`
+- response title == stored title
+- response URL == stored `canonical_url`
+- response `source_id` == stored `source_id`
+- response domain == stored domain
+
+All comparisons returned `True`.
+
+Sources remain programmatically attached from stored records.
+
+### Real Gemini evidence
+
+Local configured model:
+
+`gemini-3.5-flash-lite`
+
+Configured timeout:
+
+`30.0 seconds`
+
+Real Gemini integration was independently exercised using the Day 5 schema-v1 synthetic multi-record fixture.
+
+Results:
+
+1. `What are the prerequisites for COMP1110?`
+   - HTTP `200`
+   - status `ok`
+   - grounded prerequisite answer preserved:
+     `COMP1100 OR COMP1130 OR COMP1730`
+   - source: `courses:course:COMP1110_2026`
+   - observed latency: `2.721s`
+
+2. `Tell me about Structured Programming`
+   - HTTP `200`
+   - status `ok`
+   - deterministic name route before Gemini
+   - source: `courses:course:COMP1110_2026`
+   - observed latency: `2.604s`
+
+3. `Which ANU course covers marine biodiversity?`
+   - HTTP `200`
+   - status `ok`
+   - bounded lexical-vector fallback selected `BIOL9001P_2026`
+   - final answer remained evidence-grounded
+   - observed latency: `2.402s`
+
+4. `Tell me about BACCT 2026`
+   - HTTP `200`
+   - status `ok`
+   - exact program route selected `courses:program:BACCT_2026`
+   - grounded answer: `Bachelor of Accounting`
+   - stored program source attached
+   - observed latency: `2.44s`
+
+No model-generated source URL entered the response.
+
+### Automated verification
+
+Independent reviewer commands/results:
+
+- full `python -m pytest -q` — all executed tests passed, `1 skipped`
+- focused `python -m pytest -q tests/test_hybrid_planner.py` — all tests passed
+- `python -m pip check` — `No broken requirements found.`
+- `python -m compileall -q src tests` — PASS, no output
+- `git diff --check main...HEAD` — PASS, no output
+- working tree clean
+
+Dependency-only deprecation warnings were observed from Starlette/httpx and google-genai/Python internals; no Day 5 test failure resulted.
+
+### Retrieval implementation note
+
+The Day 5 fallback is explicitly:
+
+`in-memory TF-IDF + cosine sparse lexical-vector retrieval`
+
+It is a bounded local pre-pgvector baseline, not pretrained embedding-based semantic retrieval.
+
+The PR documentation was updated to state this explicitly. Production embedding/pgvector retrieval remains later work and was not silently represented as completed by this Day 5 lane.
+
+### Reviewer conclusion
+
+`PASS`
+
+Carmen's Day 5 RAG implementation satisfies the reviewer-owned Day 5 backend gate on the tested schema-v1 multi-record fixture.
+
+This does **not** make the overall Day 5 Course Domain Baseline PASS yet.
+
+Remaining overall dependencies include:
+
+- Will's bounded real Programs & Courses discovery/data lane
+- integration against the resulting broader real dataset
+- Ben's Courses resource-page/UI lane
+- final cross-repo Day 5 baseline decision
 
 ---
 
