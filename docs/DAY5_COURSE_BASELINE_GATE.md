@@ -13,7 +13,7 @@ Qasim — PM / Integration / GCP / Testing / Security / Release
 COURSE BREADTH + HYBRID RETRIEVAL
 
 ## Final decision
-`PENDING`
+`PASS`
 
 Allowed values:
 
