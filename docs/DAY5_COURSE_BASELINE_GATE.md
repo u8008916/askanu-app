@@ -416,36 +416,85 @@ Issue:
 
 PR:
 
+`askanu-app#22` — Ben/day5 course breadth+hybrid retrieval
+
 Commit reviewed:
+
+`6145b9c2a76a705f67778577ed8599b3c0997e8f`
+
+Implementation commit:
+
+`2afa547c432c51a740dccc46101a109b7fa9fb9f` — `feat(app): Courses resource page + final empty-state component`
 
 Merge commit:
 
+`94635cd5822ffc5e25d369357cec206b8bae54fb` — merge of `askanu-app#22` into `main`
+
 Result:
 
-`PENDING`
+`PASS`
 
 ### Required review evidence
 
-- [ ] Courses resource page exists
-- [ ] Main navigation opens Courses page
-- [ ] Courses page is an information/resource hub, not another chatbot
-- [ ] Official Programs & Courses links are used
-- [ ] External links remain safe/canonical
-- [ ] CTA returns/leads to the single AskANU chat
-- [ ] Suggestion cards work with mouse
-- [ ] Suggestion cards work with keyboard only
-- [ ] Suggestion cards work with touch/mobile
-- [ ] Visible keyboard focus state exists
-- [ ] Empty suggestions disappear after first question
-- [ ] Clear Chat restores empty state
-- [ ] No horizontal scrolling at 360px
-- [ ] No horizontal scrolling at 390px
-- [ ] No horizontal scrolling at 430px
-- [ ] Existing real API integration remains functional
-- [ ] Existing source-card/security behaviour remains intact
-- [ ] `npm run test` passes
-- [ ] `npm run build` passes
-- [ ] `git diff --check` passes
+- [x] Courses resource page exists
+- [x] Main navigation opens Courses page
+- [x] Courses page is an information/resource hub, not another chatbot
+- [x] Official Programs & Courses links are used
+- [x] External links remain safe/canonical
+- [x] CTA returns/leads to the single AskANU chat
+- [x] Suggestion cards work with mouse
+- [x] Suggestion cards work with keyboard only
+- [x] Suggestion cards work with touch/mobile
+- [x] Visible keyboard focus state exists
+- [x] Empty suggestions disappear after first question
+- [x] Clear Chat restores empty state
+- [x] No horizontal scrolling at 360px
+- [x] No horizontal scrolling at 390px
+- [x] No horizontal scrolling at 430px
+- [x] Existing real API integration remains functional
+- [x] Existing source-card/security behaviour remains intact
+- [x] `npm run test` passes
+- [x] `npm run build` passes
+- [x] `git diff --check` passes
+
+### Independent reviewer evidence
+
+Exact reviewed PR head:
+
+`6145b9c2a76a705f67778577ed8599b3c0997e8f`
+
+Independent local verification on the exact PR head:
+
+- `npm ci` — completed successfully
+- `npm run test` — `11` test files passed, `113/113` tests passed
+- `npm run build` — TypeScript check and Vite production build passed
+- `git diff --check main...HEAD` — PASS, no output
+- working tree remained clean after install, tests and build
+
+Reviewer inspection confirmed:
+
+- `/courses` is a resource/information hub with no second composer or conversation surface
+- only Home and Courses are live resource routes; the remaining Day 9–12 domains stay non-navigating
+- current-session chat state survives navigation between `/` and `/courses`
+- the Courses CTA prefills and focuses the existing composer without sending a request
+- external resource links are guarded by `isSafeHttpUrl` and use `noopener noreferrer`
+- no current course values are fabricated on the static Courses resource page
+- source-card/security tests remain intact after internal routing links were introduced
+- visible keyboard focus uses the global `2px` focus ring plus card-specific focus styling
+- suggestion cards remain real buttons and automated tests exercise click, Tab, Enter and Space
+
+Ben's recorded browser evidence additionally covers:
+
+- real touch interaction under Android device emulation
+- no horizontal overflow at 360px, 390px and 430px
+
+### Reviewer qualification / carry-over
+
+The frontend's real `/api/v1/ask` transport path was exercised and issued the expected POST, but the RAG service was not running during Ben's browser check, so the request returned `500`.
+
+This is sufficient for the App/UI lane to show that Ben did not bypass or replace the existing production transport. A successful App -> RAG -> grounded response remains part of the final cross-repo Day 5 integration gate.
+
+`BrowserRouter` also requires the eventual deployed App service to serve the SPA entry point for a fresh request to `/courses`. The current `server/` directory is still scaffolding and App-server/deployment work is explicitly outside Ben's Day 5 issue. This is carried into deployment work rather than blocking this lane.
 
 ---
 
@@ -1068,7 +1117,8 @@ None recorded yet.
 
 # Carry-over
 
-None recorded yet.
+- Successful end-to-end App -> RAG -> grounded response verification remains part of the final cross-repo integration gate.
+- Production deployment must provide SPA fallback/history routing so a fresh request to `/courses` serves the frontend entry point.
 
 ---
 
@@ -1078,7 +1128,7 @@ None recorded yet.
 
 - [x] Will bounded discovery — PASS
 - [x] Carmen hybrid retrieval — PASS
-- [ ] Ben Courses UI — PASS
+- [x] Ben Courses UI — PASS
 
 ## Golden tests
 
