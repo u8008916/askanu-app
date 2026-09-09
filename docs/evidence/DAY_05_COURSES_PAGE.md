@@ -368,3 +368,127 @@ the heading appeared and disappeared.
 
 No API contract, schema, scope or architecture change. `DECISION_LOG.md` is untouched:
 adding a frontend routing library is an implementation choice, not a contract change.
+
+---
+
+## 10. Acceptance criteria — verification pass
+
+Re-verified against the committed build (`2afa547`). Every row is a real command
+result or a browser measurement, not a restatement of intent.
+
+### Tasks
+
+| Task | Evidence |
+|---|---|
+| Courses resource page linked from navigation | `/courses` via `NavLink`; opened from the desktop rail and the mobile drawer |
+| Information hub, not another chatbot | `textareas: 0`, no Send control, no `role="textbox"`, no `Conversation` list |
+| Official Programs & Courses search/navigation links | 4 links, each verified HTTP 200 before hardcoding (§1.1) |
+| Only source-backed/current information | Copy audited line by line (§10.1); no course data invented |
+| CTA to ask a course question in the main chat | Prefills + focuses, sends nothing (§1.2) |
+| Single shared chat is the only chat | One `Composer` in the app; `/courses` has none |
+| Refined empty-state suggestion cards | `:focus-visible`, `:active`, tap-highlight added |
+| Cards work with mouse / keyboard / touch | All three exercised for real (§10.2) |
+| Visible focus behaviour | Gold ring + tint, confirmed in cascade and screenshot |
+| Theme/design tokens central | 27/27 tokens resolve; no token added; no hardcoded colour |
+| Responsive layout preserved | No overflow at 360/390/430/1280 on both routes |
+| Quick Links / Events / Jobs preserved | Present on both routes (§10.3) |
+
+### Acceptance criteria
+
+| # | Criterion | Result |
+|---|---|---|
+| 1 | Courses resource page exists | PASS — `src/pages/CoursesPage.tsx` at `/courses` |
+| 2 | Navigation opens the Courses page | PASS — rail click and drawer click both route; drawer closes |
+| 3 | Not a separate chatbot | PASS — 0 textareas, 0 Send, 0 conversation list |
+| 4 | Official Programs & Courses links used | PASS — 4 links, all `programsandcourses.anu.edu.au`, all 200 |
+| 5 | External links safe/canonical | PASS — `target="_blank" rel="noopener noreferrer"`, `isSafeHttpUrl` guarded |
+| 6 | CTA returns to the single chat | PASS — lands on `/` with focused, unsent draft |
+| 7 | Cards work with mouse | PASS — click sends the card's text |
+| 8 | Cards work keyboard-only | PASS — Tab reaches all 4 consecutively; Enter and Space activate |
+| 9 | Cards work on touch/mobile | PASS — real touch sequence under Android emulation (§10.2) |
+| 10 | Focus state visible | PASS — `:focus-visible` tint + 2px `--focus-ring` outline |
+| 11 | Suggestions disappear after first question | PASS — `tryAskingGone: true` after a touch tap |
+| 12 | Clear Chat restores empty state | PASS — drawer Clear Chat → 0 turns, 4 cards back |
+| 13 | No horizontal scroll at 360px | PASS — `scrollWidth 360 / innerWidth 360` both routes |
+| 14 | No horizontal scroll at 390px | PASS — `390 / 390` both routes |
+| 15 | No horizontal scroll at 430px | PASS — `430 / 430` both routes |
+| 16 | Real API integration functional | PASS — live `POST /api/v1/ask` captured (§10.4) |
+| 17 | Existing chat/source-card tests green | PASS — all Day 1–4 suites pass; 2 assertions narrowed, not weakened (§5.3) |
+| 18 | `npm run test` passes | PASS — 11 files, 113 tests |
+| 19 | `npm run build` passes | PASS — `tsc --noEmit` + `vite build`, built in 1.11s |
+| 20 | `git diff --check` passes | PASS — exit 0, working tree and `HEAD~1..HEAD` |
+
+### 10.1 Copy audit — no unsourced claim
+
+| Statement | Basis |
+|---|---|
+| "Programs and Courses is the official ANU catalogue." | Site title `Programs and Courses - ANU` |
+| "Search programs, majors, minors and courses in the current academic year and beyond." | The linked page's own description of itself |
+| "Browse degrees by area of interest…" | Paraphrase of the Degree Builder blurb |
+| "ANU answers to common questions about the catalogue." | `/Faq` → `Frequently Asked Questions - ANU` |
+| "Course records are being added to AskANU…" | Roadmap statement, explicitly labelled placeholder |
+| "AskANU does not show course information it cannot source…" | The provenance invariant in `API_CONTRACT.md` |
+
+No course code, title, session, unit value, prerequisite or date is displayed as
+current data. The only course code on the page is inside the editable CTA question.
+
+### 10.2 Touch verified for real, not inferred
+
+Under `resize_window` mobile emulation the tab is a real touch device:
+
+```
+userAgent      : Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36
+maxTouchPoints : 5
+ontouchstart   : true
+innerWidth     : 375
+```
+
+A full `touchstart` → `touchend` → synthesised `click` sequence on the third card:
+
+```
+tapped card   : "I need help with accommodation"
+card size     : 69 x 309 px   (>= 44px: true)
+question sent : true
+Try asking    : gone
+turns         : 2
+```
+
+### 10.3 Resource areas preserved
+
+| Viewport | Route | Quick Links | Upcoming Events | Current Jobs |
+|---|---|---|---|---|
+| 1280px | `/` | yes (rail) | yes (rail) | yes (rail) |
+| 1280px | `/courses` | yes (rail) | yes (rail) | yes (rail) |
+| 375px | `/` empty | yes (home + drawer) | yes | yes |
+| 375px | `/courses` | yes (drawer) | yes (drawer) | yes (drawer) |
+
+Below the breakpoint the rail is not rendered at all — by existing design, its
+content is reached through the drawer, so nothing is duplicated in the
+accessibility tree. `QuickLinksCard`, `FeedPanel` and `ResourceCards` are
+byte-identical to Day 4.
+
+### 10.4 Real API path still fires
+
+Network capture from the running app after sending a question:
+
+```
+POST http://localhost:5173/api/v1/ask → 500 Internal Server Error
+```
+
+The 500 is the dev proxy with no RAG service behind it. What it proves is that the
+production transport — not the mock — still issues the contract POST, and that the
+UI degrades to the controlled `error` state rather than failing open. `askApi.ts`,
+`askResponse.ts`, `askTransport.ts`, `useChatSession.ts` and `types/api.ts` are all
+byte-identical to Day 4:
+
+```
+$ git diff --quiet HEAD~1 HEAD -- <each file>
+UNCHANGED  src/chat/askApi.ts        UNCHANGED  src/chat/askResponse.ts
+UNCHANGED  src/chat/askTransport.ts  UNCHANGED  src/chat/useChatSession.ts
+UNCHANGED  src/types/api.ts          UNCHANGED  src/chat/SourceCards.tsx
+```
+
+### Out of scope — confirmed not done
+
+No separate Courses bot. No Scholarships or Jobs page. No deployment or Firebase
+config. No App server change — `server/` is still empty scaffolding.
