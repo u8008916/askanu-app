@@ -154,7 +154,7 @@ Implementation commit:
 
 Merge commit:
 
-`PENDING — PR intentionally left open during independent gate`
+`d0abeefb2150bf442a93093471571ad3a3e585f0` — squash merge of `askanu-rag#14`
 
 Result:
 
