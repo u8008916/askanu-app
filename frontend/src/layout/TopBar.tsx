@@ -26,7 +26,7 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header className={styles.root}>
-      <Brand showTagline={false} />
+      <Brand asHeading={false} showTagline={false} />
       <div className={styles.actions}>
         <ThemeToggle onToggle={onToggleTheme} resolved={theme} />
         <button

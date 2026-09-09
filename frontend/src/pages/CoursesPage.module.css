@@ -1,0 +1,154 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  overflow-y: auto;
+  padding-bottom: var(--space-4);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  gap: var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.titleIcon {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+/* --ink-2: read as copy, so it must clear AA. See tokens.css contrast rules. */
+.intro {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  max-width: 60ch;
+}
+
+.panel,
+.askPanel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+}
+
+/* The call to action is the one gold-tinted block on the page. */
+.askPanel {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+.askTitle {
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.askBody {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  max-width: 60ch;
+}
+
+.askButton {
+  align-items: center;
+  align-self: flex-start;
+  background: var(--brand-btn-bg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--brand-btn-fg);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  justify-content: center;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-5);
+  transition: background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.askButton:hover {
+  background: var(--brand-btn-bg-hover);
+}
+
+.askButton:active {
+  background: var(--gold-deep);
+}
+
+.askNote,
+.note {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-body);
+}
+
+.panelTitle {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.panelTitleIcon {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+.panelBody {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  max-width: 60ch;
+}
+
+.linkList {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+}
+
+.fieldList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fieldItem {
+  align-items: baseline;
+  color: var(--ink-2);
+  display: flex;
+  font-size: var(--text-sm);
+  gap: var(--space-3);
+  line-height: var(--leading-body);
+}
+
+.bullet {
+  background: var(--gold-soft);
+  border-radius: 50%;
+  flex: 0 0 auto;
+  height: 6px;
+  width: 6px;
+}

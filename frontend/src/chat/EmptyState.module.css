@@ -34,12 +34,29 @@
   transition:
     border-color var(--transition-fast),
     background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   width: 100%;
 }
 
 .suggestion:hover {
   background: var(--gold-tint);
   border-color: var(--gold-soft);
+}
+
+/*
+ * A suggestion is a card, so the global focus outline alone reads as a stray
+ * rectangle. Tint the card as well, and give touch a real pressed state
+ * instead of the platform tap flash.
+ */
+.suggestion:focus-visible {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+.suggestion:active {
+  background: var(--gold-soft);
+  border-color: var(--gold-deep);
 }
 
 .suggestionIcon {

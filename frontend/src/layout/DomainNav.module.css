@@ -37,25 +37,47 @@
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   color: var(--ink-2);
-  cursor: not-allowed;
   display: flex;
   font-size: var(--text-sm);
   gap: var(--space-3);
   min-height: var(--touch-target-min);
   padding: var(--space-2) var(--space-3);
   text-align: left;
+  text-decoration: none;
   width: 100%;
+}
+
+/* Domains whose resource page is not built yet. */
+.itemDisabled {
+  cursor: not-allowed;
+}
+
+.itemLink {
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.itemLink:hover {
+  background: var(--gold-tint);
+  color: var(--ink);
+}
+
+.itemLink:active {
+  background: var(--gold-soft);
 }
 
 /*
  * The active entry is small text, so it uses --gold-deep rather than --gold,
  * on the gold tint that the confirmed UI shows behind it.
  */
-.itemCurrent {
+.itemCurrent,
+.itemLink.itemCurrent:hover {
   background: var(--gold-tint);
   border-color: var(--gold-soft);
   color: var(--gold-deep);
-  cursor: default;
   font-weight: 600;
 }
 

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FixturePicker } from '../dev/FixturePicker';
 import { Brand } from '../layout/Brand';
 import { ClearChatButton } from '../layout/ClearChatButton';
@@ -21,6 +20,11 @@ interface ChatPanelProps {
   onClearChat: () => void;
   theme: ResolvedTheme;
   onToggleTheme: () => void;
+  /* The draft is owned by App so it survives leaving the chat route. */
+  draft: string;
+  onDraftChange: (value: string) => void;
+  /** Changes when something outside the chat asks the composer to focus. */
+  focusComposerSignal: number;
 }
 
 const DISCLAIMER =
@@ -45,14 +49,11 @@ export function ChatPanel({
   onClearChat,
   theme,
   onToggleTheme,
+  draft,
+  onDraftChange,
+  focusComposerSignal,
 }: ChatPanelProps) {
-  const [draft, setDraft] = useState('');
   const isEmpty = turns.length === 0;
-
-  function handleSend(text: string) {
-    onSend(text);
-    setDraft('');
-  }
 
   /*
    * Confirmed mobile home: greeting and input at the top, then `Try asking`,
@@ -63,15 +64,17 @@ export function ChatPanel({
     return (
       <div className={styles.mobileHome}>
         <section className={styles.mobileIntro}>
-          <h2 className={styles.greeting}>How can I help you today?</h2>
+          {/* The page heading on mobile: the app bar wordmark is chrome. */}
+          <h1 className={styles.greeting}>How can I help you today?</h1>
           <Composer
             disabled={isSending}
-            onChange={setDraft}
-            onSubmit={handleSend}
+            focusSignal={focusComposerSignal}
+            onChange={onDraftChange}
+            onSubmit={onSend}
             showSearchIcon
             value={draft}
           />
-          <EmptyState onSelectSuggestion={handleSend} />
+          <EmptyState onSelectSuggestion={onSend} />
         </section>
         <ResourceCards quickLinksLayout="row" />
         <p className={styles.disclaimer}>{DISCLAIMER}</p>
@@ -81,6 +84,8 @@ export function ChatPanel({
 
   return (
     <section className={styles.panel}>
+      {/* Mobile has no panel header, so the route still needs one heading. */}
+      {!isDesktop && <h1 className="visually-hidden">AskANU chat</h1>}
       {isDesktop && (
         <header className={styles.panelHeader}>
           <Brand />
@@ -92,7 +97,7 @@ export function ChatPanel({
       )}
       <div className={styles.scroll}>
         {isEmpty ? (
-          <EmptyState onSelectSuggestion={handleSend} />
+          <EmptyState onSelectSuggestion={onSend} />
         ) : (
           <ul aria-label="Conversation" className={styles.turns}>
             {turns.map(renderTurn)}
@@ -107,8 +112,9 @@ export function ChatPanel({
           import.meta.env.VITE_USE_MOCK_TRANSPORT === '1' && <FixturePicker />}
         <Composer
           disabled={isSending}
-          onChange={setDraft}
-          onSubmit={handleSend}
+          focusSignal={focusComposerSignal}
+          onChange={onDraftChange}
+          onSubmit={onSend}
           value={draft}
         />
         <p className={styles.disclaimer}>{DISCLAIMER}</p>

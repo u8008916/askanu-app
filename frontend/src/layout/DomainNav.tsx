@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   AccommodationIcon,
   CoursesIcon,
@@ -14,13 +15,16 @@ import styles from './DomainNav.module.css';
  * The `Explore` panel from the confirmed V3 UI: Home plus the six domains, in
  * the order shown in the approved desktop and mobile designs.
  *
- * Day 1 establishes the information architecture only. Entries other than the
- * current one are announced as disabled and carry no routing; resource pages
- * are later scheduled work.
+ * An entry carries a `to` once its resource page exists; the rest are announced
+ * as disabled and carry no routing until their scheduled day.
  */
-const NAV_ITEMS: { label: string; Icon: ComponentType<{ size?: number }> }[] = [
-  { label: 'Home', Icon: HomeIcon },
-  { label: 'Courses', Icon: CoursesIcon },
+const NAV_ITEMS: {
+  label: string;
+  Icon: ComponentType<{ size?: number }>;
+  to?: string;
+}[] = [
+  { label: 'Home', Icon: HomeIcon, to: '/' },
+  { label: 'Courses', Icon: CoursesIcon, to: '/courses' },
   { label: 'Scholarships', Icon: ScholarshipsIcon },
   { label: 'Accommodation', Icon: AccommodationIcon },
   { label: 'Jobs', Icon: JobsIcon },
@@ -28,14 +32,14 @@ const NAV_ITEMS: { label: string; Icon: ComponentType<{ size?: number }> }[] = [
   { label: 'Support Services', Icon: SupportIcon },
 ];
 
-const CURRENT_ITEM = 'Home';
-
 interface DomainNavProps {
   /** The drawer shows the nav without its own panel chrome. */
   bare?: boolean;
+  /** The drawer closes itself when a destination is chosen. */
+  onNavigate?: () => void;
 }
 
-export function DomainNav({ bare = false }: DomainNavProps) {
+export function DomainNav({ bare = false, onNavigate }: DomainNavProps) {
   return (
     <nav
       aria-label="Explore"
@@ -43,25 +47,36 @@ export function DomainNav({ bare = false }: DomainNavProps) {
     >
       <h2 className={styles.heading}>Explore</h2>
       <ul className={styles.list}>
-        {NAV_ITEMS.map(({ label, Icon }) => {
-          const isCurrent = label === CURRENT_ITEM;
-          return (
-            <li key={label}>
+        {NAV_ITEMS.map(({ label, Icon, to }) => (
+          <li key={label}>
+            {to === undefined ? (
               <button
-                aria-current={isCurrent ? 'page' : undefined}
-                aria-disabled={isCurrent ? undefined : 'true'}
-                className={`${styles.item} ${isCurrent ? styles.itemCurrent : ''}`}
+                aria-disabled="true"
+                className={`${styles.item} ${styles.itemDisabled}`}
                 onClick={(event) => event.preventDefault()}
                 type="button"
               >
                 <Icon size={19} />
                 {label}
               </button>
-            </li>
-          );
-        })}
+            ) : (
+              /* NavLink supplies aria-current="page" for the active route. */
+              <NavLink
+                className={({ isActive }) =>
+                  `${styles.item} ${styles.itemLink} ${isActive ? styles.itemCurrent : ''}`
+                }
+                end
+                onClick={onNavigate}
+                to={to}
+              >
+                <Icon size={19} />
+                {label}
+              </NavLink>
+            )}
+          </li>
+        ))}
       </ul>
-      <p className={styles.note}>Resource pages coming soon.</p>
+      <p className={styles.note}>Remaining resource pages coming soon.</p>
     </nav>
   );
 }

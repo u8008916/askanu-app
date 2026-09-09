@@ -2,7 +2,7 @@ import type { ComponentType } from 'react';
 import {
   AccommodationIcon,
   ChevronRightIcon,
-  EventsIcon,
+  CoursesIcon,
   ScholarshipsIcon,
   StarIcon,
 } from '../ui/Icon';
@@ -21,7 +21,7 @@ const SUGGESTIONS: {
     text: 'What scholarships are available for international students?',
     Icon: ScholarshipsIcon,
   },
-  { text: 'When are classes for COMP1110 next semester?', Icon: EventsIcon },
+  { text: 'What are the prerequisites for COMP1110?', Icon: CoursesIcon },
   { text: 'I need help with accommodation', Icon: AccommodationIcon },
   { text: 'What events are happening this week?', Icon: StarIcon },
 ];

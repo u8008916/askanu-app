@@ -62,8 +62,20 @@ describe('safe rendering', () => {
       expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
     );
 
+    const explore = screen.getByRole('navigation', { name: 'Explore' });
+
+    /*
+     * The `Explore` nav renders in-app route links, which are relative by
+     * design. Every *outbound* anchor — the only kind that can carry untrusted
+     * data — must still be http(s).
+     */
     for (const anchor of container.querySelectorAll('a')) {
-      expect(anchor.getAttribute('href')).toMatch(/^https?:\/\//);
+      const href = anchor.getAttribute('href') ?? '';
+      if (explore.contains(anchor)) {
+        expect(href).toMatch(/^\//);
+        continue;
+      }
+      expect(href).toMatch(/^https?:\/\//);
     }
   });
 
@@ -145,8 +157,10 @@ describe('safe rendering', () => {
      * answer body can send a student anywhere.
      */
     const sources = screen.getByRole('region', { name: 'Sources' });
+    const explore = screen.getByRole('navigation', { name: 'Explore' });
     for (const anchor of container.querySelectorAll('a')) {
-      expect(sources.contains(anchor)).toBe(true);
+      // Either evidence provenance, or a static in-app route. Never the answer.
+      expect(sources.contains(anchor) || explore.contains(anchor)).toBe(true);
     }
   });
   /*
