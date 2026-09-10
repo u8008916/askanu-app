@@ -1,0 +1,12 @@
+node_modules
+tests
+Dockerfile
+.dockerignore
+*.log
+
+# Never let a local environment file or credential reach a built image.
+.env
+.env.*
+*service-account*.json
+*.pem
+*.key

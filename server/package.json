@@ -1,0 +1,14 @@
+{
+  "name": "askanu-app-service",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Thin App integration boundary: browser -> App service -> RAG service.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test"
+  }
+}
