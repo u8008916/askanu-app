@@ -431,9 +431,10 @@ this boundary. RAG remains private; App → RAG auth is Day 7.
 `gcloud builds submit --tag` into `askanu-containers`, then
 `gcloud run deploy --image`. `--source` pushes to Cloud Build's own
 `cloud-run-source-deploy` repository, which would have left the project with two
-registries populated by whichever command happened to run. Two steps also give
-an immutable tag to roll back to, which the Day 27 recovery rehearsal needs.
-`server/Dockerfile` already exists, so no buildpack detection is lost.
+registries populated by whichever command happened to run. Two steps also let us
+choose the tag and capture the digest, which the Day 27 recovery rehearsal needs.
+`server/Dockerfile` already exists, so no buildpack detection is lost. Tagging
+and rollback references are corrected in §9.5.
 
 **Verification step.** A `gcloud run services describe` check was added after
 the deploy so the identity is confirmed from the live revision rather than
@@ -519,3 +520,68 @@ the claim was corrected instead. `README.md`, `docs/DEPLOYMENT.md` and the
 docstring on `log()` in `server/src/server.js` now all distinguish per-request
 lines (routing metadata only) from the single startup line (port, `ASKANU_ENV`,
 upstream URL). §3.2 above shows the actual output.
+
+---
+
+## 10. Second review pass (Qasim) — deployment-doc corrections
+
+Documentation only. No App code changed; the suites are unchanged at 17/17 and
+113/113.
+
+### 10.1 `/health` must not be smoke-tested through Firebase — FIXED
+
+The Day 7 smoke step said *"`/health` through the rewrite"*. That was wrong, and
+wrong in the worst direction: it would have passed.
+
+`firebase.json` rewrites **only** `/api/**` to Cloud Run. `/health` matches the
+`**` SPA fallback, so `https://<hosting-url>/health` returns `index.html` with
+**HTTP 200**. A smoke test asserting a 200 would have reported a healthy backend
+while never once touching the App service — the exact failure mode a smoke test
+exists to prevent.
+
+The same shape is already visible in this repo's own evidence: §4.1 records
+`/nope/deep` returning 200 with 945 bytes, because every unmatched path serves
+the SPA. `/health` is just another unmatched path.
+
+Corrected to three checks against the origin that actually serves each one:
+
+| Check | Where | Expect |
+|---|---|---|
+| `GET /health` | App Cloud Run URL, directly | `{"status":"ok"}` |
+| `POST /api/v1/ask` | Firebase Hosting URL | grounded answer + official ANU source link |
+| hard refresh `/courses` | Firebase Hosting URL | Courses page, not a 404 |
+
+A note was also added next to the routing diagram, since the trap is a property
+of the routing model rather than of the smoke test: only `/api/**` reaches the
+App service, and `/health` is reachable on the Cloud Run URL alone.
+
+### 10.2 `app-service:day7` is not an immutable tag — FIXED
+
+The registry section claimed two steps "give an immutable tag to roll back to".
+That is not true of Artifact Registry: Docker tags are **mutable by default**.
+Nothing prevents a later push from moving a tag to different bytes, at which
+point a recorded rollback target silently stops meaning what it meant when it
+was written down — which would surface during the Day 27 recovery rehearsal, at
+the worst possible moment.
+
+Two changes:
+
+**Tag with the Git commit SHA**, not a day label:
+
+```bash
+gcloud builds submit server --tag .../app-service:$(git rev-parse --short HEAD)
+```
+
+`day7` says when someone ran a command. A commit SHA ties a running revision to
+exact source.
+
+**Record the digest as the rollback reference.** The digest is a content hash and
+cannot be repointed:
+
+```
+.../app-service@sha256:<digest>
+```
+
+A new step 5 captures it after deploy and writes it into the deployment record,
+and the docs now say to roll back by digest rather than by tag. The wording
+"immutable tag" is gone from both `docs/DEPLOYMENT.md` and §9.1 above.

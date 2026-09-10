@@ -39,6 +39,12 @@ stays `https://askanu-web.web.app/api/v1/ask`. Same origin, so:
 This is the same trick the local dev proxy already uses (`README.md`), so local
 and production behave identically.
 
+**Only `/api/**` reaches the App service.** Every other path — including
+`/health` — matches the SPA fallback and is served `index.html`. So
+`https://<hosting-url>/health` returns HTTP 200 with a page of HTML, not the
+liveness envelope. `/health` is reachable on the Cloud Run URL only; see the
+smoke-test note in the deploy sequence.
+
 ### Why the App service exists at all
 
 `V3_LOCKED_DECISIONS.md` fixes the architecture as
@@ -125,9 +131,35 @@ image — rather than one `gcloud run deploy --source server`.
 `--source` is not wrong, but it makes Cloud Build push to its own
 `cloud-run-source-deploy` repository, so the project would quietly end up with
 two registries and images in whichever one a given deploy happened to use. Two
-steps also give an immutable tag to roll back to, which is what the Day 27
+steps also let us choose the tag and capture the digest, which is what the Day 27
 recovery rehearsal needs. `server/Dockerfile` already exists, so nothing is lost
 by not using source-based buildpack detection.
+
+### Tags are not immutable — record the digest
+
+Tag the image with the **Git commit SHA** it was built from:
+
+```
+australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:<git-commit-sha>
+```
+
+A commit SHA ties a running revision back to exact source, which a label like
+`day7` does not.
+
+But a tag is still only a label. Artifact Registry Docker tags are **mutable by
+default** — nothing stops a later push from moving `app-service:abc1234` to
+different bytes, and then "roll back to that tag" no longer means what it meant
+when it was written down.
+
+The only stable reference is the **image digest**:
+
+```
+australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service@sha256:<digest>
+```
+
+A digest is the content hash, so it cannot be repointed. **Record the digest of
+every deployed image in the deployment record, and roll back by digest, not by
+tag.**
 
 ## What Qasim must supply
 
@@ -176,23 +208,23 @@ not report a version, echo config, or probe RAG.
 
 1. Fill in the App Cloud Run service ID and the deployed RAG URL.
 
-2. Build and push the image to `askanu-containers`:
+2. Build and push the image, tagged with the commit being deployed:
 
 ```bash
-gcloud builds submit server --tag australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:day7
+gcloud builds submit server --tag australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:$(git rev-parse --short HEAD)
 ```
 
 3. Deploy that exact image, with the runtime identity named explicitly:
 
 ```bash
-gcloud run deploy <app-service-id> --image australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:day7 --region australia-southeast1 --service-account askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com --allow-unauthenticated --set-env-vars RAG_SERVICE_URL=<deployed-rag-url>,ASKANU_ENV=dev
+gcloud run deploy <app-service-id> --image australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:$(git rev-parse --short HEAD) --region australia-southeast1 --service-account askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com --allow-unauthenticated --set-env-vars RAG_SERVICE_URL=<deployed-rag-url>,ASKANU_ENV=dev
 ```
 
 Every flag on that line is load-bearing:
 
 | Flag | Why |
 |---|---|
-| `--image` | the tag built in step 2, so the registry is `askanu-containers` and the revision is reproducible |
+| `--image` | the tag built in step 2, so the registry is `askanu-containers` and the running revision traces back to a commit |
 | `--service-account` | without it Cloud Run uses the Compute Engine default, which holds **Editor** |
 | `--allow-unauthenticated` | Firebase Hosting calls the rewrite target anonymously |
 | `--set-env-vars` | the App reads no other configuration; it refuses to start without `RAG_SERVICE_URL` |
@@ -207,22 +239,47 @@ It must print `askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com`. If it
 prints a `-compute@developer.gserviceaccount.com` address, the deploy fell back
 to the default identity and must be redone.
 
-5. Build the frontend:
+5. Capture the digest of what actually got deployed, and write it into the
+   deployment record. This is the rollback reference:
+
+```bash
+gcloud run services describe <app-service-id> --region australia-southeast1 --format="value(spec.template.spec.containers[0].image)"
+```
+
+Resolve it to a digest if it came back as a tag:
+
+```bash
+gcloud artifacts docker images describe australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:<git-commit-sha> --format="value(image_summary.digest)"
+```
+
+6. Build the frontend:
 
 ```bash
 cd frontend && npm run build
 ```
 
-6. Deploy Hosting:
+7. Deploy Hosting:
 
 ```bash
 firebase deploy --only hosting --project askanu-dev-gdg
 ```
 
-7. Smoke test the deployed URL: `/health` through the rewrite, one real course
-   question, a hard refresh on `/courses` to prove the SPA fallback, and
-   `curl -I` on a hashed asset plus `/` to check the cache headers the emulator
-   could not verify.
+8. Smoke test. **Two different origins**, because Hosting only rewrites
+   `/api/**` — everything else falls through to the SPA:
+
+| Check | Where | Expect |
+|---|---|---|
+| `GET /health` | **App Cloud Run URL directly** | `{"status":"ok"}` |
+| `POST /api/v1/ask` | **Firebase Hosting URL** | a real grounded answer with an official ANU source link |
+| hard refresh `/courses` | Firebase Hosting URL | the Courses page, not a 404 |
+| `curl -I` a hashed asset, and `/` | Firebase Hosting URL | `immutable` and `no-cache` respectively — the headers the emulator could not verify |
+
+**Do not smoke-test `/health` through Hosting.** `firebase.json` rewrites only
+`/api/**` to Cloud Run, so `https://<hosting-url>/health` matches the `**`
+fallback and returns `index.html` with **HTTP 200**. A smoke test that only
+checks the status code would report a healthy backend while never touching the
+App service at all. `/health` is for Cloud Run's own probes and for a direct
+operator check; the only path the browser ever uses is `/api/**`.
 
 ## Logging
 
