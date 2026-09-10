@@ -77,8 +77,10 @@ that makes that work. Measured in the production build in §3.3.
 
 ### 1.4 Firebase Hosting config + fallback routes — DONE
 
-`firebase.json` (new) and `.firebaserc` (new), both with marked placeholders.
-Verified against the real Hosting emulator in §4.
+`firebase.json` (new) and `.firebaserc` (new). Verified against the real Hosting
+emulator in §4. `.firebaserc` carries the real project ID `askanu-dev-gdg`
+(supplied in review, §9.1); the Cloud Run service ID in `firebase.json` is still
+a marked placeholder.
 
 ---
 
@@ -163,9 +165,9 @@ new coverage.
 
 ```
 $ cd server && node --test
-ℹ tests 16
+ℹ tests 17
 ℹ suites 6
-ℹ pass 16
+ℹ pass 17
 ℹ fail 0
 ```
 
@@ -173,10 +175,11 @@ Covering: `/health` returns exactly one key; a non-GET on `/health` is a 405
 envelope; unknown routes give a contract-shaped 404; upstream answers pass
 through byte-identical; an upstream 503 keeps its own status rather than being
 rewritten to 502; clarification option order survives; oversized bodies 413
-without reaching upstream; an unreachable upstream gives a 502 with no
+without reaching upstream, **both with a declared `Content-Length` and with
+chunked transfer** (§9.2); an unreachable upstream gives a 502 with no
 `ECONNREFUSED`, stack frame or internal address in the body; `OPTIONS` gets 405
-with no `Access-Control-Allow-Origin`; and logs carry status and `request_id`
-but never the question, the history or the answer.
+with no `Access-Control-Allow-Origin`; and per-request logs carry status and
+`request_id` but never the question, the history or the answer.
 
 ### 3.2 Live, with RAG stopped
 
@@ -220,6 +223,11 @@ Everything the process logged during those four requests:
 
 `grep -c COMP1110` over that log: **0**. The question was never written down
 (`SECURITY_BASELINE.md:25`).
+
+Note the first line. Per-request lines carry status and `request_id`; the
+**startup** line also records port, `ASKANU_ENV` and the upstream RAG URL. None
+of that is secret, but it is more than "status and request id", so it is stated
+rather than glossed over (§9.4).
 
 ### 3.3 The production build posts same-origin
 
@@ -342,7 +350,10 @@ is a regression guard.
 | No secret in `frontend/dist` | PASS — 12 needles, 0 hits |
 | Dev mock/fixtures dropped from the bundle | PASS — 6 needles, 0 hits |
 | Frontend suite green | PASS — 113/113 |
-| App service suite green | PASS — 16/16 |
+| App service suite green | PASS — 17/17 |
+| Oversized body 413 with declared `Content-Length` | PASS |
+| Oversized body 413 with chunked transfer | PASS (§9.2) |
+| Deploy names the least-privilege runtime identity | PASS (§9.1) |
 | `/health` exposes nothing but liveness | PASS |
 | Boundary failures use the controlled envelope | PASS |
 | Logs exclude question, history and answer | PASS |
@@ -359,11 +370,12 @@ is a regression guard.
 
 | # | Blocker | Owner | Effect |
 |---|---|---|---|
-| 1 | Firebase project ID and Cloud Run App service ID unknown | Qasim | `firebase deploy` cannot run; `firebase.json` / `.firebaserc` hold placeholders |
+| 1 | Cloud Run App service ID unknown | Qasim | `firebase.json` holds `replace-me-app-service`; `firebase deploy` cannot run. Project ID is now known (`askanu-dev-gdg`) and set in `.firebaserc` — needs confirming that it is also the *Firebase* project ID |
 | 2 | `gcloud` not installed on this machine | Ben / Qasim | App image cannot be built or pushed from here |
 | 3 | Deployed RAG URL unknown | Carmen / Qasim | `RAG_SERVICE_URL` is local-only |
-| 4 | App → RAG service-to-service auth not configured | Qasim | Day 7; one header on the single `fetch` in `server/src/server.js` |
+| 4 | App → RAG service-to-service auth not configured | Qasim | Day 7; one header in `upstreamHeaders` in `server/src/server.js` |
 | 5 | Hosting cache headers unverified | Ben | Check with `curl -I` on the deployed URL, Day 7 |
+| 6 | Request-ID correlation App ↔ RAG | Ben / Carmen | Day 7 gate needs end-to-end tracing; see §9.3 |
 
 None of these blocks today's stated verification, which is a local production
 build with no secret in the bundle. All of them block Day 7's deploy.
@@ -379,3 +391,131 @@ and `docs/V3_LOCKED_DECISIONS.md` are untouched, no file under `frontend/src/`
 changed, and no entry was added to `docs/DECISION_LOG.md` — `AGENTS.md:5` already
 assigned the App integration boundary to this repo, so building it changes no V3
 decision.
+
+---
+
+## 9. Review fixes (Qasim, Day 6 PR review — REQUEST CHANGES)
+
+Two required changes, one Day 7 carry-over, one P2 documentation accuracy fix.
+
+### 9.1 Cloud Run deployment identity — REQUIRED, FIXED
+
+The original command in `docs/DEPLOYMENT.md` was:
+
+```
+gcloud run deploy <app-service-id> --source server --region australia-southeast1 --set-env-vars RAG_SERVICE_URL=<deployed-rag-url>
+```
+
+No `--service-account`. Cloud Run does not default to the dedicated runtime
+identity — it defaults to the project's Compute Engine default service account,
+which currently holds **Editor**. The deploy would have succeeded silently while
+running the public-facing App on a far more privileged identity, cancelling the
+least-privilege work done today.
+
+Fixed. The deploy now names the identity explicitly:
+
+```
+--service-account askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com
+```
+
+Three related decisions are now written down rather than left implicit:
+
+**Public access.** The App service is deployed `--allow-unauthenticated`, and
+that is a requirement rather than a shortcut: Firebase Hosting calls a rewrite
+target anonymously, so a private App service would make every `/api/**` request
+403. The cost is stated too — the Cloud Run URL is reachable directly, not only
+through Hosting — and it is why the `SECURITY_BASELINE.md` rate limit belongs at
+this boundary. RAG remains private; App → RAG auth is Day 7.
+
+**Registry.** `--source` was dropped in favour of an explicit
+`gcloud builds submit --tag` into `askanu-containers`, then
+`gcloud run deploy --image`. `--source` pushes to Cloud Build's own
+`cloud-run-source-deploy` repository, which would have left the project with two
+registries populated by whichever command happened to run. Two steps also give
+an immutable tag to roll back to, which the Day 27 recovery rehearsal needs.
+`server/Dockerfile` already exists, so no buildpack detection is lost.
+
+**Verification step.** A `gcloud run services describe` check was added after
+the deploy so the identity is confirmed from the live revision rather than
+assumed from the flag. If it prints a `-compute@developer.gserviceaccount.com`
+address, the deploy fell back to the default identity and must be redone.
+
+The review also supplied the project ID. `.firebaserc` now reads
+`askanu-dev-gdg` instead of a placeholder, taken from the runtime service
+account. **This still needs confirming as the Firebase project ID**; the Cloud
+Run service ID remains a placeholder.
+
+### 9.2 Oversized chunked request handling — REQUIRED, FIXED
+
+Confirmed as a real defect, not a theoretical one.
+
+`readBody()` called `reject(new PayloadTooLargeError())` and then `req.destroy()`.
+With a declared `Content-Length` the early check fires first and the socket is
+never destroyed, which is why the original test passed. With
+`Transfer-Encoding: chunked` there is no length to check, so the streaming cap
+was reached and `req.destroy()` tore the socket down underneath the response
+that was about to be written.
+
+**Falsification first.** A regression test was written, then the old
+`req.destroy()` was temporarily restored to prove the test detects the defect:
+
+```
+✖ rejects an oversized chunked body with the same 413 envelope (12.6686ms)
+  Error: socket hang up
+      at Socket.socketOnEnd (node:_http_client:599:25)
+    code: 'ECONNRESET'
+```
+
+The client got a dropped connection instead of the envelope — exactly as
+reported. `req.destroy()` was then removed again and the test passes.
+
+The fix stops *processing* without destroying the connection. Once the cap is
+passed the promise rejects immediately so the 413 is written at once, the
+buffered chunks are dropped, and further chunks are read and discarded rather
+than accumulated — so memory stays bounded without stalling the socket. The 413
+carries `Connection: close`, because a connection whose body was deliberately
+left unread must not be reused for a keep-alive request.
+
+The regression test uses `node:http` directly rather than `fetch`, because
+`fetch` sets a `Content-Length` for a buffer body and would silently exercise the
+wrong path. It asserts, in order:
+
+| Assertion | Result |
+|---|---|
+| no `Content-Length` on the outgoing request | PASS |
+| chunked transfer (96 KiB written in 1 KiB chunks, cap is 64 KiB) | PASS |
+| HTTP 413 | PASS |
+| body parses and has exactly the six contract fields | PASS |
+| `status: "error"`, `items: []`, `sources: []`, `clarification: null`, `request_id` matching `^req_` | PASS |
+| upstream request count unchanged — RAG never reached | PASS |
+
+Suite is now 17/17.
+
+### 9.3 Request-ID correlation — Day 7 carry-over, code left extensible
+
+Not implemented, per the review. The App generates its own `req_...` for logs
+while the response carries RAG's `request_id`, and because the envelope is passed
+through untouched a student can quote an id that appears nowhere in App logs.
+
+Correlation cannot be solved by rewriting the response without giving up the
+pass-through property, so it has to be done in the logs or in a request header.
+Both options are written up in `docs/DEPLOYMENT.md` with a recommendation
+(propagate a correlation header; it costs one header and keeps the boundary from
+parsing payloads it never otherwise reads).
+
+What changed in the code today is only the extension point: the outbound headers
+are now a named `upstreamHeaders` object immediately above the single `fetch`,
+with a comment naming both Day 7 additions — the correlation header and the
+`Authorization` identity token. Nothing else has to move for either.
+
+### 9.4 Logging claim vs behaviour — P2, FIXED
+
+The claim was "status and request ID only", but the startup line also logs
+`port`, `environment` and the full upstream RAG URL.
+
+None of it is secret and the startup line is genuinely useful — it is how an
+operator tells which revision points at which backend — so the line was kept and
+the claim was corrected instead. `README.md`, `docs/DEPLOYMENT.md` and the
+docstring on `log()` in `server/src/server.js` now all distinguish per-request
+lines (routing metadata only) from the single startup line (port, `ASKANU_ENV`,
+upstream URL). §3.2 above shows the actual output.

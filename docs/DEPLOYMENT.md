@@ -72,18 +72,73 @@ rewrites, but it does not apply the `headers` block — a request for a hashed
 asset came back from the emulator with no `Cache-Control` at all. These two
 rules must be checked with `curl -I` against the deployed URL on Day 7.
 
+## Runtime identity
+
+The App service runs as a dedicated, least-privilege service account:
+
+```
+askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com
+```
+
+**Every deploy must pass `--service-account` explicitly.** Cloud Run does not
+default to this account — it defaults to the project's Compute Engine default
+service account, which currently holds **Editor** on the project. Omitting the
+flag would silently run the public-facing App on an identity with broad write
+access to everything, which undoes the least-privilege setup rather than using
+it. There is no warning when this happens; the deploy just succeeds.
+
+The App service needs no project permissions of its own. It reads one
+environment variable and makes one outbound HTTP call. If it ever appears to
+need a role, that is a signal the boundary has grown a responsibility it should
+not have.
+
+### Public access — deliberate
+
+The App service is deployed `--allow-unauthenticated`.
+
+Firebase Hosting calls a rewrite target as an anonymous caller; it does not
+attach an identity token. A `--no-allow-unauthenticated` App service would make
+every `/api/**` request fail with 403, so public access is a requirement of the
+rewrite, not an oversight.
+
+What that costs, stated plainly: the Cloud Run URL is reachable directly, not
+only through Hosting. That is acceptable because this service holds no
+credential, no database access and no model key, and answers only
+`POST /api/v1/ask` and `GET /health`. It is also why the rate limit in
+`SECURITY_BASELINE.md` (~20 `/ask` per 10 minutes) belongs at this boundary —
+tracked, not yet implemented.
+
+**RAG stays private.** It is not public, and App → RAG service-to-service
+authentication is Day 7.
+
+## Container registry — deliberate
+
+Images go to the Artifact Registry repository created on Day 6:
+
+```
+australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers
+```
+
+The deploy is therefore two explicit steps — build and push, then deploy that
+image — rather than one `gcloud run deploy --source server`.
+
+`--source` is not wrong, but it makes Cloud Build push to its own
+`cloud-run-source-deploy` repository, so the project would quietly end up with
+two registries and images in whichever one a given deploy happened to use. Two
+steps also give an immutable tag to roll back to, which is what the Day 27
+recovery rehearsal needs. `server/Dockerfile` already exists, so nothing is lost
+by not using source-based buildpack detection.
+
 ## What Qasim must supply
 
-Four values. Each has exactly one home.
-
-| Value | Goes in | Placeholder today |
+| Value | Goes in | Status |
 |---|---|---|
-| Firebase project ID | `.firebaserc` → `projects.default` | `replace-me-askanu-project` |
-| App Cloud Run service ID | `firebase.json` → `rewrites[0].run.serviceId` | `replace-me-app-service` |
-| Region | `firebase.json` → `rewrites[0].run.region` | `australia-southeast1` (Day 6 assumption) |
-| Deployed RAG URL | App service env var `RAG_SERVICE_URL` | local `http://localhost:8081` only |
+| GCP / Firebase project ID | `.firebaserc` → `projects.default` | **`askanu-dev-gdg`** — taken from the runtime service account; confirm it is also the Firebase project ID |
+| App Cloud Run service ID | `firebase.json` → `rewrites[0].run.serviceId` | still `replace-me-app-service` |
+| Region | `firebase.json` → `rewrites[0].run.region` | `australia-southeast1` |
+| Deployed RAG URL | App service env var `RAG_SERVICE_URL` | unknown; local `http://localhost:8081` only |
 
-`firebase deploy` **cannot run** until the first two are real — Hosting resolves
+`firebase deploy` **cannot run** until the service ID is real — Hosting resolves
 the Cloud Run service at deploy time and fails on an unknown service ID. That
 failure is deliberate: better a refused deploy than a live site whose `/api/**`
 silently falls through to `index.html`.
@@ -119,40 +174,108 @@ not report a version, echo config, or probe RAG.
 
 ## Day 7 deploy sequence
 
-1. Fill in the four values above.
-2. Build and deploy the App service:
+1. Fill in the App Cloud Run service ID and the deployed RAG URL.
+
+2. Build and push the image to `askanu-containers`:
 
 ```bash
-gcloud run deploy <app-service-id> --source server --region australia-southeast1 --set-env-vars RAG_SERVICE_URL=<deployed-rag-url>
+gcloud builds submit server --tag australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:day7
 ```
 
-3. Build the frontend:
+3. Deploy that exact image, with the runtime identity named explicitly:
+
+```bash
+gcloud run deploy <app-service-id> --image australia-southeast1-docker.pkg.dev/askanu-dev-gdg/askanu-containers/app-service:day7 --region australia-southeast1 --service-account askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com --allow-unauthenticated --set-env-vars RAG_SERVICE_URL=<deployed-rag-url>,ASKANU_ENV=dev
+```
+
+Every flag on that line is load-bearing:
+
+| Flag | Why |
+|---|---|
+| `--image` | the tag built in step 2, so the registry is `askanu-containers` and the revision is reproducible |
+| `--service-account` | without it Cloud Run uses the Compute Engine default, which holds **Editor** |
+| `--allow-unauthenticated` | Firebase Hosting calls the rewrite target anonymously |
+| `--set-env-vars` | the App reads no other configuration; it refuses to start without `RAG_SERVICE_URL` |
+
+4. Confirm the revision actually got the identity — do not assume the flag took:
+
+```bash
+gcloud run services describe <app-service-id> --region australia-southeast1 --format="value(spec.template.spec.serviceAccountName)"
+```
+
+It must print `askanu-app-runtime@askanu-dev-gdg.iam.gserviceaccount.com`. If it
+prints a `-compute@developer.gserviceaccount.com` address, the deploy fell back
+to the default identity and must be redone.
+
+5. Build the frontend:
 
 ```bash
 cd frontend && npm run build
 ```
 
-4. Deploy Hosting:
+6. Deploy Hosting:
 
 ```bash
-firebase deploy --only hosting --project <firebase-project-id>
+firebase deploy --only hosting --project askanu-dev-gdg
 ```
 
-5. Smoke test the deployed URL: `/health` through the rewrite, one real course
-   question, and a hard refresh on `/courses` to prove the SPA fallback.
+7. Smoke test the deployed URL: `/health` through the rewrite, one real course
+   question, a hard refresh on `/courses` to prove the SPA fallback, and
+   `curl -I` on a hashed asset plus `/` to check the cache headers the emulator
+   could not verify.
+
+## Logging
+
+Per-request lines carry routing metadata only — event, `request_id`, status,
+upstream status, reason, duration. The question, the history and the answer are
+never written to a log.
+
+One startup line is broader:
+
+```json
+{"event":"listening","port":8099,"environment":"unknown","upstream":"http://localhost:8081"}
+```
+
+Port, `ASKANU_ENV` and the upstream RAG URL. None of it is secret, and it is how
+an operator tells which revision points at which backend — but it is more than
+"status and request id", so it is written down here rather than glossed over.
+
+## Day 7 carry-over: request-ID correlation
+
+Today the App generates its own `req_...` id for its logs, while a successful
+response carries **RAG's** `request_id`. Because the envelope is passed through
+untouched, a student can quote an id that appears nowhere in the App's logs.
+
+That has to be closed for the Day 7 gate, which requires tracing one request
+across the whole chain. Two options, and they are not exclusive:
+
+1. **Propagate** — App sends its `request_id` to RAG as a correlation header and
+   RAG logs it. Needs a small agreement with Carmen on the header name.
+2. **Log both** — App reads RAG's `request_id` from the response for its own log
+   line while still forwarding the bytes unchanged. No cross-repo change, but it
+   means parsing every response at the boundary.
+
+Option 1 is preferable: it costs one header, and it keeps the boundary from
+parsing payloads it otherwise never needs to look at.
+
+The code is ready for either. `server/src/server.js` builds `upstreamHeaders` as
+a named object immediately above the single outbound `fetch`, which is also
+where the Day 7 `Authorization` header goes.
 
 ## Open blockers (Day 6)
 
-1. **Deployment target unknown** — no Firebase project ID and no Cloud Run
-   service ID. Config ships with placeholders; deploy is blocked. This is the
-   documented Day 6 fallback: complete the config and docs, open the blocker.
+1. **App Cloud Run service ID unknown** — `firebase.json` still holds
+   `replace-me-app-service`, so `firebase deploy` is blocked. The project ID is
+   now known (`askanu-dev-gdg`, from the runtime service account) and is set in
+   `.firebaserc`; **confirm it is also the Firebase project ID.**
 2. **`gcloud` is not installed on the App developer machine** — the container
    cannot be built or pushed from here.
 3. **Deployed RAG URL unknown** — only the local value is real.
 4. **App → RAG authentication not configured** — Day 7 / Qasim. The App service
    currently calls RAG unauthenticated, which is fine for a health-level local
-   chain. Adding an identity token is one header on the single `fetch` in
-   `server/src/server.js`.
+   chain. Adding an identity token is one header in `upstreamHeaders`.
+5. **Hosting cache headers unverified** — the emulator does not apply the
+   `headers` block; check with `curl -I` on the deployed URL.
 
 ## Deliberately not done yet
 

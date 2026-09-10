@@ -122,6 +122,11 @@ The service holds no database credential, model key or prompt. It refuses to
 start without `RAG_SERVICE_URL`, so a misconfigured deployment fails loudly
 rather than answering every question with a 502.
 
+Per-request log lines carry routing metadata only — status, `request_id`,
+duration — never the question, the history or the answer. One startup line also
+records the port, `ASKANU_ENV` and the upstream RAG URL; none of that is secret,
+and it is how an operator tells which revision points at which backend.
+
 ## Deploying
 
 `firebase.json` serves `frontend/dist` and rewrites `/api/**` to the App Cloud

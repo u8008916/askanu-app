@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createServer as createHttpServer } from 'node:http';
+import { createServer as createHttpServer, request as httpRequest } from 'node:http';
 import test, { after, before, describe } from 'node:test';
 import { MAX_BODY_BYTES, createServer } from '../src/server.js';
 import { loadConfig } from '../src/config.js';
@@ -199,6 +199,74 @@ describe('POST /api/v1/ask failures', () => {
 
     assert.equal(response.status, 413);
     assert.equal(body.status, 'error');
+    assert.equal(upstream.received.length, before, 'oversized body reached upstream');
+  });
+
+  test('rejects an oversized chunked body with the same 413 envelope', async () => {
+    /*
+     * The Content-Length path above is caught before a byte is read. This is
+     * the other way in: Transfer-Encoding: chunked has no length to check, so
+     * the cap is only hit part-way through the stream. Destroying the request
+     * there would tear the socket down under the response and hand the client
+     * an empty connection instead of the envelope.
+     */
+    upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
+    const before = upstream.received.length;
+    const url = new URL(`${baseUrl}/api/v1/ask`);
+
+    const { status, body, sentHeaders } = await new Promise((resolve, reject) => {
+      const request = httpRequest(
+        {
+          hostname: url.hostname,
+          port: url.port,
+          path: url.pathname,
+          method: 'POST',
+          // Deliberately no Content-Length: Node then uses chunked encoding.
+          headers: { 'Content-Type': 'application/json' },
+        },
+        (response) => {
+          const chunks = [];
+          response.on('data', (chunk) => chunks.push(chunk));
+          response.on('end', () =>
+            resolve({
+              status: response.statusCode,
+              body: Buffer.concat(chunks).toString('utf8'),
+              sentHeaders: request.getHeaders(),
+            }),
+          );
+        },
+      );
+
+      request.on('error', reject);
+
+      // 96 KiB in 1 KiB chunks, well past the 64 KiB cap.
+      request.write('{"question":"');
+      for (let written = 0; written < 96 * 1024; written += 1024) {
+        request.write('x'.repeat(1024));
+      }
+      request.end('"}');
+    });
+
+    assert.equal(sentHeaders['content-length'], undefined, 'a length was declared');
+    assert.equal(status, 413);
+
+    const envelope = JSON.parse(body);
+
+    // The full controlled envelope, not a truncated or empty response.
+    assert.deepEqual(Object.keys(envelope).sort(), [
+      'answer',
+      'clarification',
+      'items',
+      'request_id',
+      'sources',
+      'status',
+    ]);
+    assert.equal(envelope.status, 'error');
+    assert.deepEqual(envelope.items, []);
+    assert.deepEqual(envelope.sources, []);
+    assert.equal(envelope.clarification, null);
+    assert.match(envelope.request_id, /^req_/);
+
     assert.equal(upstream.received.length, before, 'oversized body reached upstream');
   });
 

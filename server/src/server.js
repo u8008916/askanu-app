@@ -75,26 +75,59 @@ function errorEnvelope(answer, requestId) {
  * Structured single-line log.
  *
  * SECURITY_BASELINE.md:25: default logs avoid raw questions and full chat
- * histories. Only routing metadata and status codes are recorded here — the
- * request body is never read into a log line, which is the same rule
- * frontend/src/chat/askApi.ts:47-60 already follows on the browser side.
+ * histories. Per-request lines carry routing metadata only — path, method,
+ * status, `request_id`, duration — and the request body is never read into a
+ * log line, the same rule frontend/src/chat/askApi.ts:47-60 follows in the
+ * browser.
+ *
+ * One exception, at startup only: `main.js` logs the port, `ASKANU_ENV` and the
+ * upstream RAG URL. None of it is secret and it is how an operator tells which
+ * revision is pointed at which backend, but it is more than the per-request
+ * lines carry, so the docs say so rather than claiming "status and request id
+ * only" across the board.
  */
 export function log(fields) {
   const line = JSON.stringify({ ts: new Date().toISOString(), ...fields });
   process.stdout.write(line + '\n');
 }
 
-function sendJson(res, statusCode, payload) {
+function sendJson(res, statusCode, payload, { closeConnection = false } = {}) {
   const body = Buffer.from(JSON.stringify(payload), 'utf8');
-  res.writeHead(statusCode, {
+  const headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': body.byteLength,
     'Cache-Control': 'no-store',
-  });
+  };
+
+  /*
+   * Used when the request body was cut short. The connection carries a body we
+   * deliberately stopped reading, so it is not safe to reuse for a keep-alive
+   * request; Node closes the socket once this response has flushed.
+   */
+  if (closeConnection) {
+    headers.Connection = 'close';
+  }
+
+  res.writeHead(statusCode, headers);
   res.end(body);
 }
 
-/** Buffers the request body, aborting as soon as the cap is passed. */
+/**
+ * Buffers the request body, giving up as soon as the cap is passed.
+ *
+ * Two ways a client can send an oversized body, and both have to end in the
+ * same controlled 413:
+ *
+ *   Content-Length declared — rejected below before a byte is read.
+ *   Transfer-Encoding: chunked — no length to check, so the cap can only be
+ *   hit part-way through the stream.
+ *
+ * In the second case the promise rejects immediately so the 413 is written at
+ * once, but the request stream is deliberately **not** destroyed. Destroying it
+ * here tears down the socket underneath the response, and the client gets an
+ * empty connection instead of the envelope. Later chunks are read and thrown
+ * away rather than buffered, so memory stays bounded either way.
+ */
 function readBody(req) {
   return new Promise((resolve, reject) => {
     const declared = Number.parseInt(req.headers['content-length'] ?? '', 10);
@@ -108,20 +141,44 @@ function readBody(req) {
 
     const chunks = [];
     let size = 0;
+    let settled = false;
 
     req.on('data', (chunk) => {
+      // Already over the cap: drain without buffering. The response is on its
+      // way; the socket must not stall waiting for someone to read this.
+      if (settled) {
+        return;
+      }
+
       size += chunk.length;
 
       if (size > MAX_BODY_BYTES) {
+        settled = true;
+        chunks.length = 0;
         reject(new PayloadTooLargeError());
-        req.destroy();
         return;
       }
 
       chunks.push(chunk);
     });
-    req.on('end', () => resolve(Buffer.concat(chunks)));
-    req.on('error', reject);
+
+    req.on('end', () => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      resolve(Buffer.concat(chunks));
+    });
+
+    req.on('error', (error) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      reject(error);
+    });
   });
 }
 
@@ -140,7 +197,13 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
   } catch (error) {
     if (error instanceof PayloadTooLargeError) {
       log({ event: 'ask', request_id: requestId, status: 413, reason: 'body_too_large' });
-      sendJson(res, 413, errorEnvelope('That request was too large to process.', requestId));
+      sendJson(
+        res,
+        413,
+        errorEnvelope('That request was too large to process.', requestId),
+        // The rest of the body is being discarded, so do not reuse the socket.
+        { closeConnection: true },
+      );
       return;
     }
 
@@ -153,9 +216,25 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
   const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
 
   try {
+    /*
+     * The single place anything is added to an outbound RAG call. Day 7 needs
+     * two things here and nothing else has to move:
+     *
+     *   - service-to-service auth: an `Authorization: Bearer <id token>` header
+     *     (QASIM_CROSS_REPO_TASKS.md:116-119);
+     *   - request-ID correlation: send `requestId` as a correlation header so a
+     *     RAG log line can be matched to this boundary's log line, which is what
+     *     the Day 7 deployment gate needs to trace a request end to end.
+     *
+     * Correlation cannot be done by rewriting the response: the envelope is
+     * passed through untouched, so the `request_id` the student sees is RAG's.
+     * The link has to be made in the logs, not in the payload.
+     */
+    const upstreamHeaders = { 'Content-Type': 'application/json' };
+
     const upstream = await fetch(config.askUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: upstreamHeaders,
       body,
       signal: controller.signal,
     });
