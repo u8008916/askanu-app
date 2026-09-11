@@ -1,8 +1,10 @@
 # Cloud Run image for the thin App integration boundary.
 #
 # The service has no runtime dependencies, so there is no `npm install` layer
-# and no `node_modules` to cache: the image is the Node runtime plus three
-# source files. That is also why there is no build stage.
+# and no `node_modules` to cache: the image is the Node runtime plus the files
+# in src/. That is also why there is no build stage. Identity tokens for the
+# private RAG service come from the Cloud Run metadata server (src/auth.js), so
+# no auth library and no key file are baked in either.
 FROM node:22-alpine
 
 # `node` is an unprivileged user that the official image already provides.

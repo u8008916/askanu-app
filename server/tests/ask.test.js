@@ -82,6 +82,14 @@ const GROUNDED_ENVELOPE = JSON.stringify({
   request_id: 'req_upstream_1',
 });
 
+/**
+ * Auth is on by default, and these tests run with it on. A stub provider stands
+ * in for the metadata server so the pass-through is exercised exactly as it
+ * runs in production, minus GCP.
+ */
+const STUB_TOKEN = 'stub-identity-token';
+const stubProvider = { getIdToken: async () => STUB_TOKEN };
+
 let upstream;
 let baseUrl;
 let server;
@@ -277,7 +285,10 @@ describe('POST /api/v1/ask failures', () => {
     const deadPort = dead.address().port;
     await new Promise((resolve) => dead.close(resolve));
 
-    const isolated = createServer(loadConfig({ RAG_SERVICE_URL: `http://127.0.0.1:${deadPort}` }));
+    const isolated = createServer(
+      loadConfig({ RAG_SERVICE_URL: `http://127.0.0.1:${deadPort}` }),
+      stubProvider,
+    );
     await new Promise((resolve) => isolated.listen(0, '127.0.0.1', resolve));
     const isolatedUrl = `http://127.0.0.1:${isolated.address().port}`;
 

@@ -19,5 +19,6 @@ createServer(config).listen(config.port, () => {
     port: config.port,
     environment: config.environment,
     upstream: config.ragServiceUrl,
+    auth: config.authEnabled ? 'identity-token' : 'disabled',
   });
 });
