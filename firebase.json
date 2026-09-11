@@ -6,7 +6,7 @@
       {
         "source": "/api/**",
         "run": {
-          "serviceId": "replace-me-app-service",
+          "serviceId": "askanu-app",
           "region": "australia-southeast1"
         }
       },

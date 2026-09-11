@@ -43,6 +43,7 @@ inside `frontend/`. Only `VITE_`-prefixed values reach browser code.
 | `VITE_DEV_PROXY_TARGET` | Dev only. Where the dev server forwards `/api`. Used only when `VITE_API_BASE_URL` is empty. Defaults to `http://localhost:8080`. |
 | `VITE_USE_MOCK_TRANSPORT` | Dev only. `1` selects the mock transport. |
 | `RAG_SERVICE_URL` | App service only. Where `server/` forwards `/api/v1/ask`. Never `VITE_`-prefixed, so it cannot reach browser code. |
+| `RAG_AUTH_DISABLED` | App service, **local only**. `true` skips the identity token on the RAG call. Auth is on by default; a local RAG is unauthenticated and has no metadata server, so set this for local runs and never in a Cloud Run deploy. |
 | `PORT` | App service only. Defaults to `8080`; Cloud Run supplies it at runtime. |
 
 ### Running against the local RAG service
@@ -103,8 +104,13 @@ forwarded to `RAG_SERVICE_URL` and returned untouched. No runtime dependencies,
 so there is nothing to install:
 
 ```bash
-cd server && RAG_SERVICE_URL=http://localhost:8081 npm start
+cd server && RAG_AUTH_DISABLED=true RAG_SERVICE_URL=http://localhost:8081 npm start
 ```
+
+The deployed RAG service is private, so in GCP every forwarded call carries a
+Google identity token for the App's own runtime service account (see
+`docs/DEPLOYMENT.md`). `RAG_AUTH_DISABLED=true` is for local runs only, where
+RAG is unauthenticated and there is no metadata server to ask.
 
 | Script | Purpose |
 |---|---|
@@ -135,9 +141,9 @@ Run service, which keeps the deployed browser same-origin — so
 rewrite sends every other path to `index.html`, which is what makes a hard
 refresh on `/courses` work.
 
-The project and service IDs are **placeholders**; `firebase deploy` cannot run
-until they are filled in. See `docs/DEPLOYMENT.md` for the values needed, the
-deploy sequence and the open blockers.
+The App Cloud Run service is `askanu-app` in project `askanu-dev-gdg`. See
+`docs/DEPLOYMENT.md` for the deploy sequence, the App → RAG authentication
+model and the open blockers.
 
 ## API integration
 

@@ -1,5 +1,6 @@
 import { createServer as createHttpServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
+import { createMetadataTokenProvider, noAuthProvider } from './auth.js';
 
 /**
  * The thin App integration boundary.
@@ -8,7 +9,8 @@ import { randomUUID } from 'node:crypto';
  *
  *   GET  /health        liveness for Cloud Run and for the Day 6 health-level
  *                       App -> RAG deployment check
- *   POST /api/v1/ask    forward to RAG and return its answer untouched
+ *   POST /api/v1/ask    forward to RAG, authenticated as the App's runtime
+ *                       service account, and return its answer untouched
  *
  * It is a pass-through, not a second opinion. API_CONTRACT.md:188-189 states
  * source URLs come programmatically from stored records; if this service
@@ -185,11 +187,11 @@ function readBody(req) {
 /**
  * Forwards one `/api/v1/ask` request.
  *
- * Day 7 adds App -> RAG service-to-service authentication
- * (QASIM_CROSS_REPO_TASKS.md:116-119). That is one extra header on the `fetch`
- * below and nothing else, which is why the call is kept in a single place.
+ * App -> RAG service-to-service authentication (QASIM_CROSS_REPO_TASKS.md:116-119)
+ * is one extra header on the `fetch` below and nothing else, which is why the
+ * outbound call is kept in a single place.
  */
-async function forwardAsk(req, res, config, requestId, startedAt) {
+async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
   let body;
 
   try {
@@ -212,25 +214,56 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
     return;
   }
 
+  /*
+   * Obtained before the upstream timer starts so token acquisition has its own
+   * budget (auth.js) and cannot eat into RAG's. A failure here is the App's own
+   * misconfiguration or a metadata-server fault, never the student's doing, so
+   * it is a controlled 502 with the reason in the log and nothing in the body.
+   */
+  let token;
+
+  try {
+    token = await getIdToken();
+  } catch {
+    log({
+      event: 'ask',
+      request_id: requestId,
+      status: 502,
+      reason: 'token_unavailable',
+      duration_ms: Date.now() - startedAt,
+    });
+    sendJson(
+      res,
+      502,
+      errorEnvelope('AskANU could not reach the answer service. Please try again.', requestId),
+    );
+    return;
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
 
   try {
     /*
-     * The single place anything is added to an outbound RAG call. Day 7 needs
-     * two things here and nothing else has to move:
+     * The single place anything is added to an outbound RAG call.
      *
-     *   - service-to-service auth: an `Authorization: Bearer <id token>` header
-     *     (QASIM_CROSS_REPO_TASKS.md:116-119);
-     *   - request-ID correlation: send `requestId` as a correlation header so a
-     *     RAG log line can be matched to this boundary's log line, which is what
-     *     the Day 7 deployment gate needs to trace a request end to end.
-     *
-     * Correlation cannot be done by rewriting the response: the envelope is
-     * passed through untouched, so the `request_id` the student sees is RAG's.
-     * The link has to be made in the logs, not in the payload.
+     *   - `Authorization`: the identity token for the App's runtime service
+     *     account, audience = RAG's URL. Absent only when auth is disabled for
+     *     local development. The browser never sees it; it is not echoed, not
+     *     logged, and not part of any response.
+     *   - `X-Request-Id`: this boundary's own id, so a RAG log line can be
+     *     matched to ours. Correlation cannot be done by rewriting the response
+     *     — the envelope passes through untouched, so the `request_id` the
+     *     student sees is RAG's. The link has to be made in the logs.
      */
-    const upstreamHeaders = { 'Content-Type': 'application/json' };
+    const upstreamHeaders = {
+      'Content-Type': 'application/json',
+      'X-Request-Id': requestId,
+    };
+
+    if (token !== null) {
+      upstreamHeaders.Authorization = `Bearer ${token}`;
+    }
 
     const upstream = await fetch(config.askUrl, {
       method: 'POST',
@@ -238,6 +271,33 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
       body,
       signal: controller.signal,
     });
+
+    /*
+     * 401/403 come from Cloud Run's front end, not from RAG's handler — the
+     * body is HTML, not a contract envelope, and API_CONTRACT.md:37-43 gives
+     * those statuses no meaning. Passing it through would hand the browser a
+     * transport failure with no `request_id`. It is an infrastructure rejection
+     * (wrong audience, missing invoker role, expired token), so it becomes the
+     * controlled envelope with the reason logged for the operator.
+     */
+    if (upstream.status === 401 || upstream.status === 403) {
+      await upstream.arrayBuffer();
+      log({
+        event: 'ask',
+        request_id: requestId,
+        status: 502,
+        upstream_status: upstream.status,
+        reason: 'upstream_auth_rejected',
+        token_source: token === null ? 'none' : 'metadata',
+        duration_ms: Date.now() - startedAt,
+      });
+      sendJson(
+        res,
+        502,
+        errorEnvelope('AskANU could not reach the answer service. Please try again.', requestId),
+      );
+      return;
+    }
 
     // Bytes, not text: the answer is returned exactly as RAG produced it.
     const upstreamBody = Buffer.from(await upstream.arrayBuffer());
@@ -255,6 +315,7 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
       request_id: requestId,
       status: upstream.status,
       upstream_status: upstream.status,
+      token_source: token === null ? 'none' : 'metadata',
       duration_ms: Date.now() - startedAt,
     });
   } catch (error) {
@@ -283,7 +344,18 @@ async function forwardAsk(req, res, config, requestId, startedAt) {
   }
 }
 
-export function createServer(config) {
+/**
+ * `getIdToken` is the injection seam for tests: a stub provider means no test
+ * needs GCP credentials or a metadata server. Production takes the default.
+ * `/health` never calls it, so liveness does not depend on auth.
+ */
+export function createServer(config, { getIdToken } = {}) {
+  const tokenProvider =
+    getIdToken ??
+    (config.authEnabled
+      ? createMetadataTokenProvider({ audience: config.tokenAudience })
+      : noAuthProvider);
+
   return createHttpServer((req, res) => {
     const startedAt = Date.now();
     const requestId = 'req_' + randomUUID();
@@ -320,7 +392,7 @@ export function createServer(config) {
         return;
       }
 
-      void forwardAsk(req, res, config, requestId, startedAt);
+      void forwardAsk(req, res, config, tokenProvider, requestId, startedAt);
       return;
     }
 
