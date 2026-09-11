@@ -97,7 +97,7 @@ let server;
 before(async () => {
   upstream = startUpstream();
   const upstreamUrl = await upstream.listen();
-  server = createServer(loadConfig({ RAG_SERVICE_URL: upstreamUrl }), stubProvider);
+  server = createServer(loadConfig({ RAG_SERVICE_URL: upstreamUrl }));
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}`;
 });
