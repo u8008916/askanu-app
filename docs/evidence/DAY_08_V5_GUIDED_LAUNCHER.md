@@ -6,7 +6,8 @@
 **Deliverable:** PR — reusable `DomainLauncher` + Courses converted to four recommended-question cards
 
 Every number below is real command output or a real DOM measurement from the
-running app. Nothing here is an assertion about what should happen.
+running app, all run locally on Ben's machine — there is no CI run for this
+branch. Nothing here is an assertion about what should happen.
 
 Environment: Node v24.12.0, npm 11.6.2, Vite 7.3.6, Vitest 3.2.4.
 
@@ -219,7 +220,7 @@ launcher cards, and still pinned by `emptyState.test.tsx`).
 
 ---
 
-## 9. Automated tests and build
+## 9. Automated tests and build (local verification — no CI run is attached to this PR head)
 
 ```
 $ cd frontend && npx vitest run
@@ -267,7 +268,7 @@ control `/api/v1/ask` 1.
 
 ---
 
-## 11. Acceptance criteria (`MY_DAY_BY_DAY_TASKS.md:36-41`)
+## 11. Acceptance criteria (`my_day_by_day_tasks.md`, Sat 12 Sep)
 
 | # | Criterion | Result |
 |---|---|---|

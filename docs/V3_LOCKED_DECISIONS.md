@@ -31,7 +31,7 @@ Three separate repos. Do not convert to a monorepo.
 - `Clear Chat`, not `New Chat`.
 - No profile/login block.
 - `Try asking` only in empty state; disappears after the first question.
-- Resource pages are information hubs, not separate bots.
+- Domain pages are compact guided-question launchers, not separate bots (V5 supersedes the earlier "information hubs" wording — see `DECISION_LOG.md` 2026-09-12). A card pre-fills the single chat composer, never auto-sends, and never clears the current session; minimum supported desktop viewport for the no-scroll check is 1280×720.
 - Mobile is the same responsive React website with drawer navigation.
 - Quick Links: AnuHub, MyTimetable, Canvas, ANU Careers.
 - Short deterministic Upcoming Events and Current Jobs summaries.
