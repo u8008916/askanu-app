@@ -77,7 +77,7 @@ export const COURSES_DOMAIN: DomainLauncherConfig = {
     {
       id: 'honours',
       title: 'Can I still qualify for honours?',
-      description: 'Check your eligibility and what you need to apply.',
+      description: 'Explore honours requirements and official ANU information.',
       prompt: 'Can I still qualify for honours?',
       Icon: PersonIcon,
     },
