@@ -1,0 +1,192 @@
+/*
+ * V5 guided-domain launcher. Desktop/demo target: the whole page fits the chat
+ * column at 1280x720 without vertical scroll. Mobile may scroll.
+ */
+.root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  padding-bottom: var(--space-3);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  gap: var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.titleIcon {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+/* --ink-2: read as copy, so it must clear AA. See tokens.css contrast rules. */
+.intro {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  max-width: 70ch;
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sectionTitle {
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.sectionCaption {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+.cardGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+}
+
+/*
+ * The card treatment matches the empty-state suggestions so the two kinds of
+ * question card read as one family. Copied rather than shared: those cards
+ * send on click, these hand a draft to the composer.
+ */
+.card {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-4);
+  height: 100%;
+  min-height: var(--touch-target-min);
+  padding: var(--space-4);
+  text-align: left;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.card:hover,
+.card:focus-visible {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+.card:active {
+  background: var(--gold-soft);
+  border-color: var(--gold-deep);
+}
+
+.cardIcon {
+  align-items: center;
+  background: var(--gold-tint);
+  border-radius: 50%;
+  color: var(--gold-deep);
+  display: flex;
+  flex: 0 0 auto;
+  height: 3rem;
+  justify-content: center;
+  width: 3rem;
+}
+
+.cardBody {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.cardTitle {
+  color: var(--ink);
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.cardDescription {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+.cardArrow {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+.resources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.resourcesTitle {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.resourcesTitleIcon {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+.resourceList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.resourcesNote {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-body);
+}
+
+/* Desktop: resources sit at the foot of the column, cards stay 2-up. */
+@media (min-width: 900px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resources {
+    margin-top: auto;
+  }
+}
