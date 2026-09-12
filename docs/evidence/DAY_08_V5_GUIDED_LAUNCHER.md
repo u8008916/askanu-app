@@ -75,8 +75,14 @@ Removed: the gold CTA panel (one button, three paragraphs) and the
 "Course details in AskANU" placeholder field list. Kept: the same four
 verified `programsandcourses.anu.edu.au` links, now as one-line chips.
 
-Screenshots captured in the pane at 1280×720 (before shows the scrollbar and
-the third section cut off; after fits with the resources at the column foot).
+Screenshots (headless Chrome, light scheme, `--window-size=1280,720`):
+
+- `day08/before-courses-1280x720.png` — Day 5 page at `085fc8a`: scrollbar
+  visible, "Course details in AskANU" cut off at the fold.
+- `day08/after-courses-1280x720.png` — this PR: fits, resources at the column foot.
+- `day08/after-courses-1280x720-dark.png` — same, `prefers-color-scheme: dark`.
+- `day08/after-courses-390x844-mobile.png` — mobile stack.
+- `day08/home-1280x720.png` — Home after all changes.
 
 ---
 
@@ -273,7 +279,7 @@ control `/api/v1/ask` 1.
 
 ### Evidence to hand off
 
-- PR + screenshots at 1280×720 (before/after, focus ring, dark) and 390×844 — captured in the pane during this session.
+- PR + screenshots at 1280×720 (before/after, dark) and 390×844 — `docs/evidence/day08/*.png`. The focus-ring capture exists only in the session pane; its computed styles are recorded in §5.
 - Route/state test output — §9.
 - Before/after showing removal of jumbo content — §2.
 - Card config fields other domains reuse — §1.
