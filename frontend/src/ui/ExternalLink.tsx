@@ -8,6 +8,8 @@ interface ExternalLinkProps {
   children: ReactNode;
   /** Secondary line under the label, e.g. what the page is for. */
   description?: string;
+  /** `card` is the default block; `compact` is a one-line chip for link strips. */
+  variant?: 'card' | 'compact';
   className?: string;
 }
 
@@ -23,8 +25,10 @@ export function ExternalLink({
   href,
   children,
   description,
+  variant = 'card',
   className = '',
 }: ExternalLinkProps) {
+  const variantClass = variant === 'compact' ? styles.compact : '';
   const body = (
     <>
       <span className={styles.body}>
@@ -38,12 +42,14 @@ export function ExternalLink({
   );
 
   if (!isSafeHttpUrl(href)) {
-    return <span className={`${styles.unlinked} ${className}`}>{body}</span>;
+    return (
+      <span className={`${styles.unlinked} ${variantClass} ${className}`}>{body}</span>
+    );
   }
 
   return (
     <a
-      className={`${styles.link} ${className}`}
+      className={`${styles.link} ${variantClass} ${className}`}
       href={href}
       rel="noopener noreferrer"
       target="_blank"

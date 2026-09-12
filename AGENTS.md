@@ -13,9 +13,9 @@ Locked UX:
 - `Try asking` only in empty state
 - suggestions disappear after first question
 - mobile drawer; same responsive website
-- resource pages are information hubs, not separate bots
+- domain pages are compact guided-question launchers (V5, `docs/DECISION_LOG.md` 2026-09-12): recommended-question cards route into the single chat with a pre-filled, editable, unsent composer; no second chat input on a domain page; a card never clears the current session
 - theme can change; interaction model cannot change without approval
 
-Before coding read `docs/MY_DAY_BY_DAY_TASKS.md`, `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `docs/V3_LOCKED_DECISIONS.md`.
+Before coding read `my_day_by_day_tasks.md`, `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `docs/V3_LOCKED_DECISIONS.md`.
 
 When blocked, follow today's fallback. Do not invent backend behaviour.

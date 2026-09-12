@@ -33,11 +33,11 @@ function AppShell() {
   }, []);
 
   /*
-   * V3: resource pages route back into the single chat. The question is placed
-   * in the composer and focused, never sent — navigating must not fire a
-   * request on the student's behalf.
+   * Domain launcher pages route back into the single chat. The question is
+   * placed in the composer and focused, never sent — navigating must not fire
+   * a request on the student's behalf. The current conversation is kept.
    */
-  const askAboutCourses = useCallback(
+  const askInChat = useCallback(
     (question: string) => {
       setDraft(question);
       setFocusComposerSignal((signal) => signal + 1);
@@ -87,7 +87,7 @@ function AppShell() {
               path="/"
             />
             <Route
-              element={<CoursesPage onAskAboutCourses={askAboutCourses} />}
+              element={<CoursesPage onAskInChat={askInChat} />}
               path="/courses"
             />
             <Route element={<Navigate replace to="/" />} path="*" />

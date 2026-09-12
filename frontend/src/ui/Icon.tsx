@@ -198,3 +198,26 @@ export const StarIcon = (p: IconProps) => (
     <path d="m12 4 2.4 5 5.6.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.6-.8z" />
   </Svg>
 );
+
+export const DocumentIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M6 3.5h8l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7.5 3.5" />
+    <path d="M14 3.5v4h4" />
+    <path d="M9 11h6M9 14.5h6M9 18h3.5" />
+  </Svg>
+);
+
+export const PersonIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="8.5" r="3.5" />
+    <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+  </Svg>
+);
+
+export const CalendarCheckIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect height="16" rx="2" width="17" x="3.5" y="4.5" />
+    <path d="M3.5 9.5h17M8 3v3M16 3v3" />
+    <path d="m9 15 2 2 4-4" />
+  </Svg>
+);
