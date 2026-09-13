@@ -5,6 +5,7 @@ import {
   DocumentIcon,
   PersonIcon,
   ScholarshipsIcon,
+  SearchIcon,
 } from '../ui/Icon';
 
 export type DomainIcon = ComponentType<{ size?: number; className?: string }>;
@@ -110,4 +111,67 @@ export const COURSES_DOMAIN: DomainLauncherConfig = {
     },
   ],
   resourcesNote: 'These links open programsandcourses.anu.edu.au in a new tab.',
+};
+
+/**
+ * Scholarships.
+ *
+ * V3/V5 restrict the Scholarships domain to `study.anu.edu.au/scholarships`,
+ * the official ANU Scholarships Finder. Both URLs below were opened and
+ * confirmed to return HTTP 200 on Day 9, reached from the site's own nav —
+ * neither is a guessed address. See docs/evidence/DAY_09_SCHOLARSHIPS_PAGE.md.
+ *
+ * Card copy stays a guided intent, not an answer: no dollar value, deadline
+ * or eligibility claim is hard-coded here, since only the API/backend may
+ * supply that fact (`CONVERSATION_CONTRACT.md` Scholarships; V3 "do not
+ * infer/hard-code data the backend owns").
+ */
+export const SCHOLARSHIPS_DOMAIN: DomainLauncherConfig = {
+  id: 'scholarships',
+  title: 'Scholarships',
+  intro:
+    'Get help finding and understanding ANU scholarships through AskANU. Choose a question below to start a chat, or explore official resources.',
+  Icon: ScholarshipsIcon,
+  questions: [
+    {
+      id: 'find-scholarships',
+      title: 'Find scholarships for me',
+      description: 'Get a starting list of scholarships that could suit you.',
+      prompt: 'Find scholarships for me',
+      Icon: SearchIcon,
+    },
+    {
+      id: 'check-eligibility',
+      title: 'Check eligibility',
+      description: 'Find out whether you meet the criteria for a scholarship.',
+      prompt: 'Am I eligible for this scholarship?',
+      Icon: PersonIcon,
+    },
+    {
+      id: 'deadlines',
+      title: 'Deadlines',
+      description: 'Find out when a scholarship application closes.',
+      prompt: 'When is the application deadline for this scholarship?',
+      Icon: CalendarCheckIcon,
+    },
+    {
+      id: 'scholarships-for-degree',
+      title: 'Scholarships for my degree',
+      description: 'Find scholarships available for your specific degree.',
+      prompt: 'What scholarships are available for my degree?',
+      Icon: DocumentIcon,
+    },
+  ],
+  resourcesTitle: 'Official ANU scholarship search and navigation',
+  resources: [
+    {
+      label: 'Find a scholarship',
+      href: 'https://study.anu.edu.au/scholarships/find-scholarship',
+    },
+    {
+      label: 'ANU Scholarships home',
+      href: 'https://study.anu.edu.au/scholarships',
+    },
+  ],
+  resourcesNote: 'These links open study.anu.edu.au in a new tab.',
 };
