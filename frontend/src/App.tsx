@@ -7,6 +7,7 @@ import { ResourceRail } from './layout/ResourceRail';
 import { TopBar } from './layout/TopBar';
 import { useIsDesktop } from './layout/useIsDesktop';
 import { CoursesPage } from './pages/CoursesPage';
+import { ScholarshipsPage } from './pages/ScholarshipsPage';
 import { useTheme } from './theme/useTheme';
 import styles from './App.module.css';
 
@@ -89,6 +90,10 @@ function AppShell() {
             <Route
               element={<CoursesPage onAskInChat={askInChat} />}
               path="/courses"
+            />
+            <Route
+              element={<ScholarshipsPage onAskInChat={askInChat} />}
+              path="/scholarships"
             />
             <Route element={<Navigate replace to="/" />} path="*" />
           </Routes>

@@ -6,6 +6,7 @@ import {
   hostileStringsResponse,
   insufficientEvidenceResponse,
   needsClarificationResponse,
+  needsScholarshipClarificationResponse,
   offTopicResponse,
   okMultiSourceResponse,
   okResponse,
@@ -49,6 +50,11 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'needs-clarification',
     label: 'needs_clarification',
     response: needsClarificationResponse,
+  },
+  {
+    id: 'needs-clarification-scholarship',
+    label: 'needs_clarification — scholarship',
+    response: needsScholarshipClarificationResponse,
   },
   {
     id: 'insufficient',

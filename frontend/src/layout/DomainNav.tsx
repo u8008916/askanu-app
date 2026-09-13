@@ -25,7 +25,7 @@ const NAV_ITEMS: {
 }[] = [
   { label: 'Home', Icon: HomeIcon, to: '/' },
   { label: 'Courses', Icon: CoursesIcon, to: '/courses' },
-  { label: 'Scholarships', Icon: ScholarshipsIcon },
+  { label: 'Scholarships', Icon: ScholarshipsIcon, to: '/scholarships' },
   { label: 'Accommodation', Icon: AccommodationIcon },
   { label: 'Jobs', Icon: JobsIcon },
   { label: 'Events', Icon: EventsIcon },
