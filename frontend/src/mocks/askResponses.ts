@@ -145,6 +145,36 @@ export const needsClarificationResponse: AskResponse = {
   request_id: 'req_mock_clarification',
 };
 
+/**
+ * A Scholarships-shaped clarification: the ambiguous entity is a scholarship,
+ * not a course. Option ids follow the frozen Day 9 record identity
+ * (`scholarships:scholarship:<canonical-URL-slug>`) so the fixture has the
+ * shape the RAG service will send; the slugs and labels are placeholders,
+ * not real ANU scholarships.
+ */
+export const needsScholarshipClarificationResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which scholarship do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-scholarship-1',
+    type: 'entity_selection',
+    options: [
+      {
+        id: 'scholarships:scholarship:placeholder-scholarship-a',
+        label: 'Placeholder scholarship A',
+      },
+      {
+        id: 'scholarships:scholarship:placeholder-scholarship-b',
+        label: 'Placeholder scholarship B',
+      },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_scholarship_clarification',
+};
+
 export const insufficientEvidenceResponse: AskResponse = {
   status: 'insufficient_evidence',
   answer:

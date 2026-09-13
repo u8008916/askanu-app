@@ -206,20 +206,24 @@ describe('Scholarships guided-domain page', () => {
     const input = await screen.findByLabelText('Ask AskANU a question');
     expect(input).toHaveValue(eligibilityCard.prompt);
 
-    // The API comes back ambiguous: the CONVERSATION_CONTRACT baseline is a
-    // read-only option list, answered in words, not a picker.
-    setMockScenarioId('needs-clarification');
+    // The API comes back ambiguous about *which scholarship*: the
+    // CONVERSATION_CONTRACT baseline is a read-only option list, answered in
+    // words, not a picker.
+    setMockScenarioId('needs-clarification-scholarship');
     await user.click(screen.getByRole('button', { name: 'Send' }));
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole('list', { name: 'Clarification options' }),
-      ).toBeInTheDocument(),
-    );
-    expect(screen.getByText('Do you mean COMP1110 or COMP1600?')).toBeInTheDocument();
+    const options = await screen.findByRole('list', { name: 'Clarification options' });
+    expect(screen.getByText('Which scholarship do you mean?')).toBeInTheDocument();
+    expect(within(options).getAllByRole('listitem').map((li) => li.textContent)).toEqual([
+      '1Placeholder scholarship A',
+      '2Placeholder scholarship B',
+    ]);
+    // Single-choice wording, since this clarification has allow_multiple: false.
     expect(
-      screen.getByText('Reply in the message box — you can choose one or both.'),
+      screen.getByText('Reply in the message box to choose one.'),
     ).toBeInTheDocument();
+    // It is a scholarship clarification, not the generic course one.
+    expect(screen.queryByText(/COMP\d{4}/)).not.toBeInTheDocument();
 
     // Session follow-up: the student answers in the same composer, current
     // session kept — this is what "pending_clarification carried forward,

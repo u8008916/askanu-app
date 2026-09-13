@@ -33,8 +33,8 @@ domain is exactly "one config + one route" as designed.
 
 | | |
 |---|---|
-| New | `src/pages/ScholarshipsPage.tsx`; `SCHOLARSHIPS_DOMAIN` in `domains/domainConfig.ts`; `tests/scholarshipsPage.test.tsx` |
-| Changed | `App.tsx` (+route `/scholarships`), `layout/DomainNav.tsx` (Scholarships nav item now links instead of `aria-disabled`), `tests/navigation.test.tsx` |
+| New | `src/pages/ScholarshipsPage.tsx`; `SCHOLARSHIPS_DOMAIN` in `domains/domainConfig.ts`; `tests/scholarshipsPage.test.tsx`; `needsScholarshipClarificationResponse` fixture + `needs-clarification-scholarship` mock scenario |
+| Changed | `App.tsx` (+route `/scholarships`), `layout/DomainNav.tsx` (Scholarships nav item now links instead of `aria-disabled`), `tests/navigation.test.tsx`, `mocks/askResponses.ts`, `dev/mockTransport.ts` |
 | Deleted | none |
 | Runtime dependencies added | **0** |
 
@@ -67,6 +67,42 @@ Query-string filtered links (e.g. "Scholarships for current students") were
 seen on the source site but deliberately left out of the compact resource
 list — consistent with the identity contract's instruction to strip query
 strings for anything meant to be stable/canonical.
+
+### 1a. Frozen Day 9 identity contract, and why these two links sit outside it
+
+An earlier pair of PM messages disagreed on `entity_id` ("stable source ID"
+vs. "canonical URL slug"). That is **closed**: the PM confirmed on 13 Sep
+that the canonical ANU Scholarship Finder detail-URL slug is the frozen
+`entity_id`, and the "stable source ID" wording is superseded.
+
+```
+domain        = scholarships
+source_id     = scholarships_anu_finder        # which collector produced the record
+canonical_url = https://study.anu.edu.au/scholarships/find-scholarship/<slug>
+entity_id     = <slug>                         # which individual scholarship it is
+record_id     = scholarships:scholarship:<entity_id>
+```
+
+Exact persisted-detail boundary: `https` · host exactly `study.anu.edu.au` ·
+path exactly `/scholarships/find-scholarship/<slug>` · no query, no fragment,
+no trailing slash · final path segment equals `entity_id` by literal
+equality. `source_id` and `entity_id` are separate concepts and are never
+mixed; `entity_id` is never derived from the title.
+
+**Two kinds of link — do not apply the record rule to the wrong one:**
+
+| Kind | Examples | Where it lives | Subject to the identity CHECK? |
+|---|---|---|---|
+| Navigation / resource | `https://study.anu.edu.au/scholarships`, `…/scholarships/find-scholarship` | Statically configured in `domainConfig.ts` as trusted official escape hatches | **No** — not a persisted record, no slug, no `entity_id`/`record_id` |
+| Evidence / source | `https://study.anu.edu.au/scholarships/find-scholarship/<slug>` | Arrives in `/api/v1/ask` `sources[]` from the RAG service's stored `canonical_url` | **Yes** — Scraper and RAG both enforce the boundary |
+
+The two App resource links are the first kind. They are valid as-is; nobody
+should append a fake slug to them or run them through the persisted-record
+validator. The App never constructs a scholarship record URL or ID — the
+only place `record_id`/`url` appear in `frontend/src` is passthrough of the
+API envelope (`types/api.ts`, `chat/askResponse.ts`, `chat/SourceCards.tsx`).
+This distinction is also recorded as a comment on `SCHOLARSHIPS_DOMAIN` in
+`domainConfig.ts` so it survives past this handoff.
 
 ---
 
@@ -138,13 +174,27 @@ session follow-up`:
 
 1. Click **"Check eligibility"** → composer holds `Am I eligible for this
    scholarship?`.
-2. Mock scenario `needs-clarification`, Send → the read-only
+2. Mock scenario `needs-clarification-scholarship`, Send → the read-only
    `Clarification options` list renders (`CONVERSATION_CONTRACT.md`: answer
-   in words, not a picker) with the correct "reply in the message box" copy.
+   in words, not a picker). The test asserts the **scholarship-specific**
+   content: answer `Which scholarship do you mean?`, options
+   `Placeholder scholarship A` / `Placeholder scholarship B` in contract
+   order, the single-choice wording (`allow_multiple: false`), and that no
+   course code (`COMP\d{4}`) appears.
 3. Type `first` in the same composer (session kept, no reset), switch mock
    scenario to `ok`, Send → the resolved answer renders, no second
    clarification list appears, and both turns (`Am I eligible for this
    scholarship?` and `first`) are still visible in one conversation.
+
+PR #29 review (Qasim) caught that the first version of this test drove the
+Scholarship card into the *generic course* clarification fixture
+(`Do you mean COMP1110 or COMP1600?`), which proved the mechanics but not a
+representative Scholarship flow. Fixed by adding
+`needsScholarshipClarificationResponse` to `mocks/askResponses.ts` (option
+ids use the frozen `scholarships:scholarship:<slug>` shape; slugs and labels
+are placeholders, not real ANU scholarships, per the no-invented-facts rule)
+and the `needs-clarification-scholarship` scenario to `dev/mockTransport.ts`,
+which also makes it selectable in the dev fixture picker.
 
 This is real, passing coverage for "renders clarification naturally" and
 "test session follow-up" from the day's Chat UX integration work block, not

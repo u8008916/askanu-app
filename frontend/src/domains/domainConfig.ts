@@ -125,6 +125,13 @@ export const COURSES_DOMAIN: DomainLauncherConfig = {
  * or eligibility claim is hard-coded here, since only the API/backend may
  * supply that fact (`CONVERSATION_CONTRACT.md` Scholarships; V3 "do not
  * infer/hard-code data the backend owns").
+ *
+ * The two resources are navigation escape hatches (Scholarships home and the
+ * Finder listing), not persisted Scholarship records. The Day 9 record
+ * identity rule — `https://study.anu.edu.au/scholarships/find-scholarship/<slug>`,
+ * `entity_id = <slug>` — applies only to evidence URLs that arrive in
+ * `sources[]` from the RAG service. These links carry no slug and must not
+ * be given one; the App never constructs a scholarship record URL or ID.
  */
 export const SCHOLARSHIPS_DOMAIN: DomainLauncherConfig = {
   id: 'scholarships',
