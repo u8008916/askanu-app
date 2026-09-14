@@ -27,7 +27,7 @@ const NAV_ITEMS: {
   { label: 'Courses', Icon: CoursesIcon, to: '/courses' },
   { label: 'Scholarships', Icon: ScholarshipsIcon, to: '/scholarships' },
   { label: 'Accommodation', Icon: AccommodationIcon },
-  { label: 'Jobs', Icon: JobsIcon },
+  { label: 'Jobs', Icon: JobsIcon, to: '/jobs' },
   { label: 'Events', Icon: EventsIcon },
   { label: 'Support Services', Icon: SupportIcon },
 ];

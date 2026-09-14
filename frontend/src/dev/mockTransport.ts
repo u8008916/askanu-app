@@ -8,8 +8,10 @@ import {
   needsClarificationResponse,
   needsScholarshipClarificationResponse,
   offTopicResponse,
+  okCurrentJobsResponse,
   okMultiSourceResponse,
   okResponse,
+  partialClosingSoonResponse,
   partialResponse,
 } from '../mocks/askResponses';
 
@@ -46,6 +48,16 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     response: groundedResponse,
   },
   { id: 'partial', label: 'partial', response: partialResponse },
+  {
+    id: 'ok-jobs-current',
+    label: 'ok — current jobs list',
+    response: okCurrentJobsResponse,
+  },
+  {
+    id: 'partial-jobs-closing',
+    label: 'partial — jobs closing soon',
+    response: partialClosingSoonResponse,
+  },
   {
     id: 'needs-clarification',
     label: 'needs_clarification',

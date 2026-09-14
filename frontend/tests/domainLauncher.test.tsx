@@ -2,8 +2,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DomainLauncher } from '../src/domains/DomainLauncher';
+import {
+  COURSES_DOMAIN,
+  JOBS_DOMAIN,
+  SCHOLARSHIPS_DOMAIN,
+} from '../src/domains/domainConfig';
 import type { DomainLauncherConfig } from '../src/domains/domainConfig';
 import { StarIcon } from '../src/ui/Icon';
+import { isSafeHttpUrl } from '../src/util/safeUrl';
 
 /** A throwaway domain: proves the launcher is config-driven, not Courses-shaped. */
 const DEMO_DOMAIN: DomainLauncherConfig = {
@@ -103,5 +109,98 @@ describe('DomainLauncher', () => {
   it('contains no chat input', () => {
     render(<DomainLauncher config={DEMO_DOMAIN} onSelectQuestion={() => {}} />);
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+  });
+
+  it('renders a long card title and a long resource label without clipping', async () => {
+    const longTitle =
+      'A recommended question whose title is deliberately long enough to wrap onto several lines inside a card at 360px?';
+    const longLabel =
+      'An official resource label long enough to wrap in the compact resources row';
+    const longHref =
+      'https://example.anu.edu.au/a/very/long/path/segment-that-has-no-spaces-and-must-not-widen-the-page/at-all';
+    const config: DomainLauncherConfig = {
+      ...DEMO_DOMAIN,
+      questions: [{ ...DEMO_DOMAIN.questions[0], title: longTitle }],
+      resources: [{ label: longLabel, href: longHref }],
+    };
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    render(<DomainLauncher config={config} onSelectQuestion={onSelect} />);
+
+    const card = screen.getByRole('button', { name: new RegExp(longTitle.slice(0, 30)) });
+    expect(card).toHaveTextContent(longTitle);
+    await user.click(card);
+    expect(onSelect).toHaveBeenCalledWith(DEMO_DOMAIN.questions[0].prompt);
+
+    const link = screen.getByRole('link', { name: longLabel });
+    expect(link).toHaveAttribute('href', longHref);
+  });
+});
+
+/**
+ * The three shipped domains through the one component. Anything that holds
+ * for all three is a property of the shared launcher, not of a page.
+ */
+describe.each([
+  ['Courses', COURSES_DOMAIN],
+  ['Scholarships', SCHOLARSHIPS_DOMAIN],
+  ['Jobs', JOBS_DOMAIN],
+])('DomainLauncher — %s config', (_name, config) => {
+  it('has four cards, each prompt non-empty and distinct', () => {
+    render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
+
+    const cards = within(
+      screen.getByRole('region', { name: 'Recommended questions' }),
+    ).getAllByRole('button');
+    expect(cards).toHaveLength(4);
+    expect(config.questions).toHaveLength(4);
+    const prompts = config.questions.map((q) => q.prompt.trim());
+    expect(prompts.every((p) => p.length > 0)).toBe(true);
+    expect(new Set(prompts).size).toBe(4);
+    expect(new Set(config.questions.map((q) => q.id)).size).toBe(4);
+  });
+
+  it('Tab reaches every card in order, then the official links', async () => {
+    const user = userEvent.setup();
+    render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
+
+    for (const question of config.questions) {
+      await user.tab();
+      expect(document.activeElement).toHaveTextContent(question.title);
+    }
+    for (const resource of config.resources) {
+      await user.tab();
+      expect(document.activeElement).toHaveAttribute('href', resource.href);
+    }
+  });
+
+  it('every official resource is a safe https ANU link that opens in a new tab', () => {
+    render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
+
+    const links = within(
+      screen.getByRole('region', { name: config.resourcesTitle }),
+    ).getAllByRole('link');
+    expect(links).toHaveLength(config.resources.length);
+    for (const link of links) {
+      const href = link.getAttribute('href') ?? '';
+      expect(isSafeHttpUrl(href)).toBe(true);
+      const { protocol, hostname } = new URL(href);
+      expect(protocol).toBe('https:');
+      expect(hostname.endsWith('.anu.edu.au')).toBe(true);
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link.getAttribute('rel')).toContain('noopener');
+    }
+  });
+
+  it('shows no invented data in card copy', () => {
+    render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
+
+    const region = screen.getByRole('region', { name: 'Recommended questions' });
+    expect(within(region).queryByText(/\$[\d,]+/)).not.toBeInTheDocument();
+    expect(
+      within(region).queryByText(
+        /\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i,
+      ),
+    ).not.toBeInTheDocument();
   });
 });

@@ -175,6 +175,111 @@ export const needsScholarshipClarificationResponse: AskResponse = {
   request_id: 'req_mock_scholarship_clarification',
 };
 
+/**
+ * A current-jobs answer: the list-oriented, status-heavy shape the Jobs
+ * domain produces. Order is the server's deterministic order
+ * (`API_CONTRACT.md` `/api/v1/jobs/current`: nearest closing date first,
+ * undated open roles after dated ones) and the App renders it as sent.
+ *
+ * Every role, type, location and date is a placeholder — the years are
+ * deliberately 2099 so nothing here can be mistaken for a real ANU closing
+ * date. Whether a role is open is a server fact carried in the text; the
+ * App does not compute it. Record ids follow the Scholarships pattern
+ * (`<domain>:<kind>:<slug>`) as a stand-in only: the Jobs identity shape is
+ * not frozen yet and the App never parses it.
+ */
+export const okCurrentJobsResponse: AskResponse = {
+  status: 'ok',
+  answer: [
+    'Placeholder list of roles the service reports as currently open, nearest closing date first. Undated open roles are listed last.',
+    '',
+    '1. **Placeholder role A** — closes 1 January 2099 · Placeholder employment type · Placeholder location',
+    '2. **Placeholder role B** — closes 8 January 2099 · Placeholder employment type · Placeholder location',
+    '3. **Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths** — closes 15 January 2099 · Placeholder employment type · Placeholder location',
+    '4. **Placeholder role D** — closes 22 January 2099 · Placeholder employment type',
+    '5. **Placeholder role E** — no closing date listed · Placeholder employment type · Placeholder location',
+    '',
+    'Closing dates are as published by the source at the time of the last collection.',
+  ].join('\n'),
+  items: [],
+  sources: [
+    {
+      record_id: 'jobs:job:placeholder-role-a',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role A',
+      url: 'https://example.invalid/placeholder-job-a',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:placeholder-role-b',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role B',
+      url: 'https://example.invalid/placeholder-job-b',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:placeholder-role-c',
+      source_id: 'anu-jobs',
+      title:
+        'Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths',
+      url: 'https://example.invalid/placeholder-job-c-with-a-deliberately-long-path-segment-that-does-not-break-on-spaces',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:placeholder-role-d',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role D',
+      url: 'https://example.invalid/placeholder-job-d',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:placeholder-role-e',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role E',
+      url: 'https://example.invalid/placeholder-job-e',
+      domain: 'jobs',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_jobs_current',
+};
+
+/**
+ * A closing-soon answer the service could only partly ground: the roles it
+ * can date are listed, and its own text says what it could not confirm. As
+ * with `partialResponse`, the App adds no "partial" semantic of its own.
+ */
+export const partialClosingSoonResponse: AskResponse = {
+  status: 'partial',
+  answer: [
+    'Placeholder roles with the nearest published closing dates:',
+    '',
+    '1. **Placeholder role A** — closes 1 January 2099',
+    '2. **Placeholder role B** — closes 8 January 2099',
+    '',
+    'One further open role lists no closing date, so it cannot be placed in this order. Check the source page for the latest closing information.',
+  ].join('\n'),
+  items: [],
+  sources: [
+    {
+      record_id: 'jobs:job:placeholder-role-a',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role A',
+      url: 'https://example.invalid/placeholder-job-a',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:placeholder-role-b',
+      source_id: 'anu-jobs',
+      title: 'Placeholder role B',
+      url: 'https://example.invalid/placeholder-job-b',
+      domain: 'jobs',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_jobs_closing_partial',
+};
+
 export const insufficientEvidenceResponse: AskResponse = {
   status: 'insufficient_evidence',
   answer:
