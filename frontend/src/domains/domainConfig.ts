@@ -202,6 +202,12 @@ export const SCHOLARSHIPS_DOMAIN: DomainLauncherConfig = {
  * roles live at `https://jobs.anu.edu.au/jobs/<slug>` and arrive only as
  * evidence URLs in `sources[]`; the App never constructs a job record URL
  * or ID.
+ *
+ * Jobs v1 identity is frozen cross-repo (`source_id = jobs_anu_search`,
+ * `record_id = jobs:job:<numeric requisition id>`, canonical URL the exact
+ * `https://jobs.anu.edu.au/jobs/<slug>` above). The App treats both ids as
+ * opaque backend data — it does not construct, derive, parse or validate
+ * them; see `mocks/askResponses.ts` for the fixture shape.
  */
 export const JOBS_DOMAIN: DomainLauncherConfig = {
   id: 'jobs',

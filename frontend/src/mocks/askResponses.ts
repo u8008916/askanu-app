@@ -184,9 +184,13 @@ export const needsScholarshipClarificationResponse: AskResponse = {
  * Every role, type, location and date is a placeholder — the years are
  * deliberately 2099 so nothing here can be mistaken for a real ANU closing
  * date. Whether a role is open is a server fact carried in the text; the
- * App does not compute it. Record ids follow the Scholarships pattern
- * (`<domain>:<kind>:<slug>`) as a stand-in only: the Jobs identity shape is
- * not frozen yet and the App never parses it.
+ * App does not compute it.
+ *
+ * Jobs v1 uses numeric requisition identity, frozen cross-repo on Day 10:
+ * `source_id = jobs_anu_search`, `record_id = jobs:job:<numeric requisition
+ * id>`. Mock ids below are synthetic numeric values only, not real ANU
+ * requisition numbers. The App treats both as opaque backend data — it does
+ * not derive, parse or validate them.
  */
 export const okCurrentJobsResponse: AskResponse = {
   status: 'ok',
@@ -204,37 +208,37 @@ export const okCurrentJobsResponse: AskResponse = {
   items: [],
   sources: [
     {
-      record_id: 'jobs:job:placeholder-role-a',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900001',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role A',
       url: 'https://example.invalid/placeholder-job-a',
       domain: 'jobs',
     },
     {
-      record_id: 'jobs:job:placeholder-role-b',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900002',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role B',
       url: 'https://example.invalid/placeholder-job-b',
       domain: 'jobs',
     },
     {
-      record_id: 'jobs:job:placeholder-role-c',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900003',
+      source_id: 'jobs_anu_search',
       title:
         'Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths',
       url: 'https://example.invalid/placeholder-job-c-with-a-deliberately-long-path-segment-that-does-not-break-on-spaces',
       domain: 'jobs',
     },
     {
-      record_id: 'jobs:job:placeholder-role-d',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900004',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role D',
       url: 'https://example.invalid/placeholder-job-d',
       domain: 'jobs',
     },
     {
-      record_id: 'jobs:job:placeholder-role-e',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900005',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role E',
       url: 'https://example.invalid/placeholder-job-e',
       domain: 'jobs',
@@ -262,15 +266,15 @@ export const partialClosingSoonResponse: AskResponse = {
   items: [],
   sources: [
     {
-      record_id: 'jobs:job:placeholder-role-a',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900001',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role A',
       url: 'https://example.invalid/placeholder-job-a',
       domain: 'jobs',
     },
     {
-      record_id: 'jobs:job:placeholder-role-b',
-      source_id: 'anu-jobs',
+      record_id: 'jobs:job:900002',
+      source_id: 'jobs_anu_search',
       title: 'Placeholder role B',
       url: 'https://example.invalid/placeholder-job-b',
       domain: 'jobs',

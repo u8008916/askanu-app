@@ -58,14 +58,28 @@ off-domain were deliberately left out of the compact list.
 | Navigation / resource | the three links above, static in `domainConfig.ts` | **No** — trusted official escape hatches, no slug, no `record_id` |
 | Evidence / source | `https://jobs.anu.edu.au/jobs/<slug>` in `/api/v1/ask` `sources[]` | **Yes** — Scraper/RAG enforce it |
 
-**Open checkpoint:** unlike Scholarships (Day 9), no Jobs identity/status
-contract (`source_id`, `entity_id`, `record_id` shape, open/closed rule) is
-frozen in this repo yet. The fixture `record_id`s use the Day 9 pattern
-(`jobs:job:<slug>`) as a placeholder only; the App never parses them. This
-is the "coordinate current/closed status semantics with Carmen" dependency
-from the day plan — App work proceeded on `API_CONTRACT.md` alone (server
-computes current/open and `closing_at` order; client renders as sent) and
-this line is here so the checkpoint is not silently skipped.
+**Jobs v1 identity — frozen cross-repo (updated after Qasim's Day 10 review,
+PR #30):**
+
+```
+domain        = jobs
+source_id     = jobs_anu_search
+entity_id     = numeric public requisition ID, represented as a string
+record_id     = jobs:job:<entity_id>
+canonical_url = exact public https://jobs.anu.edu.au/jobs/<slug>
+```
+
+The App treats `source_id` and `record_id` as opaque backend data. It does
+not construct, derive, parse or validate either — it only ever passes them
+through (`types/api.ts`, `chat/SourceCards.tsx`), same as the Scholarships
+boundary from Day 9. Mock fixtures were updated to synthetic numeric ids
+(`jobs:job:900001` …) matching this shape; see §5a and §7.
+
+Current/closed status and closing-date ordering remain entirely
+backend-owned (Scraper collects and normalises, RAG serves the deterministic
+order). The App's job is unchanged by this freeze: render the server answer,
+render server source cards, never infer current/closed, never re-sort
+results, never turn a date/time field into a new status claim.
 
 ---
 
@@ -154,6 +168,7 @@ roles (one <ol>, server order):
   5. Placeholder role E — no closing date listed · …
 sources: 5 links, all domain "jobs", each card 736px wide (no overflow)
   #3 href is a 100+ char single-token URL; title wraps inside the card
+  record_id jobs:job:900001..900005, source_id jobs_anu_search (Jobs v1 shape, §1a)
 chat column width: 824px; document scrollWidth: 1280
 ```
 
@@ -245,6 +260,16 @@ plus one long-title / long-label / long-URL case on the throwaway domain.
 - `sourceCards.test.tsx › renders a five-role jobs list in full, long
   title and long URL included` pins that the full title text is present.
 
+### Mock identity consistency (new after Qasim's review)
+
+`jobsPage.test.tsx › mock job sources match the frozen Jobs v1 identity
+shape` iterates every Jobs mock source (`okCurrentJobsResponse` +
+`partialClosingSoonResponse`) and pins `domain === 'jobs'`,
+`source_id === 'jobs_anu_search'`, `record_id` matching `^jobs:job:\d+$`,
+and the URL host staying `example.invalid`. This catches any drift back
+toward the pre-freeze slug placeholders; it does not add id parsing to the
+App.
+
 ---
 
 ## 7. Automated tests and build
@@ -252,18 +277,19 @@ plus one long-title / long-label / long-URL case on the throwaway domain.
 ```
 $ cd frontend && npx vitest run
  Test Files  14 passed (14)
-      Tests  163 passed (163)
+      Tests  164 passed (164)
 
 $ npm run build          # tsc --noEmit && vite build
 dist/assets/index-BR8WAt9k.js   266.50 kB │ gzip: 85.36 kB
-✓ built in 1.34s
+✓ built in 1.38s
 ```
 
-135 (Day 9) → 163 (+28): 12 new in `jobsPage.test.tsx`; 2 new in
-`navigation.test.tsx` (routes to Jobs; opens Jobs from its own URL) and the
-"unbuilt domains" test narrowed 4 → 3 with the nav link count 3 → 4; 13 new
-in `domainLauncher.test.tsx` (1 long-content case + 4 × 3 domains); 1 new in
-`sourceCards.test.tsx`.
+135 (Day 9) → 164 (+29): 13 new in `jobsPage.test.tsx` (12 from the original
+pass + 1 mock-identity-consistency test added after Qasim's review, §6); 2
+new in `navigation.test.tsx` (routes to Jobs; opens Jobs from its own URL)
+and the "unbuilt domains" test narrowed 4 → 3 with the nav link count 3 → 4;
+13 new in `domainLauncher.test.tsx` (1 long-content case + 4 × 3 domains); 1
+new in `sourceCards.test.tsx`.
 
 ---
 
@@ -285,7 +311,7 @@ in `domainLauncher.test.tsx` (1 long-content case + 4 × 3 domains); 1 new in
 |---|---|---|
 | 1 | Jobs page uses shared pattern and no-scroll desktop target | PASS — same `DomainLauncher`, 672/672 at 1280×720 (§3) |
 | 2 | Guided cards route correctly and chat renders current-job lists/source cards | PASS — hand-off measured (§4); five-role list + five `jobs` source cards rendered in server order with every closing date intact, desktop and mobile (§5) |
-| 3 | Three-domain regression passes | PASS — 163/163 incl. `describe.each` over the three configs; all three routes 672/672 in the browser (§3, §6) |
+| 3 | Three-domain regression passes | PASS — 164/164 incl. `describe.each` over the three configs; all three routes 672/672 in the browser (§3, §6) |
 
 ### Not in scope (deferred, per today's "Do not / escalate")
 
@@ -305,12 +331,26 @@ in `domainLauncher.test.tsx` (1 long-content case + 4 × 3 domains); 1 new in
 ## 10. Qasim integration checkpoint
 
 Per today's plan: **Jobs gate + scheduler/freshness decision.** No shared
-contract/source/schema/cloud change was made in this PR. Two items are
-recorded here for the checkpoint rather than resolved silently:
+contract/source/schema/cloud change was made in this PR.
 
-1. **Jobs identity/status contract** is not yet frozen in this repo (§1a);
-   fixture ids are placeholders the App never parses.
-2. **Freshness** — the current-jobs fixture text says closing dates are "as
-   published by the source at the time of the last collection". Whether the
-   real answer should carry a collected-at line is a backend/PM decision;
-   the App will render whatever text is sent and adds no claim of its own.
+**Update (post-review, PR #30):** Qasim confirmed Jobs v1 identity frozen
+cross-repo (§1a) and requested the App's mocks/comments/evidence be brought
+in line so they stop encoding pre-freeze uncertainty. Done in this pass:
+
+1. Mock `source_id` changed `anu-jobs` → `jobs_anu_search`; mock `record_id`
+   changed from slug placeholders (`jobs:job:placeholder-role-a`) to
+   synthetic numeric ids (`jobs:job:900001`…`900005`) matching the frozen
+   `jobs:job:<entity_id>` shape.
+2. Stale "identity not frozen yet" comments in `mocks/askResponses.ts` and
+   `domains/domainConfig.ts` replaced with the frozen contract and the
+   App's opaque-id treatment of it.
+3. This doc's §1a rewritten from "open checkpoint" to the frozen contract.
+4. New fixture-consistency test (§6) pins the mock shape going forward.
+5. `example.invalid` mock URLs and all UI/App behaviour are unchanged — this
+   was a documentation/fixture-only cleanup, no logic change.
+
+**Still open:** **Freshness** — the current-jobs fixture text says closing
+dates are "as published by the source at the time of the last collection".
+Whether the real answer should carry a collected-at line is a backend/PM
+decision; the App will render whatever text is sent and adds no claim of
+its own.

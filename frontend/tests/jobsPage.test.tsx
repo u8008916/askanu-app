@@ -284,4 +284,26 @@ describe('Jobs guided-domain page', () => {
     expect(screen.queryByRole('region', { name: 'Sources' })).not.toBeInTheDocument();
     expect(screen.queryByText(/Placeholder role/)).not.toBeInTheDocument();
   });
+
+  /**
+   * Jobs v1 identity is frozen cross-repo: `source_id = jobs_anu_search`,
+   * `record_id = jobs:job:<numeric requisition id>`. The App never parses
+   * either value, but pinning the fixture shape here catches mock drift
+   * back toward the pre-freeze slug placeholders.
+   */
+  it('mock job sources match the frozen Jobs v1 identity shape', () => {
+    const allJobSources = [
+      ...okCurrentJobsResponse.sources,
+      ...partialClosingSoonResponse.sources,
+    ];
+    expect(allJobSources.length).toBeGreaterThan(0);
+
+    for (const source of allJobSources) {
+      expect(source.domain).toBe('jobs');
+      expect(source.source_id).toBe('jobs_anu_search');
+      expect(source.record_id).toMatch(/^jobs:job:\d+$/);
+      // Mock source URLs stay on example.invalid, never a real-looking ANU URL.
+      expect(new URL(source.url).hostname).toBe('example.invalid');
+    }
+  });
 });
