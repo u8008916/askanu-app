@@ -3,6 +3,7 @@ import {
   CalendarCheckIcon,
   CoursesIcon,
   DocumentIcon,
+  JobsIcon,
   PersonIcon,
   ScholarshipsIcon,
   SearchIcon,
@@ -181,4 +182,83 @@ export const SCHOLARSHIPS_DOMAIN: DomainLauncherConfig = {
     },
   ],
   resourcesNote: 'These links open study.anu.edu.au in a new tab.',
+};
+
+/**
+ * Jobs.
+ *
+ * V3 names ANU Jobs as the approved source. All three URLs below were opened
+ * on Day 10 and returned HTTP 200, reached from ANU's own navigation
+ * (`www.anu.edu.au/jobs` → "Search Jobs" → `jobs.anu.edu.au/jobs/search`,
+ * the listing the scraper collects from). See
+ * docs/evidence/DAY_10_JOBS_PAGE.md.
+ *
+ * Card copy is a guided intent, not an answer: no role title, closing date
+ * or open/closed claim is hard-coded here. Whether a role is current is a
+ * server fact (`/api/v1/jobs/current` in API_CONTRACT.md); the App displays
+ * what it is sent and never infers it.
+ *
+ * The resources are navigation escape hatches, not job records. Individual
+ * roles live at `https://jobs.anu.edu.au/jobs/<slug>` and arrive only as
+ * evidence URLs in `sources[]`; the App never constructs a job record URL
+ * or ID.
+ *
+ * Jobs v1 identity is frozen cross-repo (`source_id = jobs_anu_search`,
+ * `record_id = jobs:job:<numeric requisition id>`, canonical URL the exact
+ * `https://jobs.anu.edu.au/jobs/<slug>` above). The App treats both ids as
+ * opaque backend data — it does not construct, derive, parse or validate
+ * them; see `mocks/askResponses.ts` for the fixture shape.
+ */
+export const JOBS_DOMAIN: DomainLauncherConfig = {
+  id: 'jobs',
+  title: 'Jobs',
+  intro:
+    'Get help finding and understanding current ANU jobs through AskANU. Choose a question below to start a chat, or explore official resources.',
+  Icon: JobsIcon,
+  questions: [
+    {
+      id: 'current-jobs',
+      title: 'Find current ANU jobs',
+      description: 'See roles that are open right now, closest closing date first.',
+      prompt: 'What ANU jobs are currently open?',
+      Icon: SearchIcon,
+    },
+    {
+      id: 'jobs-for-background',
+      title: 'Jobs for my background or degree',
+      description: 'Find current roles that could fit your study or experience.',
+      prompt: 'Which current ANU jobs suit my background or degree?',
+      Icon: PersonIcon,
+    },
+    {
+      id: 'closing-soon',
+      title: 'Closing soon',
+      description: 'Check which current roles close next and when.',
+      prompt: 'Which ANU jobs are closing soon?',
+      Icon: CalendarCheckIcon,
+    },
+    {
+      id: 'job-requirements',
+      title: 'Job requirements',
+      description: 'Find out what a role asks for before you apply.',
+      prompt: 'What are the requirements for this ANU job?',
+      Icon: DocumentIcon,
+    },
+  ],
+  resourcesTitle: 'Official ANU jobs search and navigation',
+  resources: [
+    {
+      label: 'Search ANU Jobs',
+      href: 'https://jobs.anu.edu.au/jobs/search',
+    },
+    {
+      label: 'Jobs at ANU',
+      href: 'https://www.anu.edu.au/jobs',
+    },
+    {
+      label: 'Applying for a position at ANU',
+      href: 'https://www.anu.edu.au/jobs/applying-for-a-position-at-anu',
+    },
+  ],
+  resourcesNote: 'These links open jobs.anu.edu.au and anu.edu.au in a new tab.',
 };

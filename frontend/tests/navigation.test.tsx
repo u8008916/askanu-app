@@ -32,17 +32,42 @@ describe('resource navigation', () => {
     expect(window.location.pathname).toBe('/courses');
   });
 
-  it('leaves the four unbuilt domains non-navigating', async () => {
+  it('leaves the three unbuilt domains non-navigating', async () => {
     render(<App />);
     const nav = explore();
 
-    for (const label of ['Accommodation', 'Jobs', 'Events', 'Support Services']) {
+    for (const label of ['Accommodation', 'Events', 'Support Services']) {
       const item = within(nav).getByRole('button', { name: label });
       expect(item).toHaveAttribute('aria-disabled', 'true');
       expect(item).not.toHaveAttribute('href');
     }
-    // Only the three built routes are links.
-    expect(within(nav).getAllByRole('link')).toHaveLength(3);
+    // Home plus the three built domains are links.
+    expect(within(nav).getAllByRole('link')).toHaveLength(4);
+  });
+
+  it('routes to Jobs and moves the current-page marker', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(within(explore()).getByRole('link', { name: 'Jobs' }));
+
+    await waitFor(() =>
+      expect(within(explore()).getByRole('link', { name: 'Jobs' })).toHaveAttribute(
+        'aria-current',
+        'page',
+      ),
+    );
+    expect(
+      within(explore()).getByRole('link', { name: 'Home' }),
+    ).not.toHaveAttribute('aria-current');
+    expect(window.location.pathname).toBe('/jobs');
+  });
+
+  it('opens Jobs directly from its own URL', async () => {
+    window.history.replaceState({}, '', '/jobs');
+    render(<App />);
+
+    expect(screen.getByRole('heading', { level: 1, name: /Jobs/ })).toBeInTheDocument();
   });
 
   it('routes to Scholarships and moves the current-page marker', async () => {

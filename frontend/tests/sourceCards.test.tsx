@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { SourceCards } from '../src/chat/SourceCards';
-import { hostileStringsResponse, okMultiSourceResponse } from '../src/mocks/askResponses';
+import {
+  hostileStringsResponse,
+  okCurrentJobsResponse,
+  okMultiSourceResponse,
+} from '../src/mocks/askResponses';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
 import type { Source } from '../src/types/api';
 
@@ -60,6 +64,20 @@ describe('source cards', () => {
     expect(
       screen.getByText('Record whose stored URL is not a web address'),
     ).toBeInTheDocument();
+  });
+
+  it('renders a five-role jobs list in full, long title and long URL included', () => {
+    render(<SourceCards sources={okCurrentJobsResponse.sources} />);
+
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(5);
+    links.forEach((link, index) => {
+      const source = okCurrentJobsResponse.sources[index];
+      // Title text is complete, never clipped to fit the card.
+      expect(link).toHaveTextContent(source.title);
+      expect(link).toHaveAttribute('href', source.url);
+      expect(link).toHaveTextContent('jobs');
+    });
   });
 
   it('does not reorder evidence', () => {
