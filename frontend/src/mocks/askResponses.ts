@@ -79,7 +79,8 @@ export const okManySourcesResponse: AskResponse = {
   answer:
     'Placeholder answer drawing on a broad set of scholarship records, the shape a 99%-coverage search returns rather than a one-record demo.',
   items: [],
-  sources: Array.from({ length: 14 }, (_, index) => ({
+  // Annotated pure so a production build can still drop this module entirely.
+  sources: /* @__PURE__ */ Array.from({ length: 14 }, (_, index) => ({
     record_id: `scholarships:scholarship:placeholder-${index + 1}`,
     source_id: 'scholarships_anu_finder',
     title: `Placeholder scholarship record ${index + 1}`,

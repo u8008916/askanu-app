@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { setMockScenarioId } from '../src/dev/mockTransport';
+import { feedsSettled, isSanctionedAnchor } from './helpers';
 
 /**
  * SECURITY_BASELINE.md: user input, model output and stored source text are all
@@ -62,16 +63,18 @@ describe('safe rendering', () => {
       expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
     );
 
+    await feedsSettled();
     const explore = screen.getByRole('navigation', { name: 'Explore' });
 
     /*
-     * The `Explore` nav renders in-app route links, which are relative by
-     * design. Every *outbound* anchor — the only kind that can carry untrusted
-     * data — must still be http(s).
+     * In-app route links (the `Explore` nav and a panel's `View all`) are
+     * relative by design. Every *outbound* anchor — the only kind that can
+     * carry untrusted data, whether from a source card or a list panel — must
+     * still be http(s).
      */
     for (const anchor of container.querySelectorAll('a')) {
       const href = anchor.getAttribute('href') ?? '';
-      if (explore.contains(anchor)) {
+      if (explore.contains(anchor) || anchor.textContent === 'View all') {
         expect(href).toMatch(/^\//);
         continue;
       }
@@ -152,15 +155,14 @@ describe('safe rendering', () => {
     );
 
     /*
-     * The provenance invariant: links come from stored source records only.
-     * Every anchor on screen must sit inside the source block, so nothing in the
-     * answer body can send a student anywhere.
+     * The provenance invariant: links come from stored records only — the
+     * answer's source block, or the list panels, which render stored job/event
+     * records. Every anchor on screen must sit in one of those or in a static
+     * in-app route, so nothing in the answer body can send a student anywhere.
      */
-    const sources = screen.getByRole('region', { name: 'Sources' });
-    const explore = screen.getByRole('navigation', { name: 'Explore' });
+    await feedsSettled();
     for (const anchor of container.querySelectorAll('a')) {
-      // Either evidence provenance, or a static in-app route. Never the answer.
-      expect(sources.contains(anchor) || explore.contains(anchor)).toBe(true);
+      expect(isSanctionedAnchor(anchor)).toBe(true);
     }
   });
   /*

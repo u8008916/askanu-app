@@ -9,6 +9,7 @@ import {
   partialClosingSoonResponse,
 } from '../src/mocks/askResponses';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
+import { chatColumn, feedsSettled } from './helpers';
 
 /** Open the Jobs page the way a student does: through the Explore nav. */
 async function openJobs(user: ReturnType<typeof userEvent.setup>) {
@@ -103,14 +104,18 @@ describe('Jobs guided-domain page', () => {
     const user = userEvent.setup();
     render(<App />);
     await openJobs(user);
+    // The rail's Current Jobs panel legitimately shows server-sent roles and
+    // closing wording; the launcher column itself must carry none.
+    await feedsSettled();
+    const page = within(chatColumn());
 
     // No closing date, salary or named role appears as data: whether a job is
     // open, and when it closes, are server facts the App never infers.
-    expect(screen.queryByText(/\$[\d,]+/)).not.toBeInTheDocument();
+    expect(page.queryByText(/\$[\d,]+/)).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i),
+      page.queryByText(/\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i),
     ).not.toBeInTheDocument();
-    expect(screen.queryByText(/Placeholder role/)).not.toBeInTheDocument();
+    expect(page.queryByText(/Placeholder role/)).not.toBeInTheDocument();
   });
 
   it('card click returns to the chat and prefills without sending', async () => {
@@ -282,7 +287,10 @@ describe('Jobs guided-domain page', () => {
 
     expect(await screen.findByText('Not enough evidence to answer')).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Sources' })).not.toBeInTheDocument();
-    expect(screen.queryByText(/Placeholder role/)).not.toBeInTheDocument();
+    // The abstention adds no roles to the conversation; the rail's panel is
+    // server data and out of scope here.
+    const conversation = screen.getByRole('list', { name: 'Conversation' });
+    expect(within(conversation).queryByText(/Placeholder role/)).not.toBeInTheDocument();
   });
 
   /**

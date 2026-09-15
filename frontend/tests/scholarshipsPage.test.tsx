@@ -5,6 +5,7 @@ import { App } from '../src/App';
 import { SCHOLARSHIPS_DOMAIN } from '../src/domains/domainConfig';
 import { setMockScenarioId } from '../src/dev/mockTransport';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
+import { chatColumn, feedsSettled } from './helpers';
 
 /** Open the Scholarships page the way a student does: through the Explore nav. */
 async function openScholarships(user: ReturnType<typeof userEvent.setup>) {
@@ -88,14 +89,17 @@ describe('Scholarships guided-domain page', () => {
     const user = userEvent.setup();
     render(<App />);
     await openScholarships(user);
+    await feedsSettled();
+    const page = within(chatColumn());
 
     // No dollar value, percentage, closing date or named scholarship appears
     // as data — only the API/backend may supply that fact
-    // (CONVERSATION_CONTRACT Scholarships).
-    expect(screen.queryByText(/\$[\d,]+/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/\d+%/)).not.toBeInTheDocument();
+    // (CONVERSATION_CONTRACT Scholarships). Scoped to the launcher column:
+    // the rail's Current Jobs panel legitimately shows server closing dates.
+    expect(page.queryByText(/\$[\d,]+/)).not.toBeInTheDocument();
+    expect(page.queryByText(/\d+%/)).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i),
+      page.queryByText(/\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i),
     ).not.toBeInTheDocument();
   });
 

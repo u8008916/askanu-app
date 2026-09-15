@@ -32,9 +32,13 @@ export const REQUEST_TIMEOUT_MS = 35_000;
  * what App-service hosting will serve later; an absolute value points the
  * browser straight at the boundary instead.
  */
-export function askEndpoint(): string {
+export function apiEndpoint(path: string): string {
   const base = (import.meta.env.VITE_API_BASE_URL ?? '').trim().replace(/\/+$/, '');
-  return base === '' ? ASK_PATH : `${base}${ASK_PATH}`;
+  return base === '' ? path : `${base}${path}`;
+}
+
+export function askEndpoint(): string {
+  return apiEndpoint(ASK_PATH);
 }
 
 class AskTransportError extends Error {

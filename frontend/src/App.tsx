@@ -9,6 +9,7 @@ import { useIsDesktop } from './layout/useIsDesktop';
 import { CoursesPage } from './pages/CoursesPage';
 import { JobsPage } from './pages/JobsPage';
 import { ScholarshipsPage } from './pages/ScholarshipsPage';
+import { FeedsProvider } from './resources/FeedsProvider';
 import { useTheme } from './theme/useTheme';
 import styles from './App.module.css';
 
@@ -123,11 +124,17 @@ function AppShell() {
  * desktop resource rail and the mobile drawer are constant, which is what keeps
  * the confirmed V3 layout and the current-session chat state intact across
  * navigation.
+ *
+ * `FeedsProvider` sits at the same level for the same reason: the two list
+ * panels are fetched once per page load and shared by every place
+ * `ResourceCards` is mounted.
  */
 export function App() {
   return (
     <BrowserRouter>
-      <AppShell />
+      <FeedsProvider>
+        <AppShell />
+      </FeedsProvider>
     </BrowserRouter>
   );
 }
