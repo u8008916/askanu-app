@@ -74,11 +74,16 @@ export interface AskRequest {
 /*
  * Events and jobs list endpoints.
  *
- * API_CONTRACT.md notes that the angle-bracket sample values are illustrative
- * and that exact field types/nullability are Day 2 data-schema work. The
- * day-by-day tasks describe the descriptive fields as present "where
- * available", so they are modelled as nullable here and will be confirmed
- * against the shared schema on Day 2.
+ * `JobItem` is the reviewed shape the RAG service ships for
+ * `GET /api/v1/jobs/current` (askanu-rag `docs/API_CONTRACT.md`, Day 10 PR #22;
+ * synced into this repo's `docs/API_CONTRACT.md` on Day 11). Every descriptive
+ * field is nullable and `employment_types` may be empty — the App displays what
+ * is present and never fills a gap. `status` is the server's currentness
+ * verdict; the App does not compute it.
+ *
+ * `EventItem` still follows this repo's contract: the RAG service does not
+ * serve `/api/v1/events/upcoming` until the Events build day, so its exact
+ * field nullability is confirmed then.
  */
 
 export interface EventItem {
@@ -96,10 +101,18 @@ export interface EventItem {
 export interface JobItem {
   record_id: string;
   source_id: string;
+  job_id: string;
   title: string;
-  employment_type: string | null;
+  employment_types: string[];
   location: string | null;
+  classification: string | null;
+  salary: string | null;
+  /** The closing wording as published, e.g. "Closes 8 January 2099". */
+  closing_text: string | null;
+  /** Canberra-local `YYYY-MM-DD`. */
+  closing_date: string | null;
   closing_at: string | null;
+  status: 'current';
   url: string;
   domain: 'jobs';
 }

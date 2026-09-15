@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { COURSES_DOMAIN } from '../src/domains/domainConfig';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
+import { chatColumn, feedsSettled } from './helpers';
 
 /** Open the Courses page the way a student does: through the Explore nav. */
 async function openCourses(user: ReturnType<typeof userEvent.setup>) {
@@ -85,10 +86,12 @@ describe('Courses guided-domain page', () => {
     const user = userEvent.setup();
     render(<App />);
     await openCourses(user);
+    await feedsSettled();
+    const page = within(chatColumn());
 
     // No course code, session, unit value or requirement appears as data.
-    expect(screen.queryByText(/COMP\d{4}/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/\b(units?|semester|session)\b/i)).not.toBeInTheDocument();
+    expect(page.queryByText(/COMP\d{4}/)).not.toBeInTheDocument();
+    expect(page.queryByText(/\b(units?|semester|session)\b/i)).not.toBeInTheDocument();
   });
 
   it('card click returns to the chat and prefills without sending', async () => {

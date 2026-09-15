@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { MOCK_SCENARIOS } from '../src/dev/mockTransport';
+import { needsClarificationManyOptionsResponse } from '../src/mocks/askResponses';
 import type { AskResponse, AskStatus } from '../src/types/api';
 
 /** The turn is an <li>; give it the list its markup expects. */
@@ -78,6 +79,30 @@ describe('AssistantTurn', () => {
     expect(
       screen.getByText(/Reply in the message box/),
     ).toBeInTheDocument();
+  });
+
+  /*
+   * Day 11 V6 breadth audit: every earlier clarification fixture used exactly
+   * two options. A broad course-catalogue search can plausibly match many
+   * similarly-named courses, so the read-only option list must show every
+   * option the service sends, in order, not a two-item assumption baked into
+   * the component.
+   */
+  it('lists every option for a broad clarification, in contract order', () => {
+    renderTurn(needsClarificationManyOptionsResponse);
+
+    const options = within(
+      screen.getByRole('list', { name: 'Clarification options' }),
+    ).getAllByRole('listitem');
+    expect(options).toHaveLength(
+      needsClarificationManyOptionsResponse.clarification!.options.length,
+    );
+    expect(options.length).toBeGreaterThan(2);
+    options.forEach((option, index) => {
+      expect(option).toHaveTextContent(
+        needsClarificationManyOptionsResponse.clarification!.options[index].label,
+      );
+    });
   });
 
   it.each(['insufficient', 'off-topic'] as const)(

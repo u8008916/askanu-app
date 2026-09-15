@@ -5,12 +5,16 @@ import { createMetadataTokenProvider, noAuthProvider } from './auth.js';
 /**
  * The thin App integration boundary.
  *
- * Two responsibilities, and deliberately no third:
+ * Three responsibilities, and deliberately no fourth:
  *
- *   GET  /health        liveness for Cloud Run and for the Day 6 health-level
- *                       App -> RAG deployment check
- *   POST /api/v1/ask    forward to RAG, authenticated as the App's runtime
- *                       service account, and return its answer untouched
+ *   GET  /health                    liveness for Cloud Run and for the Day 6
+ *                                   health-level App -> RAG deployment check
+ *   POST /api/v1/ask                forward to RAG, authenticated as the App's
+ *                                   runtime service account, and return its
+ *                                   answer untouched
+ *   GET  /api/v1/jobs/current       the two deterministic list endpoints from
+ *   GET  /api/v1/events/upcoming    API_CONTRACT.md, forwarded the same way
+ *                                   with only `limit` carried upstream
  *
  * It is a pass-through, not a second opinion. API_CONTRACT.md:188-189 states
  * source URLs come programmatically from stored records; if this service
@@ -49,6 +53,24 @@ export const MAX_BODY_BYTES = 64 * 1024;
 export const UPSTREAM_TIMEOUT_MS = 32_000;
 
 const ASK_PATH = '/api/v1/ask';
+
+/**
+ * API_CONTRACT.md `GET /api/v1/jobs/current` and `GET /api/v1/events/upcoming`.
+ * Keyed by path so the router can look a route up and tag its log lines.
+ */
+const LIST_ROUTES = new Map([
+  ['/api/v1/jobs/current', 'jobs_current'],
+  ['/api/v1/events/upcoming', 'events_upcoming'],
+]);
+
+/**
+ * The one query parameter the list contract defines. Both endpoints document
+ * `?limit=N` with an upstream-validated range, so it is forwarded when it is a
+ * short positive integer and nothing else from the browser's query string is.
+ * RAG still owns the accepted range; this only keeps arbitrary parameters from
+ * being relayed to a private service.
+ */
+const LIMIT_PATTERN = /^\d{1,3}$/;
 
 class PayloadTooLargeError extends Error {}
 
@@ -185,11 +207,8 @@ function readBody(req) {
 }
 
 /**
- * Forwards one `/api/v1/ask` request.
- *
- * App -> RAG service-to-service authentication (QASIM_CROSS_REPO_TASKS.md:116-119)
- * is one extra header on the `fetch` below and nothing else, which is why the
- * outbound call is kept in a single place.
+ * Forwards one `/api/v1/ask` request: read and cap the body, then hand it to
+ * the shared upstream call.
  */
 async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
   let body;
@@ -214,6 +233,52 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
     return;
   }
 
+  await proxyUpstream(res, {
+    event: 'ask',
+    method: 'POST',
+    url: config.askUrl,
+    body,
+    getIdToken,
+    requestId,
+    startedAt,
+  });
+}
+
+/**
+ * Forwards one list request (`/api/v1/jobs/current`, `/api/v1/events/upcoming`).
+ *
+ * No request body to read, so the only client input that reaches RAG is a
+ * validated `limit`. The response is passed through byte for byte like `/ask`:
+ * item order is the contract's deterministic order and every `url` is a stored
+ * canonical URL, and neither survives a boundary that reshapes the envelope.
+ */
+function forwardList(req, res, config, getIdToken, requestId, startedAt, path, event) {
+  const query = new URL(req.url ?? '/', 'http://localhost').searchParams;
+  const limit = query.get('limit');
+  const upstreamUrl =
+    limit !== null && LIMIT_PATTERN.test(limit)
+      ? `${config.ragServiceUrl}${path}?limit=${limit}`
+      : `${config.ragServiceUrl}${path}`;
+
+  return proxyUpstream(res, {
+    event,
+    method: 'GET',
+    url: upstreamUrl,
+    body: undefined,
+    getIdToken,
+    requestId,
+    startedAt,
+  });
+}
+
+/**
+ * The single outbound call to RAG, shared by `/ask` and the list routes.
+ *
+ * App -> RAG service-to-service authentication (QASIM_CROSS_REPO_TASKS.md:116-119)
+ * is one extra header on the `fetch` below and nothing else, which is why every
+ * upstream request goes through this one function.
+ */
+async function proxyUpstream(res, { event, method, url, body, getIdToken, requestId, startedAt }) {
   /*
    * Obtained before the upstream timer starts so token acquisition has its own
    * budget (auth.js) and cannot eat into RAG's. A failure here is the App's own
@@ -226,7 +291,7 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
     token = await getIdToken();
   } catch {
     log({
-      event: 'ask',
+      event,
       request_id: requestId,
       status: 502,
       reason: 'token_unavailable',
@@ -256,17 +321,18 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
      *     — the envelope passes through untouched, so the `request_id` the
      *     student sees is RAG's. The link has to be made in the logs.
      */
-    const upstreamHeaders = {
-      'Content-Type': 'application/json',
-      'X-Request-Id': requestId,
-    };
+    const upstreamHeaders = { 'X-Request-Id': requestId };
+
+    if (body !== undefined) {
+      upstreamHeaders['Content-Type'] = 'application/json';
+    }
 
     if (token !== null) {
       upstreamHeaders.Authorization = `Bearer ${token}`;
     }
 
-    const upstream = await fetch(config.askUrl, {
-      method: 'POST',
+    const upstream = await fetch(url, {
+      method,
       headers: upstreamHeaders,
       body,
       signal: controller.signal,
@@ -283,7 +349,7 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
     if (upstream.status === 401 || upstream.status === 403) {
       await upstream.arrayBuffer();
       log({
-        event: 'ask',
+        event,
         request_id: requestId,
         status: 502,
         upstream_status: upstream.status,
@@ -311,7 +377,7 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
     res.end(upstreamBody);
 
     log({
-      event: 'ask',
+      event,
       request_id: requestId,
       status: upstream.status,
       upstream_status: upstream.status,
@@ -328,7 +394,7 @@ async function forwardAsk(req, res, config, getIdToken, requestId, startedAt) {
     const timedOut = error && error.name === 'AbortError';
 
     log({
-      event: 'ask',
+      event,
       request_id: requestId,
       status: 502,
       reason: timedOut ? 'upstream_timeout' : 'upstream_unreachable',
@@ -393,6 +459,19 @@ export function createServer(config, { getIdToken } = {}) {
       }
 
       void forwardAsk(req, res, config, tokenProvider, requestId, startedAt);
+      return;
+    }
+
+    const listEvent = LIST_ROUTES.get(path);
+
+    if (listEvent !== undefined) {
+      if (req.method !== 'GET') {
+        log({ event: listEvent, request_id: requestId, status: 405, method: req.method });
+        sendJson(res, 405, errorEnvelope('Method not allowed.', requestId));
+        return;
+      }
+
+      void forwardList(req, res, config, tokenProvider, requestId, startedAt, path, listEvent);
       return;
     }
 

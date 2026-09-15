@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { afterEach } from 'vitest';
+import { resetMockFeedScenarios } from '../src/dev/mockFeeds';
 import { resetMockScenario } from '../src/dev/mockTransport';
 
 /*
@@ -27,6 +28,7 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
  */
 afterEach(() => {
   resetMockScenario();
+  resetMockFeedScenarios();
   /*
    * App owns a BrowserRouter, so the jsdom URL is shared state. A test that
    * navigates must not leave the next one starting on /courses.

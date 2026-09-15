@@ -68,6 +68,82 @@ export const okMultiSourceResponse: AskResponse = {
 };
 
 /**
+ * Day 11 V6 breadth check: a broad scholarship search grounded in many
+ * records, not the one-or-two-source shape every earlier fixture used. The
+ * App must render every source the service sends — no cap, no local
+ * re-sorting — now that the data layer is expanding toward the full
+ * approved scholarship set rather than the bounded V5 sample.
+ */
+export const okManySourcesResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder answer drawing on a broad set of scholarship records, the shape a 99%-coverage search returns rather than a one-record demo.',
+  items: [],
+  // Annotated pure so a production build can still drop this module entirely.
+  sources: /* @__PURE__ */ Array.from({ length: 14 }, (_, index) => ({
+    record_id: `scholarships:scholarship:placeholder-${index + 1}`,
+    source_id: 'scholarships_anu_finder',
+    title: `Placeholder scholarship record ${index + 1}`,
+    url: `https://example.invalid/placeholder-scholarship-${index + 1}`,
+    domain: 'scholarships',
+  })),
+  clarification: null,
+  request_id: 'req_mock_many_sources',
+};
+
+/**
+ * Day 11 V6 breadth check: a source record missing optional-looking text.
+ * The contract types every `Source` field as a non-nullable string, but a
+ * broadly-scraped record can still arrive with an empty title before the
+ * data layer backfills it. The App must show the record rather than crash
+ * or invent replacement text.
+ */
+export const okMissingFieldSourceResponse: AskResponse = {
+  status: 'ok',
+  answer: 'Placeholder answer for a record with an incomplete stored title.',
+  items: [],
+  sources: [
+    {
+      record_id: 'jobs:job:900099',
+      source_id: 'jobs_anu_search',
+      title: '',
+      url: 'https://example.invalid/placeholder-job-missing-title',
+      domain: 'jobs',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_missing_field',
+};
+
+/**
+ * Day 11 V6 breadth check: an ambiguous-entity clarification with more than
+ * the two-option shape every earlier fixture used. A broad course catalogue
+ * search can plausibly match many similarly-named courses; the read-only
+ * option list must show every option in order, not a truncated sample.
+ */
+export const needsClarificationManyOptionsResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which course do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-many-courses',
+    type: 'entity_selection',
+    options: [
+      { id: 'courses:course:COMP1100_2026', label: 'COMP1100' },
+      { id: 'courses:course:COMP1110_2026', label: 'COMP1110' },
+      { id: 'courses:course:COMP1130_2026', label: 'COMP1130' },
+      { id: 'courses:course:COMP1600_2026', label: 'COMP1600' },
+      { id: 'courses:course:COMP1710_2026', label: 'COMP1710' },
+      { id: 'courses:course:COMP2100_2026', label: 'COMP2100' },
+      { id: 'courses:course:COMP2600_2026', label: 'COMP2600' },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_clarification_many',
+};
+
+/**
  * `partial` is in the frozen status enum but carries no separate presentation
  * rule in V3. It renders exactly like `ok`: the backend's own answer text
  * carries the meaning, and the App must not invent a "partial" semantic.
