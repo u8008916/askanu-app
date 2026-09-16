@@ -1,12 +1,15 @@
 import type { ComponentType } from 'react';
 import {
+  AccommodationIcon,
   CalendarCheckIcon,
   CoursesIcon,
   DocumentIcon,
+  InfoIcon,
   JobsIcon,
   PersonIcon,
   ScholarshipsIcon,
   SearchIcon,
+  SupportIcon,
 } from '../ui/Icon';
 
 export type DomainIcon = ComponentType<{ size?: number; className?: string }>;
@@ -261,4 +264,159 @@ export const JOBS_DOMAIN: DomainLauncherConfig = {
     },
   ],
   resourcesNote: 'These links open jobs.anu.edu.au and anu.edu.au in a new tab.',
+};
+
+/**
+ * Accommodation.
+ *
+ * V3 names ANU Accommodation as the approved source. All four URLs below were
+ * opened on Day 12 and returned HTTP 200, reached from ANU's own navigation
+ * (`study.anu.edu.au` → "Accommodation" → the page's own "Compare", "Our
+ * residences" and "Application advice" tiles). See
+ * docs/evidence/DAY_12_ACCOMMODATION_SUPPORT.md.
+ *
+ * Card copy is a guided intent, not an answer: no residence name, price,
+ * feature or eligibility result is hard-coded here, and no card implies a
+ * live room-availability check — V6 Day 12 is explicit that AskANU must never
+ * suggest it has live vacancy data unless an approved live-vacancy source is
+ * wired up later. Cost, feature and application facts are server facts the
+ * App only ever displays as sent (`API_CONTRACT.md`).
+ *
+ * The resources are navigation escape hatches, not residence records.
+ * Individual residences arrive only as evidence URLs in `sources[]`; the App
+ * never constructs a residence record URL or ID here.
+ */
+export const ACCOMMODATION_DOMAIN: DomainLauncherConfig = {
+  id: 'accommodation',
+  title: 'Accommodation',
+  intro:
+    'Get help with ANU accommodation through AskANU. Choose a question below to start a chat, or explore official resources.',
+  Icon: AccommodationIcon,
+  questions: [
+    {
+      id: 'compare-residences',
+      title: 'Compare ANU residences',
+      description: "Compare features across ANU's on-campus residences.",
+      prompt: 'Can you help me compare ANU student residences?',
+      Icon: SearchIcon,
+    },
+    {
+      id: 'costs-and-features',
+      title: 'Costs and features',
+      description: 'Find published costs and features for ANU accommodation.',
+      prompt: 'What are the costs and features of ANU accommodation?',
+      Icon: DocumentIcon,
+    },
+    {
+      id: 'how-to-apply',
+      title: 'How do I apply?',
+      description: 'Find out where and how to apply for on-campus accommodation.',
+      prompt: 'How do I apply for ANU accommodation?',
+      Icon: CalendarCheckIcon,
+    },
+    {
+      id: 'residence-information',
+      title: 'Find out about a residence',
+      description: 'Get published information about a particular ANU residence.',
+      prompt: 'Can you tell me about a specific ANU residence?',
+      Icon: PersonIcon,
+    },
+  ],
+  resourcesTitle: 'Official ANU accommodation search and navigation',
+  resources: [
+    {
+      label: 'ANU Accommodation home',
+      href: 'https://study.anu.edu.au/accommodation',
+    },
+    {
+      label: 'Compare residences',
+      href: 'https://study.anu.edu.au/accommodation/compare-residences',
+    },
+    {
+      label: 'Our residences',
+      href: 'https://study.anu.edu.au/accommodation/our-residences',
+    },
+    {
+      label: 'Application advice',
+      href: 'https://study.anu.edu.au/accommodation/application-advice',
+    },
+  ],
+  resourcesNote: 'These links open study.anu.edu.au in a new tab.',
+};
+
+/**
+ * Support.
+ *
+ * V3 names ANUSA Student Assistance plus approved ANU support pages as the
+ * sources. All four URLs below were opened on Day 12 and returned HTTP 200,
+ * reached from ANU's and ANUSA's own navigation (`anu.edu.au` → "Current
+ * students" → "Health, safety & wellbeing" → "Getting help at ANU"; and
+ * `anusa.com.au` → "Student Assistance"). See
+ * docs/evidence/DAY_12_ACCOMMODATION_SUPPORT.md.
+ *
+ * Card copy is a guided intent, not an answer. Per V6 Day 12: no hotline
+ * number, opening hours, "24/7" claim, guaranteed response time or
+ * personal/medical/legal advice is hard-coded here. If any such fact appears
+ * to a student, it must arrive from the backend/source, never from this file.
+ *
+ * The resources are navigation escape hatches, not support-service records.
+ * Individual services arrive only as evidence URLs in `sources[]`; the App
+ * never constructs a support-service record URL or ID here.
+ */
+export const SUPPORT_DOMAIN: DomainLauncherConfig = {
+  id: 'support',
+  title: 'Support Services',
+  intro:
+    'Get help finding the right ANU support service through AskANU. Choose a question below to start a chat, or explore official resources.',
+  Icon: SupportIcon,
+  questions: [
+    {
+      id: 'find-the-right-service',
+      title: 'Find the right support service',
+      description: 'Find the ANU or ANUSA service that matches what you need.',
+      prompt: 'Which ANU support service is right for me?',
+      Icon: SearchIcon,
+    },
+    {
+      id: 'what-it-helps-with',
+      title: 'What does a service help with?',
+      description: 'Understand what a specific ANU support service covers.',
+      prompt: 'What does this ANU support service help with?',
+      Icon: DocumentIcon,
+    },
+    {
+      id: 'contact-and-location',
+      title: 'Contact and location',
+      description: 'Get official contact and location details for a support service.',
+      prompt: 'How do I contact or find this ANU support service?',
+      Icon: PersonIcon,
+    },
+    {
+      id: 'student-assistance',
+      title: 'ANUSA Student Assistance',
+      description: "Learn about ANUSA's student assistance service.",
+      prompt: 'What can ANUSA Student Assistance help me with?',
+      Icon: InfoIcon,
+    },
+  ],
+  resourcesTitle: 'Official ANU and ANUSA support navigation',
+  resources: [
+    {
+      label: 'ANUSA Student Assistance',
+      href: 'https://anusa.com.au/student-assistance/',
+    },
+    {
+      label: 'ANU Health, safety & wellbeing',
+      href: 'https://www.anu.edu.au/students/health-safety-wellbeing',
+    },
+    {
+      label: 'Getting help at ANU',
+      href: 'https://www.anu.edu.au/students/health-safety-wellbeing/getting-help-at-anu',
+    },
+    {
+      label: 'Support: wellbeing, medical, academic',
+      href: 'https://www.anu.edu.au/students/health-safety-wellbeing/getting-help-at-anu/support-wellbeing-medical-academic',
+    },
+  ],
+  resourcesNote: 'These links open anusa.com.au and anu.edu.au in a new tab.',
 };

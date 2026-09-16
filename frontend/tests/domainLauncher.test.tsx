@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DomainLauncher } from '../src/domains/DomainLauncher';
 import {
+  ACCOMMODATION_DOMAIN,
   COURSES_DOMAIN,
   JOBS_DOMAIN,
   SCHOLARSHIPS_DOMAIN,
@@ -145,6 +146,7 @@ describe.each([
   ['Courses', COURSES_DOMAIN],
   ['Scholarships', SCHOLARSHIPS_DOMAIN],
   ['Jobs', JOBS_DOMAIN],
+  ['Accommodation', ACCOMMODATION_DOMAIN],
 ])('DomainLauncher — %s config', (_name, config) => {
   it('has four cards, each prompt non-empty and distinct', () => {
     render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
@@ -202,5 +204,9 @@ describe.each([
         /\d{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i,
       ),
     ).not.toBeInTheDocument();
+    // V6 Day 12: no card may imply a live vacancy check or a support hotline
+    // promise — those facts, if any, must come from the backend, never here.
+    expect(within(region).queryByText(/vacan(t|cy)|room(s)? available/i)).not.toBeInTheDocument();
+    expect(within(region).queryByText(/24\/7|hotline|guaranteed response/i)).not.toBeInTheDocument();
   });
 });

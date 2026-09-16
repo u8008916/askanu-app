@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
+import { resetMockScenario, setMockScenarioId } from '../src/dev/mockTransport';
 
 function explore() {
   return screen.getByRole('navigation', { name: 'Explore' });
@@ -32,17 +33,70 @@ describe('resource navigation', () => {
     expect(window.location.pathname).toBe('/courses');
   });
 
-  it('leaves the three unbuilt domains non-navigating', async () => {
+  it('leaves the one unbuilt domain non-navigating', async () => {
     render(<App />);
     const nav = explore();
 
-    for (const label of ['Accommodation', 'Events', 'Support Services']) {
+    for (const label of ['Events']) {
       const item = within(nav).getByRole('button', { name: label });
       expect(item).toHaveAttribute('aria-disabled', 'true');
       expect(item).not.toHaveAttribute('href');
     }
-    // Home plus the three built domains are links.
-    expect(within(nav).getAllByRole('link')).toHaveLength(4);
+    // Home plus the five built domains are links.
+    expect(within(nav).getAllByRole('link')).toHaveLength(6);
+  });
+
+  it('routes to Accommodation and moves the current-page marker', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(within(explore()).getByRole('link', { name: 'Accommodation' }));
+
+    await waitFor(() =>
+      expect(within(explore()).getByRole('link', { name: 'Accommodation' })).toHaveAttribute(
+        'aria-current',
+        'page',
+      ),
+    );
+    expect(
+      within(explore()).getByRole('link', { name: 'Home' }),
+    ).not.toHaveAttribute('aria-current');
+    expect(window.location.pathname).toBe('/accommodation');
+  });
+
+  it('opens Accommodation directly from its own URL', async () => {
+    window.history.replaceState({}, '', '/accommodation');
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: /Accommodation/ }),
+    ).toBeInTheDocument();
+  });
+
+  it('routes to Support Services and moves the current-page marker', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(within(explore()).getByRole('link', { name: 'Support Services' }));
+
+    await waitFor(() =>
+      expect(
+        within(explore()).getByRole('link', { name: 'Support Services' }),
+      ).toHaveAttribute('aria-current', 'page'),
+    );
+    expect(
+      within(explore()).getByRole('link', { name: 'Home' }),
+    ).not.toHaveAttribute('aria-current');
+    expect(window.location.pathname).toBe('/support');
+  });
+
+  it('opens Support Services directly from its own URL', async () => {
+    window.history.replaceState({}, '', '/support');
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: /Support/ }),
+    ).toBeInTheDocument();
   });
 
   it('routes to Jobs and moves the current-page marker', async () => {
@@ -145,6 +199,93 @@ describe('resource navigation', () => {
     // CONVERSATION_CONTRACT: Clear Chat restores the `Try asking` empty state.
     expect(screen.getByRole('heading', { name: 'Try asking' })).toBeInTheDocument();
     expect(screen.queryByText('Anything')).not.toBeInTheDocument();
+  });
+
+  it('keeps the conversation across a trip to Accommodation and back, then Support', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      'How do I apply for ANU accommodation?',
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
+    );
+
+    await user.click(within(explore()).getByRole('link', { name: 'Accommodation' }));
+    await waitFor(() =>
+      expect(
+        screen.getByRole('heading', { level: 1, name: /Accommodation/ }),
+      ).toBeInTheDocument(),
+    );
+    expect(screen.queryByRole('list', { name: 'Conversation' })).not.toBeInTheDocument();
+
+    // A second trip, straight through to Support, still keeps the session live.
+    await user.click(within(explore()).getByRole('link', { name: 'Support Services' }));
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 1, name: /Support/ })).toBeInTheDocument(),
+    );
+
+    await user.click(within(explore()).getByRole('link', { name: 'Home' }));
+    await waitFor(() =>
+      expect(
+        screen.getByText('How do I apply for ANU accommodation?'),
+      ).toBeInTheDocument(),
+    );
+    expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument();
+  });
+
+  it('Clear Chat still works after visiting Accommodation and Support', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getByLabelText('Ask AskANU a question'), 'Anything');
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument(),
+    );
+
+    await user.click(within(explore()).getByRole('link', { name: 'Accommodation' }));
+    await user.click(within(explore()).getByRole('link', { name: 'Support Services' }));
+    await user.click(within(explore()).getByRole('link', { name: 'Home' }));
+    await user.click(screen.getByRole('button', { name: 'Clear Chat' }));
+
+    // CONVERSATION_CONTRACT: Clear Chat restores the `Try asking` empty state.
+    expect(screen.getByRole('heading', { name: 'Try asking' })).toBeInTheDocument();
+    expect(screen.queryByText('Anything')).not.toBeInTheDocument();
+  });
+
+  /**
+   * V6 Day 12: Support must "clearly expose official sources" even when a
+   * request cannot be answered — but never by inventing a fallback link. The
+   * one safe, always-present path back to the verified official pages is the
+   * persistent Explore nav, which this proves survives a Support error turn.
+   */
+  it('Support Services stays reachable in Explore after a backend error', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    setMockScenarioId('error');
+    await user.click(within(explore()).getByRole('link', { name: 'Support Services' }));
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 1, name: /Support/ })).toBeInTheDocument(),
+    );
+    await user.click(
+      screen.getByRole('button', { name: /Find the right support service/ }),
+    );
+    await screen.findByLabelText('Ask AskANU a question');
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument());
+    // No sources are invented for a controlled error — the App shows none...
+    expect(screen.queryByRole('region', { name: 'Sources' })).not.toBeInTheDocument();
+    // ...but the route back to the verified official Support page is intact.
+    expect(
+      within(explore()).getByRole('link', { name: 'Support Services' }),
+    ).toBeInTheDocument();
+    resetMockScenario();
   });
 
   it('sends an unknown route back to the chat', async () => {

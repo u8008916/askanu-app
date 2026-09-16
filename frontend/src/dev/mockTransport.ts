@@ -5,17 +5,23 @@ import {
   groundedResponse,
   hostileStringsResponse,
   insufficientEvidenceResponse,
+  needsAccommodationClarificationResponse,
   needsClarificationManyOptionsResponse,
   needsClarificationResponse,
   needsScholarshipClarificationResponse,
+  needsSupportClarificationResponse,
   offTopicResponse,
+  okAccommodationResponse,
   okCurrentJobsResponse,
   okManySourcesResponse,
   okMissingFieldSourceResponse,
   okMultiSourceResponse,
   okResponse,
+  okSupportResponse,
+  partialAccommodationResponse,
   partialClosingSoonResponse,
   partialResponse,
+  partialSupportResponse,
 } from '../mocks/askResponses';
 
 /**
@@ -85,6 +91,36 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'ok-missing-field',
     label: 'ok — source with missing title',
     response: okMissingFieldSourceResponse,
+  },
+  {
+    id: 'ok-accommodation',
+    label: 'ok — accommodation',
+    response: okAccommodationResponse,
+  },
+  {
+    id: 'needs-clarification-accommodation',
+    label: 'needs_clarification — accommodation',
+    response: needsAccommodationClarificationResponse,
+  },
+  {
+    id: 'partial-accommodation',
+    label: 'partial — accommodation',
+    response: partialAccommodationResponse,
+  },
+  {
+    id: 'ok-support',
+    label: 'ok — support',
+    response: okSupportResponse,
+  },
+  {
+    id: 'needs-clarification-support',
+    label: 'needs_clarification — support',
+    response: needsSupportClarificationResponse,
+  },
+  {
+    id: 'partial-support',
+    label: 'partial — support',
+    response: partialSupportResponse,
   },
   {
     id: 'insufficient',

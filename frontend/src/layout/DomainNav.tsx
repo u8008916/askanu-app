@@ -26,10 +26,10 @@ const NAV_ITEMS: {
   { label: 'Home', Icon: HomeIcon, to: '/' },
   { label: 'Courses', Icon: CoursesIcon, to: '/courses' },
   { label: 'Scholarships', Icon: ScholarshipsIcon, to: '/scholarships' },
-  { label: 'Accommodation', Icon: AccommodationIcon },
+  { label: 'Accommodation', Icon: AccommodationIcon, to: '/accommodation' },
   { label: 'Jobs', Icon: JobsIcon, to: '/jobs' },
   { label: 'Events', Icon: EventsIcon },
-  { label: 'Support Services', Icon: SupportIcon },
+  { label: 'Support Services', Icon: SupportIcon, to: '/support' },
 ];
 
 interface DomainNavProps {
