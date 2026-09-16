@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { SUPPORT_DOMAIN } from '../src/domains/domainConfig';
 import { setMockScenarioId } from '../src/dev/mockTransport';
+import { okSupportResponse, partialSupportResponse } from '../src/mocks/askResponses';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
 import { chatColumn, feedsSettled } from './helpers';
 
@@ -103,6 +104,22 @@ describe('Support guided-domain page', () => {
       page.queryByText(/\d{1,2}(:\d{2})?\s?(am|pm)\b/i),
     ).not.toBeInTheDocument();
     expect(page.queryByText(/\+?\d{2,4}[\s-]?\d{3,4}[\s-]?\d{3,4}/)).not.toBeInTheDocument();
+  });
+
+  /**
+   * V6 Day 12 review (Qasim): the stored Support universe is only the six
+   * ANUSA Student Assistance categories. The launcher must read as pointing
+   * to the option that fits, not as promising a searchable index of every
+   * ANU and ANUSA service.
+   */
+  it('does not claim broader indexed ANU-and-ANUSA coverage than is stored', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await openSupport(user);
+    const page = within(chatColumn());
+
+    expect(page.queryByText(/ANU or ANUSA/i)).not.toBeInTheDocument();
+    expect(page.getByText('Find the support option that matches what you need.')).toBeInTheDocument();
   });
 
   it('card click returns to the chat and prefills without sending', async () => {
@@ -308,5 +325,28 @@ describe('Support guided-domain page', () => {
       screen.getByText('The request could not be completed.'),
     ).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Sources' })).not.toBeInTheDocument();
+  });
+
+  /**
+   * Support record identity is frozen cross-repo on Day 12 (Qasim review):
+   * `source_id = support_anusa_student_assistance`, `record_id =
+   * support:support_service:<slug>`. Pinning the fixture shape here catches
+   * mock drift back toward the pre-freeze placeholder identity the dev
+   * fixtures used before the contract was frozen.
+   */
+  it('mock support sources match the frozen production identity shape', () => {
+    const allSupportSources = [
+      ...okSupportResponse.sources,
+      ...partialSupportResponse.sources,
+    ];
+    expect(allSupportSources.length).toBeGreaterThan(0);
+
+    for (const source of allSupportSources) {
+      expect(source.domain).toBe('support');
+      expect(source.source_id).toBe('support_anusa_student_assistance');
+      expect(source.record_id).toMatch(/^support:support_service:[a-z0-9-]+$/);
+      // Mock source URLs stay on example.invalid, never a real-looking ANU URL.
+      expect(new URL(source.url).hostname).toBe('example.invalid');
+    }
   });
 });

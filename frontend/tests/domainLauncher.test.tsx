@@ -7,6 +7,7 @@ import {
   COURSES_DOMAIN,
   JOBS_DOMAIN,
   SCHOLARSHIPS_DOMAIN,
+  SUPPORT_DOMAIN,
 } from '../src/domains/domainConfig';
 import type { DomainLauncherConfig } from '../src/domains/domainConfig';
 import { StarIcon } from '../src/ui/Icon';
@@ -139,14 +140,18 @@ describe('DomainLauncher', () => {
 });
 
 /**
- * The three shipped domains through the one component. Anything that holds
- * for all three is a property of the shared launcher, not of a page.
+ * All five shipped domains through the one component. Anything that holds
+ * for all five is a property of the shared launcher, not of a page. Support
+ * is included symmetrically with the other four (Qasim, Day 12 review) even
+ * though its official resources span two approved hosts, not one — see the
+ * host check below.
  */
 describe.each([
   ['Courses', COURSES_DOMAIN],
   ['Scholarships', SCHOLARSHIPS_DOMAIN],
   ['Jobs', JOBS_DOMAIN],
   ['Accommodation', ACCOMMODATION_DOMAIN],
+  ['Support Services', SUPPORT_DOMAIN],
 ])('DomainLauncher — %s config', (_name, config) => {
   it('has four cards, each prompt non-empty and distinct', () => {
     render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
@@ -176,7 +181,7 @@ describe.each([
     }
   });
 
-  it('every official resource is a safe https ANU link that opens in a new tab', () => {
+  it('every official resource is a safe https ANU/ANUSA link that opens in a new tab', () => {
     render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
 
     const links = within(
@@ -188,7 +193,11 @@ describe.each([
       expect(isSafeHttpUrl(href)).toBe(true);
       const { protocol, hostname } = new URL(href);
       expect(protocol).toBe('https:');
-      expect(hostname.endsWith('.anu.edu.au')).toBe(true);
+      // V3 approves ANUSA Student Assistance alongside ANU's own domains for
+      // Support; every other domain is *.anu.edu.au only.
+      expect(hostname === 'anusa.com.au' || hostname.endsWith('.anu.edu.au')).toBe(
+        true,
+      );
       expect(link).toHaveAttribute('target', '_blank');
       expect(link.getAttribute('rel')).toContain('noopener');
     }
@@ -208,5 +217,10 @@ describe.each([
     // promise — those facts, if any, must come from the backend, never here.
     expect(within(region).queryByText(/vacan(t|cy)|room(s)? available/i)).not.toBeInTheDocument();
     expect(within(region).queryByText(/24\/7|hotline|guaranteed response/i)).not.toBeInTheDocument();
+    // V6 Day 12 review (Qasim): card/intro copy must not promise broader
+    // persisted coverage than what is actually stored — the Support universe
+    // is the six ANUSA Student Assistance categories only, not every ANU or
+    // ANUSA service.
+    expect(screen.queryByText(/ANU or ANUSA/i)).not.toBeInTheDocument();
   });
 });

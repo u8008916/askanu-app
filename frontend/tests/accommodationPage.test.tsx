@@ -4,6 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { ACCOMMODATION_DOMAIN } from '../src/domains/domainConfig';
 import { setMockScenarioId } from '../src/dev/mockTransport';
+import {
+  okAccommodationResponse,
+  partialAccommodationResponse,
+} from '../src/mocks/askResponses';
 import { isSafeHttpUrl } from '../src/util/safeUrl';
 import { chatColumn, feedsSettled } from './helpers';
 
@@ -310,5 +314,29 @@ describe('Accommodation guided-domain page', () => {
       screen.getByText('The request could not be completed.'),
     ).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Sources' })).not.toBeInTheDocument();
+  });
+
+  /**
+   * Accommodation record identity is frozen cross-repo on Day 12 (Qasim
+   * review): `source_id = accommodation_anu_study`, `record_id =
+   * accommodation:residence:<slug>`. The App never parses either value, but
+   * pinning the fixture shape here catches mock drift back toward the
+   * pre-freeze placeholder identity the dev fixtures used before the
+   * contract was frozen.
+   */
+  it('mock accommodation sources match the frozen production identity shape', () => {
+    const allAccommodationSources = [
+      ...okAccommodationResponse.sources,
+      ...partialAccommodationResponse.sources,
+    ];
+    expect(allAccommodationSources.length).toBeGreaterThan(0);
+
+    for (const source of allAccommodationSources) {
+      expect(source.domain).toBe('accommodation');
+      expect(source.source_id).toBe('accommodation_anu_study');
+      expect(source.record_id).toMatch(/^accommodation:residence:[a-z0-9-]+$/);
+      // Mock source URLs stay on example.invalid, never a real-looking ANU URL.
+      expect(new URL(source.url).hostname).toBe('example.invalid');
+    }
   });
 });

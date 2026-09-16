@@ -384,8 +384,14 @@ export const offTopicResponse: AskResponse = {
  * An Accommodation-shaped answer. The copy names no residence, price,
  * feature or availability result — the App never authors that content, and a
  * card must never suggest AskANU has a live room-availability check (V6 Day
- * 12). The record identity below is a fixture shape only; no residence
- * identity scheme is frozen cross-repo yet.
+ * 12).
+ *
+ * Record identity is the production shape frozen cross-repo on Day 12:
+ * `source_id = accommodation_anu_study`, `entity_type = residence`,
+ * `record_id = accommodation:residence:<slug>`. The slug and title below are
+ * obvious placeholders — `example.invalid` is deliberate for bundle-safety
+ * testing — but the structural shape matches what production sends, so this
+ * fixture never drifts from the real contract.
  */
 export const okAccommodationResponse: AskResponse = {
   status: 'ok',
@@ -395,7 +401,7 @@ export const okAccommodationResponse: AskResponse = {
   sources: [
     {
       record_id: 'accommodation:residence:placeholder-residence-a',
-      source_id: 'anu_accommodation',
+      source_id: 'accommodation_anu_study',
       title: 'Placeholder residence record title',
       url: 'https://example.invalid/placeholder-residence',
       domain: 'accommodation',
@@ -438,7 +444,7 @@ export const partialAccommodationResponse: AskResponse = {
   sources: [
     {
       record_id: 'accommodation:residence:placeholder-residence-a',
-      source_id: 'anu_accommodation',
+      source_id: 'accommodation_anu_study',
       title: 'Placeholder residence record title',
       url: 'https://example.invalid/placeholder-residence',
       domain: 'accommodation',
@@ -452,6 +458,12 @@ export const partialAccommodationResponse: AskResponse = {
  * A Support-shaped answer. The copy names no hotline, opening hours, "24/7"
  * claim, guaranteed response time or personal/medical/legal advice — the App
  * never authors or hard-codes that content (V6 Day 12).
+ *
+ * Record identity is the production shape frozen cross-repo on Day 12:
+ * `source_id = support_anusa_student_assistance`, `entity_type =
+ * support_service`, `record_id = support:support_service:<slug>`. As with
+ * Accommodation above, the slug/title/URL stay obvious placeholders; only the
+ * structural shape needs to match production.
  */
 export const okSupportResponse: AskResponse = {
   status: 'ok',
@@ -460,8 +472,8 @@ export const okSupportResponse: AskResponse = {
   items: [],
   sources: [
     {
-      record_id: 'support:service:placeholder-service-a',
-      source_id: 'anusa_student_assistance',
+      record_id: 'support:support_service:placeholder-service-a',
+      source_id: 'support_anusa_student_assistance',
       title: 'Placeholder support service record title',
       url: 'https://example.invalid/placeholder-support-service',
       domain: 'support',
@@ -482,11 +494,11 @@ export const needsSupportClarificationResponse: AskResponse = {
     type: 'entity_selection',
     options: [
       {
-        id: 'support:service:placeholder-service-a',
+        id: 'support:support_service:placeholder-service-a',
         label: 'Placeholder support service A',
       },
       {
-        id: 'support:service:placeholder-service-b',
+        id: 'support:support_service:placeholder-service-b',
         label: 'Placeholder support service B',
       },
     ],
@@ -503,8 +515,8 @@ export const partialSupportResponse: AskResponse = {
   items: [],
   sources: [
     {
-      record_id: 'support:service:placeholder-service-a',
-      source_id: 'anusa_student_assistance',
+      record_id: 'support:support_service:placeholder-service-a',
+      source_id: 'support_anusa_student_assistance',
       title: 'Placeholder support service record title',
       url: 'https://example.invalid/placeholder-support-service',
       domain: 'support',

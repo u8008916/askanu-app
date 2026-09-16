@@ -359,6 +359,12 @@ export const ACCOMMODATION_DOMAIN: DomainLauncherConfig = {
  * personal/medical/legal advice is hard-coded here. If any such fact appears
  * to a student, it must arrive from the backend/source, never from this file.
  *
+ * The stored Day 12 Support universe is only the six top-level ANUSA Student
+ * Assistance categories (Qasim, Day 12 review) — the wider ANU wellbeing
+ * pages below are kept as official navigation resources, not a claim that
+ * they are indexed entities. Copy must not read as promising broader
+ * persisted ANU-support-service coverage than the backend actually has.
+ *
  * The resources are navigation escape hatches, not support-service records.
  * Individual services arrive only as evidence URLs in `sources[]`; the App
  * never constructs a support-service record URL or ID here.
@@ -367,13 +373,13 @@ export const SUPPORT_DOMAIN: DomainLauncherConfig = {
   id: 'support',
   title: 'Support Services',
   intro:
-    'Get help finding the right ANU support service through AskANU. Choose a question below to start a chat, or explore official resources.',
+    'Get help finding the right support option through AskANU. Choose a question below to start a chat, or explore official resources.',
   Icon: SupportIcon,
   questions: [
     {
       id: 'find-the-right-service',
       title: 'Find the right support service',
-      description: 'Find the ANU or ANUSA service that matches what you need.',
+      description: 'Find the support option that matches what you need.',
       prompt: 'Which ANU support service is right for me?',
       Icon: SearchIcon,
     },
