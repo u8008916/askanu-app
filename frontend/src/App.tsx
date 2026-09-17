@@ -6,9 +6,11 @@ import { MobileDrawer } from './layout/MobileDrawer';
 import { ResourceRail } from './layout/ResourceRail';
 import { TopBar } from './layout/TopBar';
 import { useIsDesktop } from './layout/useIsDesktop';
+import { AccommodationPage } from './pages/AccommodationPage';
 import { CoursesPage } from './pages/CoursesPage';
 import { JobsPage } from './pages/JobsPage';
 import { ScholarshipsPage } from './pages/ScholarshipsPage';
+import { SupportPage } from './pages/SupportPage';
 import { FeedsProvider } from './resources/FeedsProvider';
 import { useTheme } from './theme/useTheme';
 import styles from './App.module.css';
@@ -98,6 +100,11 @@ function AppShell() {
               path="/scholarships"
             />
             <Route element={<JobsPage onAskInChat={askInChat} />} path="/jobs" />
+            <Route
+              element={<AccommodationPage onAskInChat={askInChat} />}
+              path="/accommodation"
+            />
+            <Route element={<SupportPage onAskInChat={askInChat} />} path="/support" />
             <Route element={<Navigate replace to="/" />} path="*" />
           </Routes>
         </div>

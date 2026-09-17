@@ -380,6 +380,152 @@ export const offTopicResponse: AskResponse = {
   request_id: 'req_mock_off_topic',
 };
 
+/**
+ * An Accommodation-shaped answer. The copy names no residence, price,
+ * feature or availability result — the App never authors that content, and a
+ * card must never suggest AskANU has a live room-availability check (V6 Day
+ * 12).
+ *
+ * Record identity is the production shape frozen cross-repo on Day 12:
+ * `source_id = accommodation_anu_study`, `entity_type = residence`,
+ * `record_id = accommodation:residence:<slug>`. The slug and title below are
+ * obvious placeholders — `example.invalid` is deliberate for bundle-safety
+ * testing — but the structural shape matches what production sends, so this
+ * fixture never drifts from the real contract.
+ */
+export const okAccommodationResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder answer about ANU accommodation. Real answers, including any cost or feature detail, come from the RAG service; the App never authors or hard-codes accommodation facts.',
+  items: [],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title',
+      url: 'https://example.invalid/placeholder-residence',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_ok',
+};
+
+/** An ambiguous-residence clarification, read-only, in the CONVERSATION_CONTRACT shape. */
+export const needsAccommodationClarificationResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which residence do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-residence-1',
+    type: 'entity_selection',
+    options: [
+      {
+        id: 'accommodation:residence:placeholder-residence-a',
+        label: 'Placeholder residence A',
+      },
+      {
+        id: 'accommodation:residence:placeholder-residence-b',
+        label: 'Placeholder residence B',
+      },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_accommodation_clarification',
+};
+
+/** `partial` renders like `ok`; the service's own caveat carries the meaning. */
+export const partialAccommodationResponse: AskResponse = {
+  status: 'partial',
+  answer:
+    'Placeholder answer covering part of the accommodation question. The remaining detail, such as current availability, is not in the approved evidence.',
+  items: [],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title',
+      url: 'https://example.invalid/placeholder-residence',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_partial',
+};
+
+/**
+ * A Support-shaped answer. The copy names no hotline, opening hours, "24/7"
+ * claim, guaranteed response time or personal/medical/legal advice — the App
+ * never authors or hard-codes that content (V6 Day 12).
+ *
+ * Record identity is the production shape frozen cross-repo on Day 12:
+ * `source_id = support_anusa_student_assistance`, `entity_type =
+ * support_service`, `record_id = support:support_service:<slug>`. As with
+ * Accommodation above, the slug/title/URL stay obvious placeholders; only the
+ * structural shape needs to match production.
+ */
+export const okSupportResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder answer about an ANU support service. Real answers, including any hours or contact detail, come from the RAG service; the App never authors or hard-codes support facts.',
+  items: [],
+  sources: [
+    {
+      record_id: 'support:support_service:placeholder-service-a',
+      source_id: 'support_anusa_student_assistance',
+      title: 'Placeholder support service record title',
+      url: 'https://example.invalid/placeholder-support-service',
+      domain: 'support',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_support_ok',
+};
+
+/** An ambiguous support-service clarification, read-only. */
+export const needsSupportClarificationResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which support service do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-support-1',
+    type: 'entity_selection',
+    options: [
+      {
+        id: 'support:support_service:placeholder-service-a',
+        label: 'Placeholder support service A',
+      },
+      {
+        id: 'support:support_service:placeholder-service-b',
+        label: 'Placeholder support service B',
+      },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_support_clarification',
+};
+
+/** `partial` renders like `ok`; the service's own caveat carries the meaning. */
+export const partialSupportResponse: AskResponse = {
+  status: 'partial',
+  answer:
+    'Placeholder answer covering part of the support question. The remaining detail, such as current opening hours, is not in the approved evidence.',
+  items: [],
+  sources: [
+    {
+      record_id: 'support:support_service:placeholder-service-a',
+      source_id: 'support_anusa_student_assistance',
+      title: 'Placeholder support service record title',
+      url: 'https://example.invalid/placeholder-support-service',
+      domain: 'support',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_support_partial',
+};
+
 /** The controlled error envelope from `docs/API_CONTRACT.md`. */
 export const errorResponse: AskResponse = {
   status: 'error',
