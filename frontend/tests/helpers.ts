@@ -30,6 +30,9 @@ export function isSanctionedAnchor(anchor: Element): boolean {
     screen.queryByRole('region', { name: 'Sources' }),
     screen.queryByRole('region', { name: 'Current Jobs' }),
     screen.queryByRole('region', { name: 'Upcoming Events' }),
+    // Quick Links are static, verified constants (QuickLinksCard.tsx), never
+    // model or record output — the same kind of trusted navigation as Explore.
+    screen.queryByRole('region', { name: 'Quick Links' }),
   ];
   return homes.some((home) => home !== null && home.contains(anchor));
 }

@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import {
   CoursesIcon,
   EventsIcon,
@@ -7,26 +7,74 @@ import {
   LinkIcon,
   ScholarshipsIcon,
 } from '../ui/Icon';
+import { isSafeHttpUrl } from '../util/safeUrl';
 import styles from './Panel.module.css';
 
 /**
- * The four Quick Links locked in V3_LOCKED_DECISIONS.md.
- *
- * V3 does not supply canonical URLs, so these are non-navigating placeholders
- * rather than guessed ANU addresses. The external-link glyph shows the
- * affordance the real links will carry.
+ * The four Quick Links locked in V3_LOCKED_DECISIONS.md, now with their
+ * approved canonical URLs. Each was opened and confirmed live (ANU/Microsoft
+ * SSO sign-in, as expected for an authenticated student service) before being
+ * written here — same standard every other official link in this app holds
+ * to. Still guarded by `isSafeHttpUrl` like every other outbound link: a
+ * constant today, but nothing here should ever render an unchecked `href`.
  */
-const QUICK_LINKS: { label: string; Icon: ComponentType<{ size?: number }> }[] =
-  [
-    { label: 'AnuHub', Icon: ScholarshipsIcon },
-    { label: 'MyTimetable', Icon: EventsIcon },
-    { label: 'Canvas', Icon: CoursesIcon },
-    { label: 'ANU Careers', Icon: JobsIcon },
-  ];
+const QUICK_LINKS: {
+  label: string;
+  href: string;
+  Icon: ComponentType<{ size?: number }>;
+}[] = [
+  {
+    label: 'AnuHub',
+    href: 'https://selfservice.sas.anu.edu.au/',
+    Icon: ScholarshipsIcon,
+  },
+  {
+    label: 'MyTimetable',
+    href: 'https://mytimetable.anu.edu.au/even/',
+    Icon: EventsIcon,
+  },
+  { label: 'Canvas', href: 'https://canvas.anu.edu.au/', Icon: CoursesIcon },
+  {
+    label: 'ANU Careers',
+    href: 'https://careercentral.anu.edu.au/student/',
+    Icon: JobsIcon,
+  },
+];
 
 interface QuickLinksCardProps {
   /** Mobile home lays the four links out as one row of icon tiles. */
   layout?: 'grid' | 'row';
+}
+
+/**
+ * Same two guarantees every other outbound link in this app carries: a URL
+ * only becomes an `<a>` once `isSafeHttpUrl` accepts it, and a failing one
+ * renders as inert text rather than being repaired or guessed.
+ */
+function QuickLinkTile({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: ReactNode;
+}) {
+  if (!isSafeHttpUrl(href)) {
+    return (
+      <span
+        aria-disabled="true"
+        className={`${className} ${styles.tileDisabled}`}
+      >
+        {children}
+      </span>
+    );
+  }
+  return (
+    <a className={className} href={href} rel="noopener noreferrer" target="_blank">
+      {children}
+    </a>
+  );
 }
 
 export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
@@ -40,20 +88,20 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
       </div>
       {layout === 'row' ? (
         <ul className={styles.linkRow}>
-          {QUICK_LINKS.map(({ label, Icon }) => (
+          {QUICK_LINKS.map(({ label, href, Icon }) => (
             <li key={label}>
-              <span aria-disabled="true" className={styles.linkRowTile}>
+              <QuickLinkTile className={styles.linkRowTile} href={href}>
                 <Icon size={20} />
                 <span className={styles.linkRowTileText}>{label}</span>
-              </span>
+              </QuickLinkTile>
             </li>
           ))}
         </ul>
       ) : (
         <ul className={styles.linkGrid}>
-          {QUICK_LINKS.map(({ label, Icon }) => (
+          {QUICK_LINKS.map(({ label, href, Icon }) => (
             <li key={label}>
-              <span aria-disabled="true" className={styles.linkTile}>
+              <QuickLinkTile className={styles.linkTile} href={href}>
                 <span className={styles.linkTileLabel}>
                   <Icon size={18} />
                   <span className={styles.linkTileText}>{label}</span>
@@ -62,12 +110,14 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
                   className={styles.linkTileExternal}
                   size={15}
                 />
-              </span>
+              </QuickLinkTile>
             </li>
           ))}
         </ul>
       )}
-      <p className={styles.note}>Official links pending approved URLs.</p>
+      <p className={styles.note}>
+        These links open in a new tab and require your ANU sign-in.
+      </p>
     </section>
   );
 }
