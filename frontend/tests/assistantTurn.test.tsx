@@ -1,15 +1,28 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { MOCK_SCENARIOS } from '../src/dev/mockTransport';
 import { needsClarificationManyOptionsResponse } from '../src/mocks/askResponses';
 import type { AskResponse, AskStatus } from '../src/types/api';
 
-/** The turn is an <li>; give it the list its markup expects. */
-function renderTurn(response: AskResponse) {
+/**
+ * The turn is an <li>; give it the list its markup expects. Defaults to the
+ * active turn — the shape every pre-existing test in this file exercises —
+ * so only tests about the lifecycle itself need to pass `isClarificationActive`.
+ */
+function renderTurn(
+  response: AskResponse,
+  onSelectClarification: (text: string) => void = vi.fn(),
+  isClarificationActive = true,
+) {
   return render(
     <ul>
-      <AssistantTurn response={response} />
+      <AssistantTurn
+        isClarificationActive={isClarificationActive}
+        onSelectClarification={onSelectClarification}
+        response={response}
+      />
     </ul>,
   );
 }
@@ -59,7 +72,7 @@ describe('AssistantTurn', () => {
     expect(screen.getByRole('region', { name: 'Sources' })).toBeInTheDocument();
   });
 
-  it('lists clarification options in contract order, not as controls', () => {
+  it('lists clarification options in contract order, as selectable controls', () => {
     const scenario = MOCK_SCENARIOS.find(
       (s) => s.id === 'needs-clarification',
     )!;
@@ -73,12 +86,127 @@ describe('AssistantTurn', () => {
     expect(labels[0]).toContain('COMP1110');
     expect(labels[1]).toContain('COMP1600');
 
-    // Selectable controls are Day 13. Today the student replies in words.
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
-    expect(screen.queryByRole('radio')).not.toBeInTheDocument();
+    // The student can still ignore the controls and reply in words.
     expect(
-      screen.getByText(/Reply in the message box/),
+      screen.getByText(/reply in the message box/),
     ).toBeInTheDocument();
+  });
+
+  it('a single-select option fills the composer without sending', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    renderTurn(needsClarificationManyOptionsResponse, onSelect);
+
+    // A single-select clarification renders real buttons, not radios.
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /COMP1100/ }));
+
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1100');
+  });
+
+  it('a single-select option activates with the keyboard, not just a pointer', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    renderTurn(needsClarificationManyOptionsResponse, onSelect);
+
+    const button = screen.getByRole('button', { name: /COMP1600/ });
+    button.focus();
+    expect(button).toHaveFocus();
+    await user.keyboard('{Enter}');
+
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1600');
+  });
+
+  it('a multi-select checkbox toggles with the keyboard Space key', async () => {
+    const user = userEvent.setup();
+    const scenario = MOCK_SCENARIOS.find(
+      (s) => s.id === 'needs-clarification',
+    )!;
+    renderTurn(scenario.response);
+
+    const checkbox = screen.getByRole('checkbox', { name: /COMP1110/ });
+    checkbox.focus();
+    expect(checkbox).toHaveFocus();
+    await user.keyboard(' ');
+
+    expect(checkbox).toBeChecked();
+  });
+
+  it('a multi-select clarification builds "both" from two checked options', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    const scenario = MOCK_SCENARIOS.find(
+      (s) => s.id === 'needs-clarification',
+    )!;
+    renderTurn(scenario.response, onSelect);
+
+    const useSelection = screen.getByRole('button', { name: 'Use selection' });
+    expect(useSelection).toBeDisabled();
+
+    await user.click(screen.getByRole('checkbox', { name: /COMP1110/ }));
+    await user.click(screen.getByRole('checkbox', { name: /COMP1600/ }));
+    expect(useSelection).toBeEnabled();
+
+    await user.click(useSelection);
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(
+      'Both COMP1110 and COMP1600',
+    );
+  });
+
+  it('a multi-select clarification also supports picking exactly one', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    const scenario = MOCK_SCENARIOS.find(
+      (s) => s.id === 'needs-clarification',
+    )!;
+    renderTurn(scenario.response, onSelect);
+
+    await user.click(screen.getByRole('checkbox', { name: /COMP1110/ }));
+    await user.click(screen.getByRole('button', { name: 'Use selection' }));
+
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1110');
+  });
+
+  /*
+   * `isClarificationActive` is how ChatPanel tells an older, resolved or
+   * superseded clarification turn from the one `useChatSession` still
+   * considers pending. A single AssistantTurn can't exercise the "resolved by
+   * a later turn" lifecycle itself — that is `clarificationLifecycle.test.tsx`
+   * — but it owns what an inactive turn renders like on its own.
+   */
+  it('an inactive single-select clarification disables its buttons and drops the prompt', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    renderTurn(
+      needsClarificationManyOptionsResponse,
+      onSelect,
+      /* isClarificationActive */ false,
+    );
+
+    const button = screen.getByRole('button', { name: /COMP1100/ });
+    expect(button).toBeDisabled();
+    await user.click(button);
+    expect(onSelect).not.toHaveBeenCalled();
+
+    // No message-box prompt: it would invite an answer to a turn no reply can reach.
+    expect(
+      screen.queryByText(/reply in the message box/),
+    ).not.toBeInTheDocument();
+    // The options themselves are still shown as conversation history.
+    expect(screen.getByText('COMP1100')).toBeInTheDocument();
+  });
+
+  it('an inactive multi-select clarification disables its checkboxes and hides "Use selection"', () => {
+    const scenario = MOCK_SCENARIOS.find(
+      (s) => s.id === 'needs-clarification',
+    )!;
+    renderTurn(scenario.response, vi.fn(), /* isClarificationActive */ false);
+
+    expect(screen.getByRole('checkbox', { name: /COMP1110/ })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: /COMP1600/ })).toBeDisabled();
+    expect(
+      screen.queryByRole('button', { name: 'Use selection' }),
+    ).not.toBeInTheDocument();
   });
 
   /*

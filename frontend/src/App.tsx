@@ -59,6 +59,16 @@ function AppShell() {
     [sendMessage],
   );
 
+  /*
+   * A clarification option is another way to fill the composer, not a second
+   * send path: it never bypasses the "prefill, focus, never auto-send" rule
+   * domain-launcher cards already use.
+   */
+  const handleSelectClarification = useCallback((text: string) => {
+    setDraft(text);
+    setFocusComposerSignal((signal) => signal + 1);
+  }, []);
+
   return (
     <div className={styles.root}>
       {!isDesktop && (
@@ -83,6 +93,7 @@ function AppShell() {
                   isSending={isSending}
                   onClearChat={clearChat}
                   onDraftChange={setDraft}
+                  onSelectClarification={handleSelectClarification}
                   onSend={handleSend}
                   onToggleTheme={toggleTheme}
                   theme={theme}

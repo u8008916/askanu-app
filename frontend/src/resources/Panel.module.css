@@ -138,8 +138,7 @@ a.itemLink:focus-visible .itemTitle {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  color: var(--ink-2);
-  cursor: not-allowed;
+  color: var(--ink);
   display: flex;
   font-size: var(--text-sm);
   gap: var(--space-2);
@@ -147,16 +146,43 @@ a.itemLink:focus-visible .itemTitle {
   min-height: var(--touch-target-min);
   padding: var(--space-2) var(--space-3);
   text-align: left;
+  text-decoration: none;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+a.linkTile:hover,
+a.linkTile:focus-visible {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+a.linkTile:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+a.linkTile:active {
+  background: var(--gold-soft);
+  border-color: var(--gold-deep);
 }
 
 /*
  * Link names are proper nouns and must not break mid-word, so they opt out of
- * the global `overflow-wrap: anywhere` and truncate instead.
+ * the global `overflow-wrap: anywhere` and truncate instead. `text-overflow`
+ * has to sit on the text itself, not this flex row: applied to a flex
+ * container mixing an icon and a text node it just hard-clips with no "…".
  */
 .linkTileLabel {
   align-items: center;
   display: flex;
   gap: var(--space-2);
+  min-width: 0;
+}
+
+.linkTileText {
   min-width: 0;
   overflow: hidden;
   overflow-wrap: normal;
@@ -187,17 +213,53 @@ a.itemLink:focus-visible .itemTitle {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  color: var(--ink-2);
-  cursor: not-allowed;
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   font-size: var(--text-xs);
   gap: var(--space-1);
   justify-content: center;
   min-height: 4.5rem;
-  overflow: hidden;
-  overflow-wrap: normal;
   padding: var(--space-2);
   text-align: center;
+  text-decoration: none;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+a.linkRowTile:hover,
+a.linkRowTile:focus-visible {
+  background: var(--gold-tint);
+  border-color: var(--gold-soft);
+}
+
+a.linkRowTile:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+a.linkRowTile:active {
+  background: var(--gold-soft);
+  border-color: var(--gold-deep);
+}
+
+/*
+ * Fallback only: a Quick Link whose URL somehow fails `isSafeHttpUrl`. Never
+ * expected in practice — every href above is a verified constant — but every
+ * other outbound link in this app keeps this fallback, so this one does too.
+ */
+.tileDisabled {
+  color: var(--ink-2);
+  cursor: not-allowed;
+}
+
+/* Same reasoning as `.linkTileText`: truncate the text run, not the column. */
+.linkRowTileText {
+  max-width: 100%;
+  overflow: hidden;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
