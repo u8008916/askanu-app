@@ -224,7 +224,7 @@ describe('Scholarships guided-domain page', () => {
     ]);
     // Single-choice wording, since this clarification has allow_multiple: false.
     expect(
-      screen.getByText('Reply in the message box to choose one.'),
+      screen.getByText('Select an option, or reply in the message box.'),
     ).toBeInTheDocument();
     // It is a scholarship clarification, not the generic course one.
     expect(screen.queryByText(/COMP\d{4}/)).not.toBeInTheDocument();

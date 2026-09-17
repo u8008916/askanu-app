@@ -44,7 +44,7 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
             <li key={label}>
               <span aria-disabled="true" className={styles.linkRowTile}>
                 <Icon size={20} />
-                {label}
+                <span className={styles.linkRowTileText}>{label}</span>
               </span>
             </li>
           ))}
@@ -56,7 +56,7 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
               <span aria-disabled="true" className={styles.linkTile}>
                 <span className={styles.linkTileLabel}>
                   <Icon size={18} />
-                  {label}
+                  <span className={styles.linkTileText}>{label}</span>
                 </span>
                 <ExternalLinkIcon
                   className={styles.linkTileExternal}

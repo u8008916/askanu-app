@@ -245,7 +245,7 @@ describe('Accommodation guided-domain page', () => {
       '2Placeholder residence B',
     ]);
     expect(
-      screen.getByText('Reply in the message box to choose one.'),
+      screen.getByText('Select an option, or reply in the message box.'),
     ).toBeInTheDocument();
 
     setMockScenarioId('ok-accommodation');

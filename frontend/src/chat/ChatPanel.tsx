@@ -25,19 +25,30 @@ interface ChatPanelProps {
   onDraftChange: (value: string) => void;
   /** Changes when something outside the chat asks the composer to focus. */
   focusComposerSignal: number;
+  /** A clarification option was chosen: put its text in the composer. */
+  onSelectClarification: (text: string) => void;
 }
 
 const DISCLAIMER =
   'AskANU can make mistakes. Please double-check important information.';
 
-function renderTurn(turn: ChatTurn) {
+function renderTurn(
+  turn: ChatTurn,
+  onSelectClarification: (text: string) => void,
+) {
   switch (turn.kind) {
     case 'user':
       return <UserTurn content={turn.content} key={turn.id} />;
     case 'pending':
       return <PendingTurn key={turn.id} />;
     case 'assistant':
-      return <AssistantTurn key={turn.id} response={turn.response} />;
+      return (
+        <AssistantTurn
+          key={turn.id}
+          onSelectClarification={onSelectClarification}
+          response={turn.response}
+        />
+      );
   }
 }
 
@@ -52,6 +63,7 @@ export function ChatPanel({
   draft,
   onDraftChange,
   focusComposerSignal,
+  onSelectClarification,
 }: ChatPanelProps) {
   const isEmpty = turns.length === 0;
 
@@ -100,7 +112,7 @@ export function ChatPanel({
           <EmptyState onSelectSuggestion={onSend} />
         ) : (
           <ul aria-label="Conversation" className={styles.turns}>
-            {turns.map(renderTurn)}
+            {turns.map((turn) => renderTurn(turn, onSelectClarification))}
           </ul>
         )}
       </div>

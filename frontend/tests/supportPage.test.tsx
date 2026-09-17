@@ -256,7 +256,7 @@ describe('Support guided-domain page', () => {
       '2Placeholder support service B',
     ]);
     expect(
-      screen.getByText('Reply in the message box to choose one.'),
+      screen.getByText('Select an option, or reply in the message box.'),
     ).toBeInTheDocument();
 
     setMockScenarioId('ok-support');
