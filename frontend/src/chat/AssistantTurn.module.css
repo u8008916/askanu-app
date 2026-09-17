@@ -75,6 +75,21 @@ button.option:active {
   border-color: var(--gold-deep);
 }
 
+/*
+ * A resolved or superseded clarification: still shown as history, no longer
+ * answerable. `cursor` on the label/button rather than the disabled input,
+ * since a disabled checkbox does not itself take the pointer.
+ */
+.optionDisabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.optionDisabled:hover {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+
 .optionCheckbox {
   accent-color: var(--gold-deep);
   flex: 0 0 auto;

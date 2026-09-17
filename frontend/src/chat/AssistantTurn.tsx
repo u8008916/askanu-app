@@ -33,7 +33,8 @@ function joinSelection(labels: string[]): string {
 }
 
 /**
- * Clarification options, selectable.
+ * Clarification options, selectable — but only for the turn `useChatSession`
+ * still considers pending.
  *
  * A single-select option is a button: clicking it puts its label in the
  * composer, exactly like a domain-launcher card — never a second send path.
@@ -42,14 +43,23 @@ function joinSelection(labels: string[]): string {
  * can still ignore the controls and type a reply, which is why the message-box
  * note stays.
  *
+ * `active` is false once a later response has resolved or replaced this
+ * clarification: the session only ever carries one `pendingClarification`, so
+ * an earlier turn's options no longer correspond to anything a reply would
+ * resolve. They stay visible as conversation history, disabled rather than
+ * removed, with no message-box prompt inviting an answer that would land on
+ * the wrong turn.
+ *
  * Order is significant: it is what `first` and `second` refer to.
  */
 function ClarificationOptions({
   clarification,
   onSelect,
+  active,
 }: {
   clarification: Clarification;
   onSelect: (text: string) => void;
+  active: boolean;
 }) {
   const { options, allow_multiple: allowMultiple } = clarification;
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
@@ -77,10 +87,13 @@ function ClarificationOptions({
         {options.map((option, index) => (
           <li key={option.id}>
             {allowMultiple ? (
-              <label className={styles.option}>
+              <label
+                className={`${styles.option} ${!active ? styles.optionDisabled : ''}`}
+              >
                 <input
                   checked={selected.has(option.id)}
                   className={styles.optionCheckbox}
+                  disabled={!active}
                   name={groupName}
                   onChange={() => toggle(option.id)}
                   type="checkbox"
@@ -92,7 +105,8 @@ function ClarificationOptions({
               </label>
             ) : (
               <button
-                className={styles.option}
+                className={`${styles.option} ${!active ? styles.optionDisabled : ''}`}
+                disabled={!active}
                 onClick={() => onSelect(option.label)}
                 type="button"
               >
@@ -105,26 +119,27 @@ function ClarificationOptions({
           </li>
         ))}
       </ol>
-      {allowMultiple ? (
-        <div className={styles.selectionActions}>
-          <button
-            className={styles.useSelection}
-            disabled={selectedLabels.length === 0}
-            onClick={() => onSelect(joinSelection(selectedLabels))}
-            type="button"
-          >
-            Use selection
-          </button>
+      {active &&
+        (allowMultiple ? (
+          <div className={styles.selectionActions}>
+            <button
+              className={styles.useSelection}
+              disabled={selectedLabels.length === 0}
+              onClick={() => onSelect(joinSelection(selectedLabels))}
+              type="button"
+            >
+              Use selection
+            </button>
+            <p className={styles.optionsNote}>
+              Choose one or more, then use your selection — or reply in the
+              message box.
+            </p>
+          </div>
+        ) : (
           <p className={styles.optionsNote}>
-            Choose one or more, then use your selection — or reply in the
-            message box.
+            Select an option, or reply in the message box.
           </p>
-        </div>
-      ) : (
-        <p className={styles.optionsNote}>
-          Select an option, or reply in the message box.
-        </p>
-      )}
+        ))}
     </div>
   );
 }
@@ -132,6 +147,8 @@ function ClarificationOptions({
 interface AssistantTurnProps {
   response: AskResponse;
   onSelectClarification: (text: string) => void;
+  /** False once a later response has resolved or replaced this turn's clarification. */
+  isClarificationActive: boolean;
 }
 
 /**
@@ -155,6 +172,7 @@ interface AssistantTurnProps {
 export function AssistantTurn({
   response,
   onSelectClarification,
+  isClarificationActive,
 }: AssistantTurnProps) {
   const { status, answer, sources, clarification } = response;
   const hasAnswer = answer.trim() !== '';
@@ -192,6 +210,7 @@ export function AssistantTurn({
             {hasAnswer && <AnswerBody answer={answer} />}
             {clarification && (
               <ClarificationOptions
+                active={isClarificationActive}
                 clarification={clarification}
                 onSelect={onSelectClarification}
               />

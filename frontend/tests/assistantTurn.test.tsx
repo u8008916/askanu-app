@@ -6,14 +6,20 @@ import { MOCK_SCENARIOS } from '../src/dev/mockTransport';
 import { needsClarificationManyOptionsResponse } from '../src/mocks/askResponses';
 import type { AskResponse, AskStatus } from '../src/types/api';
 
-/** The turn is an <li>; give it the list its markup expects. */
+/**
+ * The turn is an <li>; give it the list its markup expects. Defaults to the
+ * active turn — the shape every pre-existing test in this file exercises —
+ * so only tests about the lifecycle itself need to pass `isClarificationActive`.
+ */
 function renderTurn(
   response: AskResponse,
   onSelectClarification: (text: string) => void = vi.fn(),
+  isClarificationActive = true,
 ) {
   return render(
     <ul>
       <AssistantTurn
+        isClarificationActive={isClarificationActive}
         onSelectClarification={onSelectClarification}
         response={response}
       />
@@ -159,6 +165,48 @@ describe('AssistantTurn', () => {
     await user.click(screen.getByRole('button', { name: 'Use selection' }));
 
     expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1110');
+  });
+
+  /*
+   * `isClarificationActive` is how ChatPanel tells an older, resolved or
+   * superseded clarification turn from the one `useChatSession` still
+   * considers pending. A single AssistantTurn can't exercise the "resolved by
+   * a later turn" lifecycle itself — that is `clarificationLifecycle.test.tsx`
+   * — but it owns what an inactive turn renders like on its own.
+   */
+  it('an inactive single-select clarification disables its buttons and drops the prompt', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    renderTurn(
+      needsClarificationManyOptionsResponse,
+      onSelect,
+      /* isClarificationActive */ false,
+    );
+
+    const button = screen.getByRole('button', { name: /COMP1100/ });
+    expect(button).toBeDisabled();
+    await user.click(button);
+    expect(onSelect).not.toHaveBeenCalled();
+
+    // No message-box prompt: it would invite an answer to a turn no reply can reach.
+    expect(
+      screen.queryByText(/reply in the message box/),
+    ).not.toBeInTheDocument();
+    // The options themselves are still shown as conversation history.
+    expect(screen.getByText('COMP1100')).toBeInTheDocument();
+  });
+
+  it('an inactive multi-select clarification disables its checkboxes and hides "Use selection"', () => {
+    const scenario = MOCK_SCENARIOS.find(
+      (s) => s.id === 'needs-clarification',
+    )!;
+    renderTurn(scenario.response, vi.fn(), /* isClarificationActive */ false);
+
+    expect(screen.getByRole('checkbox', { name: /COMP1110/ })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: /COMP1600/ })).toBeDisabled();
+    expect(
+      screen.queryByRole('button', { name: 'Use selection' }),
+    ).not.toBeInTheDocument();
   });
 
   /*

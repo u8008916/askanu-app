@@ -35,6 +35,7 @@ const DISCLAIMER =
 function renderTurn(
   turn: ChatTurn,
   onSelectClarification: (text: string) => void,
+  activeClarificationTurnId: string | undefined,
 ) {
   switch (turn.kind) {
     case 'user':
@@ -44,12 +45,29 @@ function renderTurn(
     case 'assistant':
       return (
         <AssistantTurn
+          isClarificationActive={turn.id === activeClarificationTurnId}
           key={turn.id}
           onSelectClarification={onSelectClarification}
           response={turn.response}
         />
       );
   }
+}
+
+/**
+ * `useChatSession` only ever tracks one `pendingClarification`, mirrored from
+ * the most recent assistant response — so exactly one turn's clarification,
+ * the latest assistant turn's, can still be the one a reply would resolve.
+ * An earlier turn's clarification is history: still shown, no longer live.
+ */
+function findActiveClarificationTurnId(turns: ChatTurn[]): string | undefined {
+  for (let i = turns.length - 1; i >= 0; i -= 1) {
+    const turn = turns[i];
+    if (turn.kind === 'assistant') {
+      return turn.id;
+    }
+  }
+  return undefined;
 }
 
 export function ChatPanel({
@@ -66,6 +84,7 @@ export function ChatPanel({
   onSelectClarification,
 }: ChatPanelProps) {
   const isEmpty = turns.length === 0;
+  const activeClarificationTurnId = findActiveClarificationTurnId(turns);
 
   /*
    * Confirmed mobile home: greeting and input at the top, then `Try asking`,
@@ -112,7 +131,9 @@ export function ChatPanel({
           <EmptyState onSelectSuggestion={onSend} />
         ) : (
           <ul aria-label="Conversation" className={styles.turns}>
-            {turns.map((turn) => renderTurn(turn, onSelectClarification))}
+            {turns.map((turn) =>
+              renderTurn(turn, onSelectClarification, activeClarificationTurnId),
+            )}
           </ul>
         )}
       </div>
