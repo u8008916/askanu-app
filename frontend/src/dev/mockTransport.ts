@@ -13,6 +13,7 @@ import {
   offTopicResponse,
   okAccommodationResponse,
   okCurrentJobsResponse,
+  okEventsResponse,
   okManySourcesResponse,
   okMissingFieldSourceResponse,
   okMultiSourceResponse,
@@ -20,6 +21,7 @@ import {
   okSupportResponse,
   partialAccommodationResponse,
   partialClosingSoonResponse,
+  partialEventsResponse,
   partialResponse,
   partialSupportResponse,
 } from '../mocks/askResponses';
@@ -121,6 +123,16 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'partial-support',
     label: 'partial — support',
     response: partialSupportResponse,
+  },
+  {
+    id: 'ok-events',
+    label: 'ok — events',
+    response: okEventsResponse,
+  },
+  {
+    id: 'partial-events',
+    label: 'partial — events',
+    response: partialEventsResponse,
   },
   {
     id: 'insufficient',

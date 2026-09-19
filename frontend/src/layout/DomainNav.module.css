@@ -47,11 +47,6 @@
   width: 100%;
 }
 
-/* Domains whose resource page is not built yet. */
-.itemDisabled {
-  cursor: not-allowed;
-}
-
 .itemLink {
   cursor: pointer;
   transition:
@@ -79,11 +74,4 @@
   border-color: var(--gold-soft);
   color: var(--gold-deep);
   font-weight: 600;
-}
-
-/* --ink-2: read as copy, so it must clear AA. See tokens.css contrast rules. */
-.note {
-  color: var(--ink-2);
-  font-size: var(--text-xs);
-  padding: 0 var(--space-1);
 }

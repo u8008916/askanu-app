@@ -119,7 +119,24 @@ describe('Upcoming Events panel', () => {
     expect(
       within(events).getByText('Upcoming events are unavailable right now.'),
     ).toBeInTheDocument();
-    expect(within(events).queryByRole('link', { name: 'View all' })).not.toBeInTheDocument();
+    // The Events page exists now, so the route is offered in every state,
+    // exactly as Current Jobs does.
+    expect(within(events).getByRole('link', { name: 'View all' })).toHaveAttribute(
+      'href',
+      '/events',
+    );
+    expect(within(events).queryByRole('listitem')).not.toBeInTheDocument();
+  });
+
+  it('View all routes to the Events launcher page', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const events = await settled('Upcoming Events');
+
+    await user.click(within(events).getByRole('link', { name: 'View all' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: /Events/ })).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/events');
   });
 
   it('renders contract-shaped events in server order with a Canberra time', async () => {
@@ -133,10 +150,19 @@ describe('Upcoming Events panel', () => {
     // 2099-03-02T10:00+11:00 is Mon 2 Mar, 10:00 am in Canberra (AEDT); the
     // stored offset is rendered in the Canberra zone, not the machine's.
     expect(links[0]).toHaveTextContent(/Mon, 2 Mar, 10:00 am/);
-    expect(links[0]).toHaveTextContent('Placeholder venue');
-    // Venue-less item: time only, nothing invented in its place.
+    // Venue, organiser and the stored status wording, in that order, as sent.
+    expect(links[0]).toHaveTextContent(
+      'Mon, 2 Mar, 10:00 am · Placeholder venue · Placeholder organiser · published',
+    );
+    // Every optional field null: time only, nothing invented in its place and
+    // no dangling separator.
     expect(links[1]).toHaveTextContent(/Tue, 3 Mar, 6:30 pm/);
     expect(links[1]).not.toHaveTextContent('venue');
+    expect(links[1]).not.toHaveTextContent('·');
+    // A stored cancellation wording is shown as stored — the record is neither
+    // hidden nor relabelled by the App.
+    expect(links[2]).toHaveTextContent('Wed, 4 Mar, 9:00 am · Placeholder venue C · cancelled');
+    expect(within(events).queryByText(/^(Open|Closed|Cancelled|Live)$/)).not.toBeInTheDocument();
   });
 
   it('shows an honest empty line for a successful empty list', async () => {

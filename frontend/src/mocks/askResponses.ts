@@ -526,6 +526,68 @@ export const partialSupportResponse: AskResponse = {
   request_id: 'req_mock_support_partial',
 };
 
+/**
+ * Events (V6 Day 15).
+ *
+ * The RAG service answers event questions deterministically from persisted
+ * records: one paragraph per event in the source's own wording, with the
+ * stored ISO-8601 start/end, venue, address, organiser and source/cancellation
+ * status only when the record has them, and an explicit "not published in the
+ * stored source record" line when the question asked for a missing venue or
+ * organiser. The App renders that text as sent — it never reformats a
+ * timestamp, adds a field or hides one. Chat discovery may cite both the
+ * official ANU record (`source_id = events_anu_official`) and an approved
+ * Rubric record (`source_id = rubric_unified_search`); the split is the
+ * backend's, and the fixture keeps both so the source cards are exercised.
+ *
+ * Record identity is the production shape frozen cross-repo on Day 15:
+ * `record_id = events:event:<entity_id>`; the entity id, titles and URLs stay
+ * obvious placeholders (2099 dates, `example.invalid`).
+ */
+export const okEventsResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder event A. Starts: 2099-03-02T10:00:00+11:00. Ends: 2099-03-02T11:00:00+11:00. Venue: Placeholder venue. Organiser: Placeholder organiser. Source status: published.\n\nPlaceholder event B. Starts: 2099-03-03T18:30:00+11:00. Venue: not published in the stored source record. Organiser: not published in the stored source record.',
+  items: [],
+  sources: [
+    {
+      record_id: 'events:event:placeholder-event-a',
+      source_id: 'events_anu_official',
+      title: 'Placeholder event A',
+      url: 'https://example.invalid/events/placeholder-event-a',
+      domain: 'events',
+    },
+    {
+      record_id: 'events:event:placeholder-rubric-b',
+      source_id: 'rubric_unified_search',
+      title: 'Placeholder event B',
+      url: 'https://example.invalid/?eid=placeholder-b',
+      domain: 'events',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_events_ok',
+};
+
+/** `partial` renders like `ok`; the service's own caveat carries the meaning. */
+export const partialEventsResponse: AskResponse = {
+  status: 'partial',
+  answer:
+    'Placeholder event A. Starts: 2099-03-02T10:00:00+11:00. Venue: Placeholder venue.\n\nOnly one stored record matched that period; the remaining detail is not in the approved evidence.',
+  items: [],
+  sources: [
+    {
+      record_id: 'events:event:placeholder-event-a',
+      source_id: 'events_anu_official',
+      title: 'Placeholder event A',
+      url: 'https://example.invalid/events/placeholder-event-a',
+      domain: 'events',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_events_partial',
+};
+
 /** The controlled error envelope from `docs/API_CONTRACT.md`. */
 export const errorResponse: AskResponse = {
   status: 'error',
