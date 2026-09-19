@@ -94,8 +94,18 @@ export function parseEventItem(value: unknown): EventItem | null {
     return null;
   }
 
-  const { record_id, source_id, title, start_at, end_at, venue, organiser, url, domain } =
-    value;
+  const {
+    record_id,
+    source_id,
+    title,
+    start_at,
+    end_at,
+    venue,
+    organiser,
+    status,
+    url,
+    domain,
+  } = value;
 
   if (
     !isString(record_id) ||
@@ -105,13 +115,25 @@ export function parseEventItem(value: unknown): EventItem | null {
     !isNullableString(end_at) ||
     !isNullableString(venue) ||
     !isNullableString(organiser) ||
+    !isNullableString(status) ||
     !isString(url) ||
     domain !== 'events'
   ) {
     return null;
   }
 
-  return { record_id, source_id, title, start_at, end_at, venue, organiser, url, domain };
+  return {
+    record_id,
+    source_id,
+    title,
+    start_at,
+    end_at,
+    venue,
+    organiser,
+    status,
+    url,
+    domain,
+  };
 }
 
 /** Returns the validated envelope, or `null` when it does not match the contract. */

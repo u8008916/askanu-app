@@ -13,22 +13,20 @@ import styles from './DomainNav.module.css';
 
 /**
  * The `Explore` panel from the confirmed V3 UI: Home plus the six domains, in
- * the order shown in the approved desktop and mobile designs.
- *
- * An entry carries a `to` once its resource page exists; the rest are announced
- * as disabled and carry no routing until their scheduled day.
+ * the order shown in the approved desktop and mobile designs. Every entry is
+ * a guided-domain page since Events shipped on Day 15.
  */
 const NAV_ITEMS: {
   label: string;
   Icon: ComponentType<{ size?: number }>;
-  to?: string;
+  to: string;
 }[] = [
   { label: 'Home', Icon: HomeIcon, to: '/' },
   { label: 'Courses', Icon: CoursesIcon, to: '/courses' },
   { label: 'Scholarships', Icon: ScholarshipsIcon, to: '/scholarships' },
   { label: 'Accommodation', Icon: AccommodationIcon, to: '/accommodation' },
   { label: 'Jobs', Icon: JobsIcon, to: '/jobs' },
-  { label: 'Events', Icon: EventsIcon },
+  { label: 'Events', Icon: EventsIcon, to: '/events' },
   { label: 'Support Services', Icon: SupportIcon, to: '/support' },
 ];
 
@@ -49,34 +47,21 @@ export function DomainNav({ bare = false, onNavigate }: DomainNavProps) {
       <ul className={styles.list}>
         {NAV_ITEMS.map(({ label, Icon, to }) => (
           <li key={label}>
-            {to === undefined ? (
-              <button
-                aria-disabled="true"
-                className={`${styles.item} ${styles.itemDisabled}`}
-                onClick={(event) => event.preventDefault()}
-                type="button"
-              >
-                <Icon size={19} />
-                {label}
-              </button>
-            ) : (
-              /* NavLink supplies aria-current="page" for the active route. */
-              <NavLink
-                className={({ isActive }) =>
-                  `${styles.item} ${styles.itemLink} ${isActive ? styles.itemCurrent : ''}`
-                }
-                end
-                onClick={onNavigate}
-                to={to}
-              >
-                <Icon size={19} />
-                {label}
-              </NavLink>
-            )}
+            {/* NavLink supplies aria-current="page" for the active route. */}
+            <NavLink
+              className={({ isActive }) =>
+                `${styles.item} ${styles.itemLink} ${isActive ? styles.itemCurrent : ''}`
+              }
+              end
+              onClick={onNavigate}
+              to={to}
+            >
+              <Icon size={19} />
+              {label}
+            </NavLink>
           </li>
         ))}
       </ul>
-      <p className={styles.note}>Remaining resource pages coming soon.</p>
     </nav>
   );
 }

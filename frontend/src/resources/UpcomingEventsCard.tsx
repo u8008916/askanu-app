@@ -23,19 +23,26 @@ function formatStart(startAt: string): string {
   return Number.isNaN(time) ? startAt : startFormat.format(time);
 }
 
+/**
+ * The secondary line: start time, then venue, organiser and the stored
+ * `status` wording, each only when the source published it. `status` is shown
+ * as stored ("published", a cancellation wording, …) — the App never decides
+ * what a status means or hides a record because of it.
+ */
 function eventMeta(event: EventItem) {
   const parts = [
     formatStart(event.start_at),
     ...(event.venue !== null && event.venue !== '' ? [event.venue] : []),
+    ...(event.organiser !== null && event.organiser !== '' ? [event.organiser] : []),
+    ...(event.status !== null && event.status !== '' ? [event.status] : []),
   ];
   return parts.join(' · ');
 }
 
 /**
- * V3: 5 upcoming events from `/api/v1/events/upcoming`. No `View all` yet —
- * the Events resource page is built on the Events build day, and until then
- * a route to nowhere would be a broken promise. The panel already renders
- * real records the moment the endpoint ships.
+ * V3: 5 upcoming events from `/api/v1/events/upcoming` — the official ANU
+ * Events surface only, already filtered and ordered by the server. `View all`
+ * routes to the Events guided page.
  */
 export function UpcomingEventsCard() {
   const { events } = useFeeds();
@@ -48,6 +55,7 @@ export function UpcomingEventsCard() {
       state={events}
       title="Upcoming Events"
       unavailableText="Upcoming events are unavailable right now."
+      viewAllTo="/events"
     />
   );
 }

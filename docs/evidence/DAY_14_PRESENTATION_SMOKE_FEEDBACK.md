@@ -182,10 +182,19 @@ is checked; anything not yet reproduced stays `TBC`.
 | 1 | "Is it catered?" (2nd Accommodation follow-up, after a prior Courses question in the same session) returns the Courses/COMP1110 answer instead of the accommodation catering answer | This session, §4 | defect (conversation-context resolution) | ✅ yes, 2/2 | **P0 — backend** | Carmen (RAG) | Escalate before next live use; App-side mitigation (reworded presenter line) already applied, no code fix possible in this repo |
 | 2 | Jobs "Job requirements" card returns the Courses-domain fallback message ("ask a standalone course prerequisite question with a course code") for a Jobs question | `DAY14_LIVE_DEMO_SCRIPT.md` §3 (found during script verification, not re-tested this session per user decision) | defect (wrong-domain fallback wording) | not re-tested today (already confirmed in the script's own verification pass) | P1 — backend wording | Carmen | Card left as-is on the page today (user decision); do not click live |
 | 3 | Personalisation-implying card prompts: Courses ×3 ("What courses do I need for my degree?", "Can I still qualify for honours?", "Can I take this course in my study plan?"), Jobs ×1 ("Jobs for my background or degree"), Scholarships ×3 | `DAY14_LIVE_DEMO_SCRIPT.md` §3 | preference / copy | wording pattern only, not re-tested | P2 | Needs group decision (Qasim) | Reword only if accepted — 3 safe options already listed in the demo script §3 |
-| 4 | Home "Try asking" suggestion "What events are happening this week?" hits the events-unavailable empty state | This session §5 + demo script §4 | expected/known gap, not a defect | ✅ (by design until Day 15) | P2 | Ben | Resolves itself when Day 15 ships Events; no UI change needed today |
+| 4 | Home "Try asking" suggestion "What events are happening this week?" hits the events-unavailable empty state | This session §5 + demo script §4 | expected/known gap, not a defect | ✅ (by design until Day 15) | P2 | Ben | **Resolved Day 15** — suggestion reworded to `What ANU events are coming up?` alongside the Events launcher (`DAY_15_EVENTS_SIX_DOMAIN.md` §1); the deployed panel stays "unavailable" until the RAG Events branch ships |
 | 5 | `docs/DEPLOYMENT.md` still documents the dead `askanu-web.web.app` hosting URL instead of the live `askanu-dev-gdg.web.app` | This session §1 + demo script header note | docs defect | ✅ | P2 — docs | Ben | Day 22 docs day, or a 1-line fix any time if Qasim wants it sooner |
 | 6 | Jobs follow-up "When does that job close?" repeats the entire job card instead of a crisp one-line date answer | `DAY14_LIVE_DEMO_SCRIPT.md` §1 (marked optional/fillable in the script) | enhancement (backend answer shaping) | not re-tested today | TBC | Carmen | Low priority — script already treats this as safe filler, not a blocker |
 | — | *(rows 7+ reserved for verbatim post-demo comments — add below this line, classify with the rubric above before assigning P0–P2)* | | | | | | |
+
+**Qasim's classification (19 Sep 2026, Day 15 session):** no post-demo rows were added. Qasim
+accepted the confirmed UX as requirements (Clear Chat wording; no login/profile control; `Try asking`
+initial-state only; compact guided domain pages; cards launch the single chat; same pattern across
+domains; official ANU navigation preserved; mobile/responsive is a requirement) plus the Events-specific
+requirements (official-only Upcoming surface, no Rubric on it, no frontend source filtering, compact
+title/date/organiser/location/source line, optional fields degrade, no fabrication, empty/loading/error/
+stale states, mobile). Rows 3 and 5 were **not** accepted today and stay open; rows 1, 2, 6 are
+backend-owned. Full verbatim text and per-item verification: `DAY_15_EVENTS_SIX_DOMAIN.md` §1.
 
 ## 7. Remaining gaps — reported, not worked around
 

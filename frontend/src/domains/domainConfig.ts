@@ -4,6 +4,7 @@ import {
   CalendarCheckIcon,
   CoursesIcon,
   DocumentIcon,
+  EventsIcon,
   InfoIcon,
   JobsIcon,
   PersonIcon,
@@ -425,4 +426,83 @@ export const SUPPORT_DOMAIN: DomainLauncherConfig = {
     },
   ],
   resourcesNote: 'These links open anusa.com.au and anu.edu.au in a new tab.',
+};
+
+/**
+ * Events.
+ *
+ * V3 names the official ANU Events/calendar as the Events release source.
+ * Every URL below was opened and confirmed to return HTTP 200 on Day 15 and
+ * is reachable from the site's own navigation (`www.anu.edu.au/events` →
+ * "Event Calendar"; `students/student-life` → "Events & stories"). See
+ * docs/evidence/DAY_15_EVENTS_SIX_DOMAIN.md.
+ *
+ * Card copy is a guided intent, not an answer: no event title, date, time,
+ * venue, organiser, ticket, price or registration detail is hard-coded here.
+ * Every prompt says "events" and uses only the time wording the RAG service
+ * resolves in `Australia/Canberra` (`today`, `next week`, or no period at all
+ * for the next upcoming events) — "this week" and "this weekend" are not
+ * supported by the backend, so no card promises them. Whether an event is
+ * upcoming, and which fields the source published, are server facts; the App
+ * displays what it is sent and never infers or fills a gap.
+ *
+ * The resources are navigation escape hatches, not event records. Individual
+ * events live at `https://www.anu.edu.au/events/<slug>` and arrive only as
+ * evidence URLs in `sources[]` (the dedicated Upcoming Events panel shows
+ * official ANU records only; chat discovery may also cite approved Rubric
+ * records, a split the backend enforces). The App never constructs an event
+ * record URL or ID, and never filters records by source itself.
+ *
+ * Events v1 identity is frozen cross-repo (`source_id = events_anu_official`,
+ * `record_id = events:event:<entity_id>`, canonical URL the published ANU
+ * detail page above). The App treats both ids as opaque backend data; see
+ * `mocks/askResponses.ts` and `mocks/feedResponses.ts` for the fixture shape.
+ */
+export const EVENTS_DOMAIN: DomainLauncherConfig = {
+  id: 'events',
+  title: 'Events',
+  intro:
+    'Find official ANU events through AskANU. Choose a question below to start a chat, or explore official resources.',
+  Icon: EventsIcon,
+  questions: [
+    {
+      id: 'whats-coming-up',
+      title: "What's coming up?",
+      description: 'See the next upcoming ANU events listed in the official calendar.',
+      prompt: 'What ANU events are coming up?',
+      Icon: CalendarCheckIcon,
+    },
+    {
+      id: 'events-today',
+      title: 'Events on today',
+      description: 'Check what is listed for today.',
+      prompt: 'What events are on at ANU today?',
+      Icon: SearchIcon,
+    },
+    {
+      id: 'events-next-week',
+      title: 'Events next week',
+      description: "Look ahead to next week's listed events.",
+      prompt: 'What events are on at ANU next week?',
+      Icon: DocumentIcon,
+    },
+    {
+      id: 'where-and-who',
+      title: 'Where is it and who runs it?',
+      description: 'Ask for the venue and organiser of an upcoming event.',
+      prompt: 'Where are the upcoming ANU events held and who is organising them?',
+      Icon: InfoIcon,
+    },
+  ],
+  resourcesTitle: 'Official ANU events navigation',
+  resources: [
+    { label: 'ANU Events', href: 'https://www.anu.edu.au/events' },
+    { label: 'Event Calendar', href: 'https://www.anu.edu.au/events/calendar' },
+    {
+      label: 'Student life: events & stories',
+      href: 'https://www.anu.edu.au/students/student-life/events-stories',
+    },
+    { label: 'Student life', href: 'https://www.anu.edu.au/students/student-life' },
+  ],
+  resourcesNote: 'These links open anu.edu.au in a new tab.',
 };

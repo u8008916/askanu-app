@@ -33,17 +33,40 @@ describe('resource navigation', () => {
     expect(window.location.pathname).toBe('/courses');
   });
 
-  it('leaves the one unbuilt domain non-navigating', async () => {
+  it('makes every domain a real link now that all six pages exist', async () => {
     render(<App />);
     const nav = explore();
 
-    for (const label of ['Events']) {
-      const item = within(nav).getByRole('button', { name: label });
-      expect(item).toHaveAttribute('aria-disabled', 'true');
-      expect(item).not.toHaveAttribute('href');
-    }
-    // Home plus the five built domains are links.
-    expect(within(nav).getAllByRole('link')).toHaveLength(6);
+    // Home plus the six built domains are links; nothing is announced disabled.
+    expect(within(nav).getAllByRole('link')).toHaveLength(7);
+    expect(within(nav).queryByRole('button')).not.toBeInTheDocument();
+    expect(within(nav).queryByText(/coming soon/i)).not.toBeInTheDocument();
+    expect(within(nav).getByRole('link', { name: 'Events' })).toHaveAttribute('href', '/events');
+  });
+
+  it('routes to Events and moves the current-page marker', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(within(explore()).getByRole('link', { name: 'Events' }));
+
+    await waitFor(() =>
+      expect(within(explore()).getByRole('link', { name: 'Events' })).toHaveAttribute(
+        'aria-current',
+        'page',
+      ),
+    );
+    expect(
+      within(explore()).getByRole('link', { name: 'Home' }),
+    ).not.toHaveAttribute('aria-current');
+    expect(window.location.pathname).toBe('/events');
+  });
+
+  it('opens Events directly from its own URL', async () => {
+    window.history.replaceState({}, '', '/events');
+    render(<App />);
+
+    expect(screen.getByRole('heading', { level: 1, name: /Events/ })).toBeInTheDocument();
   });
 
   it('routes to Accommodation and moves the current-page marker', async () => {

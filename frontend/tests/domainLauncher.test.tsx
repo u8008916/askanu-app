@@ -5,6 +5,7 @@ import { DomainLauncher } from '../src/domains/DomainLauncher';
 import {
   ACCOMMODATION_DOMAIN,
   COURSES_DOMAIN,
+  EVENTS_DOMAIN,
   JOBS_DOMAIN,
   SCHOLARSHIPS_DOMAIN,
   SUPPORT_DOMAIN,
@@ -140,8 +141,8 @@ describe('DomainLauncher', () => {
 });
 
 /**
- * All five shipped domains through the one component. Anything that holds
- * for all five is a property of the shared launcher, not of a page. Support
+ * All six shipped domains through the one component. Anything that holds
+ * for all six is a property of the shared launcher, not of a page. Support
  * is included symmetrically with the other four (Qasim, Day 12 review) even
  * though its official resources span two approved hosts, not one — see the
  * host check below.
@@ -152,6 +153,7 @@ describe.each([
   ['Jobs', JOBS_DOMAIN],
   ['Accommodation', ACCOMMODATION_DOMAIN],
   ['Support Services', SUPPORT_DOMAIN],
+  ['Events', EVENTS_DOMAIN],
 ])('DomainLauncher — %s config', (_name, config) => {
   it('has four cards, each prompt non-empty and distinct', () => {
     render(<DomainLauncher config={config} onSelectQuestion={() => {}} />);
