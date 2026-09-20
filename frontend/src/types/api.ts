@@ -81,9 +81,15 @@ export interface AskRequest {
  * is present and never fills a gap. `status` is the server's currentness
  * verdict; the App does not compute it.
  *
- * `EventItem` still follows this repo's contract: the RAG service does not
- * serve `/api/v1/events/upcoming` until the Events build day, so its exact
- * field nullability is confirmed then.
+ * `EventItem` mirrors the shape the RAG service ships on its Events build day
+ * (askanu-rag `carmen/day15-events-rag-api`, synced 2026-09-19): the dedicated
+ * upcoming endpoint serves official ANU records only; `end_at`, `venue`,
+ * `organiser` and `status` are nullable. `status` is the stored source-backed
+ * wording (a cancellation status when the source published one, otherwise the
+ * source status, e.g. "published"). The App parses and carries this field for
+ * contract compatibility but does not currently present or interpret it —
+ * the value mixes two different concepts with no frozen student-facing
+ * semantics yet (see `resources/UpcomingEventsCard.tsx`).
  */
 
 export interface EventItem {
@@ -94,6 +100,7 @@ export interface EventItem {
   end_at: string | null;
   venue: string | null;
   organiser: string | null;
+  status: string | null;
   url: string;
   domain: 'events';
 }

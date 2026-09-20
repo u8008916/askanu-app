@@ -97,32 +97,54 @@ export const mockCurrentJobs: JobItem[] = [
 ];
 
 /**
- * Upcoming events in ascending `start_at`, `Australia/Canberra`. The RAG
- * service does not serve this endpoint until the Events build day, so this
- * fixture exists to prove the panel renders the contract shape — including a
- * venue-less item — before real records exist.
+ * Upcoming events in ascending `start_at`, `Australia/Canberra`, in the shape
+ * the RAG service ships (`events_anu_official` records only on this surface;
+ * `record_id` = `events:event:<entity_id>`). Placeholder copy, `example.invalid`
+ * URLs and 2099 dates only: the fixture proves the panel renders the contract —
+ * including an item with every optional field null — and never stands in for
+ * real events.
+ *
+ * Two items carry a non-null `status` ('published', 'cancelled') on purpose:
+ * the fixture proves the App accepts and parses that field without letting it
+ * classify, filter or badge a record — `status` is not rendered by
+ * `UpcomingEventsCard` (see its comment). It only stands in for the shape the
+ * contract sends, not for a value the UI should ever show.
  */
 export const mockUpcomingEvents: EventItem[] = [
   {
     record_id: 'events:event:placeholder-1',
-    source_id: 'events_anu',
+    source_id: 'events_anu_official',
     title: 'Placeholder event A',
     start_at: '2099-03-02T10:00:00+11:00',
     end_at: '2099-03-02T11:00:00+11:00',
     venue: 'Placeholder venue',
     organiser: 'Placeholder organiser',
+    status: 'published',
     url: 'https://example.invalid/placeholder-event-a',
     domain: 'events',
   },
   {
     record_id: 'events:event:placeholder-2',
-    source_id: 'events_anu',
+    source_id: 'events_anu_official',
     title: 'Placeholder event B with a long title that wraps inside the panel at narrow widths',
     start_at: '2099-03-03T18:30:00+11:00',
     end_at: null,
     venue: null,
     organiser: null,
+    status: null,
     url: 'https://example.invalid/placeholder-event-b',
+    domain: 'events',
+  },
+  {
+    record_id: 'events:event:placeholder-3',
+    source_id: 'events_anu_official',
+    title: 'Placeholder event C',
+    start_at: '2099-03-04T09:00:00+11:00',
+    end_at: null,
+    venue: 'Placeholder venue C',
+    organiser: null,
+    status: 'cancelled',
+    url: 'https://example.invalid/placeholder-event-c',
     domain: 'events',
   },
 ];

@@ -119,7 +119,24 @@ describe('Upcoming Events panel', () => {
     expect(
       within(events).getByText('Upcoming events are unavailable right now.'),
     ).toBeInTheDocument();
-    expect(within(events).queryByRole('link', { name: 'View all' })).not.toBeInTheDocument();
+    // The Events page exists now, so the route is offered in every state,
+    // exactly as Current Jobs does.
+    expect(within(events).getByRole('link', { name: 'View all' })).toHaveAttribute(
+      'href',
+      '/events',
+    );
+    expect(within(events).queryByRole('listitem')).not.toBeInTheDocument();
+  });
+
+  it('View all routes to the Events launcher page', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const events = await settled('Upcoming Events');
+
+    await user.click(within(events).getByRole('link', { name: 'View all' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: /Events/ })).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/events');
   });
 
   it('renders contract-shaped events in server order with a Canberra time', async () => {
@@ -133,10 +150,26 @@ describe('Upcoming Events panel', () => {
     // 2099-03-02T10:00+11:00 is Mon 2 Mar, 10:00 am in Canberra (AEDT); the
     // stored offset is rendered in the Canberra zone, not the machine's.
     expect(links[0]).toHaveTextContent(/Mon, 2 Mar, 10:00 am/);
-    expect(links[0]).toHaveTextContent('Placeholder venue');
-    // Venue-less item: time only, nothing invented in its place.
+    // Venue and organiser, in that order, as sent.
+    expect(links[0]).toHaveTextContent(
+      'Mon, 2 Mar, 10:00 am · Placeholder venue · Placeholder organiser',
+    );
+    // Every optional field null: time only, nothing invented in its place and
+    // no dangling separator.
     expect(links[1]).toHaveTextContent(/Tue, 3 Mar, 6:30 pm/);
     expect(links[1]).not.toHaveTextContent('venue');
+    expect(links[1]).not.toHaveTextContent('·');
+    // A stored venue with no organiser: time and venue only, no trailing
+    // separator or invented organiser.
+    expect(links[2]).toHaveTextContent('Wed, 4 Mar, 9:00 am · Placeholder venue C');
+    expect(within(events).queryByText(/^(Open|Closed|Cancelled|Live)$/)).not.toBeInTheDocument();
+    // `status` is accepted by the parser (mockUpcomingEvents carries
+    // 'published' / null / 'cancelled') but is not student-facing yet: the
+    // App has no frozen semantics for the stored value, so it never surfaces
+    // the raw status text, badges a record, or filters/hides one because of
+    // it. See UpcomingEventsCard.tsx.
+    expect(mockUpcomingEvents.some((item) => item.status !== null)).toBe(true);
+    expect(within(events).queryByText(/published|cancelled/i)).not.toBeInTheDocument();
   });
 
   it('shows an honest empty line for a successful empty list', async () => {

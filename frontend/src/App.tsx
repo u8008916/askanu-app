@@ -8,6 +8,7 @@ import { TopBar } from './layout/TopBar';
 import { useIsDesktop } from './layout/useIsDesktop';
 import { AccommodationPage } from './pages/AccommodationPage';
 import { CoursesPage } from './pages/CoursesPage';
+import { EventsPage } from './pages/EventsPage';
 import { JobsPage } from './pages/JobsPage';
 import { ScholarshipsPage } from './pages/ScholarshipsPage';
 import { SupportPage } from './pages/SupportPage';
@@ -116,6 +117,7 @@ function AppShell() {
               path="/accommodation"
             />
             <Route element={<SupportPage onAskInChat={askInChat} />} path="/support" />
+            <Route element={<EventsPage onAskInChat={askInChat} />} path="/events" />
             <Route element={<Navigate replace to="/" />} path="*" />
           </Routes>
         </div>

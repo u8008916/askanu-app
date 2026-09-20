@@ -23,19 +23,35 @@ function formatStart(startAt: string): string {
   return Number.isNaN(time) ? startAt : startFormat.format(time);
 }
 
+/**
+ * The secondary line: start time, then venue and organiser, each only when
+ * the source published it.
+ *
+ * `event.status` is intentionally not rendered here. The App accepts and
+ * parses it (contract-compatibility with the RAG service), but the stored
+ * value currently mixes two different concepts — a cancellation wording and
+ * a general source/publishing status — with no frozen semantics the App can
+ * safely turn into student-facing UI (a badge, a filter, a hidden row).
+ * Interpreting it in the browser would move meaning-making out of the
+ * backend, which is exactly what this contract avoids elsewhere (see
+ * `docs/API_CONTRACT.md`). Rendering nothing is safer than surfacing an
+ * internal/source status string that was never designed as UI copy. If a
+ * normalized semantic field is frozen later (e.g. a dedicated cancellation
+ * flag), this is the place to add it.
+ */
 function eventMeta(event: EventItem) {
   const parts = [
     formatStart(event.start_at),
     ...(event.venue !== null && event.venue !== '' ? [event.venue] : []),
+    ...(event.organiser !== null && event.organiser !== '' ? [event.organiser] : []),
   ];
   return parts.join(' · ');
 }
 
 /**
- * V3: 5 upcoming events from `/api/v1/events/upcoming`. No `View all` yet —
- * the Events resource page is built on the Events build day, and until then
- * a route to nowhere would be a broken promise. The panel already renders
- * real records the moment the endpoint ships.
+ * V3: 5 upcoming events from `/api/v1/events/upcoming` — the official ANU
+ * Events surface only, already filtered and ordered by the server. `View all`
+ * routes to the Events guided page.
  */
 export function UpcomingEventsCard() {
   const { events } = useFeeds();
@@ -48,6 +64,7 @@ export function UpcomingEventsCard() {
       state={events}
       title="Upcoming Events"
       unavailableText="Upcoming events are unavailable right now."
+      viewAllTo="/events"
     />
   );
 }

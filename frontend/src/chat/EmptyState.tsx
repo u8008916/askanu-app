@@ -23,7 +23,7 @@ const SUGGESTIONS: {
   },
   { text: 'What are the prerequisites for COMP1110?', Icon: CoursesIcon },
   { text: 'I need help with accommodation', Icon: AccommodationIcon },
-  { text: 'What events are happening this week?', Icon: StarIcon },
+  { text: 'What ANU events are coming up?', Icon: StarIcon },
 ];
 
 interface EmptyStateProps {
