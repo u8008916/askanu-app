@@ -187,14 +187,18 @@ is checked; anything not yet reproduced stays `TBC`.
 | 6 | Jobs follow-up "When does that job close?" repeats the entire job card instead of a crisp one-line date answer | `DAY14_LIVE_DEMO_SCRIPT.md` §1 (marked optional/fillable in the script) | enhancement (backend answer shaping) | not re-tested today | TBC | Carmen | Low priority — script already treats this as safe filler, not a blocker |
 | — | *(rows 7+ reserved for verbatim post-demo comments — add below this line, classify with the rubric above before assigning P0–P2)* | | | | | | |
 
-**Qasim's classification (19 Sep 2026, Day 15 session):** no post-demo rows were added. Qasim
-accepted the confirmed UX as requirements (Clear Chat wording; no login/profile control; `Try asking`
-initial-state only; compact guided domain pages; cards launch the single chat; same pattern across
-domains; official ANU navigation preserved; mobile/responsive is a requirement) plus the Events-specific
-requirements (official-only Upcoming surface, no Rubric on it, no frontend source filtering, compact
-title/date/organiser/location/source line, optional fields degrade, no fabrication, empty/loading/error/
-stale states, mobile). Rows 3 and 5 were **not** accepted today and stay open; rows 1, 2, 6 are
-backend-owned. Full verbatim text and per-item verification: `DAY_15_EVENTS_SIX_DOMAIN.md` §1.
+**Corrected 20 Sep 2026 (Qasim, PR #36 review):** no post-demo rows were added on 19 Sep, and no
+additional Day 14 post-demo App feedback was formally PM-accepted through this board's process at
+that point. An earlier revision of this note described the already-confirmed UX (Clear Chat
+wording; no login/profile control; `Try asking` initial-state only; compact guided domain pages;
+cards launch the single chat; same pattern across domains; official ANU navigation preserved;
+mobile/responsive is a requirement) and the already-scheduled Day 15 Events scope (official-only
+Upcoming surface, no Rubric on it, no frontend source filtering, compact title/date/organiser
+line, optional fields degrade, no fabrication, empty/loading/error/stale states, mobile) as if they
+were newly accepted through this board — they were not; both were already in force independently
+(frozen requirements and scheduled scope, respectively) and are unaffected by this correction. Rows
+3 and 5 were **not** accepted and stay open; rows 1, 2, 6 are backend-owned. Full corrected
+categorisation and per-item verification: `DAY_15_EVENTS_SIX_DOMAIN.md` §1.
 
 ## 7. Remaining gaps — reported, not worked around
 

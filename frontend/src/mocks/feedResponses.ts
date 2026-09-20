@@ -101,8 +101,14 @@ export const mockCurrentJobs: JobItem[] = [
  * the RAG service ships (`events_anu_official` records only on this surface;
  * `record_id` = `events:event:<entity_id>`). Placeholder copy, `example.invalid`
  * URLs and 2099 dates only: the fixture proves the panel renders the contract —
- * including an item with every optional field null and one whose stored
- * `status` is a cancellation wording — and never stands in for real events.
+ * including an item with every optional field null — and never stands in for
+ * real events.
+ *
+ * Two items carry a non-null `status` ('published', 'cancelled') on purpose:
+ * the fixture proves the App accepts and parses that field without letting it
+ * classify, filter or badge a record — `status` is not rendered by
+ * `UpcomingEventsCard` (see its comment). It only stands in for the shape the
+ * contract sends, not for a value the UI should ever show.
  */
 export const mockUpcomingEvents: EventItem[] = [
   {

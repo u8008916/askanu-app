@@ -150,19 +150,26 @@ describe('Upcoming Events panel', () => {
     // 2099-03-02T10:00+11:00 is Mon 2 Mar, 10:00 am in Canberra (AEDT); the
     // stored offset is rendered in the Canberra zone, not the machine's.
     expect(links[0]).toHaveTextContent(/Mon, 2 Mar, 10:00 am/);
-    // Venue, organiser and the stored status wording, in that order, as sent.
+    // Venue and organiser, in that order, as sent.
     expect(links[0]).toHaveTextContent(
-      'Mon, 2 Mar, 10:00 am · Placeholder venue · Placeholder organiser · published',
+      'Mon, 2 Mar, 10:00 am · Placeholder venue · Placeholder organiser',
     );
     // Every optional field null: time only, nothing invented in its place and
     // no dangling separator.
     expect(links[1]).toHaveTextContent(/Tue, 3 Mar, 6:30 pm/);
     expect(links[1]).not.toHaveTextContent('venue');
     expect(links[1]).not.toHaveTextContent('·');
-    // A stored cancellation wording is shown as stored — the record is neither
-    // hidden nor relabelled by the App.
-    expect(links[2]).toHaveTextContent('Wed, 4 Mar, 9:00 am · Placeholder venue C · cancelled');
+    // A stored venue with no organiser: time and venue only, no trailing
+    // separator or invented organiser.
+    expect(links[2]).toHaveTextContent('Wed, 4 Mar, 9:00 am · Placeholder venue C');
     expect(within(events).queryByText(/^(Open|Closed|Cancelled|Live)$/)).not.toBeInTheDocument();
+    // `status` is accepted by the parser (mockUpcomingEvents carries
+    // 'published' / null / 'cancelled') but is not student-facing yet: the
+    // App has no frozen semantics for the stored value, so it never surfaces
+    // the raw status text, badges a record, or filters/hides one because of
+    // it. See UpcomingEventsCard.tsx.
+    expect(mockUpcomingEvents.some((item) => item.status !== null)).toBe(true);
+    expect(within(events).queryByText(/published|cancelled/i)).not.toBeInTheDocument();
   });
 
   it('shows an honest empty line for a successful empty list', async () => {

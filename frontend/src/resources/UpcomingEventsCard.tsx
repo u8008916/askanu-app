@@ -24,17 +24,26 @@ function formatStart(startAt: string): string {
 }
 
 /**
- * The secondary line: start time, then venue, organiser and the stored
- * `status` wording, each only when the source published it. `status` is shown
- * as stored ("published", a cancellation wording, …) — the App never decides
- * what a status means or hides a record because of it.
+ * The secondary line: start time, then venue and organiser, each only when
+ * the source published it.
+ *
+ * `event.status` is intentionally not rendered here. The App accepts and
+ * parses it (contract-compatibility with the RAG service), but the stored
+ * value currently mixes two different concepts — a cancellation wording and
+ * a general source/publishing status — with no frozen semantics the App can
+ * safely turn into student-facing UI (a badge, a filter, a hidden row).
+ * Interpreting it in the browser would move meaning-making out of the
+ * backend, which is exactly what this contract avoids elsewhere (see
+ * `docs/API_CONTRACT.md`). Rendering nothing is safer than surfacing an
+ * internal/source status string that was never designed as UI copy. If a
+ * normalized semantic field is frozen later (e.g. a dedicated cancellation
+ * flag), this is the place to add it.
  */
 function eventMeta(event: EventItem) {
   const parts = [
     formatStart(event.start_at),
     ...(event.venue !== null && event.venue !== '' ? [event.venue] : []),
     ...(event.organiser !== null && event.organiser !== '' ? [event.organiser] : []),
-    ...(event.status !== null && event.status !== '' ? [event.status] : []),
   ];
   return parts.join(' · ');
 }

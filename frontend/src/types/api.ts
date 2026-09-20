@@ -86,8 +86,10 @@ export interface AskRequest {
  * upcoming endpoint serves official ANU records only; `end_at`, `venue`,
  * `organiser` and `status` are nullable. `status` is the stored source-backed
  * wording (a cancellation status when the source published one, otherwise the
- * source status, e.g. "published") and is displayed as stored — the App never
- * decides what a status means.
+ * source status, e.g. "published"). The App parses and carries this field for
+ * contract compatibility but does not currently present or interpret it —
+ * the value mixes two different concepts with no frozen student-facing
+ * semantics yet (see `resources/UpcomingEventsCard.tsx`).
  */
 
 export interface EventItem {
