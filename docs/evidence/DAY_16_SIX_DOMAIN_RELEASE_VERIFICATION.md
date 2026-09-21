@@ -2,6 +2,7 @@
 
 **Repo:** `askanu-app` · **Owner:** Ben · **Branch:** `ben/day16-six-domain-release-verification`
 **Base:** `main` at `71c1120` (= `origin/main`, PR #37 — docs-only, on top of PR #36 Events merge)
+**PR head (current, PR #38 still open):** `1b232843c3b4f021fdc2450e2acc9a0339cd938c`
 **Date:** Sunday 20 September 2026 — V6 Day 16, "final six-domain integration and release verification"
 **Deliverable:** Answer one question — *is current merged App `main` ready to deploy as the V6
 six-domain frontend once the data/RAG production gates are opened* — with fresh evidence, not a
@@ -463,7 +464,10 @@ changed. Adding one evidence file is the entire diff.
 **Git**
 - Branch: `ben/day16-six-domain-release-verification`
 - Base SHA: `71c1120501205fa2ee8c5a273de608188f9b7239` (= `origin/main`)
-- Head SHA: this PR's merge commit
+- PR head SHA (current, PR #38 still open): `1b232843c3b4f021fdc2450e2acc9a0339cd938c` — this is the
+  branch head as pushed; it is distinct from, and will change if the PR is later merged via, a
+  separate merge commit that GitHub creates at merge time. This document records the head as of this
+  correction, not a merge commit that does not exist yet.
 - Changed files: `docs/evidence/DAY_16_SIX_DOMAIN_RELEASE_VERIFICATION.md` (new) only
 
 **Six-domain navigation**
