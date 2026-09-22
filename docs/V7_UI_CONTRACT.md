@@ -1,0 +1,223 @@
+# V7_UI_CONTRACT.md
+
+**V7 Day 1 (`docs/v7/DAY_01.md`) deliverable.** Freezes the App-side UX contracts, the three target
+mock states, the canonical result-action payload, Clear Chat semantics, and the exact backend field
+needs V7 conversational rendering depends on.
+
+**Status of everything in this document: a proposal, not a contract change.** Nothing here edits
+`docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, or `frontend/src/types/api.ts`. Every field
+named in §6 is a request the App is handing to Qasim/Carmen for the Day 1 gate; until they freeze it,
+production code does not depend on it. The scaffolding for these shapes lives at
+`frontend/src/dev/v7/proposedContract.ts` and is not imported by any production module — see
+`docs/evidence/V7_DAY_01_UX_CONTRACT_FREEZE.md` for the bundle-exclusion proof.
+
+Read this after `AGENTS.md`, `my_day_by_day_tasks.md`, `docs/API_CONTRACT.md`,
+`docs/CONVERSATION_CONTRACT.md` and `docs/V3_LOCKED_DECISIONS.md`, and before starting any V7 Day 2+
+App work.
+
+## 1. Inventory — what already exists
+
+No V7 UI work starts from nothing. This is what the App already renders, with the file that owns it
+and the evidence that already proved it, so this document does not re-litigate settled ground.
+
+| Surface | Owning file(s) | States already proved |
+|---|---|---|
+| Chat turns | `chat/ChatPanel.tsx`, `chat/AssistantTurn.tsx`, `chat/useChatSession.ts` | empty (`Try asking`), active, pending, all six frozen `status` values |
+| Answer rendering | `chat/AnswerBody.tsx`, `chat/answerBlocks.ts` | paragraphs, bullet/numbered lists, `**emphasis**` — from parsed plain text, never markup |
+| Sources | `chat/SourceCards.tsx`, `util/safeUrl.ts` | backend order preserved, `javascript:`/malformed URLs refused as links, missing-title records render |
+| Clarification | `chat/AssistantTurn.tsx`'s `ClarificationOptions` | single-select (button) / multi-select (checkboxes + "Use selection"), free-text always allowed, only the latest turn's clarification stays live (Day 13, `tests/clarificationLifecycle.test.tsx`) |
+| Clear Chat | `chat/useChatSession.ts`, `layout/ClearChatButton.tsx` | aborts in-flight request, clears turns + `pendingClarification`, restores `Try asking`; desktop header + mobile drawer (`layout/MobileDrawer.tsx`) |
+| Six guided launchers | `domains/DomainLauncher.tsx`, `domains/domainConfig.ts`, `pages/*Page.tsx` | recommended-question cards prefill the composer, never auto-send, never clear the session (V5 rule); official resource links (Day 5–16 evidence) |
+| Upcoming Events / Current Jobs | `resources/UpcomingEventsCard.tsx`, `resources/CurrentJobsCard.tsx`, `resources/FeedPanel.tsx` | loading / ready (items or empty) / unavailable; official-only source split enforced server-side, not by the App (Day 15–16 evidence, §4/§9/§10) |
+| Mobile drawer | `layout/MobileDrawer.tsx` | 7 nav links + Clear Chat, no overflow at 360–430px (Day 13/16 evidence) |
+| Theme | `theme/useTheme.ts`, `styles/tokens.css` | system / forced light / forced dark, token-driven, no raw colour literals |
+
+Two interaction rules are already frozen and reused everywhere below rather than invented per state:
+
+1. **Prefill, editable, never auto-send.** Launcher cards and clarification options both put text in
+   the composer and focus it; nothing the student did not explicitly send reaches the backend.
+2. **The App never reorders, filters, dedupes or interprets backend data.** Source order, job/event
+   order, and (per this document) result-set/comparison order are all rendered exactly as received.
+
+## 2. UI contracts
+
+Each contract states what the App renders, what it never decides, and what it needs from the backend
+(cross-referenced into §6).
+
+### Result set
+Bounded, ordered cards. Order is the `items` array order — the App never sorts, pads, dedupes or
+truncates. Each card shows title, a domain badge, and safe optional fields (`label`/`value`,
+`value: null` renders the neutral unknown label — see §6.1). Exactly one canonical action per card
+("Ask about this" — see §4). `EMPTY` renders the backend's own plain statement with no cards and no
+evidence-failure styling. `INCOMPLETE` renders whatever cards exist plus the backend's own caveat text
+— the App adds no "incomplete" wording of its own.
+
+### Selected result
+A student may say "the second one" or use a card's action; either way the backend resolves identity.
+When the App has a structured selection (a card was clicked), it sends the canonical
+`SelectedResultAction` (§4) — never a guessed title, never a re-derived position.
+
+### Clarification
+Unchanged from the frozen v1 shape (`API_CONTRACT.md`). Restated because V7 depends on it: options
+render in backend order, free text is always an alternative to clicking an option, only the latest
+`pendingClarification` is answerable (older ones are visible history, disabled — Day 13), and an
+explicit new question is allowed to interrupt a pending clarification rather than trap the student
+(Day 2 verifies this end to end).
+
+### Comparison
+Two or more entities across backend-provided dimensions. Desktop renders a table; narrow widths may
+scroll it horizontally rather than clip it. A `null` cell shows the same neutral unknown label a
+result card uses — never blank, never the other entity's value, never inferred. Dimensions render in
+the backend's declared order and are never dropped because one entity lacks them.
+
+### Partial
+Renders exactly like `ok` — the backend's own `answer` text carries the caveat (unchanged V3 rule,
+already implemented for Jobs/Accommodation/Support/Events). If a future `answer_state` field arrives
+(§6.3), a `PARTIAL` value may add a small, non-red label; the App still authors no wording about *what*
+is missing.
+
+### Useful unknown
+Three parts, all backend-supplied: a direct statement of what cannot be established (the `answer`),
+why the evidence is insufficient (also the `answer`), and an official next action (a canonical link,
+§6.4). Rendered with the same info/gold-tint treatment as an ordinary notice — never `StatusNotice`'s
+red `error` treatment, and the next-action block itself carries no "Not enough evidence" heading.
+UNKNOWN must never read as "no results," and EMPTY must never read as an evidence failure — these are
+different backend states with different causes and the App keeps their presentation visibly different.
+
+## 3. Three target mock states (acceptance references)
+
+Built as a dev-only gallery (`frontend/src/dev/v7/V7StateGallery.tsx`, route `/dev/v7-states`, gated
+identically to `FixturePicker` — dev build + `VITE_USE_MOCK_TRANSPORT=1` only) inside the real chat
+shell, so the screenshots below show the actual chat column, resource rail and mobile drawer, not an
+isolated component sandbox.
+
+| # | State | Fixture shape | What must be visible |
+|---|---|---|---|
+| 1 | Accommodation discovery result set | `status: ok`; 3 residence cards (`accommodation:residence:placeholder-*`); fields `Weekly cost` / `Catering` / `Room type`, one `null` per card in a different position each time; `result_set.status = RESULTS` | Cards in fixture order (A, B, C); "Ask about this" on each; a `null` field renders "Not published in the stored record", never blank; source cards beneath; no invented cost/vacancy figure anywhere |
+| 2 | Comparison + selected result | Same two residences (A, B); comparison table with one `null` cell per entity (Catering missing for B, Room type missing for A); a "Selected: Placeholder residence B" chip with a dismiss control | Table shows every dimension once; the missing cell reads "Unknown", not copied from the other entity; chip visible, dismissible; (composer wiring is Day 2 — this page has no send path) |
+| 3 | Useful unknown + next action | `status: insufficient_evidence` (nearest frozen status to proposed `UNKNOWN` — see §6.3 gap) + a proposed `next_action` link to the official residence page | Direct statement + reason (both from `answer`); an "official next step" link, `https:`, `target="_blank"`, `rel="noopener noreferrer"`; no red, no `role="alert"`, not styled as an error |
+
+Evidence (screenshots at 1280×720 desktop and 360/390/430 mobile, light + dark, plus responsive
+overflow measurements) is in `docs/evidence/V7_DAY_01_UX_CONTRACT_FREEZE.md` §5–§6. A fourth,
+test-only state (`hostileUsefulUnknownFixture`) exercises safe rendering against hostile strings and a
+`javascript:` next-action URL; it is not one of the three acceptance references.
+
+## 4. Canonical result-action payload
+
+Proposed addition to `conversation_state`, alongside `pending_clarification` (nullable; absent/`null`
+when no result is selected):
+
+```json
+{
+  "conversation_state": {
+    "pending_clarification": null,
+    "selected_result": {
+      "result_set_id": "rs_...",
+      "entity_id": "accommodation:residence:...",
+      "position": 2
+    }
+  }
+}
+```
+
+Rules:
+- `entity_id` is copied verbatim from the backend item that produced the card — the App never
+  constructs, guesses or normalizes it.
+- `position` is the 1-based index in the `ResultSet.items` array exactly as received. It is not
+  recomputed after any client-side change (there is none: the App never re-sorts) and is not derived
+  from a rendered label.
+- Set when a card's "Ask about this" action is used; shown as a dismissible chip near the composer;
+  carried on the next request; cleared after that response resolves it, on explicit dismiss, or on
+  Clear Chat.
+- The card action still only prefills an editable question in the composer (the V5 rule, §1) —
+  identity travels structured in `selected_result`, the student's words stay free text in `question`.
+  These are independent channels; neither replaces the other.
+
+## 5. Clear Chat semantics
+
+**Visual (unchanged, V3-locked):** same button, same label ("Clear Chat", never "New Chat"), same
+placement (desktop header / mobile drawer). Restores `Try asking`. V7 adds: also clears any
+selected-result chip (§4) and any composer draft. *Proposed, Day 2 scope:* a polite live-region
+announcement ("Conversation cleared") for screen-reader users, since V7 clarification/result state
+makes the post-clear state change more consequential than before.
+
+**Backend reset — this is a contract gap, not solved here.** Today the backend is stateless per
+request (`server/src/server.js` is a byte-for-byte proxy; there is no session id, no server-side
+conversation state, no reset endpoint). V7's bounded session-retention policy (master plan §2/§3)
+needs *some* mechanism, and the App has one requirement regardless of which: **one client action, no
+login, and provably deterministic** — after Clear Chat, a stale follow-up ("how much does it cost?")
+must clarify or fail to resolve, never silently answer against the old entity. Two options, handed to
+Qasim/Carmen for Day 1:
+
+- **(A, recommended) Client-carried opaque state.** The backend returns an opaque, bounded
+  `session_state` value in the envelope; the App echoes it back in
+  `conversation_state.session_state` on the next request; Clear Chat simply drops it (sets it to
+  `null`/absent). No new endpoint, no cookie, server stays stateless, and the reset is correct by
+  construction — the old state is not stored anywhere for a stale request to find. Flags to resolve
+  before this lands: the existing 64 KiB body cap (`server/src/server.js`) and the frozen 10-turn
+  `history` limit (`docs/API_CONTRACT.md`) against the 20-turn canonical acceptance journey (master
+  plan §2) — an opaque blob has to fit inside both, or one of those limits needs revisiting.
+- **(B) Server-side session.** A `session_id` plus a `POST /api/v1/session/clear` (or equivalent) the
+  App calls on Clear Chat. Needs an answer to "what does the student see if the reset call itself
+  fails?" — a real failure mode (A) does not have, since dropping a client-held value cannot fail.
+
+The App does not have a preference beyond the requirement above; (A) is recommended because it needs
+no new endpoint and cannot fail to reset.
+
+## 6. Component/state matrix and exact backend field needs
+
+### Matrix
+
+Semantics owner is always the backend; the App is only ever the renderer.
+
+| Component | loading | RESULTS | EMPTY | INCOMPLETE | needs_clarification | PARTIAL | UNKNOWN | error | mobile ≤430 | keyboard |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Result cards | — (no result state exists pre-response) | cards, backend order | plain statement, no cards | cards + backend caveat | n/a | n/a | n/a | n/a | stack, no overflow | each card a real `<button>`, reachable, named |
+| Comparison table | — | n/a | n/a | n/a | n/a | renders like RESULTS | n/a | n/a | horizontal scroll, not clip | cells not separately focusable; row/column headers give screen-reader structure |
+| Useful unknown block | — | n/a | n/a | n/a | n/a | n/a | statement + reason + next action, info treatment | never rendered here (error is `StatusNotice`, unchanged) | stacks under the answer | link keyboard-reachable, `noopener noreferrer` |
+| Clarification | — | n/a | n/a | n/a | options + free text, latest only live | n/a | n/a | n/a | already proved (Day 13) | already proved (Day 13) |
+| Selected-result chip | — | shown after a card action | n/a | n/a | cleared if clarification interrupts | shown | shown | cleared | wraps, dismiss control ≥44px | dismiss is a real button |
+
+### Field needs (ranked; all proposed — Qasim/Carmen decide placement and naming)
+
+1. **`items[]` element shape** for a result set: `entity_id` (same identity scheme as `Source.record_id`
+   and clarification `option.id` — one scheme, not three), `domain`, `entity_type`, `title`, `url`
+   (canonical, stored — never Gemini, matching the existing provenance invariant), `source_id`,
+   `fields: [{label, value: string | null}]` (as stored; explicit `null`, never an omitted key, so the
+   App never has to guess "missing" vs "empty string"). *Highest priority — nothing in §2/§3 renders
+   without it.*
+2. **ResultSet status + identity**: a top-level `result_set: {result_set_id, status: RESULTS |
+   EMPTY | INCOMPLETE, items: [...]} | null`. Needed so the App never converts an UNKNOWN/INCOMPLETE
+   state into "no results," and so §4's `selected_result.result_set_id` has something to reference.
+3. **`answer_state: CONFIRMED | DERIVED | PARTIAL | UNKNOWN`**, explicit on the envelope. Without it the
+   App would have to infer epistemic state from the existing `status` enum, which conflates transport
+   status with reasoning state — exactly what the master plan's answer-state/ResultSet-status
+   separation (§2/§3) says not to do.
+4. **`next_action: {label, url} | null`** for useful-unknown answers — an official page, canonical URL,
+   same provenance rule as `Source.url`.
+5. **Comparison dimensions**: same `fields` labels across every compared item, explicit `null`,
+   backend-declared order. (No new top-level field if comparison is delivered as two-or-more
+   `ResultSet.items` sharing field labels — flagging the option, not requiring a new shape.)
+6. **Session reset mechanism** — §5's two options, needs one explicit answer before Day 2.
+7. **Optional, low priority: resolved-entity echo** (`{entity_id, label}`) so the UI could show "About:
+   X" after a typed reference like "the second one" resolves. Master plan §6 says cross-domain return
+   needs no heavy UI state, so this is a nice-to-have, not a blocker.
+
+### What the App will not need
+
+Match/relevance scores, ranks, confidence percentages, eligibility/vacancy booleans, or any
+source-authority/internal-routing flag. None of these has a frozen student-facing meaning
+(`CONVERSATION_CONTRACT.md`: "No Relief Mate confidence labels"), and source authority must never leak
+to the browser (`API_CONTRACT.md`'s provenance invariant, and the Day 15/16 evidence that the App does
+no source-based filtering of its own).
+
+## 7. Open questions for the Day 1 gate
+
+1. Which of §5's two Clear Chat mechanisms, and does it fit the existing 64 KiB body cap / 10-turn
+   history limit, or do those need to move for the 20-turn acceptance journey?
+2. Where do §6 items 1–5 land — new top-level fields on the existing `/api/v1/ask` envelope, or a
+   versioned v2 contract? (This document takes no position; `types/api.ts` is unchanged either way
+   until that's decided.)
+3. Is `insufficient_evidence` the permanent status value for a useful-unknown answer, or does
+   `answer_state: UNKNOWN` replace it as the signal the App keys presentation off? Today's mock uses
+   `insufficient_evidence` because it is the only frozen status close to it (§3 state 3).

@@ -319,6 +319,23 @@ describe('resource navigation', () => {
     expect(screen.getByRole('heading', { name: 'Try asking' })).toBeInTheDocument();
   });
 
+  /**
+   * V7 Day 1: `/dev/v7-states` exists only behind the same dev + mock-transport
+   * gate `FixturePicker` already uses (`VITE_USE_MOCK_TRANSPORT=1`, set for the
+   * whole test env in `vite.config.ts`). This is the one route the gate opens;
+   * proving it renders here — rather than only via the bundle-exclusion grep —
+   * is what shows the gate is the *only* entry point, not a second one left
+   * open by mistake.
+   */
+  it('opens the dev-only V7 state gallery when the mock-transport gate is on', async () => {
+    window.history.replaceState({}, '', '/dev/v7-states');
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'V7 Day 1 — target mock states' }),
+    ).toBeInTheDocument();
+  });
+
   it('opens Courses directly from its own URL', async () => {
     window.history.replaceState({}, '', '/courses');
     render(<App />);

@@ -14,6 +14,7 @@ import { ScholarshipsPage } from './pages/ScholarshipsPage';
 import { SupportPage } from './pages/SupportPage';
 import { FeedsProvider } from './resources/FeedsProvider';
 import { useTheme } from './theme/useTheme';
+import { V7StateGallery } from './dev/v7/V7StateGallery';
 import styles from './App.module.css';
 
 function AppShell() {
@@ -118,6 +119,18 @@ function AppShell() {
             />
             <Route element={<SupportPage onAskInChat={askInChat} />} path="/support" />
             <Route element={<EventsPage onAskInChat={askInChat} />} path="/events" />
+            {/*
+              Dev-only V7 Day 1 acceptance gallery (docs/V7_UI_CONTRACT.md
+              §3). Same gate `ChatPanel.tsx` uses for `FixturePicker`: Vite
+              replaces both operands with literals, so a production build
+              folds this to `false`, the route never registers, and
+              `V7StateGallery` (and the fixtures it imports) are dropped from
+              the bundle entirely — verified by grepping `dist/` in
+              docs/evidence/V7_DAY_01_UX_CONTRACT_FREEZE.md.
+            */}
+            {import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_TRANSPORT === '1' && (
+              <Route element={<V7StateGallery />} path="/dev/v7-states" />
+            )}
             <Route element={<Navigate replace to="/" />} path="*" />
           </Routes>
         </div>

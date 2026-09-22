@@ -16,6 +16,6 @@ Locked UX:
 - domain pages are compact guided-question launchers (V5, `docs/DECISION_LOG.md` 2026-09-12): recommended-question cards route into the single chat with a pre-filled, editable, unsent composer; no second chat input on a domain page; a card never clears the current session
 - theme can change; interaction model cannot change without approval
 
-Before coding read `my_day_by_day_tasks.md`, `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `docs/V3_LOCKED_DECISIONS.md`.
+Before coding read `my_day_by_day_tasks.md`, `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `docs/V3_LOCKED_DECISIONS.md`. On V7 work, also read `docs/v7/README.md`, today's `docs/v7/DAY_0X.md`, and `docs/V7_UI_CONTRACT.md` — the last is a proposal Qasim/Carmen have not yet frozen, not a contract change.
 
 When blocked, follow today's fallback. Do not invent backend behaviour.
