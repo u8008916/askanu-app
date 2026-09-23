@@ -2,31 +2,44 @@
 
 **Repo:** `askanu-app` · **Owner:** Ben · **Branch:** `ben/v7-day01-ux-contracts`
 **Base:** `main` at `d94e03aa7791f926a7871dd4a5f535d04126db2f` (= `origin/main`)
-**Date:** Monday 21 September 2026 — V7 Day 1 (`docs/v7/DAY_01.md`)
+**PR head SHA before this doc-cleanup commit:** `56f20f3c6fe76f25a591d4f16065324f74b6b60c` (the commit
+Qasim reviewed and gave a technical GO against). This doc-cleanup commit's own SHA is reported in the
+PR comment and directly to Qasim, since a file cannot name the commit it is part of.
+**Date:** Monday 21 September 2026 — V7 Day 1 (`docs/v7/DAY_01.md`); extended 23 September 2026 per
+Qasim's fuller Day 1 brief (see §11).
 **Deliverable:** Freeze `docs/V7_UI_CONTRACT.md` (UI contracts for result set / selected result /
 clarification / comparison / partial / useful unknown, the canonical result-action payload, Clear Chat
 backend-reset options, component/state matrix, ranked backend field needs), publish 3 target mock
 states as acceptance references, and hand Qasim an explicit list of contract gaps — all through
 shared, dev-only primitives that touch no frozen contract and change no production behaviour.
 
-**Gate note:** per Qasim's instruction this session, V7 does not start on production/merge terms until
-V6 is confirmed closed. This branch is built and evidenced today; **the PR stays open/draft and is not
-merged until Qasim confirms V6 closure and V7 Day 1 start.**
+**Gate note:** V6 closure has been confirmed (23 Sep). Qasim independently reviewed this PR and its
+diff and gave a technical GO, pending this doc-cleanup pass. No functional change is in this pass — see
+§12.
 
 ---
 
-## 0. Summary
+## 0. Summary — current PR state (head `56f20f3`, 23 Sep)
+
+This table reflects the **current** state of PR #39 across both commits. §4–§8 below are the original
+21 Sep numbers at that day's head; §11 has the full 23 Sep addendum detail. Nothing in this cleanup
+pass changed any code, test or fixture — only these headline numbers and the framing around them.
 
 | | |
 |---|---|
-| Scope | `docs/V7_UI_CONTRACT.md` (new); dev-only mock-state gallery at `/dev/v7-states`, gated identically to the existing `FixturePicker`; one added navigation test; `docs/DECISION_LOG.md` row (proposal, not a contract change); one `AGENTS.md` line |
-| Not touched | `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `frontend/src/types/api.ts`, `askResponse.ts`, `useChatSession.ts`, any production component, `server/` |
-| Tests | Focused (`v7StateGallery.test.tsx` + `navigation.test.tsx`): **26/26**. Full suite: **286/286** (280 prior + 6 new; no flake this run — see §4). Server: **46/46**, unchanged. |
-| Build | `tsc --noEmit` → exit 0. `vite build` → `dist/assets/index-5lgqlqo9.js` 277.52 kB / gzip 88.05 kB, `index-BSPtm6RR.css` 25.74 kB — matches Day 16's 277.51 kB/25.74 kB baseline (frontend/src/App.tsx:App.tsx, no meaningful size change). |
-| Bundle exclusion | `grep` of `dist/assets/*.js` for 5 distinct gallery-only markers (page title, route path, a card action string, a fixture id string) → **zero matches**, confirming the dev-only gate drops the gallery and its fixtures from the production bundle, same technique `askTransport.ts` already documents for `FixturePicker`/`askMock`. |
-| Diff hygiene | `git diff --check` → clean. Staged diff vs `main` is exactly the 10 files this Day 1 PR is scoped to (§8). |
-| Browser evidence | Built-in browser against `askanu-frontend` dev server with `VITE_USE_MOCK_TRANSPORT=1` (temporarily set in the local, git-ignored `.env`, removed after — see §7): all three target states render inside the real chat shell; no horizontal overflow at 1280×720, 390×844, 360×800 or 430×932; dark theme applies correctly via existing tokens; the real chat at `/` (send, Clear Chat, `Try asking`) is unchanged. |
-| Headline | `docs/V7_UI_CONTRACT.md` is ready for the Day 1 gate: it names what the App renders, what it never decides, and exactly which backend fields Day 2+ needs, without changing a single frozen contract or any production code path. |
+| Scope | `docs/V7_UI_CONTRACT.md` (§1–§9); dev-only mock-state gallery at `/dev/v7-states` (4 states + 1 hostile-strings check), gated identically to the existing `FixturePicker`; a dev-only opaque `conversation_state` transport module; a dev-only `response_type` dispatcher; `docs/DECISION_LOG.md` (3 rows, all proposals); one `AGENTS.md` line |
+| Not touched | `docs/API_CONTRACT.md`, `docs/CONVERSATION_CONTRACT.md`, `frontend/src/types/api.ts`, `askResponse.ts`, `useChatSession.ts`, `chat/AssistantTurn.tsx`, any other production component, `server/` |
+| Changed files | **16** (`git diff --stat main...HEAD`, excluding the pre-existing untracked root `.docx`/`.pdf` files, which are not part of this branch) |
+| Tests — focused | `v7StateGallery.test.tsx` + `responseRenderer.test.tsx` + `sessionStateArchitecture.test.ts` + `navigation.test.tsx`: **41/41** |
+| Tests — full suite | **301/301 on the successful run.** Four full-suite runs were taken today; one passed 301/301 clean, the other three each hit the single, pre-existing, already-tracked `responseStates.test.tsx` full-suite flake (Day 16 §21 — unrelated file, untouched by this branch), always at the same assertion. Three immediate isolated re-runs of that one file passed **8/8** every time. Full run-by-run detail, not a cherry-picked summary, is in §11.3. |
+| Tests — server | **46/46**, unchanged from Day 16's baseline (nothing in `server/` touched by either commit) |
+| TypeScript | `tsc --noEmit` → **PASS** (exit 0, no output) |
+| Build | `vite build` → PASS; bundle size unchanged from the pre-V7 Day 16 baseline (277.5 kB JS / 25.74 kB CSS, ±10 bytes) |
+| Bundle exclusion | Every V7 dev-only module (`frontend/src/dev/v7/*`) is confirmed **excluded** from the production bundle: `grep` of `dist/assets/*.js` for markers spanning both commits (page title, route path, card/action strings, fixture data, function names `toRequestField`/`clearSessionState`/`ResponseRenderer`; 5 markers checked 21 Sep, a further 7 checked 23 Sep) → **zero matches, every time, on every marker** |
+| Diff hygiene | `git diff --check` → clean on both commits |
+| Browser evidence | Built-in browser against the real `askanu-frontend` dev server: all four gallery states (plus the hostile-strings check) render inside the actual chat shell; no horizontal overflow at 1280×720, 390×844, 360×800 or 430×932; dark theme applies correctly; the real chat at `/` (send, Clear Chat, `Try asking`) is unchanged in both passes. Detail in §7 (21 Sep) and §11.5 (23 Sep). |
+| Contract review | `askanu-rag` PR #34 (Carmen's V7 Day 1 state contract, open, not merged) read in full 23 Sep — confirms this doc's §5 Option A; adds no response-rendering field, so §6/§7's open questions remain open (§9.1/§11.1) |
+| Headline | `docs/V7_UI_CONTRACT.md` (§1–§9) is ready for the Day 1 gate: it names what the App renders, what it never decides, exactly which backend fields Day 2+ needs, and now also the reviewed state-contract findings and the two architecture-prep modules — all without changing a single frozen contract or any production code path. |
 
 ---
 
@@ -410,14 +423,50 @@ layout width for this check.
   UI-contract §8 direction addendum (see PR #39 commit history).
 - PR #39 pushed and open against `main`.
 
-**Tests:** focused 41/41; full suite 301/301 (one incidental, previously-tracked flake reproduced and
-isolated); server 46/46 unchanged; `tsc --noEmit` exit 0.
+**Tests:** focused 41/41; full suite — 301/301 on the one successful run of four taken today, the other
+three each hitting the same pre-existing, previously-tracked `responseStates.test.tsx` flake, with
+isolated re-runs of that file passing 8/8 all three times (§11.3 has the run-by-run detail); server
+46/46 unchanged; `tsc --noEmit` exit 0.
 **Build:** bundle size unchanged; 7/7 new markers absent from `dist/`, in addition to the original 5/5.
 **Contract review:** `askanu-rag` PR #34 read in full; confirms §5 Option A; adds no rendering-field
 answer to §6/§7's open questions (still open, still Qasim/Carmen's to place).
 
-**Final**
+**Final (superseded by §12 below)**
 - App Day 1 = **evidence complete, including the 23 Sep architecture-readiness asks.**
 - V6 closure = **confirmed** (23 Sep).
-- Merge = still **HOLD**, but the remaining gate is now Qasim's ordinary Day 1 review/GO on PR #39
-  itself — not the earlier V6-closure precondition, which is satisfied.
+- Merge = still **HOLD** at this point in the timeline — see §12 for Qasim's subsequent technical GO.
+
+## 12. Doc-cleanup pass (23 Sep, third commit)
+
+Qasim independently reviewed the live PR #39 diff and confirmed a **technical GO**: the opaque
+`conversation_state` transport boundary and the `ResponseRenderer`/`entity_summary` demo both match
+what he wanted, and nothing in `types/api.ts`, `useChatSession.ts` or the production send path was
+touched. He asked for one cleanup before merging/freezing: update this evidence doc's headline numbers
+(and the PR description) to reflect the current 23 Sep state rather than the original 21 Sep
+26/26+286/286/10-file snapshot, and phrase the full-suite flake precisely rather than headlining a bare
+"301/301."
+
+This commit is **evidence/doc-only** — no test, fixture or source file changed:
+
+- §0's Summary table rewritten to the current PR state (41/41 focused, the flake phrased per-run as
+  fail/pass/fail/fail with 8/8 isolated every time, 46/46 server, `tsc` PASS, bundle unchanged, 16
+  changed files).
+- §11.6 and this section correct the two spots that still understated the flake's actual run count.
+- PR #39's GitHub description updated to match (see the PR itself; not duplicated verbatim here).
+
+```
+git diff --stat main...HEAD -- . ':!*.docx' ':!*.pdf'
+ ... 16 files changed, 2468 insertions(+), 1 deletion(-)
+```
+
+No `npm test`/`vitest`/`tsc`/`vite build` command was re-run for this commit — the numbers above are
+the same verified results from §4/§11.3, restated accurately, not re-measured. Nothing else changed;
+per Qasim's instruction this pass does not de-flake `responseStates.test.tsx` and adds no new V7
+functionality.
+
+**Final**
+- App Day 1 = **technical GO from Qasim**, evidence cleanup now complete.
+- Head SHA for Qasim's final merge check: reported in the PR comment and directly to Qasim once this
+  commit is pushed (this doc is finalised in the same commit as the SHA it would need to name, so it
+  is not repeated here — see the PR itself for the exact head commit).
+- Merge = Qasim's call from here.
