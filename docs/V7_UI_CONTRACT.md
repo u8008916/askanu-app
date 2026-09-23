@@ -15,6 +15,12 @@ Read this after `AGENTS.md`, `my_day_by_day_tasks.md`, `docs/API_CONTRACT.md`,
 `docs/CONVERSATION_CONTRACT.md` and `docs/V3_LOCKED_DECISIONS.md`, and before starting any V7 Day 2+
 App work.
 
+**23 Sep addendum:** Qasim has since settled a more concrete UI direction on top of §1–§7 below — see
+§8. It does not replace anything here; it names a sixth response type (`entity_summary`) alongside the
+`result_set`/`comparison`/`clarification`/`unknown` shapes §2–§3 already describe, and it restates the
+`conversation_state` sequencing constraint (do not lock implementation to a concrete shape until
+Carmen's shared-contract PR gets Qasim's GO).
+
 ## 1. Inventory — what already exists
 
 No V7 UI work starts from nothing. This is what the App already renders, with the file that owns it
@@ -221,3 +227,69 @@ no source-based filtering of its own).
 3. Is `insufficient_evidence` the permanent status value for a useful-unknown answer, or does
    `answer_state: UNKNOWN` replace it as the signal the App keys presentation off? Today's mock uses
    `insufficient_evidence` because it is the only frozen status close to it (§3 state 3).
+
+## 8. 23 Sep addendum — settled response-type UI direction
+
+Qasim relayed this as the settled V7 UI target, alongside a mock-up (an events-list chat response).
+It sharpens §1–§7 rather than replacing them.
+
+**Shell is not a redesign target.** Keep the existing desktop layout exactly as built: chat as the
+large left column, the existing right-hand rail (Explore nav, Quick Links, Upcoming Events, Current
+Jobs), `Clear Chat`, orange/cream branding, and the existing mobile drawer. Cards and results render
+**inside** the chat column — AskANU is not becoming a separate search-results page. This is a request
+for functional hierarchy and response behaviour to match, not a pixel-perfect reproduction of the
+mock-up.
+
+**The change is inside the chat response, not the shell.** Some `ok` answers today render as long
+text/database dumps rather than something a student can scan (Warrumbul was the named example; Events
+answers also currently carry raw ISO-8601 timestamps in prose — see §5/§7 of
+`docs/evidence/DAY_16_SIX_DOMAIN_RELEASE_VERIFICATION.md`, an already-known, already-recorded gap).
+The renderer should pick a presentation from a small set of response types rather than one generic text
+bubble, and Carmen/RAG supplies the structured data each type needs — the frontend still authors no
+institutional fact, it only decides layout:
+
+| Type | Student-facing shape | Relationship to §2 |
+|---|---|---|
+| `answer` | Plain concise conversational answer (e.g. "Warrumbul Lodge is self-catered.") | Existing `ok`/`AnswerBody` rendering — unchanged |
+| `entity_summary` | **New, not yet modeled in §2/§3.** A compact single-entity overview: name, one-line description, then labelled fields (e.g. Cost / Catering / Residents / Facilities), then actions (e.g. "Room types & prices · How to apply · Compare"), official source underneath | Closest existing shape is a single-item `ResultItem` (§6.1's `fields`), but §2's "Result set" contract is written for *bounded ordered cards*, plural — a summary of one entity needs its own contract, not a one-item result set |
+| `result_set` | Discovery/list results (events, scholarships, jobs): numbered cards with title/time/location/organiser, an *optional* image (never required — the design must look complete without one), a "+ Show more" expand control, and a collapsible Sources section underneath | Matches §2's "Result set" contract and the Day 1 gallery's `ResultCards` block; "+ Show more" and optional images are additions to design once, not built in the Day 1 gallery |
+| `comparison` | Side-by-side structured comparison | Matches §2's "Comparison" contract and the Day 1 gallery's `ComparisonTable` block, unchanged |
+| `clarification` | Selectable options, unchanged | Already implemented (§1) |
+| `unknown` / `partial` | Direct statement + reason + next action | Matches §2's "Useful unknown"/"Partial" contracts and the Day 1 gallery's `UnknownWithNextAction` block, unchanged |
+
+**Events provenance inside chat (restates and sharpens the existing rule):** the Upcoming Events sidebar
+panel stays official-ANU-only, unchanged, already enforced server-side (Day 15/16 evidence). A
+`result_set` answer to an Events question in chat may mix official ANU Events with approved Rubric
+ANU-community events; a Rubric-sourced card needs a subtle, distinct provenance label — e.g. "ANU
+community · via Rubric" — and must never be presented as an official ANU event. This is a rendering
+requirement on the `result_set` card, not a new source-filtering decision — the App still does not
+decide which source is authoritative, it only labels what the backend already tells it via `source_id`.
+
+**Not every answer becomes a card.** The renderer depends on what the response actually is; a simple
+factual question (e.g. "Is Warrumbul catered?") stays a plain `answer`, not a forced `entity_summary`
+or `result_set`.
+
+**`conversation_state` sequencing constraint (unchanged from §5, restated because it is easy to jump
+ahead of):** do not lock App implementation to a concrete `conversation_state` shape until Carmen's
+shared-contract PR is frozen, merged, and Qasim has given an explicit GO. Until then, the App's
+`conversation_state` responsibility is exactly the transport/session role §5 already describes: store
+the authoritative state RAG returns for the current chat, echo it back on the next request, and wipe it
+(with visible history) on Clear Chat. The App does not interpret or mutate Carmen's semantic state.
+
+**Added to the field-needs list (§6), pending Qasim/Carmen placement:**
+8. A `response_type` (or equivalent) discriminator on the envelope — `answer | entity_summary |
+   result_set | comparison | clarification | unknown | partial` — so the App selects a renderer from an
+   explicit backend signal rather than inferring one from `status` + shape of `items`/`sources`.
+9. For `entity_summary`: a single `ResultItem`-shaped payload (§6.1) plus an `actions: [{label,
+   prompt | url}]` list for the follow-up affordances (e.g. "Room types & prices").
+10. For `result_set` cards: an optional `image_url` per item (nullable — rendering must not depend on
+    it being present) and whatever pagination signal backs "+ Show more" (e.g. a `has_more: boolean` or
+    a larger `items` array the App paginates client-side over a fixed page size — flagged as an open
+    question, not decided here).
+11. Rubric provenance on a `result_set` item is already carried by the existing `source_id` field
+    (`API_CONTRACT.md`); no new field is needed for this specific requirement, only a rendering rule
+    keyed off the value the backend already sends.
+
+**Open question added to §7 by this addendum:** what discriminates "+Show more" pagination — a
+`has_more` flag, a total count, or does the App just cap the initial render of a longer `items` array
+client-side? None of §2/§3/§6 as originally written commits to an answer.
