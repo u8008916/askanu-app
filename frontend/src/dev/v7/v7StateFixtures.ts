@@ -2,6 +2,7 @@ import type { AskResponse } from '../../types/api';
 import type {
   ComparisonField,
   NextAction,
+  ProposedResponse,
   ResultItem,
   ResultSet,
   SelectedResultAction,
@@ -205,6 +206,46 @@ export const hostileUsefulUnknownFixture: V7StateFixture = {
     label: 'Hostile next action label <script>alert(4)</script>',
     // Deliberate: must be refused as a link, not rendered as one.
     url: 'javascript:alert(5)',
+  },
+};
+
+/**
+ * Fourth state — `entity_summary`, per Qasim's 23 Sep example (`docs/V7_UI_CONTRACT.md`
+ * §8): "Tell me about Warrumbul Lodge" as a compact structured overview rather
+ * than one long paragraph. Rendered through `ResponseRenderer` (not `StateBlock`)
+ * to prove the response-type dispatcher generalises to a type Day 1's original
+ * three states did not model. Still placeholder copy/`example.invalid` only —
+ * no real ANU cost, catering or facilities fact.
+ */
+export const warrumbulEntitySummaryFixture: {
+  title: string;
+  question: string;
+  response: ProposedResponse;
+} = {
+  title: '4. Entity summary (architecture demo, not a Day 1 acceptance state)',
+  question: 'Tell me about Warrumbul Lodge',
+  response: {
+    response_type: 'entity_summary',
+    entity: {
+      entity_id: 'accommodation:residence:placeholder-residence-a',
+      domain: 'accommodation',
+      entity_type: 'residence',
+      title: 'Placeholder Warrumbul Lodge record',
+      description: 'Placeholder one-line description of the residence.',
+      fields: [
+        { label: 'Cost', value: 'Placeholder weekly cost wording' },
+        { label: 'Catering', value: 'Placeholder catering wording' },
+        { label: 'Residents', value: 'Placeholder residents wording' },
+        { label: 'Facilities', value: null },
+      ],
+      actions: [
+        { label: 'Room types & prices', prompt: 'What room types and prices does Warrumbul Lodge have?' },
+        { label: 'How to apply', prompt: 'How do I apply for Warrumbul Lodge?' },
+        { label: 'Compare', prompt: 'Compare Warrumbul Lodge with another residence' },
+      ],
+      url: 'https://example.invalid/placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+    },
   },
 };
 

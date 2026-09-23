@@ -12,7 +12,7 @@ import { V7StateGallery } from '../src/dev/v7/V7StateGallery';
  * guessed from rendered text.
  */
 describe('V7 Day 1 state gallery', () => {
-  it('renders exactly the three target states plus the hostile-strings check, each as one AskANU turn', () => {
+  it('renders the three target states, the entity_summary architecture demo and the hostile-strings check, each as one AskANU turn', () => {
     render(<V7StateGallery />);
 
     expect(
@@ -24,8 +24,36 @@ describe('V7 Day 1 state gallery', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: '3. Useful unknown + next action' }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText('AskANU')).toHaveLength(4);
-    expect(screen.getAllByRole('list', { name: 'Conversation' })).toHaveLength(4);
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: '4. Entity summary (architecture demo, not a Day 1 acceptance state)',
+      }),
+    ).toBeInTheDocument();
+    // 3 acceptance states + 1 entity_summary architecture demo + 1 hostile-strings check.
+    expect(screen.getAllByText('AskANU')).toHaveLength(5);
+    expect(screen.getAllByRole('list', { name: 'Conversation' })).toHaveLength(5);
+  });
+
+  describe('entity_summary architecture demo', () => {
+    it('renders through the ResponseRenderer dispatcher: name, labelled fields, missingness preserved, and follow-up actions', () => {
+      render(<V7StateGallery />);
+
+      const heading = screen.getByRole('heading', {
+        level: 3,
+        name: 'Placeholder Warrumbul Lodge record',
+      });
+      const block = heading.closest('li') as HTMLElement;
+
+      expect(within(block).getByText('Placeholder weekly cost wording')).toBeInTheDocument();
+      // Facilities is `null` in the fixture: neutral unknown label, not blank.
+      expect(within(block).getByText('Not published in the stored record')).toBeInTheDocument();
+      expect(
+        within(block).getByRole('button', { name: 'Room types & prices' }),
+      ).toBeInTheDocument();
+      expect(within(block).getByRole('button', { name: 'How to apply' })).toBeInTheDocument();
+      expect(within(block).getByRole('button', { name: 'Compare' })).toBeInTheDocument();
+    });
   });
 
   describe('discovery result set', () => {

@@ -293,3 +293,95 @@ the authoritative state RAG returns for the current chat, echo it back on the ne
 **Open question added to §7 by this addendum:** what discriminates "+Show more" pagination — a
 `has_more` flag, a total count, or does the App just cap the initial render of a longer `items` array
 client-side? None of §2/§3/§6 as originally written commits to an answer.
+
+## 9. Architecture readiness — Day 1's own asks, per Qasim's 23 Sep message
+
+Qasim's fuller 23 Sep message named seven concrete Day 1 asks. This section records what each one
+means for the App and what now exists against it. **None of it wires into production
+(`frontend/src/types/api.ts`, `chat/useChatSession.ts`, `chat/AssistantTurn.tsx`) — everything here
+stays proposal/dev-only, per the explicit instruction below not to lock onto an unmerged schema.**
+
+### 9.1 Review of `askanu-rag` PR #34
+
+`askanu-rag` PR #34 ("V7 Day 1 — Freeze shared conversational RAG contracts") was read in full
+(wire contract, `docs/API_CONTRACT.md`/`docs/CONVERSATION_CONTRACT.md` diffs, and the new
+`docs/v7/DAY_01_SHARED_CONTRACTS.md`) as of 23 Sep 2026. Status: **open, not merged, mergeable**
+(17 files, +2632/-28). It is Carmen's Day 1 deliverable, not the App's, so this is a read for
+App-side implications, not a review comment on that repo's PR — Qasim reviews and merges it himself.
+
+Findings relevant to the App:
+
+- **The wire change is exactly additive, and exactly Option A from §5.** `request = question + bounded
+  history + optional conversation_state`; `response = existing envelope + authoritative
+  conversation_state`. Every response status (`ok`/`error`/`needs_clarification`/...) gains the same
+  field. Omitted `conversation_state` on the request initialises an empty schema-version-1 state; the
+  old `{pending_clarification: ...}`-only shape stays valid. **This resolves §7 open question 1**: the
+  Clear Chat mechanism is confirmed as client-carried opaque state, no new endpoint, no session ID.
+- **`askanu-rag`'s own `docs/CONVERSATION_CONTRACT.md` names the App's Clear Chat responsibility in
+  those words**: "The App... sends the next request with empty `history` and either omits
+  `conversation_state` or sends the empty schema-version-1 state. The RAG service is stateless between
+  requests... so that request cannot see the previous conversation." This is a stronger, repo-owned
+  confirmation of §5 than this document could assert on its own.
+- **The App genuinely does not need to type the internal shape.** Carmen's schema (`recent_entities`,
+  `focus`, `student_facts`, `constraints`, `result_sets`, `selected_result`, `pending_clarification`,
+  bounded at 12/6/20/16/12/1 respectively) is real, versioned (`schema_version: 1`) and validated
+  server-side as untrusted input — but from the wire contract's own words, "the App does not
+  semantically interpret it." The App's job is store/echo/clear, full stop.
+- **This PR is about session *state*, not response *rendering*.** It does not add `items`, `result_set`,
+  `answer_state`, `next_action` or any `response_type` field to the response envelope — those remain
+  §6/§8 asks for whenever RAG's Day 3+ retrieval/response work produces them. Do not conflate "Carmen's
+  state contract is close to frozen" with "the rendering fields this document asks for exist yet."
+
+### 9.2 Prepared: opaque `conversation_state` transport (asks #2, #3)
+
+`frontend/src/dev/v7/sessionState.ts` — four pure functions (`emptySessionState`, `toRequestField`,
+`fromResponseEnvelope`, `clearSessionState`) implementing exactly the store/echo/clear pattern §9.1
+confirms, typed as `OpaqueConversationState = unknown` so the module is correct regardless of Carmen's
+exact field names changing during review. Tested in isolation
+(`frontend/tests/sessionStateArchitecture.test.ts`): stores an opaque value by reference (never clones
+or inspects it), omits the field entirely for a fresh/cleared session (matching "omits
+`conversation_state`" above), and proves a full store → echo → Clear Chat → next-request round trip
+leaves nothing for a stale follow-up to resolve against.
+
+**Not wired into `useChatSession.ts`.** Once Qasim gives the GO on PR #34, wiring this in is: add one
+optional field to `AskRequest`/`AskResponse` in `types/api.ts`, hold a `SessionStateHolder` alongside
+`pendingClarification` in `useChatSession.ts`, and call these four functions at the same three points
+`pendingClarification` already updates (send, response, `clearChat`). This module exists so that step
+is small and low-risk when it happens, not to pre-empt it.
+
+### 9.3 Prepared: response-type dispatcher architecture (ask #5)
+
+`frontend/src/dev/v7/ResponseRenderer.tsx` — given a `ProposedResponse` (a discriminated union on a
+proposed `response_type` field: `answer | entity_summary | result_set | comparison | unknown |
+partial`), dispatches to one of `responseBlocks.tsx`'s render blocks. TypeScript's exhaustiveness
+check over the switch is the concrete proof of "not permanently locked into one generic Markdown
+response": adding a member to `ProposedResponse` is a compile error here until a case handles it.
+`clarification` is not a dispatcher case — that shape already works, unchanged, through
+`AssistantTurn.tsx`'s real `ClarificationOptions`.
+
+To prove the dispatcher generalises beyond the three states Day 1 originally modeled, a fourth gallery
+state renders Qasim's own example — "Tell me about Warrumbul Lodge" as an `entity_summary` (title,
+one-line description, `Cost`/`Catering`/`Residents`/`Facilities` fields with the same neutral-unknown
+missingness rule as every other block, and three follow-up actions — "Room types & prices," "How to
+apply," "Compare" — each only prefilling the composer, never sending). `result_set`, `comparison` and
+`unknown`/`partial` route through the same `ResultCards`/`ComparisonTable`/`UnknownWithNextAction`
+blocks the three Day 1 acceptance states already use, extracted into `responseBlocks.tsx` so the
+gallery and the dispatcher share one implementation rather than drifting apart. Tested in
+`frontend/tests/responseRenderer.test.tsx` (one case per `response_type`, plus the missingness/no-error
+rules each block already enforces) and `frontend/tests/v7StateGallery.test.tsx` (the entity_summary
+demo rendered live through the dispatcher).
+
+**What this deliberately does not do:** build the full events card catalog (images, "+ Show more"
+pagination, the Rubric provenance badge) or any other production-facing component. Per Qasim's own
+instruction — "Don't try to build every card/component today" — those stay documented asks (§8) and
+open questions (§7), not code, until Day 2+.
+
+### 9.4 Asks #4, #6, #7 — already satisfied, not new work
+
+- **#4 (semantic intelligence stays in RAG):** already the frontend's standing rule (§1's "two
+  interaction rules," `AGENTS.md`'s repo boundary). Nothing added this pass changes it — the session
+  state and response type are both opaque/backend-declared inputs to the App, never App-computed.
+- **#6 (keep the shell):** unchanged; every new block in this pass renders inside the existing chat
+  column using only `tokens.css` custom properties, verified live (§10 of the evidence file).
+- **#7 (document backend needs):** this document's §6 (fields) and §7 (open questions) already are that
+  list; §9.1 sharpens it with what PR #34 does and does not cover.

@@ -284,6 +284,140 @@ light + dark) and mobile (360/390/430), no overflow at any width, all interactiv
 keyboard-reachable and accessibly named; existing chat/Clear Chat at `/` unaffected.
 **Contract gaps:** 3 items, ranked, handed to Qasim (§8).
 
-**Final**
+**Final (as of 21 Sep, before the 23 Sep addendum below)**
 - App Day 1 = **evidence complete, ready for Qasim's gate review.**
 - Merge = **HOLD** — pending Qasim's confirmation that V6 is closed and V7 Day 1 has started.
+
+*(23 Sep update: V6 closure has since been confirmed and PR #39 pushed/opened. See §11 for the
+architecture-readiness work added the same day and the current, updated final status.)*
+
+## 11. 23 Sep addendum — architecture readiness + Carmen's PR #34 review
+
+Qasim relayed a fuller Day 1 brief on 23 Sep naming seven concrete App asks (review Carmen's state
+contract; prepare conversation_state transport; define Clear Chat's state half; keep semantic
+intelligence in RAG; prepare the response renderer; keep the shell; document backend needs). This
+section is the evidence for the two that required new work (the PR #34 review, and the two
+architecture-prep modules); the other five were already satisfied by the §1–§10 work above or by
+standing repo rules, per `docs/V7_UI_CONTRACT.md` §9.4.
+
+### 11.1 Carmen's PR #34 review
+
+Read in full via the local sibling clone at `../askanu-rag` (`gh pr view 34 --repo u8008916/askanu-rag`,
+plus `git diff main pr-34-review -- docs/API_CONTRACT.md docs/CONVERSATION_CONTRACT.md` and the new
+`docs/v7/DAY_01_SHARED_CONTRACTS.md`, on a temporary local branch deleted after reading — no comment
+was posted to that repo's PR; reviewing/merging it is Qasim's process, not this one). Status at review
+time: **open, mergeable, not merged**, 17 files changed (+2632/-28).
+
+Findings are written up in `docs/V7_UI_CONTRACT.md` §9.1; the two load-bearing ones:
+
+1. The wire change is additive and matches this document's own §5 Option A exactly — the App stores an
+   opaque `conversation_state` value and echoes it back; Clear Chat means omitting it (or sending the
+   empty schema-version-1 state) on the next request. `askanu-rag`'s own updated
+   `CONVERSATION_CONTRACT.md` states the App's Clear Chat responsibility in almost the same words this
+   document already used.
+2. PR #34 is the *session-state* contract only. It adds no `items`/`result_set`/`answer_state`/
+   `response_type` field to the response envelope — those remain open asks for RAG's later
+   retrieval/response work, not something this PR's imminent merge resolves.
+
+### 11.2 New dev-only architecture-prep files
+
+| File | Purpose |
+|---|---|
+| `frontend/src/dev/v7/sessionState.ts` | Opaque `conversation_state` store/echo/clear, typed `unknown` so it stays correct regardless of Carmen's field names |
+| `frontend/tests/sessionStateArchitecture.test.ts` | 7 tests: empty start, opaque store-by-reference, omission on empty/null/undefined response, Clear Chat drop, full round-trip leaves nothing for a stale follow-up |
+| `frontend/src/dev/v7/proposedContract.ts` (extended) | Adds `EntitySummary`, `EntitySummaryAction`, and the `ProposedResponse` discriminated union (`response_type`) |
+| `frontend/src/dev/v7/responseBlocks.tsx` (new) | `ResultCards`, `ComparisonTable`, `SelectedResultChip`, `UnknownWithNextAction` extracted out of `V7StateGallery.tsx` (no behaviour change), plus a new `EntitySummaryBlock` |
+| `frontend/src/dev/v7/ResponseRenderer.tsx` (new) | The response-type dispatcher: an exhaustive `switch` over `ProposedResponse['response_type']` |
+| `frontend/tests/responseRenderer.test.tsx` | 7 tests, one per `response_type` plus the no-next-action case, each checking the contract rule its block already enforces (order, missingness, no error styling) |
+| `frontend/src/dev/v7/v7StateFixtures.ts` (extended) | `warrumbulEntitySummaryFixture` — Qasim's own "Tell me about Warrumbul Lodge" example |
+| `frontend/src/dev/v7/V7StateGallery.tsx` (updated) | Imports blocks from `responseBlocks.tsx` instead of defining them inline; adds a fourth state rendering the Warrumbul fixture through `ResponseRenderer` |
+| `frontend/tests/v7StateGallery.test.tsx` (updated) | Turn-count assertions updated for the fourth state; one new describe block for it |
+| `docs/V7_UI_CONTRACT.md` §9 (new) | Write-up of all of the above, cross-referenced to Qasim's seven asks |
+
+None of this is wired into `frontend/src/types/api.ts`, `chat/useChatSession.ts` or
+`chat/AssistantTurn.tsx` — every file above is reachable only from `dev/v7/` or its own test file, per
+the explicit "don't hard-code/freeze your implementation around the current conversation_state schema
+until #34 is approved and merged" instruction.
+
+### 11.3 Test results (23 Sep)
+
+Focused:
+
+```
+npx vitest run tests/v7StateGallery.test.tsx tests/responseRenderer.test.tsx tests/sessionStateArchitecture.test.ts tests/navigation.test.tsx
+Test Files  4 passed (4)
+     Tests  41 passed (41)
+```
+
+Full suite:
+
+```
+npx vitest run
+Test Files  24 passed (24)
+     Tests  301 passed (301)
+```
+
+301 = the 286 baseline from §4 plus 15 new tests (7 `sessionStateArchitecture`, 7 `responseRenderer`, 1
+new `v7StateGallery` describe block, minus the 0 removed — the pre-existing gallery test's turn-count
+assertions were updated in place, not duplicated). Four full-suite runs today: **fail, pass, fail,
+fail** — every failure the same single, already-tracked `responseStates.test.tsx` "refuses to send a
+second question while one is in flight" flake (Day 16 §21), at the same assertion line, in a file this
+branch does not touch. Three separate isolated runs of that file, taken immediately after each
+full-suite failure, all passed **8/8**. This is a higher fail rate than Day 16 recorded (roughly 1-in-3
+there; 3-in-4 today, likely just this run's CPU/scheduling load), reported here exactly as observed
+rather than cherry-picking the one clean run — not claimed fixed, and still not caused by anything in
+this branch's diff (no file this branch touches is in `responseStates.test.tsx`'s dependency chain, and
+the isolated result is unconditionally consistent).
+
+`tsc --noEmit`: exit 0, no output, including the new discriminated-union dispatcher (TypeScript's own
+exhaustiveness check over `ProposedResponse['response_type']` is what makes `ResponseRenderer.tsx`
+compile at all — removing a case is a type error, which is the concrete proof behind §9.3's "not
+permanently locked into one generic Markdown response" claim).
+
+Server: `npm test` → 46/46, unchanged (nothing in `server/` touched today either).
+
+### 11.4 Build and bundle exclusion (23 Sep)
+
+```
+vite build
+dist/assets/index-5lgqlqo9.js  277.52 kB │ gzip: 88.05 kB
+dist/assets/index-BSPtm6RR.css  25.74 kB │ gzip:  4.69 kB
+```
+
+Identical to §5's numbers — the new architecture-prep modules add zero bytes to the production bundle.
+Grep of `dist/assets/*.js` for seven markers spanning every new file (`entity_summary`, `Room types`,
+`Warrumbul`, `toRequestField`, `clearSessionState`, `ResponseRenderer`, `dev/v7-states`): **zero
+matches on all seven**, confirming the dev-only gate still excludes everything added today, not just
+the original three states.
+
+### 11.5 Browser evidence (23 Sep)
+
+Built-in browser, same method as §7 (temporary line in the local git-ignored `.env`, removed
+afterwards; confirmed via `.gitignore` and `git status` before and after, as before). Navigated to
+`/dev/v7-states` at 1280×720; `get_page_text` confirms the fourth state renders exactly as designed —
+"Placeholder Warrumbul Lodge record," the one-line description, `Cost`/`Catering`/`Residents` values
+and `Facilities` correctly showing "Not published in the stored record," and all three actions ("Room
+types & prices," "How to apply," "Compare") present as real buttons. `document.documentElement`:
+`scrollWidth === clientWidth === 1280` (no overflow). Screenshot capture itself timed out in this
+session's browser pane (the same intermittent limitation Day 15/16 recorded); `get_page_text` +
+`find`/DOM measurement were used instead, which is at least as precise for confirming text content and
+layout width for this check.
+
+### 11.6 Updated final status
+
+**Git**
+- Same branch, `ben/v7-day01-ux-contracts`; second commit adds the §11.2 files, a third records the
+  UI-contract §8 direction addendum (see PR #39 commit history).
+- PR #39 pushed and open against `main`.
+
+**Tests:** focused 41/41; full suite 301/301 (one incidental, previously-tracked flake reproduced and
+isolated); server 46/46 unchanged; `tsc --noEmit` exit 0.
+**Build:** bundle size unchanged; 7/7 new markers absent from `dist/`, in addition to the original 5/5.
+**Contract review:** `askanu-rag` PR #34 read in full; confirms §5 Option A; adds no rendering-field
+answer to §6/§7's open questions (still open, still Qasim/Carmen's to place).
+
+**Final**
+- App Day 1 = **evidence complete, including the 23 Sep architecture-readiness asks.**
+- V6 closure = **confirmed** (23 Sep).
+- Merge = still **HOLD**, but the remaining gate is now Qasim's ordinary Day 1 review/GO on PR #39
+  itself — not the earlier V6-closure precondition, which is satisfied.

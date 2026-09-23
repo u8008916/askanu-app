@@ -81,3 +81,63 @@ export interface ComparisonField {
   /** Same order as the compared entities. */
   values: (string | null)[];
 }
+
+/**
+ * A follow-up affordance on an `entity_summary` (e.g. "Room types & prices").
+ * Same rule as a domain-launcher card or a clarification option: it only
+ * prefills the composer with `prompt`, editable, never auto-sent — this is not
+ * a second send path.
+ */
+export interface EntitySummaryAction {
+  label: string;
+  prompt: string;
+}
+
+/**
+ * A compact single-entity overview (§8 of `docs/V7_UI_CONTRACT.md`) — the
+ * "Tell me about Warrumbul Lodge" shape, distinct from `ResultSet` because it
+ * is one entity, not a bounded list of cards. `description` and each field
+ * `value` follow the same missingness rule as `ResultField`: `null` renders
+ * the neutral unknown label, never blank, never guessed.
+ */
+export interface EntitySummary {
+  entity_id: string;
+  domain: string;
+  entity_type: string;
+  title: string;
+  description: string | null;
+  fields: ResultField[];
+  actions: EntitySummaryAction[];
+  url: string;
+  source_id: string;
+}
+
+/**
+ * The response-type discriminator §8 asks for: "prepare the response
+ * renderer so we're not permanently locked into one generic Markdown
+ * response." This is a *proposed* addition to the `/api/v1/ask` envelope —
+ * not in `docs/API_CONTRACT.md`, and no more frozen than anything else in
+ * this file. `clarification` is deliberately not a member here: that shape is
+ * already implemented, unchanged, in `AssistantTurn.tsx`'s
+ * `ClarificationOptions` against the real frozen `clarification` field — this
+ * union only covers the response bodies that do not yet have a home.
+ *
+ * `answer` carries every other member's optional caveat text, mirroring how
+ * `partial`/`insufficient_evidence` already render through the same
+ * `AnswerBody` the plain `ok` answer uses (§2 "Partial").
+ */
+export type ProposedResponse =
+  | { response_type: 'answer'; answer: string }
+  | { response_type: 'entity_summary'; entity: EntitySummary }
+  | { response_type: 'result_set'; answer?: string; resultSet: ResultSet }
+  | {
+      response_type: 'comparison';
+      answer?: string;
+      entities: ResultItem[];
+      fields: ComparisonField[];
+    }
+  | {
+      response_type: 'unknown' | 'partial';
+      answer: string;
+      nextAction?: NextAction;
+    };
