@@ -8,8 +8,9 @@
 required before any of this shipped.
 
 **Status:** PR [#40](https://github.com/u8008916/askanu-app/pull/40). §1–§8 below are the original
-Day 2 submission (head `e573d76`). §9 records Qasim's PM/integration review and the correction
-made in response — read §9 first if picking this up after that review.
+Day 2 submission (head `e573d76`). §9 records Qasim's PM/integration review and the transport-
+failure state correction made in response (head `6d9d533`). §10 records the final request-size
+correction (24 Sep 2026) — read §9–§10 first if picking this up after those reviews.
 
 ## 1. What shipped
 
@@ -229,7 +230,7 @@ draft reset, accessibility announcement, empty-clarification-option guard, legac
 separation. `result_set`/rendering-field work stays out of scope, per Qasim's explicit instruction
 not to pull it into this correction.
 
-**New head:** see the PR for the exact SHA after this commit. **Regression after the correction:**
+**New head:** `6d9d533f8ac87e55047d0956e632c460e9e1c870`. **Regression after the correction:**
 frontend 323/324 (was 315/316; +8 new tests, all passing — the same pre-existing
 `responseStates.test.tsx` timing flake as §4, still passes 8/8 in isolation, still unrelated to
 any file this branch touches); server 48/48 (unchanged, no server code touched); `tsc --noEmit`
@@ -237,3 +238,73 @@ clean; `npm run build` clean, dev gallery/mock transport still excluded from `di
 unrelated Day 2 functionality was changed — the diff for this correction is `chat/sessionState.ts`,
 `chat/useChatSession.ts`, and the two test files above, plus this evidence file and the two synced
 docs.
+
+## 10. Final correction — request-size contract frozen (24 Sep 2026)
+
+`askanu-rag` PR [#36](https://github.com/u8008916/askanu-rag/pull/36) ("V7 Day 2: freeze App-RAG
+transport size contract") froze the shared invariant §7 item 1/§9's body-size flag asked for.
+**Note on PR #36's GitHub state at the time this correction was made:** the PR showed as open,
+mergeable, zero formal GitHub reviews recorded (`gh pr view 36 -R u8008916/askanu-rag --json
+reviews,mergeable,mergeStateStatus` → `reviews: []`, `mergeStateStatus: "BLOCKED"`). Qasim's
+message described it as reviewed and frozen; the exact byte figures quoted (131,072 /
+98,304 / 262,144 / etc.) match the PR body verbatim, so the numbers were trusted and implemented,
+but the GitHub-recorded state is flagged here for Qasim's awareness in case the PR itself still
+needs a formal approval/merge on RAG's side.
+
+**Frozen limits (from PR #36):**
+
+| Component | Limit |
+|---|---:|
+| `conversation_state` | 131,072 bytes (128 KiB), compact serialized UTF-8 |
+| `history` | 98,304 bytes (96 KiB), compact serialized UTF-8 |
+| `question` | 2,000 code points + 8,192 UTF-8 byte guard |
+| `HistoryTurn.turn_id` | 128 characters |
+| `HistoryTurn.content` | 10,000 characters |
+| complete `/api/v1/ask` request | 262,144 bytes (256 KiB) raw, as received |
+
+**App-side change (the only one made): `server/src/server.js`'s `MAX_BODY_BYTES` changed from
+`64 * 1024` (an App-chosen self-protection headroom figure) to exactly `262_144`** — matching
+RAG's `ASK_REQUEST_MAX_BYTES`. Nothing else in the App enforces or interprets RAG's internal
+128 KiB/96 KiB component limits; the App remains an opaque carrier whose only transport
+responsibility is the shared complete-request boundary.
+
+**Exact-boundary tests (`server/tests/ask.test.js`):**
+- `accepts a complete request of exactly MAX_BODY_BYTES (262144) bytes and forwards it unchanged`
+  — a body measured with `Buffer.byteLength` at exactly 262,144 bytes gets HTTP 200, and the
+  upstream stub received the identical, complete, exactly-sized body (asserted by value, not just
+  status) — proving no truncation at the boundary.
+- `rejects a complete request of exactly MAX_BODY_BYTES + 1 (262145) bytes with the controlled
+  413, never forwarded` — one byte over gets the controlled 413 envelope, and
+  `upstream.received.length` is asserted unchanged — proving the oversized request never reached
+  RAG.
+- The pre-existing chunked-transfer 413 test hardcoded `96 * 1024` as "well past the [old] 64 KiB
+  cap" — under the new 262,144-byte cap that literal value would have silently stopped triggering
+  a 413 at all (96 KiB < 256 KiB), which would have been a real regression this correction could
+  have introduced unnoticed. Fixed to derive the chunked size from `MAX_BODY_BYTES + 1024` instead
+  of a hardcoded literal, so it stays correct regardless of the constant's value.
+
+**Transport-failure state fix (§9) — confirmed unaltered.** No line inside `advanceSessionState`
+or its call site changed for this correction; `tests/conversationState.test.tsx` and
+`tests/sessionState.test.ts` re-run unchanged and still pass in full (§ above).
+
+**Docs synced:** `docs/API_CONTRACT.md` (frozen limits table, replacing the old "question max
+2,000 characters / history max 10 prior turns" pair; the body-size paragraph in "Structured
+conversation state" marked resolved), `docs/CONVERSATION_CONTRACT.md` (new "V7 transport boundary"
+section, mirroring RAG's own), `docs/V7_UI_CONTRACT.md` (§10's body-size entry marked resolved;
+§7 item 1 annotated resolved without rewriting the original Day 1 record).
+
+**Full regression after this correction:** frontend 323/324 (unchanged from §9 — no frontend
+source touched by this correction); server **50/50** (was 48/48; +2 exact-boundary tests); `tsc
+--noEmit` clean; `npm run build` clean, dev gallery/mock transport still excluded from `dist/`.
+
+**Confirms no unrelated Day 2 functionality changed.** The diff for this correction is exactly:
+`server/src/server.js` (the one-line `MAX_BODY_BYTES` change plus its doc comment),
+`server/tests/ask.test.js` (two new tests plus the chunked-test fix), `docs/API_CONTRACT.md`,
+`docs/CONVERSATION_CONTRACT.md`, `docs/V7_UI_CONTRACT.md`, and this evidence file. No frontend
+source file was touched. No ResultSet/rendering, retrieval, deployment or UI-redesign work was
+pulled in.
+
+This is the last known App Day 2 integration correction per Qasim's message — both cross-repo
+gaps from §9 are now closed (state-drop-on-failure corrected in the previous commit, body-size
+frozen here). Awaiting Qasim's final review of head `6d9d533` plus this commit before Day 2
+closes and Day 3 unblocks.

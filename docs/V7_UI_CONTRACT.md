@@ -220,7 +220,10 @@ no source-based filtering of its own).
 ## 7. Open questions for the Day 1 gate
 
 1. Which of §5's two Clear Chat mechanisms, and does it fit the existing 64 KiB body cap / 10-turn
-   history limit, or do those need to move for the 20-turn acceptance journey?
+   history limit, or do those need to move for the 20-turn acceptance journey? **Resolved 24 Sep
+   2026 — see §10's "Body-size gap" entry**: option (A) was confirmed (§9.1), and the size question
+   was frozen jointly with RAG at 256 KiB complete-request / 128 KiB state / 96 KiB history, with
+   `server/src/server.js`'s `MAX_BODY_BYTES` moved to match exactly.
 2. Where do §6 items 1–5 land — new top-level fields on the existing `/api/v1/ask` envelope, or a
    versioned v2 contract? (This document takes no position; `types/api.ts` is unchanged either way
    until that's decided.)
@@ -441,13 +444,16 @@ space so two Clear Chat presses in a row both announce.
 wire yet — PR #34 is session state only (§9.1). The Day 1 dev gallery (`dev/v7/`) is untouched and stays
 dev-only.
 
-**Body-size gap — still open, explicitly not the App's call (Qasim, 24 Sep 2026):** see
-`API_CONTRACT.md`'s "Structured conversation state" section. RAG's declared per-field string bounds
-could in the extreme serialize past this service's 64 KiB cap before `history` is added; a realistic
-populated state measures roughly 11 KB. Qasim's instruction: this is a shared App/RAG contract
-invariant — "every conversation state RAG is permitted to return in production, combined with the
-maximum permitted request/history envelope, must fit through the App → RAG request path" — to be
-resolved jointly with Carmen, not by the App unilaterally raising or leaving the 64 KiB cap. **The App
-does not change this limit until that joint number is frozen.** If a request does exceed the current
-cap in the meantime, the result is the existing controlled 413 — a boundary error the App never
-reached RAG for, so per the correction above it now preserves rather than drops the held state.
+**Body-size gap — resolved 2026-09-24 (`askanu-rag` PR #36, "V7 Day 2: freeze App-RAG transport
+size contract").** See `API_CONTRACT.md`'s frozen limits table and its "Structured conversation
+state" section. RAG froze the shared invariant Qasim named — "every conversation state RAG is
+permitted to return in production, combined with the maximum permitted request/history envelope,
+must fit through the App → RAG request path" — at exact byte ceilings: `conversation_state` 128 KiB,
+history 96 KiB, complete request 256 KiB. The App's side of this: `server/src/server.js`'s
+`MAX_BODY_BYTES` changed from an App-chosen 64 KiB self-protection number to exactly `262,144`,
+matching RAG's own `ASK_REQUEST_MAX_BYTES` — no longer an independently-chosen headroom figure.
+`server/tests/ask.test.js` proves the exact boundary: a request of exactly 262,144 bytes is
+accepted and forwarded unchanged; 262,145 is rejected with the controlled 413 and never reaches
+RAG; nothing is truncated either side of the boundary. If a request does exceed the cap, that
+remains a boundary error the App never reached RAG for, so per the transport-failure correction
+above it preserves rather than drops the held state.

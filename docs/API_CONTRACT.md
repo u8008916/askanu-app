@@ -43,9 +43,32 @@ conversational RAG contracts"), approved and merged by Qasim 23 Sep 2026
 (merge commit `a7e9ed4`) — the same kind of cross-repo sync `DECISION_LOG.md`
 already records for Jobs (Day 11) and Events (Day 15).
 
-Initial V3 limits:
-- question max 2,000 characters
-- history max 10 prior turns
+Frozen request transport limits (synced 2026-09-24 from `askanu-rag` PR #36, "V7 Day 2: freeze
+App-RAG transport size contract"):
+
+- question max 2,000 Unicode characters/code points and max 8,192 UTF-8 bytes;
+- history max 10 prior turns and max 98,304 serialized UTF-8 bytes;
+- each `HistoryTurn.turn_id` max 128 characters;
+- each `HistoryTurn.content` max 10,000 characters;
+- `conversation_state` max 131,072 serialized UTF-8 bytes; and
+- complete `/api/v1/ask` request body max 262,144 bytes as received.
+
+Binary units are used (`1 KiB = 1,024 bytes`). Component serialization size for `history` and
+`conversation_state` is measured by RAG using compact JSON with UTF-8, `ensure_ascii=False`, no
+non-finite numbers, separators `,` and `:`, and lexicographically sorted object keys — this App
+does not itself measure or interpret those component sizes; it is an opaque carrier. Complete-body
+size is the raw HTTP body byte count before JSON parsing, and **this is the one size rule the App
+does enforce**: `server/src/server.js`'s `MAX_BODY_BYTES` is exactly `262,144`, matching RAG's own
+`ASK_REQUEST_MAX_BYTES`, so every production-valid Ask request can traverse App to RAG and every
+authoritative `conversation_state` RAG is willing to return can be sent back on the next turn
+(`server/tests/ask.test.js` proves the exact 262,144-byte boundary is accepted and 262,145 is
+rejected, never forwarded, never truncated).
+
+No over-limit component or body is truncated by either service. It is rejected through the
+controlled HTTP 413 path. RAG also refuses to emit an authoritative `conversation_state` above
+131,072 bytes, so every returned state remains eligible for the next client-carried request.
+
+Other initial V3 operational limits:
 - output target about 800 model tokens
 - backend timeout target about 30 seconds
 
@@ -65,7 +88,7 @@ No Relief Mate confidence labels.
 |---|---|
 | Malformed JSON | 400 |
 | Request validation failure other than oversized input | 400 |
-| Oversized input, including question/history exceeding the documented limits | 413 |
+| Oversized input, including any documented component or complete-body limit exceeded | 413 |
 | Rate limit exceeded | 429 |
 | DB, model or internal dependency failure | Controlled 5xx |
 
@@ -167,18 +190,16 @@ Each ResultSet contains at most 20 ordered canonical identities. Clarification
 options contain at most 20 items. State strings and scalar values are bounded;
 arbitrary nested JSON is not accepted.
 
-**Cross-repo body-size invariant — open, not the App's to resolve alone (Qasim, 24 Sep 2026):** RAG's
-own per-field string bounds, if every field were populated at its declared maximum, serialize to
-roughly 90 KB — above this service's 64 KiB request cap (`server/src/server.js`) before `history` is
-even added. A realistic populated state (max item counts, plausible identifier/label lengths) measures
-roughly 11 KB, which fits comfortably. The required invariant: every conversation state RAG is
-permitted to return in production, combined with the maximum permitted request/history envelope, must
-fit through the App → RAG path — to be frozen jointly with RAG (tightening RAG's max state, raising the
-App cap to an agreed bounded ceiling, or another deterministic representation), not by the App
-unilaterally changing 64 KiB. If a genuine request does exceed the cap in the meantime, the result is
-the existing controlled 413; per `chat/sessionState.ts`'s `advanceSessionState`, that is a boundary
-error the App never reached RAG for, so the previously held state is preserved, not dropped — the
-conversation is not reset by the size mismatch, but the two limits still have not been reconciled.
+**Cross-repo body-size invariant — resolved 2026-09-24 (`askanu-rag` PR #36, Qasim's PM review of
+`askanu-app` PR #40).** The App's request-body cap is now exactly `262,144` bytes
+(`server/src/server.js`'s `MAX_BODY_BYTES`), matching RAG's own `ASK_REQUEST_MAX_BYTES` — see the
+frozen limits table near the top of this document. This is the shared invariant Qasim named: every
+conversation state RAG is permitted to return in production, combined with the maximum permitted
+request/history envelope, fits through the App → RAG path, because both services now enforce the
+same 262,144-byte complete-request ceiling rather than two independently-chosen numbers. If a
+request somehow still exceeds the cap, the result is the existing controlled 413; per
+`chat/sessionState.ts`'s `advanceSessionState`, that is a boundary error the App never reached RAG
+for, so the previously held `conversation_state` is preserved, not dropped.
 
 ### Pending clarification in the next request
 
