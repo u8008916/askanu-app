@@ -167,16 +167,18 @@ Each ResultSet contains at most 20 ordered canonical identities. Clarification
 options contain at most 20 items. State strings and scalar values are bounded;
 arbitrary nested JSON is not accepted.
 
-**App-side body-size gap (flagged to Qasim, not solved here):** RAG's own
-per-field string bounds, if every field were populated at its declared
-maximum, serialize to roughly 90 KB — above this service's 64 KiB request cap
-(`server/src/server.js`) before `history` is even added. A realistic
-populated state (max item counts, plausible identifier/label lengths) measures
-roughly 11 KB, which fits comfortably. If a genuine request ever exceeds the
-cap, the result is the existing controlled 413, after which the App drops the
-held state (`chat/sessionState.ts`) and the conversation recovers on the next
-turn — this is not a silent failure, but the two limits have not been
-reconciled against each other.
+**Cross-repo body-size invariant — open, not the App's to resolve alone (Qasim, 24 Sep 2026):** RAG's
+own per-field string bounds, if every field were populated at its declared maximum, serialize to
+roughly 90 KB — above this service's 64 KiB request cap (`server/src/server.js`) before `history` is
+even added. A realistic populated state (max item counts, plausible identifier/label lengths) measures
+roughly 11 KB, which fits comfortably. The required invariant: every conversation state RAG is
+permitted to return in production, combined with the maximum permitted request/history envelope, must
+fit through the App → RAG path — to be frozen jointly with RAG (tightening RAG's max state, raising the
+App cap to an agreed bounded ceiling, or another deterministic representation), not by the App
+unilaterally changing 64 KiB. If a genuine request does exceed the cap in the meantime, the result is
+the existing controlled 413; per `chat/sessionState.ts`'s `advanceSessionState`, that is a boundary
+error the App never reached RAG for, so the previously held state is preserved, not dropped — the
+conversation is not reset by the size mismatch, but the two limits still have not been reconciled.
 
 ### Pending clarification in the next request
 

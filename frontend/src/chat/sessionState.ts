@@ -15,9 +15,12 @@
  * semantically interpret it." Because of that, this module never types the
  * internal shape (`recent_entities`, `focus`, `result_sets`, `constraints`,
  * `pending_clarification`, ...) — those fields are Carmen's, versioned
- * (`schema_version: 1`) and validated server-side. It only implements the
- * three operations the App is actually responsible for: store the value the
- * backend returned, send it back unchanged, and drop it on Clear Chat.
+ * (`schema_version: 1`) and validated server-side. It only implements what
+ * the App is actually responsible for: store the value an authoritative
+ * response returns, send it back unchanged, preserve it — not drop it —
+ * across a turn where no authoritative response was received at all (Qasim's
+ * PM review of PR #40, 24 Sep 2026: `advanceSessionState`), and drop it only
+ * on an explicit Clear Chat.
  *
  * `askanu-rag`'s updated `docs/CONVERSATION_CONTRACT.md` names Clear Chat's
  * App-side half explicitly: "The App... sends the next request with empty
@@ -60,12 +63,12 @@ export function toRequestField(holder: SessionStateHolder): OpaqueConversationSt
 }
 
 /**
- * Reads the authoritative state back out of a response envelope after a
- * successful turn. Never throws and never inspects the value's shape — an
- * envelope that omits `conversation_state` (a pre-V7 backend, or a controlled
- * error envelope that carries no state) degrades to `emptySessionState()`,
- * not a silently `undefined` field the next request would forget to omit
- * correctly.
+ * Reads the authoritative state out of a response envelope that is known to
+ * carry one. Never throws and never inspects the value's shape. An envelope
+ * that omits `conversation_state` degrades to `emptySessionState()` here —
+ * callers that must instead *preserve* whatever was held before such an
+ * envelope (the normal case after a settled turn; see `advanceSessionState`)
+ * do not call this function directly for that decision.
  */
 export function fromResponseEnvelope(
   response: { conversation_state?: OpaqueConversationState } | null | undefined,
@@ -74,6 +77,49 @@ export function fromResponseEnvelope(
     return emptySessionState();
   }
   return { state: response.conversation_state ?? null };
+}
+
+/**
+ * What `useChatSession` holds after a turn settles (V7 Day 2 correction,
+ * Qasim's PM review of PR #40, 24 Sep 2026).
+ *
+ * The rule: *absence of a new authoritative response is not automatically
+ * evidence that the previous authoritative state became invalid.*
+ * `conversation_state` is present on every `/api/v1/ask` status RAG itself
+ * answers — `ok`, `error`, `insufficient_evidence`, all of it — because RAG
+ * is telling the App what the state now is, even when that turn failed
+ * semantically. It is *absent* only when no RAG-authored envelope was ever
+ * produced for this turn: a client-side transport failure (`askApi.ts`
+ * throwing before any envelope exists), or a controlled envelope this App's
+ * own boundary server synthesised before reaching RAG at all (`413` body too
+ * large, `502` upstream unreachable/token failure — `server/src/server.js`'s
+ * `errorEnvelope()` never sets the field, exactly so this distinction is
+ * visible here). Only that second case — no authoritative response reached
+ * — preserves `current` unchanged, so a retry still carries the last state
+ * RAG actually acknowledged rather than starting the conversation over.
+ * A response that does carry the field always wins, replacing `current`
+ * outright, even when the value is RAG's own empty/reset default — that is
+ * still RAG being authoritative about what the state is now. An explicit
+ * `conversation_state: null` is treated the same as the key being absent
+ * (also "no signal" — matches `fromResponseEnvelope`'s existing null/omitted
+ * equivalence elsewhere): RAG's own reset value is always a real, if mostly
+ * empty, schema-version-1 object, never a bare `null`, so this never fires
+ * against a genuine RAG reset in practice — it only makes this primitive
+ * correct on its own terms rather than relying on `askResponse.ts` having
+ * already normalised null away upstream.
+ */
+export function advanceSessionState(
+  current: SessionStateHolder,
+  response: { conversation_state?: OpaqueConversationState } | null | undefined,
+): SessionStateHolder {
+  if (
+    response == null ||
+    !('conversation_state' in response) ||
+    response.conversation_state === null
+  ) {
+    return current;
+  }
+  return fromResponseEnvelope(response);
 }
 
 /**
@@ -94,13 +140,16 @@ export function clearSessionState(): SessionStateHolder {
  *
  * A held opaque state always wins and is sent back byte-for-byte — that is
  * the whole store/echo contract above. When nothing is held (a fresh
- * session, right after Clear Chat, or after any response that carried no
- * state — a transport failure, an App-server error envelope, or a pre-V7
- * backend that never returns one), this falls back to the legacy
+ * session, right after Clear Chat, or a pre-V7 backend that has never once
+ * returned a versioned state), this falls back to the legacy
  * `{pending_clarification}` shape `API_CONTRACT.md` still documents as
  * accepted input, so clarification keeps working without the versioned
  * state. Never both: the two shapes are alternatives for the same field,
- * never merged.
+ * never merged. Note this is a *different* question from
+ * `advanceSessionState`'s: a transport failure no longer clears what was
+ * held (see there), so it does not by itself cause this fallback either —
+ * the fallback is for "nothing has ever been acknowledged yet," not "the
+ * last request failed."
  */
 export function requestConversationState(
   holder: SessionStateHolder,

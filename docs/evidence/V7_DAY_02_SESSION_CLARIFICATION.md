@@ -7,6 +7,10 @@
 23 Sep 2026, merge commit `a7e9ed4`. This is the explicit GO `docs/V7_UI_CONTRACT.md` §8/§9
 required before any of this shipped.
 
+**Status:** PR [#40](https://github.com/u8008916/askanu-app/pull/40). §1–§8 below are the original
+Day 2 submission (head `e573d76`). §9 records Qasim's PM/integration review and the correction
+made in response — read §9 first if picking this up after that review.
+
 ## 1. What shipped
 
 - Real `conversation_state` transport: `frontend/src/chat/sessionState.ts` (moved from
@@ -150,22 +154,20 @@ what RAG's resolver does with it (proven in `tests/conversationState.test.tsx`).
 
 ## 7. Contract gaps handed to Qasim (not solved here)
 
+*Both flags below were reviewed by Qasim 24 Sep 2026 — see §9 for the outcome (item 2 corrected,
+item 1 confirmed still open and explicitly not the App's to resolve alone).*
+
 1. **Body-size headroom.** RAG's own declared per-field bounds
    (`askanu-rag src/askanu_rag/models/conversation_state.py`), if every field were populated at
    its maximum string length, serialize to roughly 90 KB — above this service's existing 64 KiB
    request cap (`server/src/server.js`) before `history` is even added. A realistic populated
    state (max item counts, plausible identifier/label lengths) measures roughly 11 KB, which fits
    comfortably alongside 10 history turns. The two limits have not been reconciled against the
-   20-turn canonical acceptance journey (master plan §2). If a real request does exceed the cap,
-   the result is the existing controlled 413 and the App drops its held state in response (§8
-   below) — not a silent failure, but worth a decision before Day 7 torture testing.
-2. **State-drop-on-failure is an App-side design choice within the contract, not something the
-   contract specifies.** After any response that carries no `conversation_state` (a transport
-   failure, an App-server 413/502 built before RAG is reached, or a pre-V7 backend), the App
-   drops any previously held versioned state rather than keeping it, on the reasoning that the UI
-   already disables the superseded clarification in that case and stale versioned state could let
-   the UI and backend disagree about what is still live. Flagging this so Qasim can confirm it
-   matches RAG's own expectation, rather than assuming it.
+   20-turn canonical acceptance journey (master plan §2).
+2. **State-drop-on-failure was an App-side design choice within the contract, not something the
+   contract specified — now corrected, see §9.1.** The original cut dropped any previously held
+   versioned state after a response with no `conversation_state`. Qasim's review found this
+   conflated a failed request with an explicit reset.
 3. **`result_set`/rendering fields remain unbuilt**, unchanged from Day 1's §7/§8 — PR #34 was
    session-state only. Not in Day 2's scope per `docs/v7/DAY_02.md`.
 
@@ -177,3 +179,61 @@ what RAG's resolver does with it (proven in `tests/conversationState.test.tsx`).
 - No empty clarification options — **now enforced** (§1, §4).
 - Clear Chat proves stale follow-up cannot resolve — **proven at the App/transport boundary**
   (§4, §6); full end-to-end proof against RAG's resolver is Carmen's Day 2 dependency (§6).
+
+## 9. Correction — Qasim's PM review of PR #40 (24 Sep 2026)
+
+Qasim reviewed head `e573d76` and accepted the architecture in full (§1–§8, item by item), but put
+the PR on **HOLD** for two cross-repo integration decisions (full review posted as a
+[PR comment](https://github.com/u8008916/askanu-app/pull/40#issuecomment-5807171321)). This
+section records the one narrow correction made — the other is explicitly not the App's to resolve
+alone and was left untouched.
+
+**1. State-drop-on-failure corrected (required, implemented).** §7 item 2's original rule — any
+response with no `conversation_state` drops previously held state — conflated "the request failed"
+with "the conversation was reset." Qasim's principle: *"absence of a new authoritative response is
+not automatically evidence that the previous authoritative state became invalid."* Fixed by
+`chat/sessionState.ts`'s new `advanceSessionState(current, response)`: a response that carries
+`conversation_state` always replaces `current` (even a RAG-authored error, since PR #34's contract
+puts the field on every status RAG itself answers — an empty/reset value is still authoritative);
+a response with no field at all — client-side transport failure, or an App-server 413/502 that
+never reached RAG — now **preserves** `current` unchanged. Only an explicit Clear Chat, or RAG
+actually answering, changes what is held. `useChatSession.ts` calls this at the same settle point
+that previously called `fromResponseEnvelope` directly.
+
+Tests added exactly to the shape Qasim's review specified — "receive valid state S1 → next request
+fails before authoritative RAG response → retry still sends S1; and Clear Chat after that still
+removes S1":
+- `tests/sessionState.test.ts`: 5 new `advanceSessionState` unit cases (preserve on absent/null/
+  undefined response, replace on a present field including an empty reset value, nothing to
+  preserve when starting empty).
+- `tests/conversationState.test.tsx`: replaced the old "drops state after a transport failure"
+  case with four — preserved through a thrown transport failure and the retry sends S1 byte-
+  identical (`toBe`); preserved through a settled App-server-boundary envelope with no
+  `conversation_state` (the 413/502 case, distinct from RAG answering); Clear Chat after a
+  preserved state still removes it; and a genuinely RAG-authored error response (carries the
+  field, even an empty reset value) still replaces the held state rather than being treated as a
+  failure.
+
+**2. Body-size invariant — deliberately left untouched.** Qasim was explicit that this is a
+shared App/RAG contract decision, not one the App can complete alone, and told Ben not to change
+the 64 KiB limit independently. No change made to `server/src/server.js` or `MAX_BODY_BYTES`.
+`docs/API_CONTRACT.md` and `docs/V7_UI_CONTRACT.md` §10 updated to state the required invariant
+and that it awaits a joint number from Qasim/Carmen. Once frozen, the remaining work is a boundary
+test proving the agreed maximum is accepted and an over-limit request is rejected cleanly — not
+done here, since there is no agreed number yet.
+
+**Not touched, confirmed still accepted-as-is per Qasim's review:** opaque transport, store/echo/
+clear architecture, stale-response `generationRef` guard, extended Clear Chat lifecycle, composer
+draft reset, accessibility announcement, empty-clarification-option guard, legacy
+`{pending_clarification}` fallback, server pass-through, session-only state, dev/production
+separation. `result_set`/rendering-field work stays out of scope, per Qasim's explicit instruction
+not to pull it into this correction.
+
+**New head:** see the PR for the exact SHA after this commit. **Regression after the correction:**
+frontend 323/324 (was 315/316; +8 new tests, all passing — the same pre-existing
+`responseStates.test.tsx` timing flake as §4, still passes 8/8 in isolation, still unrelated to
+any file this branch touches); server 48/48 (unchanged, no server code touched); `tsc --noEmit`
+clean; `npm run build` clean, dev gallery/mock transport still excluded from `dist/`. No
+unrelated Day 2 functionality was changed — the diff for this correction is `chat/sessionState.ts`,
+`chat/useChatSession.ts`, and the two test files above, plus this evidence file and the two synced
+docs.

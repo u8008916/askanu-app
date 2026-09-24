@@ -4,9 +4,9 @@ import type { AskRequest, AskResponse, Clarification, HistoryTurn } from '../typ
 import { askTransport } from './askTransport';
 import type { AskTransport } from './askTransport';
 import {
+  advanceSessionState,
   clearSessionState,
   emptySessionState,
-  fromResponseEnvelope,
   requestConversationState,
 } from './sessionState';
 import type { SessionStateHolder } from './sessionState';
@@ -81,11 +81,14 @@ export function useChatSession(transport: AskTransport = askTransport) {
     useState<Clarification | null>(null);
   const [isSending, setIsSending] = useState(false);
   /*
-   * The V7 `conversation_state` the last settled response returned.
-   * `sessionStateRef` (not React state) because it is never read for
-   * rendering — only `sendMessage` reads it, at send time, and it must not
-   * itself trigger a re-render. `chat/sessionState.ts` documents the
-   * store/echo/clear contract this holds.
+   * The V7 `conversation_state` last acknowledged by an authoritative RAG
+   * response — not simply "what the last response returned": a turn that
+   * produced no RAG-authored envelope (transport failure, App-server
+   * boundary error) leaves this untouched rather than clearing it
+   * (`advanceSessionState` in `chat/sessionState.ts`, which documents the
+   * full store/echo/preserve/clear contract). `sessionStateRef` (not React
+   * state) because it is never read for rendering — only `sendMessage` reads
+   * it, at send time, and it must not itself trigger a re-render.
    */
   const sessionStateRef = useRef<SessionStateHolder>(emptySessionState());
 
@@ -160,12 +163,18 @@ export function useChatSession(transport: AskTransport = askTransport) {
       // without one clears it, which is what the contract requires when a
       // clarification is resolved, corrected or the topic switches.
       setPendingClarification(response.clarification);
-      // Same rule for the versioned state: this response is now the sole
-      // authority. A response that carried none (a transport failure or an
-      // App-server error envelope reaching this generation) degrades to
-      // "nothing held," which falls back to the legacy pending_clarification
-      // shape on the next send rather than resending stale versioned state.
-      sessionStateRef.current = fromResponseEnvelope(response);
+      // Same rule for the versioned state, with one asymmetry from
+      // `pendingClarification` above (Qasim's PM review of PR #40, 24 Sep
+      // 2026): a response that actually carries `conversation_state` is
+      // always the new sole authority, even a RAG-authored error envelope —
+      // but a response with no state at all (a transport failure, or a
+      // controlled envelope this App's own boundary server synthesised
+      // before ever reaching RAG) means no authoritative reply was received
+      // for this turn, so the previously held state is preserved rather than
+      // dropped. A failed request must not itself become a conversation
+      // reset — only an explicit Clear Chat, or RAG actually answering, may
+      // change what is held.
+      sessionStateRef.current = advanceSessionState(sessionStateRef.current, response);
       setIsSending(false);
       controllerRef.current = null;
     },

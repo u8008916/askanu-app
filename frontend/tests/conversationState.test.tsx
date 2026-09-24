@@ -9,10 +9,15 @@ import type { AskRequest, AskResponse } from '../src/types/api';
  * against a scripted transport rather than through `App` — `chat/sessionState.ts`
  * is opaque by design, so these fixtures use arbitrary shapes on purpose.
  *
- * The property under test throughout: after every settled response, the held
- * state becomes exactly what that response carried, and a stale follow-up —
- * after Clear Chat, after a transport failure, or after a response that
- * settles too late to count — must never resolve against state from before.
+ * The property under test throughout, per Qasim's PM review of PR #40
+ * (24 Sep 2026): a response that carries `conversation_state` is always the
+ * new authority, replacing whatever was held — but a turn that produced no
+ * authoritative RAG-authored envelope (a transport failure, or a controlled
+ * envelope this App's own boundary server synthesised before reaching RAG)
+ * must preserve whatever was held rather than dropping it. Only an explicit
+ * Clear Chat, or RAG actually answering, may change what is held. A stale
+ * follow-up after Clear Chat, or a response that settles too late to count,
+ * must still never resolve against state from before Clear Chat.
  */
 
 function buildResponse(overrides: Partial<AskResponse> = {}): AskResponse {
@@ -150,17 +155,97 @@ describe('conversation_state transport (V7 Day 2)', () => {
     expect(requests[2].conversation_state).toEqual({ pending_clarification: null });
   });
 
-  it('drops state after a transport failure, so the next request carries none', async () => {
+  /**
+   * Qasim's PM review of PR #40 (24 Sep 2026): "absence of a new
+   * authoritative response is not automatically evidence that the previous
+   * authoritative state became invalid." A transport failure — no RAG
+   * response was ever produced for that turn — must not itself become a
+   * conversation reset. Required by that review: "receive valid state S1 →
+   * next request fails before authoritative RAG response → retry still
+   * sends S1; and Clear Chat after that still removes S1."
+   */
+  it('preserves the last authoritative state through a transport failure, and a retry sends it unchanged', async () => {
     const requests: AskRequest[] = [];
+    const stateA = { schema_version: 1, turn_index: 1 };
     let call = 0;
     const transport = vi.fn(async (request: AskRequest) => {
       requests.push(request);
       call += 1;
       if (call === 1) {
-        return buildResponse({
-          conversation_state: { turn_index: 1 },
-          request_id: 'r1',
-        });
+        return buildResponse({ conversation_state: stateA, request_id: 'r1' });
+      }
+      if (call === 2) {
+        // No authoritative RAG response was ever produced for this turn.
+        throw new Error('network down');
+      }
+      return buildResponse({ conversation_state: stateA, request_id: 'r3' });
+    });
+
+    const { result } = renderHook(() => useChatSession(transport));
+
+    await act(async () => {
+      await result.current.sendMessage('first');
+    });
+    await act(async () => {
+      // useChatSession catches this internally into a client-side error turn
+      // — that turn is not RAG telling the App anything about state.
+      await result.current.sendMessage('second');
+    });
+    await act(async () => {
+      await result.current.sendMessage('third');
+    });
+
+    // The retry carries S1 byte-identical — not dropped, not the legacy
+    // fallback either.
+    expect(requests[2].conversation_state).toBe(stateA);
+  });
+
+  it('preserves the last authoritative state after a settled envelope with no conversation_state (App-server boundary, not RAG)', async () => {
+    const requests: AskRequest[] = [];
+    const stateA = { schema_version: 1, turn_index: 1 };
+    let call = 0;
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      call += 1;
+      if (call === 1) {
+        return buildResponse({ conversation_state: stateA, request_id: 'r1' });
+      }
+      // Models server/src/server.js's own errorEnvelope(): a real settled
+      // response, but one this App's boundary synthesised (413/502) before
+      // ever reaching RAG — it never carries conversation_state. Unlike a
+      // RAG-authored error, which always carries the field (even an empty
+      // one), this is the "no authoritative response" case.
+      return buildResponse({
+        status: 'error',
+        answer: 'The request could not be completed.',
+        request_id: 'r2',
+      });
+    });
+
+    const { result } = renderHook(() => useChatSession(transport));
+
+    await act(async () => {
+      await result.current.sendMessage('first');
+    });
+    await act(async () => {
+      await result.current.sendMessage('second');
+    });
+    await act(async () => {
+      await result.current.sendMessage('third');
+    });
+
+    expect(requests[2].conversation_state).toBe(stateA);
+  });
+
+  it('Clear Chat after a preserved state still removes it', async () => {
+    const requests: AskRequest[] = [];
+    const stateA = { schema_version: 1, turn_index: 1 };
+    let call = 0;
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      call += 1;
+      if (call === 1) {
+        return buildResponse({ conversation_state: stateA, request_id: 'r1' });
       }
       if (call === 2) {
         throw new Error('network down');
@@ -174,14 +259,56 @@ describe('conversation_state transport (V7 Day 2)', () => {
       await result.current.sendMessage('first');
     });
     await act(async () => {
-      // useChatSession catches this internally into a client-side error turn.
+      await result.current.sendMessage('second');
+    });
+
+    // S1 is preserved (proven above) — now clear it explicitly.
+    act(() => {
+      result.current.clearChat();
+    });
+
+    await act(async () => {
+      await result.current.sendMessage('third');
+    });
+
+    expect(requests[2].conversation_state).toEqual({ pending_clarification: null });
+  });
+
+  it('a genuinely RAG-authored error response still replaces the held state, even with an empty reset value', async () => {
+    const requests: AskRequest[] = [];
+    const stateA = { schema_version: 1, turn_index: 1 };
+    const ragEmptyState = { schema_version: 1, turn_index: 0 };
+    let call = 0;
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      call += 1;
+      if (call === 1) {
+        return buildResponse({ conversation_state: stateA, request_id: 'r1' });
+      }
+      // RAG itself answered with a controlled error, but it is still an
+      // authoritative envelope: it carries conversation_state (per PR #34,
+      // present on every /api/v1/ask status RAG answers), even though the
+      // value is a reset/empty one. This must replace stateA, not preserve it.
+      return buildResponse({
+        status: 'error',
+        conversation_state: ragEmptyState,
+        request_id: 'r2',
+      });
+    });
+
+    const { result } = renderHook(() => useChatSession(transport));
+
+    await act(async () => {
+      await result.current.sendMessage('first');
+    });
+    await act(async () => {
       await result.current.sendMessage('second');
     });
     await act(async () => {
       await result.current.sendMessage('third');
     });
 
-    expect(requests[2].conversation_state).toEqual({ pending_clarification: null });
+    expect(requests[2].conversation_state).toBe(ragEmptyState);
   });
 
   it('falls back to the legacy pending_clarification shape when no versioned state is held', async () => {

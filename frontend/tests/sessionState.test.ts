@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  advanceSessionState,
   clearSessionState,
   emptySessionState,
   fromResponseEnvelope,
@@ -74,5 +75,49 @@ describe('V7 session-state transport architecture', () => {
     // A stale follow-up sent right after Clear Chat carries no field at all —
     // there is nothing left anywhere for the backend to resolve against.
     expect(toRequestField(holder)).toBeUndefined();
+  });
+});
+
+/**
+ * `advanceSessionState` — Qasim's PM review of PR #40 (24 Sep 2026):
+ * "absence of a new authoritative response is not automatically evidence
+ * that the previous authoritative state became invalid." A transport
+ * failure must not itself become a conversation reset.
+ */
+describe('advanceSessionState (V7 Day 2 correction)', () => {
+  it('preserves the current holder when the response omits conversation_state entirely', () => {
+    const current = fromResponseEnvelope({ conversation_state: { turn_index: 1 } });
+    const advanced = advanceSessionState(current, {});
+    expect(advanced).toBe(current);
+    expect(toRequestField(advanced)).toEqual({ turn_index: 1 });
+  });
+
+  it('preserves the current holder for a null/undefined response (transport failure)', () => {
+    const current = fromResponseEnvelope({ conversation_state: { turn_index: 1 } });
+    expect(advanceSessionState(current, null)).toBe(current);
+    expect(advanceSessionState(current, undefined)).toBe(current);
+  });
+
+  it('preserves the current holder for an explicit null conversation_state', () => {
+    // In production, askResponse.ts's parser already normalises a raw
+    // `conversation_state: null` down to "key absent" before this ever
+    // runs — this proves the primitive is also correct on its own terms if
+    // ever handed the raw shape directly.
+    const current = fromResponseEnvelope({ conversation_state: { turn_index: 1 } });
+    expect(advanceSessionState(current, { conversation_state: null })).toBe(current);
+  });
+
+  it('replaces the current holder when the response carries a new state, even an empty reset value', () => {
+    const current = fromResponseEnvelope({ conversation_state: { turn_index: 1 } });
+    // A RAG-authored envelope — even a controlled error — that carries the
+    // field is still authoritative, however "empty" its value.
+    const resetState = { schema_version: 1, turn_index: 0 };
+    const advanced = advanceSessionState(current, { conversation_state: resetState });
+    expect(advanced.state).toBe(resetState);
+  });
+
+  it('starting from empty, still has nothing to preserve after a failure', () => {
+    const advanced = advanceSessionState(emptySessionState(), {});
+    expect(toRequestField(advanced)).toBeUndefined();
   });
 });

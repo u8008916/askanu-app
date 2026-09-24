@@ -398,7 +398,7 @@ shipped and what remains a gap for Qasim's Day 2 gate.
   the one function that decides between echoing a held versioned state and falling back to the legacy
   `{pending_clarification}` shape.
 - `frontend/src/chat/useChatSession.ts` holds the state alongside `pendingClarification`, updated at the
-  same three points: send (`requestConversationState`), settle (`fromResponseEnvelope`), Clear Chat
+  same three points: send (`requestConversationState`), settle (`advanceSessionState`), Clear Chat
   (`clearSessionState`). The existing `generationRef` stale-response guard covers the versioned state the
   same way it already covered turns and `pendingClarification` — a response that settles after Clear Chat
   or unmount writes neither.
@@ -411,15 +411,22 @@ shipped and what remains a gap for Qasim's Day 2 gate.
   (`server/src/server.js`), so `conversation_state` needed no new handling there. Proven in
   `server/tests/ask.test.js`.
 
-**The App-side rule this section adds (not in §5/§8/§9, decided here):** after every settled response,
-the held state becomes exactly what that response carried — including *no* state when the response
-carried none. This covers a transport failure, an App-server error envelope built before RAG is reached
-(413/502), and a pre-V7 backend. Held state is dropped rather than kept in that case, because the
-existing UI already disables the superseded clarification after such a turn — keeping stale versioned
-state that a reply like "the first one" could resolve against would let the UI and the backend disagree
-about what is still live. Dropping it can only cost an extra clarification round, never produce a wrong
-answer, and RAG's own controlled-400 behaviour for malformed state already returns an empty state, so
-this is consistent with how the backend recovers on its own.
+**The App-side rule this section adds (not in §5/§8/§9), corrected 24 Sep 2026 per Qasim's PM review
+of PR #40:** a response that carries `conversation_state` is always the new authority, replacing
+whatever was held — even a RAG-authored controlled error response, since PR #34's contract puts the
+field on every status RAG itself answers, including an empty/reset value. But a turn that produced no
+authoritative RAG-authored envelope at all — a transport failure, or a controlled envelope this App's
+own boundary server synthesised before ever reaching RAG (413/502; `server/src/server.js`'s
+`errorEnvelope()` never sets the field, which is exactly the signal `advanceSessionState` keys off) —
+preserves the previously held state unchanged rather than dropping it. Qasim's stated principle:
+"absence of a new authoritative response is not automatically evidence that the previous authoritative
+state became invalid." A failed request must not itself become a conversation reset; only an explicit
+Clear Chat, or RAG actually answering, may change what is held. (The initial Day 2 cut of this PR
+instead dropped state on any response with no `conversation_state`, reasoning that the UI already
+disables a superseded clarification either way — Qasim's review overruled that: dropping conflated
+"the request failed" with "the conversation was reset," two different events. See
+`frontend/tests/conversationState.test.tsx` for the retry-preserves/Clear-Chat-still-removes tests this
+review required.)
 
 **No empty clarification options** (`docs/v7/DAY_02.md` do-not-cross line): `AssistantTurn.tsx` renders
 the `ClarificationOptions` list only when `clarification.options.length > 0`. A `needs_clarification`
@@ -434,9 +441,13 @@ space so two Clear Chat presses in a row both announce.
 wire yet — PR #34 is session state only (§9.1). The Day 1 dev gallery (`dev/v7/`) is untouched and stays
 dev-only.
 
-**Body-size gap, flagged to Qasim (not solved here):** see `API_CONTRACT.md`'s "Structured conversation
-state" section. RAG's declared per-field string bounds could in the extreme serialize past this service's
-64 KiB cap before `history` is added; a realistic populated state measures roughly 11 KB. A request that
-does exceed the cap gets the existing controlled 413, and the App drops its held state in response
-(the same rule as any other failed response above) — so the conversation recovers, but the two limits
-have not been reconciled against the 20-turn canonical acceptance journey (master plan §2).
+**Body-size gap — still open, explicitly not the App's call (Qasim, 24 Sep 2026):** see
+`API_CONTRACT.md`'s "Structured conversation state" section. RAG's declared per-field string bounds
+could in the extreme serialize past this service's 64 KiB cap before `history` is added; a realistic
+populated state measures roughly 11 KB. Qasim's instruction: this is a shared App/RAG contract
+invariant — "every conversation state RAG is permitted to return in production, combined with the
+maximum permitted request/history envelope, must fit through the App → RAG request path" — to be
+resolved jointly with Carmen, not by the App unilaterally raising or leaving the 64 KiB cap. **The App
+does not change this limit until that joint number is frozen.** If a request does exceed the current
+cap in the meantime, the result is the existing controlled 413 — a boundary error the App never
+reached RAG for, so per the correction above it now preserves rather than drops the held state.
