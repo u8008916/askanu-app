@@ -167,6 +167,53 @@ describe('POST /api/v1/ask pass-through', () => {
     assert.equal(await response.text(), envelope);
   });
 
+  /*
+   * V7 (`askanu-rag` PR #34, merged `a7e9ed4`): `conversation_state` is an
+   * additive field on both request and response. This boundary forwards
+   * bytes, not fields, so proving it here is one more pass-through case, not
+   * new behaviour this service needs to know about.
+   */
+  test('forwards an opaque conversation_state in the request unchanged', async () => {
+    upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
+    const body = JSON.stringify({
+      question: 'how much is it?',
+      history: [],
+      conversation_state: {
+        schema_version: 1,
+        turn_index: 4,
+        recent_entities: [{ entity_id: 'accommodation:residence:placeholder-a' }],
+      },
+    });
+
+    await ask(body);
+    const last = upstream.received.at(-1);
+
+    assert.equal(last.body, body);
+  });
+
+  test('returns an upstream conversation_state in the response unchanged', async () => {
+    const envelope = JSON.stringify({
+      status: 'ok',
+      answer: 'An answer.',
+      items: [],
+      sources: [],
+      clarification: null,
+      request_id: 'req_upstream_state',
+      conversation_state: { schema_version: 1, turn_index: 5, focus: 'placeholder' },
+    });
+    upstream.setReply({ status: 200, body: envelope });
+
+    const response = await ask(JSON.stringify({ question: 'anything' }));
+    const text = await response.text();
+
+    assert.equal(text, envelope);
+    assert.deepEqual(JSON.parse(text).conversation_state, {
+      schema_version: 1,
+      turn_index: 5,
+      focus: 'placeholder',
+    });
+  });
+
   test('preserves clarification option order', async () => {
     const envelope = JSON.stringify({
       status: 'needs_clarification',

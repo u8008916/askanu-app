@@ -208,7 +208,15 @@ export function AssistantTurn({
         ) : (
           <>
             {hasAnswer && <AnswerBody answer={answer} />}
-            {clarification && (
+            {/*
+              A `needs_clarification` response with no options would render an
+              empty list and a "Select an option" prompt for nothing to
+              select. `DAY_02.md`'s do-not-cross line ("No empty
+              clarification options") means that case falls back to the
+              answer text and the free-text composer only, same as any other
+              status.
+            */}
+            {clarification && clarification.options.length > 0 && (
               <ClarificationOptions
                 active={isClarificationActive}
                 clarification={clarification}

@@ -3,6 +3,13 @@ import { HISTORY_MAX_TURNS } from '../types/api';
 import type { AskRequest, AskResponse, Clarification, HistoryTurn } from '../types/api';
 import { askTransport } from './askTransport';
 import type { AskTransport } from './askTransport';
+import {
+  clearSessionState,
+  emptySessionState,
+  fromResponseEnvelope,
+  requestConversationState,
+} from './sessionState';
+import type { SessionStateHolder } from './sessionState';
 
 /**
  * A turn as the UI holds it.
@@ -73,6 +80,14 @@ export function useChatSession(transport: AskTransport = askTransport) {
   const [pendingClarification, setPendingClarification] =
     useState<Clarification | null>(null);
   const [isSending, setIsSending] = useState(false);
+  /*
+   * The V7 `conversation_state` the last settled response returned.
+   * `sessionStateRef` (not React state) because it is never read for
+   * rendering — only `sendMessage` reads it, at send time, and it must not
+   * itself trigger a re-render. `chat/sessionState.ts` documents the
+   * store/echo/clear contract this holds.
+   */
+  const sessionStateRef = useRef<SessionStateHolder>(emptySessionState());
 
   /*
    * A cleared or superseded request must not be able to write into the chat
@@ -102,7 +117,10 @@ export function useChatSession(transport: AskTransport = askTransport) {
       const request: AskRequest = {
         question: content,
         history: toHistory(turns),
-        conversation_state: { pending_clarification: pendingClarification },
+        conversation_state: requestConversationState(
+          sessionStateRef.current,
+          pendingClarification,
+        ),
       };
 
       const pendingId = nextTurnId();
@@ -142,6 +160,12 @@ export function useChatSession(transport: AskTransport = askTransport) {
       // without one clears it, which is what the contract requires when a
       // clarification is resolved, corrected or the topic switches.
       setPendingClarification(response.clarification);
+      // Same rule for the versioned state: this response is now the sole
+      // authority. A response that carried none (a transport failure or an
+      // App-server error envelope reaching this generation) degrades to
+      // "nothing held," which falls back to the legacy pending_clarification
+      // shape on the next send rather than resending stale versioned state.
+      sessionStateRef.current = fromResponseEnvelope(response);
       setIsSending(false);
       controllerRef.current = null;
     },
@@ -159,6 +183,7 @@ export function useChatSession(transport: AskTransport = askTransport) {
     controllerRef.current = null;
     setTurns([]);
     setPendingClarification(null);
+    sessionStateRef.current = clearSessionState();
     setIsSending(false);
   }, []);
 

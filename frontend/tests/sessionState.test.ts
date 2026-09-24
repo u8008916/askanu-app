@@ -4,7 +4,7 @@ import {
   emptySessionState,
   fromResponseEnvelope,
   toRequestField,
-} from '../src/dev/v7/sessionState';
+} from '../src/chat/sessionState';
 
 /**
  * Pins the App-side transport contract reviewed against `askanu-rag` PR #34

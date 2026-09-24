@@ -385,3 +385,58 @@ open questions (§7), not code, until Day 2+.
   column using only `tokens.css` custom properties, verified live (§10 of the evidence file).
 - **#7 (document backend needs):** this document's §6 (fields) and §7 (open questions) already are that
   list; §9.1 sharpens it with what PR #34 does and does not cover.
+
+## 10. V7 Day 2 — session/clarification wiring (production)
+
+`askanu-rag` PR #34 (§9.1) merged (`a7e9ed4`) with Qasim's explicit GO, so §9.2/§9.3's dev-only
+architecture is now wired into production, per `docs/v7/DAY_02.md`. This section records exactly what
+shipped and what remains a gap for Qasim's Day 2 gate.
+
+**What is now production, not dev-only:**
+- `frontend/src/chat/sessionState.ts` (moved from `dev/v7/`): the opaque store/echo/clear contract,
+  unchanged from §9.2's design, plus `requestConversationState(holder, legacyPendingClarification)` —
+  the one function that decides between echoing a held versioned state and falling back to the legacy
+  `{pending_clarification}` shape.
+- `frontend/src/chat/useChatSession.ts` holds the state alongside `pendingClarification`, updated at the
+  same three points: send (`requestConversationState`), settle (`fromResponseEnvelope`), Clear Chat
+  (`clearSessionState`). The existing `generationRef` stale-response guard covers the versioned state the
+  same way it already covered turns and `pendingClarification` — a response that settles after Clear Chat
+  or unmount writes neither.
+- `frontend/src/types/api.ts`: `AskResponse.conversation_state?: OpaqueConversationState` (opaque,
+  optional); `AskRequest.conversation_state` is now `LegacyConversationState | OpaqueConversationState`.
+- `frontend/src/chat/askResponse.ts` carries `conversation_state` through parsing without inspecting it:
+  absent or explicit `null` degrades to "no state carried" (not a parse failure); present but not a JSON
+  object rejects the whole envelope, the same strictness every other field uses.
+- `server/`: no code change — the boundary was already a byte-for-byte pass-through
+  (`server/src/server.js`), so `conversation_state` needed no new handling there. Proven in
+  `server/tests/ask.test.js`.
+
+**The App-side rule this section adds (not in §5/§8/§9, decided here):** after every settled response,
+the held state becomes exactly what that response carried — including *no* state when the response
+carried none. This covers a transport failure, an App-server error envelope built before RAG is reached
+(413/502), and a pre-V7 backend. Held state is dropped rather than kept in that case, because the
+existing UI already disables the superseded clarification after such a turn — keeping stale versioned
+state that a reply like "the first one" could resolve against would let the UI and the backend disagree
+about what is still live. Dropping it can only cost an extra clarification round, never produce a wrong
+answer, and RAG's own controlled-400 behaviour for malformed state already returns an empty state, so
+this is consistent with how the backend recovers on its own.
+
+**No empty clarification options** (`docs/v7/DAY_02.md` do-not-cross line): `AssistantTurn.tsx` renders
+the `ClarificationOptions` list only when `clarification.options.length > 0`. A `needs_clarification`
+response with no options falls back to the answer text and the free-text composer, like any other status.
+
+**Clear Chat additions** (`docs/V7_UI_CONTRACT.md` §5's "Proposed, Day 2 scope" line, now shipped):
+`App.tsx`'s `handleClearChat` clears the composer draft and speaks "Conversation cleared" in a polite
+(`aria-live="polite"`, `role="status"`) visually-hidden live region, alternating a trailing zero-width
+space so two Clear Chat presses in a row both announce.
+
+**Explicitly out of scope, unchanged from §8:** no `result_set`/`items` rendering fields exist on the
+wire yet — PR #34 is session state only (§9.1). The Day 1 dev gallery (`dev/v7/`) is untouched and stays
+dev-only.
+
+**Body-size gap, flagged to Qasim (not solved here):** see `API_CONTRACT.md`'s "Structured conversation
+state" section. RAG's declared per-field string bounds could in the extreme serialize past this service's
+64 KiB cap before `history` is added; a realistic populated state measures roughly 11 KB. A request that
+does exceed the cap gets the existing controlled 413, and the App drops its held state in response
+(the same rule as any other failed response above) — so the conversation recovers, but the two limits
+have not been reconciled against the 20-turn canonical acceptance journey (master plan §2).

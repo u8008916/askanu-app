@@ -1,10 +1,11 @@
 /**
- * ARCHITECTURE PREP — opaque `conversation_state` transport.
+ * Opaque `conversation_state` transport (V7 Day 2).
  *
- * Reviewed against `askanu-rag` PR #34 ("V7 Day 1 — Freeze shared
- * conversational RAG contracts", open, not yet merged as of 23 Sep 2026).
- * That PR's wire contract is additive and, from the App's side, fully
- * opaque:
+ * Reviewed and wired against `askanu-rag` PR #34 ("V7 Day 1 — Freeze shared
+ * conversational RAG contracts"), approved and merged by Qasim 23 Sep 2026
+ * (merge commit `a7e9ed4`) — the explicit GO `docs/V7_UI_CONTRACT.md` §8/§9
+ * required before this shipped. That PR's wire contract is additive and,
+ * from the App's side, fully opaque:
  *
  *   request  = existing envelope + optional conversation_state
  *   response = existing envelope + authoritative conversation_state
@@ -13,11 +14,10 @@
  * only for the current chat and sends it back unchanged... The App does not
  * semantically interpret it." Because of that, this module never types the
  * internal shape (`recent_entities`, `focus`, `result_sets`, `constraints`,
- * `pending_clarification`, ...) — those fields are Carmen's to define, and
- * Carmen's own contract doc says they can keep changing during review without
- * this module changing. It only implements the three operations the App is
- * actually responsible for: store the value the backend returned, send it
- * back unchanged, and drop it on Clear Chat.
+ * `pending_clarification`, ...) — those fields are Carmen's, versioned
+ * (`schema_version: 1`) and validated server-side. It only implements the
+ * three operations the App is actually responsible for: store the value the
+ * backend returned, send it back unchanged, and drop it on Clear Chat.
  *
  * `askanu-rag`'s updated `docs/CONVERSATION_CONTRACT.md` names Clear Chat's
  * App-side half explicitly: "The App... sends the next request with empty
@@ -26,14 +26,8 @@
  * `toRequestField` returns `undefined`, which a caller spreads away, matching
  * the "optional for backwards compatibility" wire rule RAG already documents.
  *
- * NOT WIRED INTO PRODUCTION. `frontend/src/types/api.ts` and
- * `chat/useChatSession.ts` do not import this file, and no `AskRequest`/
- * `AskResponse` field named `conversation_state` beyond the existing
- * `pending_clarification` one exists in the frozen v1 contract yet. Per
- * Qasim's 23 Sep instruction, App implementation does not lock onto
- * `askanu-rag` PR #34's schema until that PR is approved, merged, and Qasim
- * gives an explicit GO — this module exists so that wiring it in at that
- * point is a small additive change to `useChatSession.ts`, not a redesign.
+ * Wired into production in `chat/useChatSession.ts`, at the same three
+ * points `pendingClarification` already updates: send, response, Clear Chat.
  */
 
 /**
@@ -93,4 +87,27 @@ export function fromResponseEnvelope(
  */
 export function clearSessionState(): SessionStateHolder {
   return emptySessionState();
+}
+
+/**
+ * What `useChatSession` puts in `AskRequest.conversation_state`.
+ *
+ * A held opaque state always wins and is sent back byte-for-byte — that is
+ * the whole store/echo contract above. When nothing is held (a fresh
+ * session, right after Clear Chat, or after any response that carried no
+ * state — a transport failure, an App-server error envelope, or a pre-V7
+ * backend that never returns one), this falls back to the legacy
+ * `{pending_clarification}` shape `API_CONTRACT.md` still documents as
+ * accepted input, so clarification keeps working without the versioned
+ * state. Never both: the two shapes are alternatives for the same field,
+ * never merged.
+ */
+export function requestConversationState(
+  holder: SessionStateHolder,
+  legacyPendingClarification: unknown,
+): unknown {
+  const opaque = toRequestField(holder);
+  return opaque !== undefined
+    ? opaque
+    : { pending_clarification: legacyPendingClarification };
 }

@@ -123,6 +123,7 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     sources,
     clarification,
     request_id,
+    conversation_state,
   } = value;
 
   if (!isString(status) || !STATUSES.includes(status)) {
@@ -163,6 +164,25 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     return null;
   }
 
+  /*
+   * V7: `conversation_state` is opaque (`chat/sessionState.ts`) — this never
+   * inspects its internal shape, only whether the field is present at all.
+   * Absent or explicit `null` (a pre-V7 backend, or a controlled error
+   * envelope built before RAG is reached) degrades to "no state carried":
+   * the key is left off the parsed result entirely, matching the optional
+   * field in `types/api.ts`. Present but not a JSON object (a string,
+   * number, array, boolean) is off-contract — RAG's schema-v1 state is
+   * always an object — and rejects the whole envelope, the same strictness
+   * every other field here uses.
+   */
+  let stateField: { conversation_state?: AskResponse['conversation_state'] } = {};
+  if (conversation_state !== undefined && conversation_state !== null) {
+    if (!isRecord(conversation_state)) {
+      return null;
+    }
+    stateField = { conversation_state };
+  }
+
   return {
     status: status as AskStatus,
     answer,
@@ -170,5 +190,6 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     sources: parsedSources,
     clarification: parsedClarification,
     request_id,
+    ...stateField,
   };
 }

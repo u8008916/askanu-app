@@ -51,6 +51,14 @@ export interface AskResponse {
   sources: Source[];
   clarification: Clarification | null;
   request_id: string;
+  /**
+   * V7 addition, present on every status per `askanu-rag` PR #34. Optional
+   * here because a pre-V7 backend, or a controlled error envelope built
+   * before RAG is reached (the App server's own 413/502), may omit it —
+   * `chat/sessionState.ts`'s `fromResponseEnvelope` degrades that to "no
+   * state held" rather than treating it as a parse failure.
+   */
+  conversation_state?: OpaqueConversationState;
 }
 
 export type TurnRole = 'user' | 'assistant';
@@ -61,9 +69,27 @@ export interface HistoryTurn {
   content: string;
 }
 
-export interface ConversationState {
+/**
+ * The legacy request shape: `pending_clarification` only. Still accepted by
+ * the backend (`API_CONTRACT.md`: "Old pending-only callers remain
+ * accepted") — `chat/sessionState.ts`'s `requestConversationState` sends
+ * this only when no versioned state is held yet.
+ */
+export interface LegacyConversationState {
   pending_clarification: Clarification | null;
 }
+
+/**
+ * V7 (`askanu-rag` PR #34, merged `a7e9ed4`, Qasim GO 23 Sep 2026): a bounded,
+ * versioned, server-defined structure (`schema_version`, `recent_entities`,
+ * `focus`, `student_facts`, `constraints`, `result_sets`, `selected_result`,
+ * `pending_clarification`). The App stores it, echoes it back unchanged and
+ * drops it on Clear Chat — it never types the internal shape or reads a
+ * field out of it (`chat/sessionState.ts`).
+ */
+export type OpaqueConversationState = unknown;
+
+export type ConversationState = LegacyConversationState | OpaqueConversationState;
 
 export interface AskRequest {
   question: string;
