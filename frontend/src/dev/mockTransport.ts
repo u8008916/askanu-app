@@ -15,6 +15,8 @@ import {
   okAccommodationResponse,
   okCurrentJobsResponse,
   okEventsResponse,
+  okEventsResultSetForwardResponse,
+  okJobsResultSetResponse,
   okManySourcesResponse,
   okMissingFieldSourceResponse,
   okMultiSourceResponse,
@@ -64,6 +66,16 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'ok-jobs-current',
     label: 'ok — current jobs list',
     response: okCurrentJobsResponse,
+  },
+  {
+    id: 'ok-jobs-result-set',
+    label: 'ok — jobs result cards (V7 Day 3)',
+    response: okJobsResultSetResponse,
+  },
+  {
+    id: 'ok-events-result-set-forward',
+    label: 'ok — events result cards (forward fixture)',
+    response: okEventsResultSetForwardResponse,
   },
   {
     id: 'partial-jobs-closing',

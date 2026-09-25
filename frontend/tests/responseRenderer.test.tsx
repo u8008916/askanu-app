@@ -90,12 +90,12 @@ describe('V7 response-type dispatcher (architecture prep)', () => {
     });
 
     expect(screen.getByText('Two residences found.')).toBeInTheDocument();
-    const cards = within(screen.getByRole('list', { name: 'Result set' })).getAllByRole('listitem');
+    const cards = within(screen.getByRole('list', { name: 'Results' })).getAllByRole('listitem');
     expect(cards).toHaveLength(2);
     expect(within(cards[0]).getByText('Residence A')).toBeInTheDocument();
     expect(within(cards[1]).getByText('Residence B')).toBeInTheDocument();
 
-    within(cards[1]).getByRole('button', { name: 'Ask about this' }).click();
+    within(cards[1]).getByRole('button', { name: /^Ask about this/ }).click();
     expect(noopResult).toHaveBeenCalledWith({
       result_set_id: 'rs_1',
       entity_id: 'accommodation:residence:b',
@@ -131,7 +131,7 @@ describe('V7 response-type dispatcher (architecture prep)', () => {
 
     const table = screen.getByRole('table', { name: 'Comparison' });
     expect(within(table).getAllByRole('rowheader')).toHaveLength(1);
-    expect(within(table).getByText('Unknown')).toBeInTheDocument();
+    expect(within(table).getByText('Not published')).toBeInTheDocument();
   });
 
   it.each(['unknown', 'partial'] as const)(

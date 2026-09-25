@@ -7,6 +7,9 @@ import type {
   ResultItem,
   SelectedResultAction,
 } from './proposedContract';
+import { ComparisonTable as SharedComparisonTable } from '../../chat/results/ComparisonTable';
+import { ResultList } from '../../chat/results/ResultList';
+import type { ResultCardModel } from '../../chat/results/resultItems';
 import styles from './V7StateGallery.module.css';
 
 /**
@@ -20,54 +23,22 @@ import styles from './V7StateGallery.module.css';
  */
 
 /**
- * One result card. A real `<button>`, not a `div onClick`, so it is reachable
- * by keyboard and has an accessible name from its own text — the same rule
- * `RecommendedQuestionCard` and `SourceCards` already follow. The action
- * receives the canonical `SelectedResultAction`, never a string derived from
- * the rendered title.
+ * V7 Day 3: the gallery's result cards and comparison table now delegate to
+ * the shared production primitives in `chat/results/`, so the mock states
+ * and real turns cannot drift apart. These wrappers only adapt the
+ * *proposed* contract shapes to the shared props — `entity_id` is passed as
+ * the stored identity, and the selection is mapped straight back without
+ * reading the rendered title.
  */
-function ResultCard({
-  item,
-  position,
-  resultSetId,
-  onSelect,
-}: {
-  item: ResultItem;
-  position: number;
-  resultSetId: string;
-  onSelect: (action: SelectedResultAction) => void;
-}) {
-  return (
-    <li>
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <span className={styles.cardTitle}>{item.title}</span>
-          <span className={styles.cardDomain}>{item.domain}</span>
-        </div>
-        <dl className={styles.fieldList}>
-          {item.fields.map((field) => (
-            <div className={styles.fieldRow} key={field.label}>
-              <dt className={styles.fieldLabel}>{field.label}</dt>
-              <dd className={styles.fieldValue}>
-                {field.value ?? (
-                  <span className={styles.unknown}>Not published in the stored record</span>
-                )}
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <button
-          className={styles.cardAction}
-          onClick={() =>
-            onSelect({ result_set_id: resultSetId, entity_id: item.entity_id, position })
-          }
-          type="button"
-        >
-          Ask about this
-        </button>
-      </div>
-    </li>
-  );
+function toCardModel(item: ResultItem): ResultCardModel {
+  return {
+    recordId: item.entity_id,
+    domain: item.domain,
+    title: item.title,
+    url: item.url,
+    provenance: null,
+    fields: item.fields,
+  };
 }
 
 /** Bounded, backend-ordered result cards. Order is `items` order — no App sort. */
@@ -81,25 +52,20 @@ export function ResultCards({
   onSelect: (action: SelectedResultAction) => void;
 }) {
   return (
-    <ol aria-label="Result set" className={styles.cardGrid}>
-      {items.map((item, index) => (
-        <ResultCard
-          item={item}
-          key={item.entity_id}
-          onSelect={onSelect}
-          position={index + 1}
-          resultSetId={resultSetId}
-        />
-      ))}
-    </ol>
+    <ResultList
+      cards={items.map(toCardModel)}
+      onSelect={(selection) =>
+        onSelect({
+          result_set_id: resultSetId,
+          entity_id: selection.record_id,
+          position: selection.position,
+        })
+      }
+    />
   );
 }
 
-/**
- * Comparison table. Every dimension row appears exactly once, in the
- * backend's declared order; a `null` cell renders the same neutral unknown
- * label `ResultCard` uses — never blank, never the other entity's value.
- */
+/** Comparison table: the shared primitive, fed the proposed-contract shapes. */
 export function ComparisonTable({
   entities,
   fields,
@@ -108,31 +74,10 @@ export function ComparisonTable({
   fields: ComparisonField[];
 }) {
   return (
-    <table className={styles.comparisonTable}>
-      <caption className={styles.comparisonCaption}>Comparison</caption>
-      <thead>
-        <tr>
-          <th scope="col">Dimension</th>
-          {entities.map((entity) => (
-            <th key={entity.entity_id} scope="col">
-              {entity.title}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {fields.map((field) => (
-          <tr key={field.label}>
-            <th scope="row">{field.label}</th>
-            {field.values.map((value, index) => (
-              <td key={entities[index].entity_id}>
-                {value ?? <span className={styles.unknown}>Unknown</span>}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <SharedComparisonTable
+      columns={entities.map((entity) => ({ id: entity.entity_id, title: entity.title }))}
+      rows={fields}
+    />
   );
 }
 

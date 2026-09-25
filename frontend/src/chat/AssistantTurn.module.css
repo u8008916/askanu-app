@@ -159,3 +159,22 @@ button.option:active {
   color: var(--ink-2);
   font-size: var(--text-xs);
 }
+
+/* V7 Day 3: the backend's list text, collapsed under its result cards. */
+.answerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.answerTextSummary {
+  color: var(--gold-deep);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  /* list-item keeps the native disclosure marker; the block box takes min-height. */
+  display: list-item;
+  line-height: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  width: fit-content;
+}

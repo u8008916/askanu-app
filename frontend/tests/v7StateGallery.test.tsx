@@ -61,7 +61,7 @@ describe('V7 Day 1 state gallery', () => {
       render(<V7StateGallery />);
 
       const cards = within(
-        screen.getByRole('list', { name: 'Result set' }),
+        screen.getByRole('list', { name: 'Results' }),
       ).getAllByRole('listitem');
       expect(cards).toHaveLength(3);
 
@@ -73,13 +73,13 @@ describe('V7 Day 1 state gallery', () => {
       // Every card exposes exactly one real, accessibly-named action.
       for (const card of cards) {
         expect(
-          within(card).getByRole('button', { name: 'Ask about this' }),
+          within(card).getByRole('button', { name: /^Ask about this/ }),
         ).toBeInTheDocument();
       }
 
       // A `null` field renders the neutral unknown label, not blank.
       expect(
-        within(cards[0]).getByText('Not published in the stored record'),
+        within(cards[0]).getByText('Not published'),
       ).toBeInTheDocument();
     });
   });
@@ -101,7 +101,7 @@ describe('V7 Day 1 state gallery', () => {
         .closest('tr') as HTMLElement;
       const cateringCells = within(cateringRow).getAllByRole('cell');
       expect(cateringCells[0]).toHaveTextContent('Placeholder catering wording');
-      expect(within(cateringCells[1]).getByText('Unknown')).toBeInTheDocument();
+      expect(within(cateringCells[1]).getByText('Not published')).toBeInTheDocument();
 
       expect(
         screen.getByText('Selected: Placeholder residence B'),
