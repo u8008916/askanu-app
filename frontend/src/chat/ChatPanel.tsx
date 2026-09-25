@@ -70,6 +70,22 @@ function findActiveClarificationTurnId(turns: ChatTurn[]): string | undefined {
   return undefined;
 }
 
+/**
+ * The polite announcement for a newly arrived answer. `PendingTurn`'s own
+ * live region unmounts when the answer replaces it, so without this a screen
+ * reader user hears "finding an answer" and then silence. An `error` turn is
+ * skipped: `StatusNotice` already announces it as an alert. The zero-width
+ * space alternates with the number of turns so two consecutive answers are
+ * each announced, the same technique App uses for "Conversation cleared".
+ */
+function answerAnnouncement(turns: ChatTurn[]): string {
+  const last = turns[turns.length - 1];
+  if (last === undefined || last.kind !== 'assistant' || last.response.status === 'error') {
+    return '';
+  }
+  return 'AskANU replied' + String.fromCharCode(0x200b).repeat(turns.length % 2);
+}
+
 export function ChatPanel({
   turns,
   isDesktop,
@@ -135,6 +151,14 @@ export function ChatPanel({
               renderTurn(turn, onSelectClarification, activeClarificationTurnId),
             )}
           </ul>
+        )}
+        {/* Mounted with the first turn, so it exists before any answer text
+            is written into it — a region inserted already filled is not
+            reliably announced. */}
+        {!isEmpty && (
+          <div aria-live="polite" className="visually-hidden" role="status">
+            {answerAnnouncement(turns)}
+          </div>
         )}
       </div>
       <div className={styles.composerSlot}>

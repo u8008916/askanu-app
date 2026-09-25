@@ -48,11 +48,12 @@ describe('response states', () => {
     // Still in flight, and the draft box has been cleared, so Send is off.
     expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
 
-    // Typing during the request must not re-enable it.
-    await user.type(
-      screen.getByLabelText('Ask AskANU a question'),
-      'Second question',
-    );
+    // Entering text during the request must not re-enable it. Pasted, not
+    // typed key by key: under full-suite load, per-key typing can outlast the
+    // mock's 350 ms latency, so the answer landed first and the assertion
+    // below tested nothing (a pre-existing flake, fixed V7 Day 3).
+    await user.click(screen.getByLabelText('Ask AskANU a question'));
+    await user.paste('Second question');
     expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
 
     // Once the answer lands, the queued draft can be sent.

@@ -1,6 +1,8 @@
 import { useId, useState } from 'react';
 import type { AskResponse, Clarification } from '../types/api';
 import { AnswerBody } from './AnswerBody';
+import { ResultList } from './results/ResultList';
+import { toResultCards } from './results/resultItems';
 import { SourceCards } from './SourceCards';
 import { StatusNotice } from './StatusNotice';
 import type { NoticeStatus } from './StatusNotice';
@@ -15,6 +17,19 @@ const NOTICE_STATUSES: NoticeStatus[] = [
 function isNoticeStatus(status: AskResponse['status']): status is NoticeStatus {
   return (NOTICE_STATUSES as string[]).includes(status);
 }
+
+/*
+ * Client-side fallbacks for a notice envelope whose `answer` is empty. Not
+ * backend copy, and deliberately status-specific: an abstention with no text
+ * must still read as "not known", never as "no results", and never as the
+ * generic "nothing was returned" an error gets.
+ */
+const EMPTY_NOTICE_FALLBACK: Record<NoticeStatus, string> = {
+  insufficient_evidence:
+    "AskANU couldn't confirm this from its stored ANU sources. Try asking in a different way, or check the official ANU website.",
+  off_topic: 'This question is outside what AskANU covers.',
+  error: "AskANU couldn't complete this answer. Please try again.",
+};
 
 /**
  * Combines selected option labels into one sentence, e.g. "Both COMP1110 and
@@ -159,6 +174,13 @@ interface AssistantTurnProps {
  * the three no-answer statuses use the compact notice. A malformed envelope
  * with nothing to show falls back to the error notice rather than a blank turn.
  *
+ * V7 Day 3: when an answered turn's `items` are a recognised, well-formed
+ * list, they render through the one shared `ResultList` in exactly the order
+ * RAG sent them (`results/resultItems.ts`). Anything else leaves `items`
+ * unrendered and the answer text in charge — the App never builds a list the
+ * backend did not send. The selected-result action is not wired here: the ask
+ * request has no field to carry a selected identity back to RAG yet.
+ *
  * No timestamp and no `request_id` appear here. A single-session chat does not
  * need them, and `request_id` is an internal identifier students should not be
  * shown.
@@ -174,9 +196,16 @@ export function AssistantTurn({
   onSelectClarification,
   isClarificationActive,
 }: AssistantTurnProps) {
-  const { status, answer, sources, clarification } = response;
+  const { status, answer, sources, clarification, items } = response;
   const hasAnswer = answer.trim() !== '';
-  const hasContent = hasAnswer || sources.length > 0 || clarification !== null;
+  /*
+   * Result cards come only from the backend's own `items`, and only for an
+   * answered turn: a notice status never grows a result list.
+   */
+  const cards = isNoticeStatus(status) ? null : toResultCards(items);
+  const hasContent =
+    hasAnswer || sources.length > 0 || clarification !== null || cards !== null;
+  const noticeStatus: NoticeStatus = isNoticeStatus(status) ? status : 'error';
 
   return (
     <li className={styles.root}>
@@ -185,14 +214,8 @@ export function AssistantTurn({
         {isNoticeStatus(status) || !hasContent ? (
           <>
             <StatusNotice
-              answer={
-                hasAnswer
-                  ? answer
-                  : /* Client-side fallback for an envelope that carries nothing
-                       to display. Not backend copy. */
-                    'No response content was returned.'
-              }
-              status={isNoticeStatus(status) ? status : 'error'}
+              answer={hasAnswer ? answer : EMPTY_NOTICE_FALLBACK[noticeStatus]}
+              status={noticeStatus}
             />
             {/*
               An abstention can still be evidence-backed. The real service
@@ -207,7 +230,26 @@ export function AssistantTurn({
           </>
         ) : (
           <>
-            {hasAnswer && <AnswerBody answer={answer} />}
+            {hasAnswer && (cards === null || status === 'partial') && (
+              /*
+                A `partial` answer's text carries the caveat about what is
+                missing, so it stays in full above any cards.
+              */
+              <AnswerBody answer={answer} />
+            )}
+            {cards !== null && <ResultList cards={cards} />}
+            {hasAnswer && cards !== null && status !== 'partial' && (
+              /*
+                The backend's text for a list answer restates the same records
+                the cards show, one line each. It stays on the page — the
+                backend wrote it — but collapsed, so the turn is not a second
+                wall of text.
+              */
+              <details className={styles.answerText}>
+                <summary className={styles.answerTextSummary}>Show as text</summary>
+                <AnswerBody answer={answer} />
+              </details>
+            )}
             {/*
               A `needs_clarification` response with no options would render an
               empty list and a "Select an option" prompt for nothing to

@@ -1,27 +1,15 @@
 import { EventsIcon } from '../ui/Icon';
+import { formatStoredDateTime } from '../util/formatTemporal';
 import type { EventItem } from '../types/api';
 import { FeedPanel } from './FeedPanel';
 import { useFeeds } from './FeedsProvider';
 
-/**
+/*
  * Display formatting only. The server has already decided the event is
- * upcoming and put it in ascending order; this renders the stored `start_at`
- * in `Australia/Canberra` for reading. A value that does not parse is shown
- * as stored rather than dropped or guessed.
+ * upcoming and put it in ascending order; `formatStoredDateTime` renders the
+ * stored `start_at` for reading without inventing a time or a timezone the
+ * stored value does not carry (see `util/formatTemporal.ts`).
  */
-const startFormat = new Intl.DateTimeFormat('en-AU', {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-  hour: 'numeric',
-  minute: '2-digit',
-  timeZone: 'Australia/Canberra',
-});
-
-function formatStart(startAt: string): string {
-  const time = Date.parse(startAt);
-  return Number.isNaN(time) ? startAt : startFormat.format(time);
-}
 
 /**
  * The secondary line: start time, then venue and organiser, each only when
@@ -41,7 +29,7 @@ function formatStart(startAt: string): string {
  */
 function eventMeta(event: EventItem) {
   const parts = [
-    formatStart(event.start_at),
+    formatStoredDateTime(event.start_at),
     ...(event.venue !== null && event.venue !== '' ? [event.venue] : []),
     ...(event.organiser !== null && event.organiser !== '' ? [event.organiser] : []),
   ];

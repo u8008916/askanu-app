@@ -618,6 +618,254 @@ export const partialEventsResponse: AskResponse = {
   request_id: 'req_mock_events_partial',
 };
 
+/**
+ * V7 Day 3: a Jobs chat answer in the exact wire shape RAG's
+ * `job_queries.py` sends today — `answer` is one line per record, and `items`
+ * carries the same records as `CurrentJobItem` DTOs in the server's order.
+ * Seven records, so the shared `ResultList`'s "Show more" is exercised; role C
+ * has no `closing_text` (the card falls back to the stored date-only
+ * `closing_date`), role F has neither, and several roles have null location,
+ * classification or salary. All values are placeholders (2099,
+ * `example.invalid`, synthetic numeric ids).
+ */
+export const okJobsResultSetResponse: AskResponse = {
+  status: 'ok',
+  answer: [
+    'Placeholder role A. Job ID: 900101. Stored status: current. Employment types: Full time. Location: Acton campus. Classification: Level 6. Salary: Placeholder salary band. Closing information: Closes 1 January 2099.',
+    'Placeholder role B. Job ID: 900102. Stored status: current. Employment types: Part time, Fixed term. Location: Acton campus. Closing information: Closes 8 January 2099.',
+    'Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths. Job ID: 900103. Stored status: current. Employment types: Casual. Classification: Level 4. Closing date: 2099-01-15.',
+    'Placeholder role D. Job ID: 900104. Stored status: current. Location: Placeholder location. Closing information: Closes 22 January 2099.',
+    'Placeholder role E. Job ID: 900105. Stored status: current. Employment types: Full time. Location: Placeholder location. Salary: Placeholder salary band. Closing information: Closes 29 January 2099.',
+    'Placeholder role F. Job ID: 900106. Stored status: current. Employment types: Full time. Location: Placeholder location. Classification: Level 7.',
+    'Placeholder role G. Job ID: 900107. Stored status: current. Employment types: Continuing. Closing information: Closes 5 February 2099.',
+  ].join('\n'),
+  items: [
+    {
+      record_id: 'jobs:job:900101',
+      source_id: 'jobs_anu_search',
+      job_id: '900101',
+      title: 'Placeholder role A',
+      employment_types: ['Full time'],
+      location: 'Acton campus',
+      classification: 'Level 6',
+      salary: 'Placeholder salary band',
+      closing_text: 'Closes 1 January 2099',
+      closing_date: '2099-01-01',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900101',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900102',
+      source_id: 'jobs_anu_search',
+      job_id: '900102',
+      title: 'Placeholder role B',
+      employment_types: ['Part time', 'Fixed term'],
+      location: 'Acton campus',
+      classification: null,
+      salary: null,
+      closing_text: 'Closes 8 January 2099',
+      closing_date: '2099-01-08',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900102',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900103',
+      source_id: 'jobs_anu_search',
+      job_id: '900103',
+      title: 'Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths',
+      employment_types: ['Casual'],
+      location: null,
+      classification: 'Level 4',
+      salary: null,
+      closing_text: null,
+      closing_date: '2099-01-15',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900103',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900104',
+      source_id: 'jobs_anu_search',
+      job_id: '900104',
+      title: 'Placeholder role D',
+      employment_types: [],
+      location: 'Placeholder location',
+      classification: null,
+      salary: null,
+      closing_text: 'Closes 22 January 2099',
+      closing_date: '2099-01-22',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900104',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900105',
+      source_id: 'jobs_anu_search',
+      job_id: '900105',
+      title: 'Placeholder role E',
+      employment_types: ['Full time'],
+      location: 'Placeholder location',
+      classification: null,
+      salary: 'Placeholder salary band',
+      closing_text: 'Closes 29 January 2099',
+      closing_date: '2099-01-29',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900105',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900106',
+      source_id: 'jobs_anu_search',
+      job_id: '900106',
+      title: 'Placeholder role F',
+      employment_types: ['Full time'],
+      location: 'Placeholder location',
+      classification: 'Level 7',
+      salary: null,
+      closing_text: null,
+      closing_date: null,
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900106',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900107',
+      source_id: 'jobs_anu_search',
+      job_id: '900107',
+      title: 'Placeholder role G',
+      employment_types: ['Continuing'],
+      location: null,
+      classification: null,
+      salary: null,
+      closing_text: 'Closes 5 February 2099',
+      closing_date: '2099-02-05',
+      closing_at: null,
+      status: 'current',
+      url: 'https://example.invalid/placeholder-job-900107',
+      domain: 'jobs',
+    },
+  ],
+  sources: [
+    {
+      record_id: 'jobs:job:900101',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role A',
+      url: 'https://example.invalid/placeholder-job-900101',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900102',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role B',
+      url: 'https://example.invalid/placeholder-job-900102',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900103',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role C with a deliberately long title so that wrapping inside the chat column is visible at narrow widths',
+      url: 'https://example.invalid/placeholder-job-900103',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900104',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role D',
+      url: 'https://example.invalid/placeholder-job-900104',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900105',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role E',
+      url: 'https://example.invalid/placeholder-job-900105',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900106',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role F',
+      url: 'https://example.invalid/placeholder-job-900106',
+      domain: 'jobs',
+    },
+    {
+      record_id: 'jobs:job:900107',
+      source_id: 'jobs_anu_search',
+      title: 'Placeholder role G',
+      url: 'https://example.invalid/placeholder-job-900107',
+      domain: 'jobs',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_jobs_result_set',
+};
+
+/**
+ * V7 Day 3 FORWARD fixture — not a shape RAG's chat path sends today. Chat
+ * Events answers currently carry `items: []`; this uses the Upcoming Events
+ * list DTO (`EventItem`) to prove the same shared `ResultList` renders an
+ * Events list with distinct official/community provenance, a missing venue
+ * and organiser, and no end time, if and when RAG attaches items to chat
+ * Events answers. Placeholder values only.
+ */
+export const okEventsResultSetForwardResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder event A. Starts: 2099-03-02T10:00:00+11:00. Ends: 2099-03-02T11:00:00+11:00. Venue: Placeholder venue. Organiser: Placeholder organiser.\n\nPlaceholder event B. Starts: 2099-03-03T18:30:00+11:00. Venue: not published in the stored source record. Organiser: not published in the stored source record.',
+  items: [
+    {
+      record_id: 'events:event:placeholder-event-a',
+      source_id: 'events_anu_official',
+      title: 'Placeholder event A',
+      start_at: '2099-03-02T10:00:00+11:00',
+      end_at: '2099-03-02T11:00:00+11:00',
+      venue: 'Placeholder venue',
+      organiser: 'Placeholder organiser',
+      status: 'published',
+      url: 'https://example.invalid/events/placeholder-event-a',
+      domain: 'events',
+    },
+    {
+      record_id: 'events:event:placeholder-rubric-b',
+      source_id: 'rubric_unified_search',
+      title: 'Placeholder event B',
+      start_at: '2099-03-03T18:30:00+11:00',
+      end_at: null,
+      venue: null,
+      organiser: null,
+      status: null,
+      url: 'https://example.invalid/?eid=placeholder-b',
+      domain: 'events',
+    },
+  ],
+  sources: [
+    {
+      record_id: 'events:event:placeholder-event-a',
+      source_id: 'events_anu_official',
+      title: 'Placeholder event A',
+      url: 'https://example.invalid/events/placeholder-event-a',
+      domain: 'events',
+    },
+    {
+      record_id: 'events:event:placeholder-rubric-b',
+      source_id: 'rubric_unified_search',
+      title: 'Placeholder event B',
+      url: 'https://example.invalid/?eid=placeholder-b',
+      domain: 'events',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_events_result_set_forward',
+};
+
 /** The controlled error envelope from `docs/API_CONTRACT.md`. */
 export const errorResponse: AskResponse = {
   status: 'error',
