@@ -7,6 +7,7 @@ import {
   insufficientEvidenceResponse,
   needsAccommodationClarificationResponse,
   needsClarificationManyOptionsResponse,
+  needsClarificationNoOptionsResponse,
   needsClarificationResponse,
   needsScholarshipClarificationResponse,
   needsSupportClarificationResponse,
@@ -83,6 +84,11 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     id: 'needs-clarification-many',
     label: 'needs_clarification — many options',
     response: needsClarificationManyOptionsResponse,
+  },
+  {
+    id: 'needs-clarification-no-options',
+    label: 'needs_clarification — no options (V7 Day 2)',
+    response: needsClarificationNoOptionsResponse,
   },
   {
     id: 'ok-many-sources',

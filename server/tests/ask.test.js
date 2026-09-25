@@ -116,6 +116,23 @@ function ask(body, init = {}) {
   });
 }
 
+/**
+ * A valid-JSON `{"question":"..."}` body whose complete raw UTF-8 byte size
+ * is exactly `totalBytes` — not "approximately", and not the size of just
+ * the `conversation_state`/`question` field or a JS object's in-memory size.
+ * Every filler byte is ASCII `x` (one UTF-8 byte each), so the fixed
+ * `{"question":"` / `"}` wrapper plus filler adds up exactly, checked by the
+ * `assert.equal` below rather than trusted.
+ */
+function exactSizedAskBody(totalBytes) {
+  const prefix = '{"question":"';
+  const suffix = '"}';
+  const overhead = Buffer.byteLength(prefix, 'utf8') + Buffer.byteLength(suffix, 'utf8');
+  const body = prefix + 'x'.repeat(totalBytes - overhead) + suffix;
+  assert.equal(Buffer.byteLength(body, 'utf8'), totalBytes, 'test body is not exactly-sized');
+  return body;
+}
+
 describe('POST /api/v1/ask pass-through', () => {
   test('returns the upstream answer byte for byte', async () => {
     upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
@@ -167,6 +184,53 @@ describe('POST /api/v1/ask pass-through', () => {
     assert.equal(await response.text(), envelope);
   });
 
+  /*
+   * V7 (`askanu-rag` PR #34, merged `a7e9ed4`): `conversation_state` is an
+   * additive field on both request and response. This boundary forwards
+   * bytes, not fields, so proving it here is one more pass-through case, not
+   * new behaviour this service needs to know about.
+   */
+  test('forwards an opaque conversation_state in the request unchanged', async () => {
+    upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
+    const body = JSON.stringify({
+      question: 'how much is it?',
+      history: [],
+      conversation_state: {
+        schema_version: 1,
+        turn_index: 4,
+        recent_entities: [{ entity_id: 'accommodation:residence:placeholder-a' }],
+      },
+    });
+
+    await ask(body);
+    const last = upstream.received.at(-1);
+
+    assert.equal(last.body, body);
+  });
+
+  test('returns an upstream conversation_state in the response unchanged', async () => {
+    const envelope = JSON.stringify({
+      status: 'ok',
+      answer: 'An answer.',
+      items: [],
+      sources: [],
+      clarification: null,
+      request_id: 'req_upstream_state',
+      conversation_state: { schema_version: 1, turn_index: 5, focus: 'placeholder' },
+    });
+    upstream.setReply({ status: 200, body: envelope });
+
+    const response = await ask(JSON.stringify({ question: 'anything' }));
+    const text = await response.text();
+
+    assert.equal(text, envelope);
+    assert.deepEqual(JSON.parse(text).conversation_state, {
+      schema_version: 1,
+      turn_index: 5,
+      focus: 'placeholder',
+    });
+  });
+
   test('preserves clarification option order', async () => {
     const envelope = JSON.stringify({
       status: 'needs_clarification',
@@ -194,6 +258,29 @@ describe('POST /api/v1/ask pass-through', () => {
       ['course:COMP1110', 'course:COMP1600'],
     );
   });
+
+  /*
+   * The frozen shared App↔RAG transport boundary (`askanu-rag` PR #36,
+   * Qasim's PM review of `askanu-app` PR #40, 24 Sep 2026): the complete
+   * `/api/v1/ask` request body is capped at exactly 262,144 bytes (256 KiB),
+   * matching RAG's own `ASK_REQUEST_MAX_BYTES`. This proves the exact
+   * boundary, not an approximation: a request of exactly `MAX_BODY_BYTES`
+   * passes this gate and reaches RAG unchanged, byte for byte.
+   */
+  test(`accepts a complete request of exactly MAX_BODY_BYTES (${MAX_BODY_BYTES}) bytes and forwards it unchanged`, async () => {
+    upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
+    const before = upstream.received.length;
+    const body = exactSizedAskBody(MAX_BODY_BYTES);
+
+    const response = await ask(body);
+
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), GROUNDED_ENVELOPE);
+    assert.equal(upstream.received.length, before + 1, 'exact-boundary request was not forwarded');
+    // No truncation: RAG received the identical, complete, exactly-sized body.
+    assert.equal(upstream.received.at(-1).body, body);
+    assert.equal(Buffer.byteLength(upstream.received.at(-1).body, 'utf8'), MAX_BODY_BYTES);
+  });
 });
 
 describe('POST /api/v1/ask failures', () => {
@@ -208,6 +295,24 @@ describe('POST /api/v1/ask failures', () => {
     assert.equal(response.status, 413);
     assert.equal(body.status, 'error');
     assert.equal(upstream.received.length, before, 'oversized body reached upstream');
+  });
+
+  /*
+   * The other half of the exact-boundary proof above: one byte past
+   * MAX_BODY_BYTES is cleanly rejected with the controlled 413, and never
+   * reaches upstream — not truncated down to fit, not silently accepted.
+   */
+  test(`rejects a complete request of exactly MAX_BODY_BYTES + 1 (${MAX_BODY_BYTES + 1}) bytes with the controlled 413, never forwarded`, async () => {
+    upstream.setReply({ status: 200, body: GROUNDED_ENVELOPE });
+    const before = upstream.received.length;
+    const body = exactSizedAskBody(MAX_BODY_BYTES + 1);
+
+    const response = await ask(body);
+    const envelope = await response.json();
+
+    assert.equal(response.status, 413);
+    assert.equal(envelope.status, 'error');
+    assert.equal(upstream.received.length, before, 'one-byte-over request reached upstream');
   });
 
   test('rejects an oversized chunked body with the same 413 envelope', async () => {
@@ -247,9 +352,11 @@ describe('POST /api/v1/ask failures', () => {
 
       request.on('error', reject);
 
-      // 96 KiB in 1 KiB chunks, well past the 64 KiB cap.
+      // MAX_BODY_BYTES plus one full extra chunk, in 1 KiB chunks, so this
+      // stays well past the cap regardless of its exact value.
       request.write('{"question":"');
-      for (let written = 0; written < 96 * 1024; written += 1024) {
+      const target = MAX_BODY_BYTES + 1024;
+      for (let written = 0; written < target; written += 1024) {
         request.write('x'.repeat(1024));
       }
       request.end('"}');

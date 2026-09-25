@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
+import { COURSES_DOMAIN } from '../src/domains/domainConfig';
 import { setMockScenarioId } from '../src/dev/mockTransport';
 
 /**
@@ -103,5 +104,79 @@ describe('clarification lifecycle across turns', () => {
     expect(screen.getByRole('checkbox', { name: /COMP1600/ })).toBeDisabled();
     // No live clarification remains anywhere in the conversation.
     expect(screen.queryByRole('button', { name: 'Use selection' })).not.toBeInTheDocument();
+  });
+
+  /**
+   * `docs/v7/DAY_02.md` do-not-cross line: "No empty clarification options."
+   * The answer text and the free-text composer still work; there is simply
+   * nothing to click.
+   */
+  it('renders no option list for a clarification with no options, and keeps the composer usable', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    setMockScenarioId('needs-clarification-no-options');
+    await ask(user, 'Tell me about something ambiguous');
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/no selectable options in this response/),
+      ).toBeInTheDocument(),
+    );
+
+    expect(
+      screen.queryByRole('list', { name: 'Clarification options' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Select an option, or reply in the message box.'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Ask AskANU a question')).toBeEnabled();
+  });
+
+  /**
+   * `docs/v7/DAY_02.md`: "Allow domain switch during clarification without
+   * trapping the user." A launcher card during a pending clarification is
+   * still only the V5 prefill rule — it must not send, and it must not touch
+   * the pending clarification, which stays visible and answerable when the
+   * student returns to the chat.
+   */
+  it('a domain launcher card during a pending clarification only prefills, without trapping or clearing it', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    setMockScenarioId('needs-clarification-accommodation');
+    await ask(user, 'Tell me about a residence');
+
+    await waitFor(() =>
+      expect(screen.getByText('Which residence do you mean?')).toBeInTheDocument(),
+    );
+    const residenceOption = screen.getByRole('button', {
+      name: /Placeholder residence A/,
+    });
+    expect(residenceOption).toBeEnabled();
+
+    const explore = screen.getByRole('navigation', { name: 'Explore' });
+    await user.click(within(explore).getByRole('link', { name: 'Courses' }));
+    await waitFor(() =>
+      expect(
+        screen.getByRole('heading', { level: 1, name: /Courses/ }),
+      ).toBeInTheDocument(),
+    );
+
+    const firstCourseCard = within(
+      screen.getByRole('region', { name: 'Recommended questions' }),
+    ).getAllByRole('button')[0];
+    await user.click(firstCourseCard);
+
+    const input = await screen.findByLabelText('Ask AskANU a question');
+    expect(input).toHaveValue(COURSES_DOMAIN.questions[0].prompt);
+    expect(input).toBeEnabled();
+
+    // Back in the chat, the pending clarification is untouched: still
+    // visible, still the one a reply would resolve.
+    expect(screen.getByText('Which residence do you mean?')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Placeholder residence A/ }),
+    ).toBeEnabled();
   });
 });

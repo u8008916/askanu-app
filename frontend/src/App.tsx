@@ -32,6 +32,17 @@ function AppShell() {
   const [draft, setDraft] = useState('');
   // Bumped to ask the composer to take focus; the value itself is meaningless.
   const [focusComposerSignal, setFocusComposerSignal] = useState(0);
+  /*
+   * `docs/V7_UI_CONTRACT.md` §5: a polite live-region announcement for Clear
+   * Chat, since V7 clarification/session state makes the post-clear reset
+   * more consequential than before. `clearAnnouncementCountRef` makes two
+   * Clear Chat presses in a row both announce even though the text is
+   * identical each time — a screen reader only speaks a live region on a
+   * text change, so a trailing zero-width space (invisible either way,
+   * since the region itself is visually hidden) alternates the string.
+   */
+  const [clearAnnouncement, setClearAnnouncement] = useState('');
+  const clearAnnouncementCountRef = useRef(0);
 
   const closeDrawer = useCallback(() => {
     setDrawerOpen(false);
@@ -60,6 +71,21 @@ function AppShell() {
     },
     [sendMessage],
   );
+
+  /*
+   * Clear Chat's App-owned half, alongside `useChatSession.clearChat`'s
+   * turns/clarification/session-state reset: the composer draft (V7 addition
+   * — a stale draft is not conversation state, but it is text a stale
+   * follow-up could still send) and the live-region announcement.
+   */
+  const handleClearChat = useCallback(() => {
+    clearChat();
+    setDraft('');
+    clearAnnouncementCountRef.current += 1;
+    setClearAnnouncement(
+      'Conversation cleared' + '\u200B'.repeat(clearAnnouncementCountRef.current % 2),
+    );
+  }, [clearChat]);
 
   /*
    * A clarification option is another way to fill the composer, not a second
@@ -93,7 +119,7 @@ function AppShell() {
                   focusComposerSignal={focusComposerSignal}
                   isDesktop={isDesktop}
                   isSending={isSending}
-                  onClearChat={clearChat}
+                  onClearChat={handleClearChat}
                   onDraftChange={setDraft}
                   onSelectClarification={handleSelectClarification}
                   onSend={handleSend}
@@ -142,11 +168,14 @@ function AppShell() {
       </main>
       {!isDesktop && (
         <MobileDrawer
-          onClearChat={clearChat}
+          onClearChat={handleClearChat}
           onClose={closeDrawer}
           open={drawerOpen}
         />
       )}
+      <div aria-live="polite" className="visually-hidden" role="status">
+        {clearAnnouncement}
+      </div>
     </div>
   );
 }

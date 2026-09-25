@@ -28,21 +28,23 @@ import { createMetadataTokenProvider, noAuthProvider } from './auth.js';
  */
 
 /*
- * Self-protection byte cap on the request body.
- *
- * SECURITY_BASELINE.md:19-21 sets the semantic limits: question max 2,000
- * characters, history max 10 prior turns, output target ~800 tokens. Ten prior
- * turns at roughly 800 tokens each is on the order of 32,000 characters, plus
- * the question and JSON overhead — so a legitimate request can be tens of
- * kilobytes. 64 KiB leaves real headroom above that while still bounding what
- * an abusive client can push through this process.
- *
- * This is a byte cap, not the contract limit. RAG still enforces the 2,000
- * character and 10 turn rules; a request can be well under 64 KiB and still be
- * rejected upstream. API_CONTRACT.md:41 maps oversized input to 413, so that is
- * what this returns.
+ * The frozen shared App↔RAG transport boundary (`askanu-rag` PR #36,
+ * "V7 Day 2: freeze App-RAG transport size contract", Qasim's PM review
+ * of `askanu-app` PR #40, 24 Sep 2026): the complete `/api/v1/ask` request
+ * body, exactly as received, is capped at 262,144 bytes (256 KiB) — matching
+ * RAG's own `ASK_REQUEST_MAX_BYTES`. This is no longer an App-chosen
+ * self-protection headroom number; it is the exact shared ceiling, so that
+ * every production-valid request (RAG's `conversation_state` up to 128 KiB,
+ * history up to 96 KiB, the question limits, and JSON overhead) can traverse
+ * App to RAG, and every authoritative `conversation_state` RAG is willing to
+ * return can be sent back on the next turn. This service does not
+ * independently enforce or interpret RAG's internal 128 KiB
+ * `conversation_state` / 96 KiB history component limits — it is an opaque
+ * carrier; its only transport responsibility is this one complete-request
+ * boundary. API_CONTRACT.md maps oversized input to 413, so that is what
+ * this returns; nothing here is ever truncated to fit.
  */
-export const MAX_BODY_BYTES = 64 * 1024;
+export const MAX_BODY_BYTES = 262_144;
 
 /**
  * API_CONTRACT.md:23 sets a backend timeout target of about 30 seconds. This

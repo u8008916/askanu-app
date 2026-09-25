@@ -34,4 +34,46 @@ describe('Clear Chat', () => {
       screen.queryByRole('button', { name: /new chat/i }),
     ).not.toBeInTheDocument();
   });
+
+  /**
+   * `docs/V7_UI_CONTRACT.md` §5 (V7 additions): Clear Chat also drops any
+   * composer draft and speaks a polite live-region announcement, since V7
+   * session state makes the post-clear reset more consequential than before.
+   */
+  it('clears an unsent composer draft', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      'a draft nobody sent',
+    );
+    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue(
+      'a draft nobody sent',
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Clear Chat' }));
+
+    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue('');
+  });
+
+  it('announces the reset in a polite live region', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    expect(screen.getByRole('status')).toHaveTextContent('');
+
+    await user.type(
+      screen.getByLabelText('Ask AskANU a question'),
+      'Which scholarships are open?',
+    );
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+    await user.click(screen.getByRole('button', { name: 'Clear Chat' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Conversation cleared');
+
+    // A second press announces again, even though the text is the same.
+    await user.click(screen.getByRole('button', { name: 'Clear Chat' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Conversation cleared');
+  });
 });

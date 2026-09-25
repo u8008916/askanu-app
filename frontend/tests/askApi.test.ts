@@ -205,6 +205,43 @@ describe('askApi response', () => {
     await expect(askApi(request())).rejects.toThrow();
   });
 
+  // V7 (`askanu-rag` PR #34, merged `a7e9ed4`): `conversation_state` is
+  // opaque (`chat/sessionState.ts`) — these prove the parser carries it
+  // through, or off it, without inspecting its shape.
+  it('carries an opaque conversation_state through unchanged', async () => {
+    const state = { schema_version: 1, turn_index: 3, anything: ['at', 'all'] };
+    stubFetch(200, { ...OK_ENVELOPE, conversation_state: state });
+    const response = await askApi(request());
+
+    expect(response.conversation_state).toEqual(state);
+  });
+
+  it('omits conversation_state when the response carries none (pre-V7 backend)', async () => {
+    stubFetch(200, OK_ENVELOPE);
+    const response = await askApi(request());
+
+    expect(response).not.toHaveProperty('conversation_state');
+  });
+
+  it('treats an explicit null conversation_state the same as omitted', async () => {
+    stubFetch(200, { ...OK_ENVELOPE, conversation_state: null });
+    const response = await askApi(request());
+
+    expect(response).not.toHaveProperty('conversation_state');
+  });
+
+  it.each([
+    ['a string', 'not-an-object'],
+    ['a number', 7],
+    ['an array', [1, 2, 3]],
+  ])(
+    'throws when conversation_state is %s rather than an object',
+    async (_label, value) => {
+      stubFetch(200, { ...OK_ENVELOPE, conversation_state: value });
+      await expect(askApi(request())).rejects.toThrow();
+    },
+  );
+
   it('keeps clarification option order', async () => {
     stubFetch(200, {
       status: 'needs_clarification',

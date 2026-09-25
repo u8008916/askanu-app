@@ -31,6 +31,15 @@ export const okResponse: AskResponse = {
   ],
   clarification: null,
   request_id: 'req_mock_ok',
+  /*
+   * V7 (`askanu-rag` PR #34, merged `a7e9ed4`): an arbitrary, unrealistic
+   * shape on purpose — `chat/sessionState.ts` never inspects it, so a
+   * fixture that looked like Carmen's real schema would suggest a coupling
+   * that does not exist. Exercises that the mock transport, `askResponse.ts`
+   * parsing and `useChatSession`'s echo-on-next-request all carry an opaque
+   * object through untouched.
+   */
+  conversation_state: { schema_version: 1, turn_index: 1, mock: true },
 };
 
 /** Several sources exercise the numbering and the wrapping of long titles. */
@@ -219,6 +228,27 @@ export const needsClarificationResponse: AskResponse = {
     allow_multiple: true,
   },
   request_id: 'req_mock_clarification',
+};
+
+/**
+ * `DAY_02.md`'s do-not-cross line: "No empty clarification options." An
+ * envelope can in principle carry `needs_clarification` with no options —
+ * the App must fall back to the answer text and the free-text composer, not
+ * render an empty list or a "Select an option" prompt for nothing to select.
+ */
+export const needsClarificationNoOptionsResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer:
+    'Placeholder clarifying question with no selectable options in this response — reply in the message box.',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-empty-options',
+    type: 'entity_selection',
+    options: [],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_clarification_no_options',
 };
 
 /**

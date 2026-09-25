@@ -220,7 +220,10 @@ no source-based filtering of its own).
 ## 7. Open questions for the Day 1 gate
 
 1. Which of §5's two Clear Chat mechanisms, and does it fit the existing 64 KiB body cap / 10-turn
-   history limit, or do those need to move for the 20-turn acceptance journey?
+   history limit, or do those need to move for the 20-turn acceptance journey? **Resolved 24 Sep
+   2026 — see §10's "Body-size gap" entry**: option (A) was confirmed (§9.1), and the size question
+   was frozen jointly with RAG at 256 KiB complete-request / 128 KiB state / 96 KiB history, with
+   `server/src/server.js`'s `MAX_BODY_BYTES` moved to match exactly.
 2. Where do §6 items 1–5 land — new top-level fields on the existing `/api/v1/ask` envelope, or a
    versioned v2 contract? (This document takes no position; `types/api.ts` is unchanged either way
    until that's decided.)
@@ -385,3 +388,72 @@ open questions (§7), not code, until Day 2+.
   column using only `tokens.css` custom properties, verified live (§10 of the evidence file).
 - **#7 (document backend needs):** this document's §6 (fields) and §7 (open questions) already are that
   list; §9.1 sharpens it with what PR #34 does and does not cover.
+
+## 10. V7 Day 2 — session/clarification wiring (production)
+
+`askanu-rag` PR #34 (§9.1) merged (`a7e9ed4`) with Qasim's explicit GO, so §9.2/§9.3's dev-only
+architecture is now wired into production, per `docs/v7/DAY_02.md`. This section records exactly what
+shipped and what remains a gap for Qasim's Day 2 gate.
+
+**What is now production, not dev-only:**
+- `frontend/src/chat/sessionState.ts` (moved from `dev/v7/`): the opaque store/echo/clear contract,
+  unchanged from §9.2's design, plus `requestConversationState(holder, legacyPendingClarification)` —
+  the one function that decides between echoing a held versioned state and falling back to the legacy
+  `{pending_clarification}` shape.
+- `frontend/src/chat/useChatSession.ts` holds the state alongside `pendingClarification`, updated at the
+  same three points: send (`requestConversationState`), settle (`advanceSessionState`), Clear Chat
+  (`clearSessionState`). The existing `generationRef` stale-response guard covers the versioned state the
+  same way it already covered turns and `pendingClarification` — a response that settles after Clear Chat
+  or unmount writes neither.
+- `frontend/src/types/api.ts`: `AskResponse.conversation_state?: OpaqueConversationState` (opaque,
+  optional); `AskRequest.conversation_state` is now `LegacyConversationState | OpaqueConversationState`.
+- `frontend/src/chat/askResponse.ts` carries `conversation_state` through parsing without inspecting it:
+  absent or explicit `null` degrades to "no state carried" (not a parse failure); present but not a JSON
+  object rejects the whole envelope, the same strictness every other field uses.
+- `server/`: no code change — the boundary was already a byte-for-byte pass-through
+  (`server/src/server.js`), so `conversation_state` needed no new handling there. Proven in
+  `server/tests/ask.test.js`.
+
+**The App-side rule this section adds (not in §5/§8/§9), corrected 24 Sep 2026 per Qasim's PM review
+of PR #40:** a response that carries `conversation_state` is always the new authority, replacing
+whatever was held — even a RAG-authored controlled error response, since PR #34's contract puts the
+field on every status RAG itself answers, including an empty/reset value. But a turn that produced no
+authoritative RAG-authored envelope at all — a transport failure, or a controlled envelope this App's
+own boundary server synthesised before ever reaching RAG (413/502; `server/src/server.js`'s
+`errorEnvelope()` never sets the field, which is exactly the signal `advanceSessionState` keys off) —
+preserves the previously held state unchanged rather than dropping it. Qasim's stated principle:
+"absence of a new authoritative response is not automatically evidence that the previous authoritative
+state became invalid." A failed request must not itself become a conversation reset; only an explicit
+Clear Chat, or RAG actually answering, may change what is held. (The initial Day 2 cut of this PR
+instead dropped state on any response with no `conversation_state`, reasoning that the UI already
+disables a superseded clarification either way — Qasim's review overruled that: dropping conflated
+"the request failed" with "the conversation was reset," two different events. See
+`frontend/tests/conversationState.test.tsx` for the retry-preserves/Clear-Chat-still-removes tests this
+review required.)
+
+**No empty clarification options** (`docs/v7/DAY_02.md` do-not-cross line): `AssistantTurn.tsx` renders
+the `ClarificationOptions` list only when `clarification.options.length > 0`. A `needs_clarification`
+response with no options falls back to the answer text and the free-text composer, like any other status.
+
+**Clear Chat additions** (`docs/V7_UI_CONTRACT.md` §5's "Proposed, Day 2 scope" line, now shipped):
+`App.tsx`'s `handleClearChat` clears the composer draft and speaks "Conversation cleared" in a polite
+(`aria-live="polite"`, `role="status"`) visually-hidden live region, alternating a trailing zero-width
+space so two Clear Chat presses in a row both announce.
+
+**Explicitly out of scope, unchanged from §8:** no `result_set`/`items` rendering fields exist on the
+wire yet — PR #34 is session state only (§9.1). The Day 1 dev gallery (`dev/v7/`) is untouched and stays
+dev-only.
+
+**Body-size gap — resolved 2026-09-24 (`askanu-rag` PR #36, "V7 Day 2: freeze App-RAG transport
+size contract").** See `API_CONTRACT.md`'s frozen limits table and its "Structured conversation
+state" section. RAG froze the shared invariant Qasim named — "every conversation state RAG is
+permitted to return in production, combined with the maximum permitted request/history envelope,
+must fit through the App → RAG request path" — at exact byte ceilings: `conversation_state` 128 KiB,
+history 96 KiB, complete request 256 KiB. The App's side of this: `server/src/server.js`'s
+`MAX_BODY_BYTES` changed from an App-chosen 64 KiB self-protection number to exactly `262,144`,
+matching RAG's own `ASK_REQUEST_MAX_BYTES` — no longer an independently-chosen headroom figure.
+`server/tests/ask.test.js` proves the exact boundary: a request of exactly 262,144 bytes is
+accepted and forwarded unchanged; 262,145 is rejected with the controlled 413 and never reaches
+RAG; nothing is truncated either side of the boundary. If a request does exceed the cap, that
+remains a boundary error the App never reached RAG for, so per the transport-failure correction
+above it preserves rather than drops the held state.
