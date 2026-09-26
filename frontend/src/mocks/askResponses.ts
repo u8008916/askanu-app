@@ -441,15 +441,28 @@ export const okAccommodationResponse: AskResponse = {
   request_id: 'req_mock_accommodation_ok',
 };
 
-/** An ambiguous-residence clarification, read-only, in the CONVERSATION_CONTRACT shape. */
+/**
+ * An ambiguous-residence clarification, read-only, in the CONVERSATION_CONTRACT
+ * shape.
+ *
+ * V7 Day 4: `id`, `type` and `allow_multiple` match `_resource_clarification`
+ * in `askanu-rag` `src/askanu_rag/resource_queries.py` (`origin/main` @
+ * `54d75f4`) exactly — Accommodation clarification is `allow_multiple: true`
+ * (Support shares the same helper and is also `true`; Courses/Scholarships
+ * clarifications elsewhere in this file are unrelated single-select flows and
+ * keep `entity_selection`/`false`). This was corrected from an earlier
+ * `entity_selection`/`allow_multiple: false` shape that did not match the
+ * live backend and would have exercised the wrong control (a button instead
+ * of a checkbox).
+ */
 export const needsAccommodationClarificationResponse: AskResponse = {
   status: 'needs_clarification',
   answer: 'Which residence do you mean?',
   items: [],
   sources: [],
   clarification: {
-    id: 'clar-residence-1',
-    type: 'entity_selection',
+    id: 'clar-accommodation-selection',
+    type: 'accommodation_selection',
     options: [
       {
         id: 'accommodation:residence:placeholder-residence-a',
@@ -460,9 +473,88 @@ export const needsAccommodationClarificationResponse: AskResponse = {
         label: 'Placeholder residence B',
       },
     ],
-    allow_multiple: false,
+    allow_multiple: true,
   },
   request_id: 'req_mock_accommodation_clarification',
+};
+
+/**
+ * The same clarification with the backend's full 20-option cap
+ * (`_resource_clarification`'s `records[:20]`), for overflow/keyboard
+ * coverage that the 2-option fixture above cannot exercise.
+ */
+export const needsAccommodationClarificationManyOptionsResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which residence do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-accommodation-selection-many',
+    type: 'accommodation_selection',
+    options: Array.from({ length: 20 }, (_, index) => ({
+      id: `accommodation:residence:placeholder-residence-${index + 1}`,
+      label: `Placeholder residence ${index + 1}`,
+    })),
+    allow_multiple: true,
+  },
+  request_id: 'req_mock_accommodation_clarification_many',
+};
+
+/**
+ * A compare-two-residences answer. `_accommodation_answer` in
+ * `resource_queries.py` builds one prose answer with a section per residence
+ * — there is no comparison payload on the wire (Day 3 gap G2), so this is
+ * text-only, on purpose, with both residences' sources kept.
+ */
+export const okAccommodationCompareResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder comparison answer. Placeholder residence A: placeholder catering and cost detail. Placeholder residence B: placeholder catering and cost detail. Real comparison detail, including any field the source did not publish, comes from the RAG service as prose; the App never builds its own comparison table from this.',
+  items: [],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+    },
+    {
+      record_id: 'accommodation:residence:placeholder-residence-b',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title B',
+      url: 'https://example.invalid/placeholder-residence-b',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_compare',
+};
+
+/**
+ * A live-vacancy question with no published vacancy status. Shaped after
+ * `_accommodation_answer`'s `LIVE_AVAILABILITY_PATTERN` branch in
+ * `resource_queries.py`: `insufficient_evidence`, a stated "null means
+ * unknown, not available or unavailable" caveat, and the application link
+ * folded into the prose (there is no structured `next_action` on the wire —
+ * Day 4 gap G7) rather than rendered as a distinct action.
+ */
+export const insufficientAccommodationVacancyResponse: AskResponse = {
+  status: 'insufficient_evidence',
+  answer:
+    'Placeholder vacancy answer. A null vacancy status means unknown, not available or unavailable. Placeholder residence A: current live vacancy is not present in stored approved evidence. Published application link: https://example.invalid/placeholder-apply.',
+  items: [],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_vacancy_unknown',
 };
 
 /** `partial` renders like `ok`; the service's own caveat carries the meaning. */
