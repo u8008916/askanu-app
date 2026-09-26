@@ -150,7 +150,10 @@ describe('clarification lifecycle across turns', () => {
     await waitFor(() =>
       expect(screen.getByText('Which residence do you mean?')).toBeInTheDocument(),
     );
-    const residenceOption = screen.getByRole('button', {
+    // V7 Day 4: accommodation clarification is `allow_multiple: true` on the
+    // real wire (`askanu-rag` `resource_queries.py`), so this renders a
+    // checkbox, not a single-select button — see `mocks/askResponses.ts`.
+    const residenceOption = screen.getByRole('checkbox', {
       name: /Placeholder residence A/,
     });
     expect(residenceOption).toBeEnabled();
@@ -176,7 +179,7 @@ describe('clarification lifecycle across turns', () => {
     // visible, still the one a reply would resolve.
     expect(screen.getByText('Which residence do you mean?')).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /Placeholder residence A/ }),
+      screen.getByRole('checkbox', { name: /Placeholder residence A/ }),
     ).toBeEnabled();
   });
 });

@@ -5,6 +5,8 @@ import {
   groundedResponse,
   hostileStringsResponse,
   insufficientEvidenceResponse,
+  insufficientAccommodationVacancyResponse,
+  needsAccommodationClarificationManyOptionsResponse,
   needsAccommodationClarificationResponse,
   needsClarificationManyOptionsResponse,
   needsClarificationNoOptionsResponse,
@@ -12,6 +14,7 @@ import {
   needsScholarshipClarificationResponse,
   needsSupportClarificationResponse,
   offTopicResponse,
+  okAccommodationCompareResponse,
   okAccommodationResponse,
   okCurrentJobsResponse,
   okEventsResponse,
@@ -123,9 +126,24 @@ export const MOCK_SCENARIOS: MockScenario[] = [
     response: needsAccommodationClarificationResponse,
   },
   {
+    id: 'needs-clarification-accommodation-many',
+    label: 'needs_clarification — accommodation (20 options, V7 Day 4)',
+    response: needsAccommodationClarificationManyOptionsResponse,
+  },
+  {
     id: 'partial-accommodation',
     label: 'partial — accommodation',
     response: partialAccommodationResponse,
+  },
+  {
+    id: 'ok-accommodation-compare',
+    label: 'ok — accommodation compare (V7 Day 4)',
+    response: okAccommodationCompareResponse,
+  },
+  {
+    id: 'insufficient-accommodation-vacancy',
+    label: 'insufficient_evidence — accommodation vacancy (V7 Day 4)',
+    response: insufficientAccommodationVacancyResponse,
   },
   {
     id: 'ok-support',
