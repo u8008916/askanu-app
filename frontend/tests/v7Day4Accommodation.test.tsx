@@ -4,41 +4,60 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { toResultCards } from '../src/chat/results/resultItems';
+import { resolveStructuredPayload } from '../src/chat/structuredPrefill';
 import { useChatSession } from '../src/chat/useChatSession';
 import { setMockScenarioId } from '../src/dev/mockTransport';
 import {
   insufficientAccommodationVacancyResponse,
+  insufficientAccommodationVacancyWithActionResponse,
   needsAccommodationClarificationManyOptionsResponse,
   needsAccommodationClarificationResponse,
+  okAccommodationCompareItemsResponse,
   okAccommodationCompareResponse,
   okAccommodationResponse,
+  okAccommodationResultsResponse,
 } from '../src/mocks/askResponses';
-import type { AskRequest, AskResponse } from '../src/types/api';
+import type {
+  AskRequest,
+  AskResponse,
+  ClarificationSelectionRequest,
+} from '../src/types/api';
 
 /**
- * V7 Day 4 — Accommodation vertical, verify-and-lock.
+ * V7 Day 4 — Accommodation vertical.
  *
- * `askanu-rag` `origin/main` @ `54d75f4` (Carmen's Day 3 #37, merged) sends no
- * Accommodation `items`, no comparison payload, no `answer_state`/ResultSet
- * status and no selected-result request field (gaps G1–G3, G5 from
- * `docs/evidence/V7_DAY_03_RESULTS_COMPARISON_UNKNOWN.md`, re-verified against
- * this SHA). Building cards, a comparison table or a next-action control for
- * Accommodation today would mean inventing wire data the backend never sent —
- * exactly what `docs/v7/DAY_04.md` forbids ("no hidden backend defect via UI
- * workaround"). This suite instead locks how the existing shared shell
- * renders the *real* Accommodation wire shapes: discovery clarification
- * (`accommodation_selection`, `allow_multiple: true`), compare (prose, no
- * cards), vacancy unknown (`insufficient_evidence`, no next-action control),
- * and that state/Clear Chat behave the same for Accommodation as any other
- * domain. See the plan file / evidence doc for the full gap table (G1–G9).
+ * 26 Sep 2026: `askanu-rag` `main` @ `54d75f4` sent no Accommodation `items`,
+ * comparison payload, `answer_state` or selected-result field, so this suite
+ * only verified-and-locked the (then-current) wire and recorded gaps G1–G9.
+ *
+ * 27 Sep 2026: `askanu-rag` PR #38 (`carmen/v7-day4-accommodation-vertical`,
+ * tip `3c8e35e` — still open, **not yet merged**) closes G1/G2/G3/G5/G7. This
+ * suite now proves the App *consumes* that real, typed contract correctly —
+ * discovery cards, qualifying_evidence, a real comparison table, a real
+ * "Apply now" action, structured `selected_result`/`clarification_selection`/
+ * `result_page` requests — rather than only proving why cards could not
+ * safely be built yet. The blocks that still describe the *empty*-`items`/
+ * no-`actions` fallback path (a pre-#38 backend, or any other reason a real
+ * response comes back without them) are kept, correctly re-scoped, as
+ * regression coverage for that fallback — not as the production expectation.
+ * Full contract/gap detail: `docs/evidence/V7_DAY_04_ACCOMMODATION_INTEGRATION.md`.
  */
 
-function renderTurn(response: AskResponse) {
+function renderTurn(
+  response: AskResponse,
+  callbacks: {
+    onSelectClarification?: (text: string, selection: ClarificationSelectionRequest) => void;
+    onSelectResult?: Parameters<typeof AssistantTurn>[0]['onSelectResult'];
+    onRequestMorePage?: Parameters<typeof AssistantTurn>[0]['onRequestMorePage'];
+  } = {},
+) {
   return render(
     <ul>
       <AssistantTurn
         isClarificationActive
-        onSelectClarification={vi.fn()}
+        onSelectClarification={callbacks.onSelectClarification ?? vi.fn()}
+        onRequestMorePage={callbacks.onRequestMorePage}
+        onSelectResult={callbacks.onSelectResult}
         response={response}
       />
     </ul>,
@@ -48,6 +67,18 @@ function renderTurn(response: AskResponse) {
 async function ask(user: ReturnType<typeof userEvent.setup>, question: string) {
   await user.type(screen.getByLabelText('Ask AskANU a question'), question);
   await user.click(screen.getByRole('button', { name: 'Send' }));
+}
+
+function buildResponse(overrides: Partial<AskResponse> = {}): AskResponse {
+  return {
+    status: 'ok',
+    answer: 'Placeholder answer.',
+    items: [],
+    sources: [],
+    clarification: null,
+    request_id: 'req_test',
+    ...overrides,
+  };
 }
 
 describe('Accommodation discovery clarification (real wire shape)', () => {
@@ -126,20 +157,78 @@ describe('Accommodation discovery clarification (real wire shape)', () => {
       screen.queryByText('accommodation:residence:placeholder-residence-a'),
     ).not.toBeInTheDocument();
   });
+
+  /*
+   * V7 Day 4 (PR #38): the structured `clarification_selection` RAG now
+   * accepts. Ids come from `clarification.options` in backend order — proven
+   * here by checking B before A and still getting `[A, B]` back.
+   */
+  it('passes the exact backend option ids in backend order, regardless of click order', async () => {
+    const user = userEvent.setup();
+    const onSelectClarification = vi.fn();
+    renderTurn(needsAccommodationClarificationResponse, { onSelectClarification });
+
+    await user.click(screen.getByRole('checkbox', { name: /Placeholder residence B/ }));
+    await user.click(screen.getByRole('checkbox', { name: /Placeholder residence A/ }));
+    await user.click(screen.getByRole('button', { name: 'Use selection' }));
+
+    expect(onSelectClarification).toHaveBeenCalledExactlyOnceWith(
+      'Both Placeholder residence A and Placeholder residence B',
+      {
+        clarification_id: 'clar-accommodation-selection',
+        option_ids: [
+          'accommodation:residence:placeholder-residence-a',
+          'accommodation:residence:placeholder-residence-b',
+        ],
+      },
+    );
+  });
 });
 
-describe('Accommodation compare (prose only — no comparison payload on the wire, gap G2)', () => {
-  it('renders the backend prose and both sources, and builds no comparison table or result list', () => {
-    renderTurn(okAccommodationCompareResponse);
+describe('Accommodation compare', () => {
+  it('a real PublicComparisonItem renders a table in backend order, with a not_published cell shown neutrally', () => {
+    renderTurn(okAccommodationCompareItemsResponse);
 
-    expect(
-      screen.getByText(/Placeholder comparison answer/),
-    ).toBeInTheDocument();
-    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    const table = screen.getByRole('table');
+    const columnHeaders = within(table)
+      .getAllByRole('columnheader')
+      .map((cell) => cell.textContent);
+    expect(columnHeaders).toEqual([
+      'Detail',
+      'Placeholder residence record title A',
+      'Placeholder residence record title B',
+    ]);
+    expect(within(table).getByRole('row', { name: /Location/ })).toHaveTextContent(
+      'Not published',
+    );
+    // No card path, no duplicate "Ask about this" — this is the comparison
+    // path, mutually exclusive with `toResultCards` by construction.
     expect(screen.queryByRole('list', { name: 'Results' })).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: /Ask about this/ }),
     ).not.toBeInTheDocument();
+  });
+
+  it('the backend prose stays collapsed under "Show as text" alongside the table', () => {
+    const { container } = renderTurn(okAccommodationCompareItemsResponse);
+    const details = container.querySelector('details') as HTMLDetailsElement;
+    expect(details).not.toBeNull();
+    expect(details.open).toBe(false);
+    expect(within(details).getByText('Show as text')).toBeInTheDocument();
+    expect(details).toHaveTextContent('Placeholder comparison answer');
+  });
+
+  /*
+   * The narrower fallback: `items: []` (a pre-#38 backend, or any other
+   * reason the wire sends no comparison payload). The App still shows the
+   * backend's own prose and both sources; it never fabricates a table.
+   */
+  it('falls back to prose and sources when items is empty', () => {
+    renderTurn(okAccommodationCompareResponse);
+
+    expect(screen.getByText(/Placeholder comparison answer/)).toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.queryByRole('list', { name: 'Results' })).not.toBeInTheDocument();
 
     const sources = screen.getByRole('region', { name: 'Sources' });
     const titles = within(sources)
@@ -148,19 +237,15 @@ describe('Accommodation compare (prose only — no comparison payload on the wir
     expect(titles[0]).toContain('Placeholder residence record title A');
     expect(titles[1]).toContain('Placeholder residence record title B');
   });
-
-  it('toResultCards refuses accommodation items (always empty on this wire), so no card path is reachable', () => {
-    expect(toResultCards(okAccommodationCompareResponse.items)).toBeNull();
-  });
 });
 
-describe('Accommodation vacancy unknown (insufficient_evidence, gap G3/G7/G8)', () => {
+describe('Accommodation vacancy unknown (insufficient_evidence)', () => {
   it('is not styled or announced as an error', () => {
     renderTurn(insufficientAccommodationVacancyResponse);
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
-  it('shows the backend text verbatim, including the application link as plain text (no structured next action exists on the wire)', () => {
+  it('shows the backend text verbatim, including the application link as plain text when no action is supplied', () => {
     renderTurn(insufficientAccommodationVacancyResponse);
     expect(
       screen.getByText(/A null vacancy status means unknown, not available or unavailable/),
@@ -168,8 +253,8 @@ describe('Accommodation vacancy unknown (insufficient_evidence, gap G3/G7/G8)', 
     expect(
       screen.getByText(/Published application link: https:\/\/example\.invalid\/placeholder-apply/),
     ).toBeInTheDocument();
-    // No App-authored link element was built from that URL — it is plain text
-    // inside the answer, not an anchor (URL linkification is out of Day 4 scope).
+    // No App-authored link was built by scraping that sentence — a link
+    // appears only when the backend supplies a real `actions` entry (below).
     expect(
       screen.queryByRole('link', { name: /placeholder-apply/ }),
     ).not.toBeInTheDocument();
@@ -183,38 +268,48 @@ describe('Accommodation vacancy unknown (insufficient_evidence, gap G3/G7/G8)', 
 
   it('the App never authors its own vacancy verdict wording', () => {
     renderTurn(insufficientAccommodationVacancyResponse);
-    // Gap G8: today this can only read as the generic "Not enough evidence"
-    // abstention heading (no `answer_state`/ResultSet status on the wire to
-    // render a distinct useful-unknown state) — locked here so a change to
-    // that heading is a deliberate, visible diff, not a silent one.
+    // No `answer_state`-driven UI beyond `actions` was built (confirmed
+    // scope decision, 27 Sep 2026) — this still reads as the generic
+    // "Not enough evidence" abstention heading, deliberately, not a silent
+    // drift: a future change to this heading is now a visible diff here.
     expect(screen.getByText('Not enough evidence to answer')).toBeInTheDocument();
     expect(screen.queryByText(/no vacanc/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/rooms? available/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/fully booked|sold out/i)).not.toBeInTheDocument();
   });
+
+  /*
+   * V7 Day 4 (PR #38): a real, validated `actions` entry — gap G7 closed.
+   * `test_current_availability_is_partial_unknown_with_official_next_action`
+   * confirms an application action can accompany an UNKNOWN vacancy answer.
+   */
+  it('renders a real "Apply now" action from actions[0].url, alongside the same neutral non-error notice', () => {
+    renderTurn(insufficientAccommodationVacancyWithActionResponse);
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getByText('Not enough evidence to answer')).toBeInTheDocument();
+
+    const link = screen.getByRole('link', { name: /Apply now/ });
+    expect(link).toHaveAttribute('href', 'https://example.invalid/placeholder-apply');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    // Exactly one "Apply now" link, and exactly one other (the Sources
+    // entry) — the App never additionally scrapes a second action link out
+    // of the answer prose that also names the URL in words.
+    expect(screen.getAllByRole('link', { name: /Apply now/ })).toHaveLength(1);
+    expect(screen.getAllByRole('link')).toHaveLength(2);
+  });
 });
 
 /**
- * Interruption/return and Clear Chat, driven directly against `useChatSession`
- * with a scripted transport (same pattern as `tests/conversationState.test.tsx`),
- * because `conversation_state` is opaque by contract and none of the shared
- * mock fixtures above happen to set it. The property under test is that an
- * Accommodation session behaves under the same state rules as any other
- * domain — Day 4 introduces no accommodation-specific state handling.
+ * Interruption/return, Clear Chat and the new structured request fields,
+ * driven directly against `useChatSession` with a scripted transport (same
+ * pattern as `tests/conversationState.test.tsx`), because `conversation_state`
+ * is opaque by contract and the mock fixtures don't set it, and because the
+ * structured payload's exact wire shape is what matters here, not DOM
+ * rendering (already covered above and in `tests/v7Day3Results.test.tsx`).
  */
-describe('Accommodation session: interruption/return and Clear Chat', () => {
-  function buildResponse(overrides: Partial<AskResponse> = {}): AskResponse {
-    return {
-      status: 'ok',
-      answer: 'Placeholder answer.',
-      items: [],
-      sources: [],
-      clarification: null,
-      request_id: 'req_test',
-      ...overrides,
-    };
-  }
-
+describe('Accommodation session: interruption/return, Clear Chat, and structured requests', () => {
   it('echoes state byte-for-byte across an accommodation -> course -> accommodation interruption', async () => {
     const requests: AskRequest[] = [];
     const accommodationState = { schema_version: 1, focus: { domain: 'accommodation' } };
@@ -312,31 +407,240 @@ describe('Accommodation session: interruption/return and Clear Chat', () => {
       screen.getByRole('heading', { name: 'Try asking' }),
     ).toBeInTheDocument();
   });
-});
 
-describe('Accommodation regression guard: no card path exists yet', () => {
-  it('the shared item adapter refuses every accommodation response fixture (items always empty on this wire)', () => {
-    for (const response of [
-      okAccommodationResponse,
-      okAccommodationCompareResponse,
-      insufficientAccommodationVacancyResponse,
-    ]) {
-      expect(toResultCards(response.items)).toBeNull();
-    }
+  it('sending none of the three new request fields is exactly today’s request shape', async () => {
+    const requests: AskRequest[] = [];
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      return buildResponse({ request_id: 'r1' });
+    });
+    const { result } = renderHook(() => useChatSession(transport));
+
+    await act(async () => {
+      await result.current.sendMessage('Which residences are self-catered?');
+    });
+
+    expect(requests[0].selected_result).toBeUndefined();
+    expect(requests[0].clarification_selection).toBeUndefined();
+    expect(requests[0].result_page).toBeUndefined();
   });
 
-  it('AssistantTurn never renders a result list or an Ask-about action for any accommodation fixture', () => {
-    for (const response of [
-      okAccommodationResponse,
-      okAccommodationCompareResponse,
-      insufficientAccommodationVacancyResponse,
-    ]) {
-      const { unmount } = renderTurn(response);
-      expect(screen.queryByRole('list', { name: 'Results' })).not.toBeInTheDocument();
-      expect(
-        screen.queryByRole('button', { name: /Ask about this/ }),
-      ).not.toBeInTheDocument();
-      unmount();
-    }
+  /*
+   * V7 Day 4 (PR #38): `AssistantTurn`'s `handleCardSelect` (via `App.tsx`'s
+   * `handleSelectResult`) and `structuredPrefill.ts`'s pairing rule together
+   * decide what reaches `sendMessage`. This proves the two compose correctly:
+   * sending the prefill unchanged attaches `selected_result`; sending
+   * something else does not.
+   */
+  it('sending the unedited "Ask about this" prefill attaches selected_result; an edit drops it', async () => {
+    const requests: AskRequest[] = [];
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      return buildResponse({ request_id: 'r' });
+    });
+    const { result } = renderHook(() => useChatSession(transport));
+    const pending = {
+      prefillText: 'Tell me more about Placeholder residence record title A',
+      selectedResult: {
+        result_set_id: 'rs:accommodation:mock-1',
+        canonical_id: 'placeholder-residence-a',
+        ordinal: 1,
+      },
+    };
+
+    await act(async () => {
+      await result.current.sendMessage(
+        pending.prefillText,
+        resolveStructuredPayload(pending, pending.prefillText),
+      );
+    });
+    expect(requests[0].selected_result).toEqual(pending.selectedResult);
+
+    await act(async () => {
+      const edited = 'What about the cost instead?';
+      await result.current.sendMessage(edited, resolveStructuredPayload(pending, edited));
+    });
+    expect(requests[1].selected_result).toBeUndefined();
+  });
+
+  it('requesting more pages sends the exact server cursor as result_page', async () => {
+    const requests: AskRequest[] = [];
+    const transport = vi.fn(async (request: AskRequest) => {
+      requests.push(request);
+      return buildResponse({ request_id: 'r' });
+    });
+    const { result } = renderHook(() => useChatSession(transport));
+
+    await act(async () => {
+      await result.current.sendMessage('Show more results', {
+        resultPage: {
+          result_set_id: 'rs:accommodation:mock-1',
+          start_ordinal: 3,
+          limit: 5,
+        },
+      });
+    });
+
+    expect(requests[0].result_page).toEqual({
+      result_set_id: 'rs:accommodation:mock-1',
+      start_ordinal: 3,
+      limit: 5,
+    });
+  });
+});
+
+describe('Accommodation result cards and pagination (real PublicResultItem wire shape)', () => {
+  it('renders cards with the 7-field mapping, qualifying_evidence, and an enabled "Ask about this" per card', () => {
+    renderTurn(okAccommodationResultsResponse, { onSelectResult: vi.fn() });
+
+    expect(screen.getByRole('heading', { level: 3, name: '2 results' })).toBeInTheDocument();
+    expect(screen.getByText(/Matched room: Standard/)).toBeInTheDocument();
+    const askAboutButtons = screen.getAllByRole('button', { name: /Ask about this/ });
+    expect(askAboutButtons).toHaveLength(2);
+  });
+
+  it('clicking "Ask about this" prefills the composer, only, with the card’s title', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    setMockScenarioId('ok-accommodation-results');
+    await ask(user, 'Show me accommodation options');
+
+    await waitFor(() =>
+      expect(screen.getByRole('list', { name: 'Results' })).toBeInTheDocument(),
+    );
+    const repliesBefore = screen.getAllByText('AskANU').length;
+    await user.click(
+      screen.getAllByRole('button', { name: /Ask about this/ })[0],
+    );
+
+    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue(
+      'Tell me more about Placeholder residence record title A',
+    );
+    expect(screen.getAllByText('AskANU')).toHaveLength(repliesBefore);
+  });
+
+  it('"Show more" on a paged result list sends result_page and renders the next page as a new turn', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    setMockScenarioId('ok-accommodation-results');
+    await ask(user, 'Show me accommodation options');
+
+    await waitFor(() =>
+      expect(screen.getByRole('list', { name: 'Results' })).toBeInTheDocument(),
+    );
+    expect(screen.getByRole('button', { name: 'Show more' })).toBeInTheDocument();
+
+    setMockScenarioId('ok-accommodation-results-page-2');
+    await user.click(screen.getByRole('button', { name: 'Show more' }));
+
+    let lists: HTMLElement[] = [];
+    await waitFor(() => {
+      lists = screen.getAllByRole('list', { name: 'Results' });
+      expect(lists).toHaveLength(2);
+    });
+    // Scoped to each results list: the same titles also appear once each in
+    // the "Sources" section, so an unscoped lookup would be ambiguous.
+    expect(
+      within(lists[0]).getByText('Placeholder residence record title A'),
+    ).toBeInTheDocument();
+    expect(
+      within(lists[1]).getByText('Placeholder residence record title C'),
+    ).toBeInTheDocument();
+    // Page 2 is terminal (has_more: false) — only page 1's button remains.
+    expect(screen.getAllByRole('button', { name: 'Show more' })).toHaveLength(1);
+    // A direct action, not a prefill: the composer was never touched.
+    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue('');
+  });
+
+  /*
+   * The narrower fallback: `items: []` (a pre-#38 backend, or any other
+   * reason a real response comes back without result items).
+   */
+  it('falls back to text-only rendering when items is empty', () => {
+    expect(toResultCards(okAccommodationResponse.items)).toBeNull();
+    renderTurn(okAccommodationResponse);
+    expect(screen.queryByRole('list', { name: 'Results' })).not.toBeInTheDocument();
+  });
+
+  /*
+   * Hostile strings reach the App through several new surfaces this contract
+   * adds: the generic `fields` dict, `qualifying_evidence`, comparison cell
+   * values, and an action's `label`. All of it is untrusted stored text and
+   * must render as React text children only — never `dangerouslySetInnerHTML`,
+   * never markdown, never executed.
+   */
+  it('renders hostile strings in fields, qualifying_evidence, comparison cells, and an action label as text, never executed', () => {
+    const hostile = '<img src=x onerror=alert(1)><script>alert(2)</script>';
+    const hostileResultItem = {
+      type: 'result' as const,
+      record_id: 'accommodation:residence:hostile',
+      source_id: 'accommodation_anu_study',
+      canonical_id: 'hostile',
+      title: `${hostile} Hostile Hall`,
+      url: 'https://example.invalid/placeholder-hostile',
+      domain: 'accommodation',
+      result_set_id: 'rs:accommodation:hostile',
+      ordinal: 1,
+      fields: { category: hostile, features: [hostile] },
+      qualifying_evidence: {
+        type: 'room_rate' as const,
+        room_name: hostile,
+        rate: hostile,
+        cost_period: hostile,
+        contract: hostile,
+        inclusions: hostile,
+        other_fees: hostile,
+      },
+    };
+    const { container: cardContainer } = renderTurn(
+      buildResponse({ items: [hostileResultItem], answer: 'Hostile discovery answer.' }),
+    );
+    expect(cardContainer.querySelector('img')).not.toBeInTheDocument();
+    expect(cardContainer.querySelector('script')).not.toBeInTheDocument();
+    expect(cardContainer).toHaveTextContent(hostile);
+
+    const hostileComparisonItem = {
+      type: 'comparison' as const,
+      result_set_id: null,
+      records: [
+        { ...hostileResultItem, fields: {} },
+        { ...hostileResultItem, record_id: 'accommodation:residence:hostile-2', canonical_id: 'hostile-2' },
+      ],
+      fields: [
+        {
+          name: 'category',
+          label: hostile,
+          values: [
+            { record_id: hostileResultItem.record_id, value: hostile, state: 'published' as const },
+            { record_id: 'accommodation:residence:hostile-2', value: null, state: 'not_published' as const },
+          ],
+        },
+      ],
+    };
+    const { container: tableContainer } = renderTurn(
+      buildResponse({ items: [hostileComparisonItem], answer: 'Hostile comparison answer.' }),
+    );
+    expect(tableContainer.querySelector('img')).not.toBeInTheDocument();
+    expect(tableContainer.querySelector('script')).not.toBeInTheDocument();
+    expect(tableContainer).toHaveTextContent(hostile);
+
+    const { container: actionContainer } = renderTurn(
+      buildResponse({
+        status: 'insufficient_evidence',
+        answer: 'Hostile vacancy answer.',
+        actions: [
+          {
+            type: 'application',
+            label: hostile,
+            url: 'https://example.invalid/placeholder-hostile-apply',
+            record_id: 'accommodation:residence:hostile',
+            source_id: 'accommodation_anu_study',
+          },
+        ],
+      }),
+    );
+    expect(actionContainer.querySelector('img')).not.toBeInTheDocument();
+    expect(actionContainer.querySelector('script')).not.toBeInTheDocument();
+    expect(actionContainer).toHaveTextContent(hostile);
   });
 });

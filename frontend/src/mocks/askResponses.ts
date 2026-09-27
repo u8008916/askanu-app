@@ -501,10 +501,16 @@ export const needsAccommodationClarificationManyOptionsResponse: AskResponse = {
 };
 
 /**
- * A compare-two-residences answer. `_accommodation_answer` in
- * `resource_queries.py` builds one prose answer with a section per residence
- * — there is no comparison payload on the wire (Day 3 gap G2), so this is
- * text-only, on purpose, with both residences' sources kept.
+ * A compare-two-residences answer with `items: []` — the narrower fallback
+ * path: no comparison payload at all (a pre-#38 backend, or any other reason
+ * `items` comes back empty). The App still shows the backend's own prose and
+ * both sources; it never builds a comparison table from nothing. For the
+ * real `PublicComparisonItem` payload (`askanu-rag` PR #38,
+ * `carmen/v7-day4-accommodation-vertical`, tip `3c8e35e` — not yet merged),
+ * see `okAccommodationCompareItemsResponse` below. (Corrected 27 Sep 2026:
+ * this fixture's doc comment previously said "there is no comparison payload
+ * on the wire" as a general claim — that was true of `main` @ `54d75f4` and
+ * is no longer true of PR #38.)
  */
 export const okAccommodationCompareResponse: AskResponse = {
   status: 'ok',
@@ -532,12 +538,15 @@ export const okAccommodationCompareResponse: AskResponse = {
 };
 
 /**
- * A live-vacancy question with no published vacancy status. Shaped after
- * `_accommodation_answer`'s `LIVE_AVAILABILITY_PATTERN` branch in
- * `resource_queries.py`: `insufficient_evidence`, a stated "null means
- * unknown, not available or unavailable" caveat, and the application link
- * folded into the prose (there is no structured `next_action` on the wire —
- * Day 4 gap G7) rather than rendered as a distinct action.
+ * A live-vacancy question with no published vacancy status, `actions: []` —
+ * the narrower fallback path where no structured action applies (a pre-#38
+ * backend, or any answer that simply has none). `insufficient_evidence`, a
+ * stated "null means unknown, not available or unavailable" caveat, and the
+ * application link folded into the prose only in this fixture. For the real
+ * `actions` payload (PR #38, tip `3c8e35e` — not yet merged), see
+ * `insufficientAccommodationVacancyWithActionResponse` below. (Corrected
+ * 27 Sep 2026: previously framed as "there is no structured next_action on
+ * the wire" as a general claim — true of `main` @ `54d75f4`, not of PR #38.)
  */
 export const insufficientAccommodationVacancyResponse: AskResponse = {
   status: 'insufficient_evidence',
@@ -555,6 +564,299 @@ export const insufficientAccommodationVacancyResponse: AskResponse = {
   ],
   clarification: null,
   request_id: 'req_mock_accommodation_vacancy_unknown',
+};
+
+/**
+ * V7 Day 4 FORWARD fixtures — shaped to `askanu-rag` PR #38
+ * (`carmen/v7-day4-accommodation-vertical`, tip `3c8e35e`), **not yet merged
+ * to `askanu-rag` main**. Field names, the `type` discriminator, and the
+ * fixed 7-key `fields` map are transcribed from that branch's own
+ * `models/contracts.py` and its `tests/test_v7_day4_accommodation_vertical.py`
+ * (e.g. `test_broad_discovery_is_bounded_typed_and_traced`,
+ * `test_public_result_exposes_exact_producer_shaped_qualifying_room`), not
+ * guessed. `record_id`/`source_id`/`url` still follow the frozen Day 12
+ * identity shape; slugs, titles and rates stay obvious placeholders.
+ */
+export const okAccommodationResultsResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder discovery answer. Placeholder residence A: placeholder catering and cost detail. Placeholder residence B: placeholder catering and cost detail, matched to your budget. Real detail, including any field the source did not publish, comes from the RAG service.',
+  answer_state: 'PARTIAL',
+  actions: [],
+  items: [
+    {
+      type: 'result',
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      canonical_id: 'placeholder-residence-a',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+      result_set_id: 'rs:accommodation:mock-1',
+      ordinal: 1,
+      fields: {
+        category: 'Residence hall',
+        location: 'Placeholder campus',
+        catering_options: ['Self-catered'],
+        advertised_rate: '$300.00',
+        cost_period: '2027 Indicative costs',
+        audiences: ['Undergraduate students'],
+        features: ['Quiet study spaces', 'Shared kitchen'],
+      },
+      qualifying_evidence: null,
+    },
+    {
+      type: 'result',
+      record_id: 'accommodation:residence:placeholder-residence-b',
+      source_id: 'accommodation_anu_study',
+      canonical_id: 'placeholder-residence-b',
+      title: 'Placeholder residence record title B',
+      url: 'https://example.invalid/placeholder-residence-b',
+      domain: 'accommodation',
+      result_set_id: 'rs:accommodation:mock-1',
+      ordinal: 2,
+      /* Some fields not published, deliberately, so "Not published" renders. */
+      fields: {
+        category: 'Residence hall',
+        location: null,
+        catering_options: [],
+        advertised_rate: 'Rates from A$300/week',
+        cost_period: '2027 Indicative costs',
+        audiences: [],
+        features: [],
+      },
+      /*
+       * Proves only that this one named room's published rate satisfied the
+       * active price constraint — never affordability/cheapest/vacancy for
+       * the residence overall.
+       */
+      qualifying_evidence: {
+        type: 'room_rate',
+        room_name: 'Standard',
+        rate: '$380.00',
+        cost_period: '2027 Indicative costs',
+        contract: '44 weeks',
+        inclusions: 'Internet included',
+        other_fees: 'Refundable Deposit: $1,300',
+      },
+    },
+  ],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+    },
+    {
+      record_id: 'accommodation:residence:placeholder-residence-b',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title B',
+      url: 'https://example.invalid/placeholder-residence-b',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_results_page1',
+  result_page: {
+    result_set_id: 'rs:accommodation:mock-1',
+    start_ordinal: 1,
+    returned: 2,
+    has_more: true,
+    next_ordinal: 3,
+  },
+};
+
+/**
+ * Page 2 of the same ResultSet — the terminal page (`has_more: false`,
+ * `next_ordinal: null`), per `test_stable_result_continuation_pages_twelve_without_reranking`'s
+ * terminal-page shape. Ordinals continue from page 1, never restart.
+ */
+export const okAccommodationResultsPageTwoResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder discovery answer, continued. Placeholder residence C: placeholder catering and cost detail.',
+  answer_state: 'PARTIAL',
+  actions: [],
+  items: [
+    {
+      type: 'result',
+      record_id: 'accommodation:residence:placeholder-residence-c',
+      source_id: 'accommodation_anu_study',
+      canonical_id: 'placeholder-residence-c',
+      title: 'Placeholder residence record title C',
+      url: 'https://example.invalid/placeholder-residence-c',
+      domain: 'accommodation',
+      result_set_id: 'rs:accommodation:mock-1',
+      ordinal: 3,
+      fields: {
+        category: 'Residence hall',
+        location: 'Placeholder campus',
+        catering_options: ['Catered meal plan'],
+        advertised_rate: '$550.00',
+        cost_period: '2027 Indicative costs',
+        audiences: ['Postgraduate students'],
+        features: [],
+      },
+      qualifying_evidence: null,
+    },
+  ],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-c',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title C',
+      url: 'https://example.invalid/placeholder-residence-c',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_results_page2',
+  result_page: {
+    result_set_id: 'rs:accommodation:mock-1',
+    start_ordinal: 3,
+    returned: 1,
+    has_more: false,
+    next_ordinal: null,
+  },
+};
+
+/**
+ * A real `PublicComparisonItem`, per
+ * `test_compare_first_two_uses_retained_order_and_preserves_missingness`:
+ * one comparison item, `records` carrying no per-record `fields` (`{}`), a
+ * top-level `fields` array with one `not_published` cell (location B).
+ */
+export const okAccommodationCompareItemsResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'Placeholder comparison answer. Placeholder residence A: placeholder location. Placeholder residence B: residence location not published.',
+  answer_state: 'PARTIAL',
+  actions: [],
+  items: [
+    {
+      type: 'comparison',
+      result_set_id: 'rs:accommodation:mock-1',
+      records: [
+        {
+          type: 'result',
+          record_id: 'accommodation:residence:placeholder-residence-a',
+          source_id: 'accommodation_anu_study',
+          canonical_id: 'placeholder-residence-a',
+          title: 'Placeholder residence record title A',
+          url: 'https://example.invalid/placeholder-residence-a',
+          domain: 'accommodation',
+          result_set_id: 'rs:accommodation:mock-1',
+          ordinal: 1,
+          fields: {},
+          qualifying_evidence: null,
+        },
+        {
+          type: 'result',
+          record_id: 'accommodation:residence:placeholder-residence-b',
+          source_id: 'accommodation_anu_study',
+          canonical_id: 'placeholder-residence-b',
+          title: 'Placeholder residence record title B',
+          url: 'https://example.invalid/placeholder-residence-b',
+          domain: 'accommodation',
+          result_set_id: 'rs:accommodation:mock-1',
+          ordinal: 2,
+          fields: {},
+          qualifying_evidence: null,
+        },
+      ],
+      fields: [
+        {
+          name: 'location',
+          label: 'Location',
+          values: [
+            {
+              record_id: 'accommodation:residence:placeholder-residence-a',
+              value: 'Placeholder campus',
+              state: 'published',
+            },
+            {
+              record_id: 'accommodation:residence:placeholder-residence-b',
+              value: null,
+              state: 'not_published',
+            },
+          ],
+        },
+        {
+          name: 'advertised_rate',
+          label: 'Advertised rate',
+          values: [
+            {
+              record_id: 'accommodation:residence:placeholder-residence-a',
+              value: '$300.00',
+              state: 'published',
+            },
+            {
+              record_id: 'accommodation:residence:placeholder-residence-b',
+              value: '$450.00',
+              state: 'published',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+    },
+    {
+      record_id: 'accommodation:residence:placeholder-residence-b',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title B',
+      url: 'https://example.invalid/placeholder-residence-b',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_compare_items',
+};
+
+/**
+ * A live-vacancy question with a real `actions` entry, per
+ * `test_current_availability_is_partial_unknown_with_official_next_action`:
+ * `insufficient_evidence` + `answer_state: "UNKNOWN"` + one `application`
+ * action built only from a stored `application_url` — never scraped from
+ * `answer` prose (the prose still names the link in words, exactly like the
+ * real fixture above; the App must render the action from `actions[0].url`,
+ * never by parsing that sentence).
+ */
+export const insufficientAccommodationVacancyWithActionResponse: AskResponse = {
+  status: 'insufficient_evidence',
+  answer:
+    'Placeholder vacancy answer. A null vacancy status means unknown, not available or unavailable. Placeholder residence A: current live vacancy is not present in stored approved evidence. Published application link: https://example.invalid/placeholder-apply.',
+  answer_state: 'UNKNOWN',
+  actions: [
+    {
+      type: 'application',
+      label: 'Apply now',
+      url: 'https://example.invalid/placeholder-apply',
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+    },
+  ],
+  items: [],
+  sources: [
+    {
+      record_id: 'accommodation:residence:placeholder-residence-a',
+      source_id: 'accommodation_anu_study',
+      title: 'Placeholder residence record title A',
+      url: 'https://example.invalid/placeholder-residence-a',
+      domain: 'accommodation',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_accommodation_vacancy_unknown_with_action',
 };
 
 /** `partial` renders like `ok`; the service's own caveat carries the meaning. */

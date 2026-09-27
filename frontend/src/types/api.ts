@@ -44,6 +44,111 @@ export interface Clarification {
   allow_multiple: boolean;
 }
 
+/**
+ * V7 Day 4 additions (`askanu-rag` PR #38, `carmen/v7-day4-accommodation-vertical`,
+ * tip `3c8e35e` — **not yet merged to `askanu-rag` main**; verified directly
+ * against the branch's `models/contracts.py`/`conversation_state.py` and its
+ * test suite, not just a relayed description). All of it lives at the top
+ * level of the envelope, alongside `conversation_state` — none of it is
+ * nested inside the opaque state, which stays exactly as opaque as before.
+ */
+export type AnswerState = 'CONFIRMED' | 'DERIVED' | 'PARTIAL' | 'UNKNOWN';
+
+/**
+ * A validated backend action. Only ever built from a stored, model-validated
+ * `application_url` — never synthesized from `answer` prose or user text.
+ * `url` is still checked with `isSafeHttpUrl` at render time like every other
+ * stored URL in this app; the contract's own validation is not trusted blindly.
+ */
+export interface ResponseAction {
+  type: 'application';
+  label: string;
+  url: string;
+  record_id: string;
+  source_id: string;
+}
+
+/**
+ * Server-authored metadata for one stable ResultSet presentation page.
+ * `next_ordinal` is `null` exactly when `has_more` is `false`.
+ */
+export interface ResultPage {
+  result_set_id: string;
+  start_ordinal: number;
+  returned: number;
+  has_more: boolean;
+  next_ordinal: number | null;
+}
+
+/**
+ * One named room whose published weekly rate proved a numeric price match.
+ * Proves only that exact room passed the active bound — never that the room
+ * or residence is affordable overall, cheapest, vacant, or obtainable.
+ */
+export interface PublicRoomRateEvidence {
+  type: 'room_rate';
+  room_name: string;
+  rate: string;
+  cost_period: string;
+  contract: string | null;
+  inclusions: string | null;
+  other_fees: string | null;
+}
+
+/** The 7 fixed field keys `PublicResultItem.fields` may carry, each optional. */
+export type PublicFieldValue = string | string[] | null;
+
+/**
+ * A reusable ordered result card backed by one approved stored record.
+ * Discriminated from `PublicComparisonItem`/`PublicJobItem` by `type`.
+ */
+export interface PublicResultItem {
+  type: 'result';
+  record_id: string;
+  source_id: string;
+  canonical_id: string;
+  title: string;
+  url: string;
+  domain: string;
+  result_set_id: string | null;
+  /** 1-based backend position in the retained ResultSet's ordering. */
+  ordinal: number | null;
+  fields: Record<string, PublicFieldValue>;
+  qualifying_evidence: PublicRoomRateEvidence | null;
+}
+
+export interface PublicComparisonValue {
+  record_id: string;
+  value: PublicFieldValue;
+  state: 'published' | 'not_published';
+}
+
+export interface PublicComparisonField {
+  name: string;
+  label: string;
+  values: PublicComparisonValue[];
+}
+
+/**
+ * Backend-authored comparison. The client renders these rows directly and
+ * never reconstructs a comparison from answer prose or infers a missing cell.
+ * `records[].fields` is always `{}` on a comparison item — per-record display
+ * fields are not repeated here.
+ */
+export interface PublicComparisonItem {
+  type: 'comparison';
+  result_set_id: string | null;
+  records: PublicResultItem[];
+  fields: PublicComparisonField[];
+}
+
+/**
+ * Today's Jobs item DTO plus one purely-additive discriminator field. Every
+ * existing `JobItem` field is unchanged; `parseJobItem` (`resources/listResponse.ts`)
+ * destructures named fields only, so this needs no parsing change there.
+ */
+export type PublicJobItem = JobItem & { type: 'job' };
+
 export interface AskResponse {
   status: AskStatus;
   answer: string;
@@ -59,6 +164,22 @@ export interface AskResponse {
    * state held" rather than treating it as a parse failure.
    */
   conversation_state?: OpaqueConversationState;
+  /**
+   * V7 Day 4 (PR #38, unmerged): always populated for an Accommodation
+   * response, `null`/absent for a domain PR #38 does not touch yet.
+   */
+  answer_state?: AnswerState | null;
+  /**
+   * V7 Day 4 (PR #38, unmerged): empty/absent when no validated action
+   * applies. Optional here (rather than required) so the many existing
+   * pre-#38 `AskResponse` fixtures don't all need a mechanical `actions: []`
+   * added — `askResponse.ts` still normalizes an absent wire field to `[]`
+   * for a real parsed response, and the one production reader treats
+   * `undefined` the same as `[]`.
+   */
+  actions?: ResponseAction[];
+  /** V7 Day 4 (PR #38, unmerged): present for a discovery or continuation page. */
+  result_page?: ResultPage | null;
 }
 
 export type TurnRole = 'user' | 'assistant';
@@ -91,10 +212,50 @@ export type OpaqueConversationState = unknown;
 
 export type ConversationState = LegacyConversationState | OpaqueConversationState;
 
+/**
+ * The untrusted clicked-result identity, revalidated by RAG before use.
+ * Must exactly echo a card's own `resultSetId`/`canonicalId`/`ordinal` —
+ * never a title, never a locally-computed index.
+ */
+export interface SelectedResultRequest {
+  result_set_id: string;
+  canonical_id: string;
+  ordinal: number;
+}
+
+/**
+ * Structured clarification answer: exact backend option ids, never labels.
+ * When present, RAG bypasses free-text re-parsing of `question` entirely for
+ * resolving the selection.
+ */
+export interface ClarificationSelectionRequest {
+  clarification_id: string;
+  option_ids: string[];
+}
+
+/**
+ * A bounded presentation request over one retained ResultSet. Must equal the
+ * server's own retained cursor (`start_ordinal` = the last response's
+ * `result_page.next_ordinal`) or RAG rejects it.
+ */
+export interface ResultPageRequest {
+  result_set_id: string;
+  start_ordinal: number;
+  limit: number;
+}
+
 export interface AskRequest {
   question: string;
   history: HistoryTurn[];
   conversation_state: ConversationState;
+  /**
+   * V7 Day 4 (`askanu-rag` PR #38, unmerged): independently optional siblings
+   * of `conversation_state`, never nested inside it. Omitting all three is
+   * exactly today's request shape.
+   */
+  selected_result?: SelectedResultRequest;
+  clarification_selection?: ClarificationSelectionRequest;
+  result_page?: ResultPageRequest;
 }
 
 /*

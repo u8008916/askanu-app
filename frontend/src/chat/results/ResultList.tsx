@@ -1,4 +1,5 @@
 import { useId, useState } from 'react';
+import type { ResultPage, ResultPageRequest } from '../../types/api';
 import { ExternalLinkIcon } from '../../ui/Icon';
 import { isSafeHttpUrl } from '../../util/safeUrl';
 import type { ResultCardModel, ResultSelection } from './resultItems';
@@ -56,6 +57,21 @@ function ResultCard({
           </div>
         ))}
       </dl>
+      {/*
+        V7 Day 4: the one named room whose published rate satisfied an active
+        price constraint. Deliberately muted, not a "confirmed"/positive
+        badge — it proves only that one room, never affordability, cheapest,
+        vacancy or obtainability for the residence as a whole.
+      */}
+      {card.qualifyingEvidence && (
+        <p className={styles.qualifyingEvidence}>
+          Matched room: {card.qualifyingEvidence.roomName} —{' '}
+          {card.qualifyingEvidence.rate} ({card.qualifyingEvidence.costPeriod})
+          {card.qualifyingEvidence.contract && `, ${card.qualifyingEvidence.contract}`}
+          {card.qualifyingEvidence.inclusions && `, ${card.qualifyingEvidence.inclusions}`}
+          {card.qualifyingEvidence.otherFees && `, ${card.qualifyingEvidence.otherFees}`}
+        </p>
+      )}
       {onSelect && (
         <button
           className={styles.cardAction}
@@ -76,26 +92,48 @@ function ResultCard({
 interface ResultListProps {
   cards: ResultCardModel[];
   /**
-   * Selected-result action. Omitted in production until the ask request can
-   * carry a selected identity to RAG (Day 3 contract gap G1) — the button is
+   * Selected-result action. Omitted for a domain the ask request has no
+   * field to carry a selected identity for yet (Jobs/Events) — the button is
    * not rendered at all rather than faked with a title-text prefill.
    */
   onSelect?: (selection: ResultSelection) => void;
+  /**
+   * V7 Day 4: server-authored paging metadata for this exact response. When
+   * provided, it fully replaces the local reveal toggle below — "Show more"
+   * requests the next page from the server instead of revealing already-sent
+   * cards. Omitted (Jobs/Events, which never carry `result_page`) keeps
+   * today's local-reveal behaviour byte-for-byte, locked by
+   * `tests/v7Day3Results.test.tsx`.
+   */
+  resultPage?: ResultPage;
+  onShowMorePage?: (page: ResultPageRequest) => void;
 }
 
 /**
  * The one shared, bounded, backend-ordered result list for every domain.
  *
  * Order is `cards` order — which is `items` order — and nothing here sorts,
- * filters or reranks. "Show more" only reveals the rest in place; a card's
- * number is its backend position whether or not earlier cards are visible.
+ * filters or reranks. Without `resultPage`, "Show more" only reveals the rest
+ * in place; a card's number is its backend position whether or not earlier
+ * cards are visible. With `resultPage`, "Show more" requests the next page —
+ * the caller renders that page as a new turn (see `AssistantTurn`).
  */
-export function ResultList({ cards, onSelect }: ResultListProps) {
+export function ResultList({
+  cards,
+  onSelect,
+  resultPage,
+  onShowMorePage,
+}: ResultListProps) {
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
-  const hiddenCount = Math.max(0, cards.length - INITIAL_VISIBLE_RESULTS);
-  const visible = expanded ? cards : cards.slice(0, INITIAL_VISIBLE_RESULTS);
+  const paged = resultPage !== undefined;
+  const hiddenCount = paged ? 0 : Math.max(0, cards.length - INITIAL_VISIBLE_RESULTS);
+  const visible = paged || expanded ? cards : cards.slice(0, INITIAL_VISIBLE_RESULTS);
   const noun = cards.length === 1 ? 'result' : 'results';
+  // A contract inconsistency (`has_more` true but no `next_ordinal`) never
+  // crashes — it just means no further page can be requested.
+  const canShowMorePage =
+    paged && resultPage.has_more && resultPage.next_ordinal !== null;
 
   return (
     <section className={styles.root}>
@@ -112,7 +150,7 @@ export function ResultList({ cards, onSelect }: ResultListProps) {
           />
         ))}
       </ol>
-      {hiddenCount > 0 && (
+      {!paged && hiddenCount > 0 && (
         <button
           aria-controls={listId}
           aria-expanded={expanded}
@@ -121,6 +159,21 @@ export function ResultList({ cards, onSelect }: ResultListProps) {
           type="button"
         >
           {expanded ? 'Show fewer' : `Show ${hiddenCount} more`}
+        </button>
+      )}
+      {canShowMorePage && onShowMorePage && resultPage.next_ordinal !== null && (
+        <button
+          className={styles.showMore}
+          onClick={() =>
+            onShowMorePage({
+              result_set_id: resultPage.result_set_id,
+              start_ordinal: resultPage.next_ordinal as number,
+              limit: 5,
+            })
+          }
+          type="button"
+        >
+          Show more
         </button>
       )}
     </section>

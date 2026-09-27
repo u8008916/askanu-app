@@ -4,6 +4,11 @@ import { ClearChatButton } from '../layout/ClearChatButton';
 import { ThemeToggle } from '../layout/ThemeToggle';
 import { ResourceCards } from '../resources/ResourceCards';
 import type { ResolvedTheme } from '../theme/useTheme';
+import type {
+  ClarificationSelectionRequest,
+  ResultPageRequest,
+  SelectedResultRequest,
+} from '../types/api';
 import type { ChatTurn } from './useChatSession';
 import { AssistantTurn } from './AssistantTurn';
 import { Composer } from './Composer';
@@ -26,7 +31,14 @@ interface ChatPanelProps {
   /** Changes when something outside the chat asks the composer to focus. */
   focusComposerSignal: number;
   /** A clarification option was chosen: put its text in the composer. */
-  onSelectClarification: (text: string) => void;
+  onSelectClarification: (text: string, selection: ClarificationSelectionRequest) => void;
+  /** V7 Day 4: a card's "Ask about this" was clicked. */
+  onSelectResult: (payload: {
+    prefillText: string;
+    selectedResult: SelectedResultRequest;
+  }) => void;
+  /** V7 Day 4: "Show more" on a server-paged result list was clicked. */
+  onRequestMorePage: (page: ResultPageRequest) => void;
 }
 
 const DISCLAIMER =
@@ -34,7 +46,9 @@ const DISCLAIMER =
 
 function renderTurn(
   turn: ChatTurn,
-  onSelectClarification: (text: string) => void,
+  onSelectClarification: ChatPanelProps['onSelectClarification'],
+  onSelectResult: ChatPanelProps['onSelectResult'],
+  onRequestMorePage: ChatPanelProps['onRequestMorePage'],
   activeClarificationTurnId: string | undefined,
 ) {
   switch (turn.kind) {
@@ -47,7 +61,9 @@ function renderTurn(
         <AssistantTurn
           isClarificationActive={turn.id === activeClarificationTurnId}
           key={turn.id}
+          onRequestMorePage={onRequestMorePage}
           onSelectClarification={onSelectClarification}
+          onSelectResult={onSelectResult}
           response={turn.response}
         />
       );
@@ -98,6 +114,8 @@ export function ChatPanel({
   onDraftChange,
   focusComposerSignal,
   onSelectClarification,
+  onSelectResult,
+  onRequestMorePage,
 }: ChatPanelProps) {
   const isEmpty = turns.length === 0;
   const activeClarificationTurnId = findActiveClarificationTurnId(turns);
@@ -148,7 +166,13 @@ export function ChatPanel({
         ) : (
           <ul aria-label="Conversation" className={styles.turns}>
             {turns.map((turn) =>
-              renderTurn(turn, onSelectClarification, activeClarificationTurnId),
+              renderTurn(
+                turn,
+                onSelectClarification,
+                onSelectResult,
+                onRequestMorePage,
+                activeClarificationTurnId,
+              ),
             )}
           </ul>
         )}

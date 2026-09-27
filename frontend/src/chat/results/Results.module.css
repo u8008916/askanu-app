@@ -125,6 +125,16 @@
   font-style: italic;
 }
 
+/*
+ * The one named room whose published rate satisfied a price constraint.
+ * Deliberately muted, not a positive/confirmed badge — see resultItems.ts.
+ */
+.qualifyingEvidence {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  margin: 0;
+}
+
 .cardAction,
 .showMore {
   align-self: flex-start;

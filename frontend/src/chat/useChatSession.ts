@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HISTORY_MAX_TURNS } from '../types/api';
-import type { AskRequest, AskResponse, Clarification, HistoryTurn } from '../types/api';
+import type {
+  AskRequest,
+  AskResponse,
+  Clarification,
+  ClarificationSelectionRequest,
+  HistoryTurn,
+  ResultPageRequest,
+  SelectedResultRequest,
+} from '../types/api';
 import { askTransport } from './askTransport';
 import type { AskTransport } from './askTransport';
 import {
@@ -21,6 +29,18 @@ export type ChatTurn =
   | { kind: 'user'; id: string; content: string }
   | { kind: 'pending'; id: string }
   | { kind: 'assistant'; id: string; response: AskResponse };
+
+/**
+ * V7 Day 4 (`askanu-rag` PR #38, not yet merged): the structured payload a
+ * caller may attach to one specific `sendMessage` call. Each field is
+ * independently optional and becomes a top-level `AskRequest` sibling of
+ * `conversation_state`, never nested inside it.
+ */
+export interface StructuredTurnRequest {
+  selectedResult?: SelectedResultRequest;
+  clarificationSelection?: ClarificationSelectionRequest;
+  resultPage?: ResultPageRequest;
+}
 
 let turnCounter = 0;
 
@@ -109,7 +129,7 @@ export function useChatSession(transport: AskTransport = askTransport) {
   );
 
   const sendMessage = useCallback(
-    async (rawText: string) => {
+    async (rawText: string, structured?: StructuredTurnRequest) => {
       const content = rawText.trim();
       // One question at a time: the contract's history model cannot represent
       // two overlapping requests.
@@ -124,6 +144,19 @@ export function useChatSession(transport: AskTransport = askTransport) {
           sessionStateRef.current,
           pendingClarification,
         ),
+        /*
+         * V7 Day 4 (`askanu-rag` PR #38, not yet merged): each of these is an
+         * independently optional sibling of `conversation_state`, never
+         * nested inside it. Omitting all three (the default, `structured`
+         * undefined) is exactly today's request shape.
+         */
+        ...(structured?.selectedResult && {
+          selected_result: structured.selectedResult,
+        }),
+        ...(structured?.clarificationSelection && {
+          clarification_selection: structured.clarificationSelection,
+        }),
+        ...(structured?.resultPage && { result_page: structured.resultPage }),
       };
 
       const pendingId = nextTurnId();

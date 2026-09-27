@@ -1,8 +1,17 @@
 import { useId, useState } from 'react';
-import type { AskResponse, Clarification } from '../types/api';
+import type {
+  AskResponse,
+  Clarification,
+  ClarificationSelectionRequest,
+  ResultPageRequest,
+  SelectedResultRequest,
+} from '../types/api';
 import { AnswerBody } from './AnswerBody';
+import { ResponseActions } from './ResponseActions';
+import { ComparisonTable } from './results/ComparisonTable';
 import { ResultList } from './results/ResultList';
-import { toResultCards } from './results/resultItems';
+import type { ResultSelection } from './results/resultItems';
+import { toComparisonModel, toResultCards } from './results/resultItems';
 import { SourceCards } from './SourceCards';
 import { StatusNotice } from './StatusNotice';
 import type { NoticeStatus } from './StatusNotice';
@@ -66,6 +75,13 @@ function joinSelection(labels: string[]): string {
  * the wrong turn.
  *
  * Order is significant: it is what `first` and `second` refer to.
+ *
+ * V7 Day 4 (`askanu-rag` PR #38, not yet merged): `onSelect` also carries the
+ * exact backend option ids alongside the human-readable text — `App.tsx`
+ * attaches them to the outgoing `AskRequest` as `clarification_selection`
+ * only if the composer is sent with this exact text unchanged, so RAG can
+ * bypass free-text re-parsing entirely. Ids come from `clarification.options`
+ * in backend order, never from `Set` insertion order.
  */
 function ClarificationOptions({
   clarification,
@@ -73,7 +89,7 @@ function ClarificationOptions({
   active,
 }: {
   clarification: Clarification;
-  onSelect: (text: string) => void;
+  onSelect: (text: string, selection: ClarificationSelectionRequest) => void;
   active: boolean;
 }) {
   const { options, allow_multiple: allowMultiple } = clarification;
@@ -92,9 +108,8 @@ function ClarificationOptions({
     });
   }
 
-  const selectedLabels = options
-    .filter((option) => selected.has(option.id))
-    .map((option) => option.label);
+  const selectedOptions = options.filter((option) => selected.has(option.id));
+  const selectedLabels = selectedOptions.map((option) => option.label);
 
   return (
     <div className={styles.clarification}>
@@ -122,7 +137,12 @@ function ClarificationOptions({
               <button
                 className={`${styles.option} ${!active ? styles.optionDisabled : ''}`}
                 disabled={!active}
-                onClick={() => onSelect(option.label)}
+                onClick={() =>
+                  onSelect(option.label, {
+                    clarification_id: clarification.id,
+                    option_ids: [option.id],
+                  })
+                }
                 type="button"
               >
                 <span aria-hidden="true" className={styles.optionIndex}>
@@ -140,7 +160,12 @@ function ClarificationOptions({
             <button
               className={styles.useSelection}
               disabled={selectedLabels.length === 0}
-              onClick={() => onSelect(joinSelection(selectedLabels))}
+              onClick={() =>
+                onSelect(joinSelection(selectedLabels), {
+                  clarification_id: clarification.id,
+                  option_ids: selectedOptions.map((option) => option.id),
+                })
+              }
               type="button"
             >
               Use selection
@@ -161,9 +186,21 @@ function ClarificationOptions({
 
 interface AssistantTurnProps {
   response: AskResponse;
-  onSelectClarification: (text: string) => void;
+  onSelectClarification: (text: string, selection: ClarificationSelectionRequest) => void;
   /** False once a later response has resolved or replaced this turn's clarification. */
   isClarificationActive: boolean;
+  /**
+   * V7 Day 4: fired when a card's "Ask about this" is clicked, only ever
+   * passed down for a card domain that closed contract gap G1 (Accommodation/
+   * Support today — detected generically by the card carrying a non-null
+   * `resultSetId`/`canonicalId`/`ordinal`, never by a domain name literal).
+   */
+  onSelectResult?: (payload: {
+    prefillText: string;
+    selectedResult: SelectedResultRequest;
+  }) => void;
+  /** V7 Day 4: fired when "Show more" on a server-paged result list is clicked. */
+  onRequestMorePage?: (page: ResultPageRequest) => void;
 }
 
 /**
@@ -178,8 +215,15 @@ interface AssistantTurnProps {
  * list, they render through the one shared `ResultList` in exactly the order
  * RAG sent them (`results/resultItems.ts`). Anything else leaves `items`
  * unrendered and the answer text in charge — the App never builds a list the
- * backend did not send. The selected-result action is not wired here: the ask
- * request has no field to carry a selected identity back to RAG yet.
+ * backend did not send.
+ *
+ * V7 Day 4 (`askanu-rag` PR #38, not yet merged): a single `type:"comparison"`
+ * item renders through the shared `ComparisonTable` instead (never alongside
+ * cards). The selected-result action is now wired, but only for a card that
+ * carries the full `{resultSetId, canonicalId, ordinal}` triple — the ask
+ * request still has no field to carry a selected identity for a domain that
+ * doesn't send one (Jobs/Events), so their cards keep no button, exactly as
+ * before.
  *
  * No timestamp and no `request_id` appear here. A single-session chat does not
  * need them, and `request_id` is an internal identifier students should not be
@@ -195,17 +239,74 @@ export function AssistantTurn({
   response,
   onSelectClarification,
   isClarificationActive,
+  onSelectResult,
+  onRequestMorePage,
 }: AssistantTurnProps) {
-  const { status, answer, sources, clarification, items } = response;
+  const { status, answer, sources, clarification, items, actions = [] } = response;
   const hasAnswer = answer.trim() !== '';
   /*
-   * Result cards come only from the backend's own `items`, and only for an
-   * answered turn: a notice status never grows a result list.
+   * Result cards and a comparison table come only from the backend's own
+   * `items`, and only for an answered turn: a notice status never grows a
+   * result list. The two are mutually exclusive by construction
+   * (`results/resultItems.ts`): a `type:"comparison"` item never becomes a
+   * card, and `toComparisonModel` only succeeds for exactly one such item.
    */
   const cards = isNoticeStatus(status) ? null : toResultCards(items);
+  const comparison = isNoticeStatus(status) ? null : toComparisonModel(items);
   const hasContent =
-    hasAnswer || sources.length > 0 || clarification !== null || cards !== null;
+    hasAnswer ||
+    sources.length > 0 ||
+    clarification !== null ||
+    cards !== null ||
+    comparison !== null;
   const noticeStatus: NoticeStatus = isNoticeStatus(status) ? status : 'error';
+
+  /*
+   * V7 Day 4: eligible only when every card in the list carries the full
+   * `{resultSetId, canonicalId, ordinal}` triple — today that means
+   * Accommodation/Support, never Jobs/Events, and the check is generic
+   * (no domain literal) so it tracks whichever domain the backend closes
+   * contract gap G1 for next.
+   */
+  const selectionEligible =
+    onSelectResult !== undefined &&
+    cards !== null &&
+    cards.length > 0 &&
+    cards.every(
+      (card) =>
+        card.resultSetId !== null && card.canonicalId !== null && card.ordinal !== null,
+    );
+
+  function handleCardSelect(selection: ResultSelection) {
+    const card = cards?.find((candidate) => candidate.recordId === selection.record_id);
+    if (
+      !onSelectResult ||
+      !card ||
+      card.resultSetId === null ||
+      card.canonicalId === null ||
+      card.ordinal === null
+    ) {
+      return;
+    }
+    /*
+     * Identity travels structurally in `selected_result`, independent of the
+     * composer text — RAG resolves it from that field before the domain
+     * logic ever reads `question` (`main.py`'s `_state_with_verified_result_selection`
+     * runs first). A "Tell me more about <title>" prefill is no longer a
+     * "magic wording" shortcut the way it would have been before this
+     * structured field existed (see Day 3 evidence): the text is just a
+     * normal, editable follow-up question, and the student can replace it
+     * with anything — the identity does not depend on what it says.
+     */
+    onSelectResult({
+      prefillText: `Tell me more about ${card.title}`,
+      selectedResult: {
+        result_set_id: card.resultSetId,
+        canonical_id: card.canonicalId,
+        ordinal: card.ordinal,
+      },
+    });
+  }
 
   return (
     <li className={styles.root}>
@@ -227,23 +328,40 @@ export function AssistantTurn({
               envelope carries no sources, which is the usual case here.
             */}
             <SourceCards sources={sources} />
+            {/*
+              V7 Day 4: a validated official action (e.g. "Apply now") can
+              accompany a useful-unknown abstention — never styled as part of
+              the error/no-answer treatment above.
+            */}
+            <ResponseActions actions={actions} />
           </>
         ) : (
           <>
-            {hasAnswer && (cards === null || status === 'partial') && (
+            {hasAnswer &&
+              ((cards === null && comparison === null) || status === 'partial') && (
               /*
                 A `partial` answer's text carries the caveat about what is
-                missing, so it stays in full above any cards.
+                missing, so it stays in full above any cards/comparison.
               */
               <AnswerBody answer={answer} />
             )}
-            {cards !== null && <ResultList cards={cards} />}
-            {hasAnswer && cards !== null && status !== 'partial' && (
+            {cards !== null && (
+              <ResultList
+                cards={cards}
+                onSelect={selectionEligible ? handleCardSelect : undefined}
+                onShowMorePage={onRequestMorePage}
+                resultPage={response.result_page ?? undefined}
+              />
+            )}
+            {comparison !== null && (
+              <ComparisonTable columns={comparison.columns} rows={comparison.rows} />
+            )}
+            {hasAnswer && (cards !== null || comparison !== null) && status !== 'partial' && (
               /*
-                The backend's text for a list answer restates the same records
-                the cards show, one line each. It stays on the page — the
-                backend wrote it — but collapsed, so the turn is not a second
-                wall of text.
+                The backend's text for a list/comparison answer restates the
+                same records shown above, one line each. It stays on the page
+                — the backend wrote it — but collapsed, so the turn is not a
+                second wall of text.
               */
               <details className={styles.answerText}>
                 <summary className={styles.answerTextSummary}>Show as text</summary>
@@ -266,6 +384,7 @@ export function AssistantTurn({
               />
             )}
             <SourceCards sources={sources} />
+            <ResponseActions actions={actions} />
           </>
         )}
       </div>

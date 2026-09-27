@@ -1,8 +1,11 @@
 import type {
+  AnswerState,
   AskResponse,
   AskStatus,
   Clarification,
   ClarificationOption,
+  ResponseAction,
+  ResultPage,
   Source,
 } from '../types/api';
 
@@ -32,6 +35,13 @@ const STATUSES: readonly string[] = [
   'insufficient_evidence',
   'off_topic',
   'error',
+];
+
+const ANSWER_STATES: readonly string[] = [
+  'CONFIRMED',
+  'DERIVED',
+  'PARTIAL',
+  'UNKNOWN',
 ];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -110,6 +120,109 @@ function parseClarification(
   return { id, type, options: parsedOptions, allow_multiple };
 }
 
+/** Distinguishes "the key was absent" from a legitimate parsed `null`. */
+const ABSENT = Symbol('absent');
+
+function parseAction(value: unknown): ResponseAction | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const { type, label, url, record_id, source_id } = value;
+
+  if (
+    type !== 'application' ||
+    !isString(label) ||
+    !isString(url) ||
+    !isString(record_id) ||
+    !isString(source_id)
+  ) {
+    return null;
+  }
+
+  return { type, label, url, record_id, source_id };
+}
+
+/**
+ * `actions` is a required contract field going forward (V7 Day 4), but a
+ * pre-#38 backend or a controlled App-boundary error envelope omits it
+ * entirely — that degrades to `[]` rather than a parse failure, exactly like
+ * `conversation_state` degrading to "no state held" above. A *present but
+ * malformed* entry rejects the whole envelope, the same rule `sources` uses:
+ * an action renders as a clickable call-to-action, so a partly-trusted one
+ * would misrepresent what the backend actually validated.
+ */
+function parseActions(value: unknown): ResponseAction[] | undefined {
+  if (value === undefined) {
+    return [];
+  }
+
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const parsed: ResponseAction[] = [];
+
+  for (const action of value) {
+    const item = parseAction(action);
+
+    if (item === null) {
+      return undefined;
+    }
+
+    parsed.push(item);
+  }
+
+  return parsed;
+}
+
+function parseAnswerState(
+  value: unknown,
+): AnswerState | null | undefined | typeof ABSENT {
+  if (value === undefined) {
+    return ABSENT;
+  }
+
+  if (value === null) {
+    return null;
+  }
+
+  return isString(value) && ANSWER_STATES.includes(value)
+    ? (value as AnswerState)
+    : undefined;
+}
+
+function parseResultPage(
+  value: unknown,
+): ResultPage | null | undefined | typeof ABSENT {
+  if (value === undefined) {
+    return ABSENT;
+  }
+
+  if (value === null) {
+    return null;
+  }
+
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const { result_set_id, start_ordinal, returned, has_more, next_ordinal } =
+    value;
+
+  if (
+    !isString(result_set_id) ||
+    typeof start_ordinal !== 'number' ||
+    typeof returned !== 'number' ||
+    typeof has_more !== 'boolean' ||
+    !(next_ordinal === null || typeof next_ordinal === 'number')
+  ) {
+    return undefined;
+  }
+
+  return { result_set_id, start_ordinal, returned, has_more, next_ordinal };
+}
+
 /** Returns the validated envelope, or `null` when it does not match the contract. */
 export function parseAskResponse(value: unknown): AskResponse | null {
   if (!isRecord(value)) {
@@ -124,6 +237,9 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     clarification,
     request_id,
     conversation_state,
+    answer_state,
+    actions,
+    result_page,
   } = value;
 
   if (!isString(status) || !STATUSES.includes(status)) {
@@ -183,6 +299,30 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     stateField = { conversation_state };
   }
 
+  const parsedActions = parseActions(actions);
+
+  if (parsedActions === undefined) {
+    return null;
+  }
+
+  const parsedAnswerState = parseAnswerState(answer_state);
+
+  if (parsedAnswerState === undefined) {
+    return null;
+  }
+
+  const answerStateField: { answer_state?: AskResponse['answer_state'] } =
+    parsedAnswerState === ABSENT ? {} : { answer_state: parsedAnswerState };
+
+  const parsedResultPage = parseResultPage(result_page);
+
+  if (parsedResultPage === undefined) {
+    return null;
+  }
+
+  const resultPageField: { result_page?: AskResponse['result_page'] } =
+    parsedResultPage === ABSENT ? {} : { result_page: parsedResultPage };
+
   return {
     status: status as AskStatus,
     answer,
@@ -190,6 +330,9 @@ export function parseAskResponse(value: unknown): AskResponse | null {
     sources: parsedSources,
     clarification: parsedClarification,
     request_id,
+    actions: parsedActions,
     ...stateField,
+    ...answerStateField,
+    ...resultPageField,
   };
 }
