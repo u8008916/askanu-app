@@ -152,6 +152,16 @@ export type PublicJobItem = JobItem & { type: 'job' };
 export interface AskResponse {
   status: AskStatus;
   answer: string;
+  /**
+   * Deliberately untyped here. `chat/results/resultItems.ts` is the deep-
+   * validation boundary for this field: every consumer goes through
+   * `toResultCards`/`toComparisonModel`/`parsePublicResultItem`, which
+   * classify by `type`, validate each of the 7 fixed `fields` keys and
+   * `qualifying_evidence`, and reject the whole array on any malformed
+   * entry rather than rendering a partially-trusted item. Do not read this
+   * field directly anywhere else, and do not narrow its type here — that
+   * would let a caller skip the adapter's validation.
+   */
   items: unknown[];
   sources: Source[];
   clarification: Clarification | null;

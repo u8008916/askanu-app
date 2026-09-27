@@ -14,10 +14,13 @@ export const INITIAL_VISIBLE_RESULTS = 5;
 function ResultCard({
   card,
   position,
+  displayNumber,
   onSelect,
 }: {
   card: ResultCardModel;
   position: number;
+  /** The visible card number — the backend ordinal on a paged list, `position` otherwise. */
+  displayNumber: number;
   onSelect?: (selection: ResultSelection) => void;
 }) {
   const linkable = isSafeHttpUrl(card.url);
@@ -26,7 +29,7 @@ function ResultCard({
     <li className={styles.card}>
       <div className={styles.cardHeader}>
         <span aria-hidden="true" className={styles.index}>
-          {position}
+          {displayNumber}
         </span>
         <div className={styles.cardHeading}>
           {linkable ? (
@@ -125,6 +128,11 @@ export function ResultList({
   onShowMorePage,
 }: ResultListProps) {
   const [expanded, setExpanded] = useState(false);
+  // Consumed once this exact page's own "Show more" is clicked, so an older
+  // turn's button cannot be clicked twice — the retained cursor it would
+  // resend has already advanced server-side, and RAG safely 400s a reused
+  // one rather than silently accepting it.
+  const [pageRequested, setPageRequested] = useState(false);
   const listId = useId();
   const paged = resultPage !== undefined;
   const hiddenCount = paged ? 0 : Math.max(0, cards.length - INITIAL_VISIBLE_RESULTS);
@@ -133,7 +141,7 @@ export function ResultList({
   // A contract inconsistency (`has_more` true but no `next_ordinal`) never
   // crashes — it just means no further page can be requested.
   const canShowMorePage =
-    paged && resultPage.has_more && resultPage.next_ordinal !== null;
+    paged && !pageRequested && resultPage.has_more && resultPage.next_ordinal !== null;
 
   return (
     <section className={styles.root}>
@@ -144,6 +152,7 @@ export function ResultList({
         {visible.map((card, index) => (
           <ResultCard
             card={card}
+            displayNumber={paged && card.ordinal !== null ? card.ordinal : index + 1}
             key={card.recordId}
             onSelect={onSelect}
             position={index + 1}
@@ -164,13 +173,14 @@ export function ResultList({
       {canShowMorePage && onShowMorePage && resultPage.next_ordinal !== null && (
         <button
           className={styles.showMore}
-          onClick={() =>
+          onClick={() => {
+            setPageRequested(true);
             onShowMorePage({
               result_set_id: resultPage.result_set_id,
               start_ordinal: resultPage.next_ordinal as number,
               limit: 5,
-            })
-          }
+            });
+          }}
           type="button"
         >
           Show more

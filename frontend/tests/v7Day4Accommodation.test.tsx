@@ -546,10 +546,42 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     expect(
       within(lists[1]).getByText('Placeholder residence record title C'),
     ).toBeInTheDocument();
-    // Page 2 is terminal (has_more: false) — only page 1's button remains.
-    expect(screen.getAllByRole('button', { name: 'Show more' })).toHaveLength(1);
+    // Page 1's own button is consumed once clicked (its retained cursor has
+    // already advanced server-side); page 2 is separately terminal
+    // (`has_more: false`). Either reason is enough — together, no button
+    // remains that could resend a stale cursor and 400.
+    expect(screen.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument();
     // A direct action, not a prefill: the composer was never touched.
     expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue('');
+  });
+
+  it('displays the backend ordinal on a paged list, not the visual index — page 2 shows "3", not "1"', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    setMockScenarioId('ok-accommodation-results');
+    await ask(user, 'Show me accommodation options');
+
+    let firstList: HTMLElement;
+    await waitFor(() => {
+      firstList = screen.getByRole('list', { name: 'Results' });
+      expect(firstList).toBeInTheDocument();
+    });
+    // Page 1: two cards, backend ordinals 1 and 2 — same as the visual index here.
+    expect(within(firstList!).getByText('1')).toBeInTheDocument();
+    expect(within(firstList!).getByText('2')).toBeInTheDocument();
+
+    setMockScenarioId('ok-accommodation-results-page-2');
+    await user.click(screen.getByRole('button', { name: 'Show more' }));
+
+    let lists: HTMLElement[] = [];
+    await waitFor(() => {
+      lists = screen.getAllByRole('list', { name: 'Results' });
+      expect(lists).toHaveLength(2);
+    });
+    // Page 2's one card is backend ordinal 3 (this ResultSet's third result,
+    // continuing from page 1) — it must not renumber back to "1".
+    expect(within(lists[1]).getByText('3')).toBeInTheDocument();
+    expect(within(lists[1]).queryByText('1')).not.toBeInTheDocument();
   });
 
   /*

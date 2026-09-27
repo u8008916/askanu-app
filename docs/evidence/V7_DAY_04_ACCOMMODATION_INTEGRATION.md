@@ -95,8 +95,19 @@ Desktop 800×600, `VITE_USE_MOCK_TRANSPORT=1`:
 
 ## 8. Known accepted edge case
 
-Clicking an older turn's "Show more" after a newer turn already advanced the same `result_set_id`'s cursor server-side will 400 (a generic error turn) — expected and safe, not a client-side bug; noted in code so it isn't "fixed" later with unneeded complexity for a rare, safely-failing case.
+Two *separate* turns that happen to render the same `result_set_id`'s first page (e.g. the same discovery question asked twice in one session) each hold their own `pageRequested` flag: clicking one's "Show more" consumes only that turn's button, so the other turn's now-stale button is still clickable and will 400 if clicked — expected and safe, not a client-side bug. This is the one remaining shape of the class of bug fixed in §10; noted in code so it isn't "fixed" later with unneeded complexity for a rare, safely-failing case.
 
 ## 9. Status
 
 Per Qasim: **do not merge yet** — Day 3 is formally still open on his side (production Course embedding blocked on Gemini API quota), and RAG PR #38 is itself still open/unreviewed as a formal GitHub review. This branch is ready for his independent Day 4 App acceptance once both close.
+
+## 10. Fixes from Qasim's review of `2a7914a` (PR #42 comment, 27 Sep)
+
+Qasim's follow-up review (correctly against `2a7914a`, not the earlier `1161d09`) found one real client-visible bug and requested two smaller changes:
+
+1. **Ordinal display bug (fixed).** `ResultList.tsx`'s `ResultCard` always rendered `index + 1` as the visible card number, so a server-paged page 2 visually renumbered the backend's results back to 1, 2, ... instead of showing their real `card.ordinal` (e.g. 3, per the page-2 mock fixture). The *structured* identity (`selected_result.ordinal`) was never wrong — `AssistantTurn`'s `handleCardSelect` already reads `card.ordinal` off the looked-up card, independent of the rendered index — this was purely a display bug. Fixed by computing a separate `displayNumber` (`card.ordinal` when the list is server-paged and the card has one, `index + 1` otherwise, so non-paged Jobs/Events cards — which never carry an `ordinal` — are unaffected). New regression test: `tests/v7Day4Accommodation.test.tsx` — *"displays the backend ordinal on a paged list, not the visual index — page 2 shows '3', not '1'"* — proves page 2 shows "3", not "1".
+2. **Stale "Show more" button (fixed).** Page 1's own "Show more" button stayed clickable after it had already been used to fetch page 2, and a second click would resend the same (now-superseded) cursor and safely 400. `ResultList` now tracks a local `pageRequested` flag, set on click, that hides that instance's own paged "Show more" button once used — independent of whether the fetched page turned out to be terminal. The existing "Show more" test was updated: it now asserts **no** "Show more" button remains after the click (previously it asserted exactly 1 remained — page 1's — reflecting the pre-fix behavior). §8 above narrows the remaining known-safe edge case to two independent turns sharing one `result_set_id`.
+3. **`items: unknown[]` boundary (documented, no behavior change).** Added an explicit doc comment on `AskResponse.items` (`types/api.ts`) naming `chat/results/resultItems.ts` as the deep-validation boundary and telling future readers not to narrow the type or read the field directly elsewhere. No code change — Qasim accepted the existing architecture on this condition.
+4. **PR description.** Updated to describe the current head (`2a7914a`+ this fix commit) rather than the stale "verify + lock + gaps" wording from before real integration landed.
+
+Fresh counts after these fixes: frontend `npm test` — 29 files, **394 passed**; `tsc --noEmit && vite build` — passed; server `npm test` — 50 passed (unchanged).
