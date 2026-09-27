@@ -595,6 +595,49 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
   });
 
   /*
+   * Qasim (PR #42, 27 Sep): `AskResponse.items` stays `unknown[]` at the
+   * response boundary, with `resultItems.ts` as the deep-validation
+   * boundary (documented in `types/api.ts`). This proves that boundary
+   * actually holds for Day 4's own new fields — a malformed `ordinal` or
+   * `qualifying_evidence` on one item refuses the *whole* list (never a
+   * partially-trusted card), and consequently that item can never produce a
+   * "selected_result"/"clarification_selection" structured action either,
+   * since no card and no "Ask about this" button ever exist for it.
+   */
+  it('a malformed Day 4 item (bad ordinal/qualifying_evidence type) refuses the whole list and renders no card or select action', () => {
+    const validItem = (okAccommodationResultsResponse.items as unknown[])[0];
+    const malformedOrdinalItem = {
+      ...(validItem as Record<string, unknown>),
+      record_id: 'accommodation:residence:malformed-ordinal',
+      canonical_id: 'malformed-ordinal',
+      ordinal: 'six', // contract requires number | null
+    };
+    expect(toResultCards([validItem, malformedOrdinalItem])).toBeNull();
+
+    const malformedEvidenceItem = {
+      ...(validItem as Record<string, unknown>),
+      record_id: 'accommodation:residence:malformed-evidence',
+      canonical_id: 'malformed-evidence',
+      qualifying_evidence: { type: 'room_rate', room_name: 'Standard' }, // missing required rate/cost_period
+    };
+    expect(toResultCards([validItem, malformedEvidenceItem])).toBeNull();
+
+    const onSelectResult = vi.fn();
+    renderTurn(
+      buildResponse({
+        items: [validItem, malformedOrdinalItem],
+        answer: 'Placeholder discovery answer with one malformed item.',
+      }),
+      { onSelectResult },
+    );
+    // The whole card path is refused, so the App falls back to text-only —
+    // never a list with the one well-formed card and the bad one dropped.
+    expect(screen.queryByRole('list', { name: 'Results' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Ask about this/ })).not.toBeInTheDocument();
+    expect(onSelectResult).not.toHaveBeenCalled();
+  });
+
+  /*
    * Hostile strings reach the App through several new surfaces this contract
    * adds: the generic `fields` dict, `qualifying_evidence`, comparison cell
    * values, and an action's `label`. All of it is untrusted stored text and
