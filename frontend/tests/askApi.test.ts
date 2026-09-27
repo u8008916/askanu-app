@@ -242,6 +242,59 @@ describe('askApi response', () => {
     },
   );
 
+  // V7 Day 4 (Qasim, PR #42, 27 Sep): the numeric ResultSet-position fields
+  // were validated with a bare `typeof x === 'number'`, which lets a
+  // fractional, negative, or NaN value through even though the contract
+  // means "a finite integer >= 1" (or >= 0 for `returned`). These prove the
+  // parser rejects the whole envelope rather than silently accepting
+  // malformed backend state — the same strictness every other field here
+  // already uses.
+  it.each([
+    ['a fractional start_ordinal', { start_ordinal: 1.5 }],
+    ['a negative start_ordinal', { start_ordinal: -1 }],
+    ['a NaN start_ordinal', { start_ordinal: Number.NaN }],
+    ['a zero start_ordinal (positions are 1-based)', { start_ordinal: 0 }],
+    ['a negative returned', { returned: -1 }],
+    ['a fractional returned', { returned: 2.5 }],
+    ['a fractional next_ordinal', { next_ordinal: 3.5 }],
+    ['a negative next_ordinal', { next_ordinal: -1 }],
+  ])('throws when result_page has %s', async (_label, override) => {
+    stubFetch(200, {
+      ...OK_ENVELOPE,
+      result_page: {
+        result_set_id: 'rs:test',
+        start_ordinal: 1,
+        returned: 5,
+        has_more: true,
+        next_ordinal: 6,
+        ...override,
+      },
+    });
+    await expect(askApi(request())).rejects.toThrow();
+  });
+
+  it('accepts a well-formed result_page (finite integers, correct bounds)', async () => {
+    stubFetch(200, {
+      ...OK_ENVELOPE,
+      result_page: {
+        result_set_id: 'rs:test',
+        start_ordinal: 1,
+        returned: 0,
+        has_more: false,
+        next_ordinal: null,
+      },
+    });
+    const response = await askApi(request());
+
+    expect(response.result_page).toEqual({
+      result_set_id: 'rs:test',
+      start_ordinal: 1,
+      returned: 0,
+      has_more: false,
+      next_ordinal: null,
+    });
+  });
+
   it('keeps clarification option order', async () => {
     stubFetch(200, {
       status: 'needs_clarification',

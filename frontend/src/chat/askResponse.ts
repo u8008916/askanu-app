@@ -52,6 +52,16 @@ function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
 
+/** A stable ResultSet position (`start_ordinal`/`next_ordinal`): a finite integer >= 1. */
+function isOrdinal(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 1;
+}
+
+/** A count of items actually returned on a page: a finite integer >= 0. */
+function isCount(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+
 function parseSource(value: unknown): Source | null {
   if (!isRecord(value)) {
     return null;
@@ -212,10 +222,10 @@ function parseResultPage(
 
   if (
     !isString(result_set_id) ||
-    typeof start_ordinal !== 'number' ||
-    typeof returned !== 'number' ||
+    !isOrdinal(start_ordinal) ||
+    !isCount(returned) ||
     typeof has_more !== 'boolean' ||
-    !(next_ordinal === null || typeof next_ordinal === 'number')
+    !(next_ordinal === null || isOrdinal(next_ordinal))
   ) {
     return undefined;
   }

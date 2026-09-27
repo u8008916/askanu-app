@@ -111,3 +111,24 @@ Qasim's follow-up review (correctly against `2a7914a`, not the earlier `1161d09`
 4. **PR description.** Updated to describe the current head (`2a7914a` → this fix) rather than the stale "verify + lock + gaps" wording from before real integration landed.
 
 Fresh counts after these fixes: frontend `npm test` — 29 files, **395 passed**; `tsc --noEmit && vite build` — passed; server `npm test` — 50 passed (unchanged); `git diff --check` — clean.
+
+## 11. Numeric hardening from Qasim's re-review of `34ca201` (PR #42 comment, 27 Sep)
+
+Qasim confirmed §10's three fixes hold at `34ca201` and raised one further hardening point, explicitly framed as not a D4 hold: `parsePublicResultItem`'s `ordinal` and `parseResultPage`'s `start_ordinal`/`returned`/`next_ordinal` were each validated with a bare `typeof x === 'number'`, which lets `1.5`, `-1`, or `NaN` through even though §10 now documents these parsers as the deep-validation boundary for the contract they claim to enforce.
+
+Verified directly against `askResponse.ts`/`resultItems.ts` — the claim held exactly as described.
+
+Fixed with two small local predicates (`isOrdinal`: finite integer >= 1; `isCount`: finite integer >= 0 — added once in each file, matching the existing per-file `isString`/`isRecord` convention rather than introducing a new shared module):
+
+- `ordinal` on a `PublicResultItem` now requires `isOrdinal` (was: any `number`).
+- `result_page.start_ordinal`/`next_ordinal` now require `isOrdinal`; `returned` now requires `isCount`.
+
+Deliberately **not** done, per Qasim's own framing ("not to duplicate all of RAG's business logic in the frontend"): no cross-field "impossible combination" checks (e.g. `has_more: true` with `next_ordinal: null` stays a tolerated, safely-degrading inconsistency at render time, unchanged from before) — RAG's own schema is the source of truth for that; the App boundary now matches the specific numeric invariants Qasim named, nothing broader.
+
+New regression coverage:
+- `tests/askApi.test.ts` — `it.each` over fractional/negative/NaN/zero `start_ordinal`, negative/fractional `returned`, and fractional/negative `next_ordinal`, each asserting the whole envelope is rejected; one positive case confirming a well-formed `result_page` still parses.
+- `tests/v7Day4Accommodation.test.tsx` — `it.each` over fractional/negative/NaN/zero `ordinal` on a `PublicResultItem`, each asserting `toResultCards` returns `null`.
+
+Fresh counts at this round: frontend `npm test` — 29 files, **408 passed**; `tsc --noEmit && vite build` — passed; server `npm test` — 50 passed (unchanged); `git diff --check` — clean.
+
+Per Qasim: still no merge — parked until Day 3 closes and the final RAG Day 4 base is fixed, then independent Day 4 App acceptance.

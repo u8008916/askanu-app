@@ -126,6 +126,11 @@ function isNullableString(value: unknown): value is string | null {
   return value === null || typeof value === 'string';
 }
 
+/** A stable ResultSet position: a finite integer >= 1, matching `askResponse.ts`'s `isOrdinal`. */
+function isOrdinal(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 1;
+}
+
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(isString);
 }
@@ -283,7 +288,7 @@ function parsePublicResultItem(value: unknown): PublicResultItem | null {
     return null;
   }
 
-  if (!(ordinal === null || ordinal === undefined || typeof ordinal === 'number')) {
+  if (!(ordinal === null || ordinal === undefined || isOrdinal(ordinal))) {
     return null;
   }
 

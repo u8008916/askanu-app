@@ -637,6 +637,25 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     expect(onSelectResult).not.toHaveBeenCalled();
   });
 
+  // Qasim's follow-up (PR #42, 27 Sep): `ordinal` was checked with a bare
+  // `typeof ordinal === 'number'`, which let a fractional, negative, or NaN
+  // value through. A ResultSet position is a finite integer >= 1.
+  it.each([
+    ['fractional', 1.5],
+    ['negative', -1],
+    ['NaN', Number.NaN],
+    ['zero (positions are 1-based)', 0],
+  ])('refuses a %s ordinal on a PublicResultItem', (_label, badOrdinal) => {
+    const validItem = (okAccommodationResultsResponse.items as unknown[])[0];
+    const item = {
+      ...(validItem as Record<string, unknown>),
+      record_id: 'accommodation:residence:bad-ordinal',
+      canonical_id: 'bad-ordinal',
+      ordinal: badOrdinal,
+    };
+    expect(toResultCards([item])).toBeNull();
+  });
+
   /*
    * Hostile strings reach the App through several new surfaces this contract
    * adds: the generic `fields` dict, `qualifying_evidence`, comparison cell
