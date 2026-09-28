@@ -91,7 +91,7 @@ No `server/` change, no `askanu-rag` change, and no request-size or `conversatio
 
 ## 4. Day 5 backend-gap matrix
 
-Qasim's Day 5 checkpoint list, checked against the `d349e88` wire. "Producer has it" means the stored record model (`models/records.py` `CourseMetadata`/`ScholarshipMetadata` at `d349e88`) already holds the fact, so the gap is in what RAG exposes publicly (Carmen/API), not in Will's data.
+Qasim's Day 5 checkpoint list, checked against the `d349e88` wire. "Producer has it" means the stored record model (`models/records.py` `CourseMetadata`/`ScholarshipMetadata` at `d349e88`) has a field for the fact where the source provides it. For those rows the gap is in what RAG exposes publicly (Carmen/API). This column says nothing about source completeness or producer release-readiness, which is Will's evidence gate (see the note below the table).
 
 | # | Day 5 experience | Supported on `d349e88` wire? | What's missing | Producer has it? | Owner |
 |---|---|---|---|---|---|
@@ -107,11 +107,41 @@ Qasim's Day 5 checkpoint list, checked against the `d349e88` wire. "Producer has
 | D5-G10 | Scholarship continuation ("Any more?") | **No** `result_page` for Scholarships (Accommodation only, `main.py:301`); up to 20 records all go into one prose answer | server-cursor paging for Scholarship result sets, if product wants it | n/a | Carmen |
 | D5-G11 | RESULTS / EMPTY / INCOMPLETE status (old G3) | **No** result-status field anywhere on the wire; "no scholarship match" arrives as `insufficient_evidence` | a public result-status semantic, so an empty result can be told apart from unknown | n/a | Carmen |
 
-Nothing in this matrix is a Will/producer gap: every missing fact already exists in the stored records. The App will not emulate any of these rows. Until Carmen publishes a contract, each row renders as the backend's prose, sources and clarification, exactly as locked in §3.
+**Ownership note (wording corrected 28 Sep, per Qasim's review):**
 
-## 5. Browser and accessibility evidence
+- **No missing scraper field is behind any gap.** No currently identified D5 public-wire gap is caused by a missing scraper field required for the planned UI.
+- **Record fields are already represented.** The source-backed record fields needed for the proposed summaries and cards are already represented where the source provides them.
+- **The remaining semantics are RAG-owned.** ResultSet, comparison, uncertainty (matched vs unknown criteria), selection, continuation and result-status semantics are RAG/product semantics, not producer facts, and they remain RAG-owned.
+- **Compatibility still needs a cross-check.** Final producer/consumer compatibility still requires Will and Carmen to cross-check at the published Day 5 SHA.
 
-Dev server with mock transport (`VITE_USE_MOCK_TRANSPORT=1` in a git-ignored env file, deleted afterwards). The browser pane couldn't draw, so there are no screenshots. Evidence comes from DOM/text inspection of the running app.
+These rows are **App wire gaps**, not scraper gaps. This document does not claim the Scholarship producer/source side is release-ready. At the time of writing, Will's Day 7 producer posture records:
+
+| Domain | Producer posture |
+|---|---|
+| Courses | GREEN |
+| Accommodation | GREEN |
+| Support | GREEN |
+| Scholarships | BLOCKED, on a documented external-canonical redirect |
+| Jobs | FALLBACK_LAST_KNOWN_GOOD; exhaustive queries INCOMPLETE_POPULATION |
+| Events | BLOCKED, on official-snapshot reconciliation and Rubric request-contract/live-denominator evidence |
+
+Final source/canonical acceptance stays with Will's evidence gate.
+
+The App will not emulate any of these rows. Until Carmen publishes a contract, each row renders as the backend's prose, sources and clarification, exactly as locked in §3. Once her Day 5 SHA exists, each row gets re-marked CLOSED / PARTIAL / STILL OPEN / CONTRACT CHANGED against it.
+
+## 5. DOM/layout/browser-runtime verification (screenshots unavailable)
+
+**This is not full visual/browser acceptance.** The browser pane couldn't draw, so there are no screenshots. Evidence comes from DOM/text inspection and layout measurement of the running app.
+
+Proper visual browser acceptance is still owed once the real Day 5 integration exists, especially for:
+
+- Course summary
+- Scholarship cards
+- comparison
+- UNKNOWN/PARTIAL messaging
+- mobile
+
+Setup: dev server with mock transport (`VITE_USE_MOCK_TRANSPORT=1` in a git-ignored env file, deleted afterwards).
 
 - **Desktop journey (1280×720), one conversation:**
   1. Course fact → concise answer + "Sources (1)".
@@ -130,7 +160,10 @@ Dev server with mock transport (`VITE_USE_MOCK_TRANSPORT=1` in a git-ignored env
   - Result cards (Accommodation) keep their contextual "Ask about this: <title>" name.
   - Unknown states use the neutral notice, never `role="alert"`.
   - A non-Accommodation card no longer leaves an empty `<dl>` for screen readers.
-- **Console:** no React warnings. The only errors are the sidebar's `/api/v1/jobs/current` and `/api/v1/events/upcoming` failing with no local RAG server. That's pre-existing and unrelated to Day 5.
+- **Console:** no React warnings.
+  - The only errors are the sidebar's `/api/v1/jobs/current` and `/api/v1/events/upcoming` failing because no local RAG server was running.
+  - These are recorded as **environment/local-backend errors, not a Day 5 regression**. They're pre-existing and unrelated to the Day 5 change.
+  - Final Day 7 browser acceptance needs an integrated environment where these sidebar calls succeed.
 
 ## 6. Verification
 
@@ -144,11 +177,24 @@ Dev server with mock transport (`VITE_USE_MOCK_TRANSPORT=1` in a git-ignored env
 | Server: `npm test` | 50 passed, 0 failed |
 | `git diff --check` | clean |
 
+No GitHub workflow run is attached to this branch, so these are **local engineering evidence, not CI evidence**.
+
 ## 7. Status
 
-- The `ben/v7-day5` branch is ready for Carmen's Day 5 SHA.
-- The real Course/Scholarship semantic integration (D5-G2 to D5-G11) stays gated on her published contract. When it lands:
-  1. diff the public wire against `d349e88`;
-  2. add frozen per-domain field labels only from that contract;
-  3. integrate from that exact SHA.
-- PR #42 (Day 4) is untouched and still on merge HOLD.
+Qasim's review of `388faef` (28 Sep):
+
+- **D5 App pre-contract checkpoint: PASS.** Only the §4 ownership wording, the §5 evidence scope and the console note were corrected, docs-only.
+- **D5 App production semantic integration: HOLD.** It's waiting for Carmen's exact Day 5 RAG SHA; no `carmen/v7-day5` branch or Day 5 PR exists yet.
+- **No further speculative Day 5 feature work.** That means no invented Course/Scholarship item types, field labels, discriminators, result-status enum, local ResultSet IDs/ordinals, Scholarship paging, comparison logic, or parsing of prose/dates/eligibility.
+- **No Day 5 App PR is opened** until real integration exists.
+- **PR #42 (Day 4):** untouched and still on merge HOLD.
+
+When Carmen publishes Day 5:
+
+1. Send Qasim the exact SHA **before** implementing against it.
+2. Confirm it descends from `d349e88`, or document exactly how it was stacked.
+3. Diff the public wire from `d349e88` to Carmen's D5 SHA: contracts, request/response fields, the `PublicItem` union, domain fields, comparison, answer/result states, paging, selected-result support and clarification.
+4. Re-mark D5-G1 to G11 as CLOSED / PARTIAL / STILL OPEN / CONTRACT CHANGED.
+5. Integrate only the published semantics.
+6. Re-run the D4 Accommodation and D5 Course/Scholarship regressions plus the full suites.
+7. Do real visual browser acceptance (desktop, ~375px, screenshots, keyboard/focus) using the Course and Scholarship journeys in Qasim's review §23.
