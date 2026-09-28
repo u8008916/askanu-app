@@ -1311,3 +1311,170 @@ export const hostileStringsResponse: AskResponse = {
   clarification: null,
   request_id: 'req_mock_hostile',
 };
+
+/*
+ * V7 Day 5 — Courses + Scholarships, locked to the real `askanu-rag` wire at
+ * `d349e88` (Carmen's final Day 4 head; no Day 5 RAG contract published yet).
+ *
+ * At that SHA, Course and Scholarship answers are prose + sources (+ a
+ * clarification) only: no `items`, no public `answer_state`, no `actions`, no
+ * `result_page`. Envelope shapes, identity formats (`courses:course:<CODE>_<YEAR>`,
+ * `scholarships:scholarship:<slug>`, `source_id`s), clarification ids/types
+ * and the fixed answer templates below are transcribed from
+ * `course_queries.py`/`scholarship_queries.py` and their tests at that SHA.
+ * Titles, values and dates are placeholders, never real ANU facts.
+ */
+
+/** Course prerequisite lookup (`course_queries.py`): one answer, one source. */
+export const okCourseFactResponse: AskResponse = {
+  status: 'ok',
+  answer: 'Placeholder course fact answer. PLAC1110 (2026) prerequisites: placeholder text.',
+  items: [],
+  sources: [
+    {
+      record_id: 'courses:course:PLAC1110_2026',
+      source_id: 'courses_programs_and_courses',
+      title: 'Placeholder course record title',
+      url: 'https://example.invalid/placeholder-course',
+      domain: 'courses',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_course_fact',
+};
+
+/**
+ * Course code stored for more than one academic year (`course_queries.py`):
+ * `entity_selection`, option id = the exact stored `record_id`.
+ */
+export const needsCourseYearClarificationResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Which academic year do you mean for PLAC1110?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-course-plac1110-academic-year',
+    type: 'entity_selection',
+    options: [
+      { id: 'courses:course:PLAC1110_2025', label: 'PLAC1110 (2025)' },
+      { id: 'courses:course:PLAC1110_2026', label: 'PLAC1110 (2026)' },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_course_year_clarification',
+};
+
+/** The stored Course record does not establish the requested fact: UNKNOWN, not "none". */
+export const insufficientCoursePrerequisitesResponse: AskResponse = {
+  status: 'insufficient_evidence',
+  answer:
+    'The stored evidence for PLAC1110 (2026) does not establish its prerequisites.',
+  items: [],
+  sources: [
+    {
+      record_id: 'courses:course:PLAC1110_2026',
+      source_id: 'courses_programs_and_courses',
+      title: 'Placeholder course record title',
+      url: 'https://example.invalid/placeholder-course',
+      domain: 'courses',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_course_insufficient',
+};
+
+/**
+ * Scholarship metadata-filter discovery (`scholarship_queries._answer`): one
+ * prose section per record, no `items`. The raw stored `Closing date` string
+ * is inside the backend's prose — the App cannot and does not reformat it.
+ */
+export const okScholarshipDiscoveryResponse: AskResponse = {
+  status: 'ok',
+  answer: [
+    'Placeholder scholarship A. Official status: open; Study level: Undergraduate; Area of study: Computing; Value: placeholder value; Closing date: 2099-10-31',
+    'Placeholder scholarship B. Official status: open; Study level: Undergraduate; Value: placeholder value',
+  ].join('\n\n'),
+  items: [],
+  sources: [
+    {
+      record_id: 'scholarships:scholarship:placeholder-scholarship-a',
+      source_id: 'scholarships_anu_finder',
+      title: 'Placeholder scholarship A',
+      url: 'https://example.invalid/placeholder-scholarship-a',
+      domain: 'scholarships',
+    },
+    {
+      record_id: 'scholarships:scholarship:placeholder-scholarship-b',
+      source_id: 'scholarships_anu_finder',
+      title: 'Placeholder scholarship B',
+      url: 'https://example.invalid/placeholder-scholarship-b',
+      domain: 'scholarships',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_scholarship_discovery',
+};
+
+/**
+ * An "am I eligible?" question: RAG prefixes its fixed non-determination
+ * sentence and shows official requirements only. Still `status: ok` with no
+ * eligibility semantic on the wire — the App must add no verdict.
+ */
+export const okScholarshipEligibilityResponse: AskResponse = {
+  status: 'ok',
+  answer:
+    'I can show official requirements, but I cannot determine your personal eligibility. Placeholder scholarship A. Official status: open; Official eligibility information: placeholder requirement text.',
+  items: [],
+  sources: [
+    {
+      record_id: 'scholarships:scholarship:placeholder-scholarship-a',
+      source_id: 'scholarships_anu_finder',
+      title: 'Placeholder scholarship A',
+      url: 'https://example.invalid/placeholder-scholarship-a',
+      domain: 'scholarships',
+    },
+  ],
+  clarification: null,
+  request_id: 'req_mock_scholarship_eligibility',
+};
+
+/**
+ * The real Scholarship scope clarification (`scholarship_queries._clarification`):
+ * `clar-scholarship-scope` / `scholarship_selection`, option id = stored
+ * `record_id`, label = `<title> — <entity_id>`. (The older
+ * `needsScholarshipClarificationResponse` above predates V7 and uses a
+ * generic `entity_selection` shape; kept for its existing tests.)
+ */
+export const needsScholarshipScopeClarificationResponse: AskResponse = {
+  status: 'needs_clarification',
+  answer: 'Placeholder: which scholarship do you mean?',
+  items: [],
+  sources: [],
+  clarification: {
+    id: 'clar-scholarship-scope',
+    type: 'scholarship_selection',
+    options: [
+      {
+        id: 'scholarships:scholarship:placeholder-scholarship-a',
+        label: 'Placeholder scholarship A — placeholder-scholarship-a',
+      },
+      {
+        id: 'scholarships:scholarship:placeholder-scholarship-b',
+        label: 'Placeholder scholarship B — placeholder-scholarship-b',
+      },
+    ],
+    allow_multiple: false,
+  },
+  request_id: 'req_mock_scholarship_scope_clarification',
+};
+
+/** No stored Scholarship matches every source-supported filter: no sources. */
+export const insufficientScholarshipFilterResponse: AskResponse = {
+  status: 'insufficient_evidence',
+  answer:
+    'I could not find stored Scholarship evidence matching all requested source-supported filters.',
+  items: [],
+  sources: [],
+  clarification: null,
+  request_id: 'req_mock_scholarship_insufficient',
+};

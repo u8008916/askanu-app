@@ -50,16 +50,18 @@ function ResultCard({
           )}
         </div>
       </div>
-      <dl className={styles.fieldList}>
-        {card.fields.map((field) => (
-          <div className={styles.fieldRow} key={field.label}>
-            <dt className={styles.fieldLabel}>{field.label}</dt>
-            <dd className={styles.fieldValue}>
-              {field.value ?? <span className={styles.missing}>{MISSING_VALUE_LABEL}</span>}
-            </dd>
-          </div>
-        ))}
-      </dl>
+      {card.fields.length > 0 && (
+        <dl className={styles.fieldList}>
+          {card.fields.map((field) => (
+            <div className={styles.fieldRow} key={field.label}>
+              <dt className={styles.fieldLabel}>{field.label}</dt>
+              <dd className={styles.fieldValue}>
+                {field.value ?? <span className={styles.missing}>{MISSING_VALUE_LABEL}</span>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {/*
         V7 Day 4: the one named room whose published rate satisfied an active
         price constraint. Deliberately muted, not a "confirmed"/positive
