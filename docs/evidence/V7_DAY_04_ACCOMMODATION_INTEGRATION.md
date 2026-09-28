@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-27
 **Branch:** `ben/v7-day4`, from `main` @ `ee3d489` (PR #41) + PR #42 (yesterday's verify-and-lock)
-**RAG PR reviewed:** `askanu-rag` PR #38, `carmen/v7-day4-accommodation-vertical`, tip `3c8e35e` — **open, not yet merged to `askanu-rag` main**
+**RAG PR integrated against:** `askanu-rag` PR #38, `carmen/v7-day4-accommodation-vertical`, final reconciled head `d349e8870715709fa034d57d902da4bec6dd5d34` (rebased onto Qasim's accepted Day 3 SHA `68d5aa3`) — **open, not yet merged to `askanu-rag` main**. Originally implemented against tip `3c8e35e`; contract re-locked at `d349e88` on 28 Sep with no public wire difference (§12).
 
 ## 0. Why this supersedes yesterday's evidence doc
 
@@ -12,7 +12,7 @@ Today, Qasim relayed that RAG PR #38 closes G1/G2/G3/G5/G7 (still open PR, not o
 
 Given that, and per the user's confirmed scope decision (27 Sep), today's work is **real integration**, not further verify-and-lock: the App now consumes PublicResultItem/PublicComparisonItem cards, `qualifying_evidence`, a real comparison table, structured `selected_result`/`clarification_selection`/`result_page` requests, and a real "Apply now" action. Yesterday's doc stays as the historical record of the pre-#38 wire state; its gap table (G1–G9) is superseded below.
 
-## 1. The real contract (verified against branch tip `3c8e35e`)
+## 1. The real contract (verified against branch tip `3c8e35e`; re-locked unchanged at `d349e88`, §12)
 
 `AskResponse` gains (siblings of the existing envelope; `conversation_state` stays fully opaque, unchanged — none of this is nested inside it):
 
@@ -99,7 +99,7 @@ Two *separate* turns that happen to render the same `result_set_id`'s first page
 
 ## 9. Status
 
-Per Qasim: **do not merge yet** — Day 3 is formally still open on his side (production Course embedding blocked on Gemini API quota), and RAG PR #38 is itself still open/unreviewed as a formal GitHub review. This branch is ready for his independent Day 4 App acceptance once both close.
+*(Updated 28 Sep.)* Day 3 is now **formally closed** by Qasim (accepted RAG SHA `68d5aa3`), and Carmen has reconciled RAG PR #38 onto it (head `d349e88`, §12). Per Qasim: still **do not merge** — PR #38 itself is still open, and his independent Day 4 App/browser acceptance runs only once the final RAG + scraper + App state is frozen. No CI workflow run is attached to the App head, so the local results here are engineering evidence, not independent CI acceptance.
 
 ## 10. Fixes from Qasim's review of `2a7914a` (PR #42 comment, 27 Sep)
 
@@ -132,3 +132,86 @@ New regression coverage:
 Fresh counts at this round: frontend `npm test` — 29 files, **408 passed**; `tsc --noEmit && vite build` — passed; server `npm test` — 50 passed (unchanged); `git diff --check` — clean.
 
 Per Qasim: still no merge — parked until Day 3 closes and the final RAG Day 4 base is fixed, then independent Day 4 App acceptance.
+
+## 12. Contract re-lock against Carmen's reconciled RAG head (28 Sep)
+
+After Day 3 closed, Carmen rebased PR #38 onto Qasim's accepted Day 3 SHA. This section re-checks the App's parsers and request builders against that **exact** new head, rather than assuming the `3c8e35e` wire still holds. The App head under test is `4a4346f`, unchanged.
+
+**RAG SHA reviewed:** `d349e8870715709fa034d57d902da4bec6dd5d34` (PR #38 head, pushed 28 Sep 00:26 UTC).
+
+### Ancestry (checked independently)
+
+- `git merge-base 68d5aa3 d349e88` returns `68d5aa367ce7adc1051c714c88a2e7b63751dd90` exactly.
+- `git merge-base --is-ancestor 68d5aa3 d349e88` succeeds. The new head is 9 commits ahead of and 0 behind the accepted Day 3 SHA.
+
+### How the wire was compared
+
+1. **Public contract files, blob by blob.** Each file below has the same git blob hash at `3c8e35e` and `d349e88`, so it is byte-identical. Every public request and response model is defined in `models/contracts.py`, including `AskRequest`, `ResultSelection`, `ClarificationSelection`, `ResultPageRequest`, `PublicResultItem`, `PublicRoomRateEvidence`, `PublicComparisonItem`/`Field`/`Value`, `PublicJobItem`/`CurrentJobItem`, `ResultPage`, `ResponseAction` and the `*Response` envelopes.
+
+   | File | Result |
+   |---|---|
+   | `src/askanu_rag/models/contracts.py` | identical (`2b524ba`) |
+   | `src/askanu_rag/models/conversation_state.py` | identical (`fd9f4c8`) |
+   | `src/askanu_rag/models/__init__.py` | identical (`698a9cc`) |
+   | `src/askanu_rag/result_paging.py` | identical (`12ef1b8`) |
+   | `src/askanu_rag/resource_queries.py` | identical (`e9ae119`) |
+   | `src/askanu_rag/state_transitions.py` | identical (`a7feeeb`) |
+
+2. **Rewritten Day 4 commits.** `git range-diff 54d75f4..3c8e35e 68d5aa3..d349e88` compares the old and new Day 4 commit series.
+   - Commits 2, 5 and 6 (price semantics, frozen holdout hash, matching-cursor fix) are patch-identical.
+   - Commits 1, 3 and 4 differ only where they were reconciled with Day 3: the intent-keyword lists in `interpretation.py` gained Day 3's `"prereq"`, and the `main.py` imports were merged (`ResolvedEntity` now comes from `models.conversation_state`, which re-exports the same identical model).
+   - Neither change touches a public field.
+
+3. **New commits after the rebase.**
+   - `110bb46` adds tests only: Accommodation state doesn't leak into Scholarships, Jobs or Events, and Clear Chat drops Accommodation result state.
+   - `aa41438` adds a test only: direct course routing reads.
+   - `d349e88` changes `query_planner.py` (Course fast path: preserve unsupported course facts).
+   - None of them changes a public model.
+
+4. **Remaining `main.py` diff (+190).** It is all on the Course path. It resolves a course entity's `canonical_id`/`source_record_id` and remembers it inside the opaque `conversation_state`, which the App passes through without reading. A grep of the full `src/` diff finds no added or removed line mentioning `answer_state`, `qualifying_evidence`, `result_page`, `start_ordinal`, `next_ordinal`, `application_url`, `ResponseAction`, `PublicResultItem`, `PublicComparison*`, `ResultSelection` or `ClarificationSelection`.
+
+5. **Day 4 test file** (`tests/test_v7_day4_accommodation_vertical.py`). The diff only adds lines: the four isolation/Clear Chat tests above, plus an `**app_kwargs` passthrough on the test harness. No existing payload fixture or assertion was changed.
+
+### Result per contract item
+
+| Item | Wire at `d349e88` vs `3c8e35e` | App consumer, still correct |
+|---|---|---|
+| response `items` (`result`/`comparison`/`job` union) | unchanged | `chat/results/resultItems.ts` (deep-validation boundary) |
+| `answer_state` | unchanged | `chat/askResponse.ts` |
+| `actions` (`{type:"application", label, url, record_id, source_id}`) | unchanged | `chat/askResponse.ts`, `chat/ResponseActions.tsx` |
+| `result_page` (`start_ordinal`/`returned`/`has_more`/`next_ordinal`) | unchanged | `chat/askResponse.ts` (`isOrdinal`/`isCount`) |
+| `qualifying_evidence` (`room_rate`) | unchanged | `resultItems.ts`, `ResultList.tsx` (muted evidence line, never a badge) |
+| comparison item shape (`fields`/`values`, `record_id`-keyed) | unchanged | `resultItems.ts` `toComparisonModel` |
+| source/result identity (`result_set_id`, `canonical_id`, `record_id`, `ordinal`) | unchanged | `resultItems.ts`, `AssistantTurn.tsx` |
+| request `selected_result` | unchanged | `AssistantTurn.tsx` → `structuredPrefill.ts` → `useChatSession.ts` |
+| request `clarification_selection` | unchanged | same path |
+| request `result_page` | unchanged | `ResultList.tsx` Show more → `useChatSession.ts` |
+
+### App-side invariants rechecked at `4a4346f`
+
+- **Ordinals and cursors come from the backend.**
+  - A paged card shows `card.ordinal`.
+  - `selected_result` sends the exact `result_set_id`/`canonical_id`/`ordinal` from the backend.
+  - Show more echoes the server's exact `result_page` cursor. No next position is computed in the App.
+- **Clarification** sends the exact backend `clarification_id`/`option_ids`, in backend order.
+- **Comparison** resolves cells by `record_id` and keeps the backend's column order. Nothing in `frontend/src/chat` reorders items; the only `.reverse()` there joins source-domain labels into a sentence.
+- **No Accommodation reasoning.**
+  - Nothing parses `advertised_rate`. It appears only as a field-map label key; the only `Number()` calls in `src/` are in `util/formatTemporal.ts`.
+  - There is no affordability, cheapest, total-cost, vacancy or eligibility logic.
+- **UNKNOWN stays neutral.** `not_published` renders as "Not published", and `insufficient_evidence` uses the neutral info styling.
+- **Safe URLs.** Action URLs are still gated with `isSafeHttpUrl` at render time.
+
+### Verification (clean tree at App `4a4346f`)
+
+| Run | Result |
+|---|---|
+| Full frontend: `npm test` | 29 files, **408 passed** |
+| Build: `tsc --noEmit && vite build` | passed |
+| Server: `npm test` | **50 passed**, 0 failed |
+| `git diff --check` | clean |
+
+### Outcome
+
+- **No public wire difference** between `3c8e35e` and `d349e88`.
+- **No App code change required.** Production `src/` is untouched. This section and the header/§9 status are the only changes. The `3c8e35e` mentions in `src/`/test doc comments are left as-is, because they record where the contract was first verified.
+- RAG's own test suite at `d349e88` was not run here. That is Carmen's and Qasim's evidence to own; this section only checks the App against the wire.
