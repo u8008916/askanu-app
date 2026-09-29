@@ -1,0 +1,874 @@
+[
+  {
+    "journey": "course-desktop",
+    "step": "01-discovery",
+    "file": "course-desktop-01-discovery.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "course-desktop",
+    "step": "02-followup",
+    "file": "course-desktop-02-followup.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "course-desktop",
+    "lastTurnText": "AskANU 1 RESULT 1 Structured Programming Entity type course Code COMP1110 Academic year 2026 Units 6 Description Structured programming with object-oriented design. Prerequisites COMP1100 OR COMP1130 OR COMP1730 Corequisites Not published Incompatibilities Not"
+  },
+  {
+    "journey": "course-desktop",
+    "console": []
+  },
+  {
+    "journey": "scholarship-explicit-desktop",
+    "step": "01-selected-2-prefilled",
+    "file": "scholarship-explicit-desktop-01-selected-2-prefilled.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-desktop",
+    "step": "02-selected-2-answer",
+    "file": "scholarship-explicit-desktop-02-selected-2-answer.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-desktop",
+    "step": "03-explicit-8",
+    "file": "scholarship-explicit-desktop-03-explicit-8.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-desktop",
+    "prefill": "Tell me about it",
+    "afterSelect": "AskANU 1 RESULT 2 Day 5 International Computing Scholarship 2 Official status open Featured yes Application required yes Study stage Current students Student type International Study level Bachelor Area of study Computing Value $5,000 test value Selection basi",
+    "afterExplicit": "AskANU  I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value  1 RESULT 1 Day 5 International Computing Scholar",
+    "explicitIs8": true
+  },
+  {
+    "journey": "scholarship-explicit-desktop",
+    "console": []
+  },
+  {
+    "journey": "accommodation-select-desktop",
+    "step": "01-selected-answer",
+    "file": "accommodation-select-desktop-01-selected-answer.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 3,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "accommodation-select-desktop",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Day 6 Lodge Category Residence hall Location Acton campus Catering Self-catered Advertised rate $350 per week for the advertised 2026 term Cost period per week for the 2026 term Audience Undergraduate students Features Quiet study spaces, Sha",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "accommodation-select-desktop",
+    "console": []
+  },
+  {
+    "journey": "jobs-select-desktop",
+    "step": "01-selected-answer",
+    "file": "jobs-select-desktop-01-selected-answer.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-select-desktop",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Verified Role 2 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-16 Ask about this : Verified Role 2 Show as text SOURCES 1 Verified Role 2 jobs",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "jobs-select-desktop",
+    "console": []
+  },
+  {
+    "journey": "events-select-desktop",
+    "step": "01-selected-answer",
+    "file": "events-select-desktop-01-selected-answer.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-select-desktop",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Event 800002 Official ANU Events Starts Mon, 14 Sept, 12:00 pm Ends Not published Venue Venue 2 Address Not published Organiser Organiser 2 Category Community Tags student Audience ANU community Ask about this : Event 800002 Show as text SOUR",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "events-select-desktop",
+    "console": []
+  },
+  {
+    "journey": "support-desktop",
+    "step": "01-support",
+    "file": "support-desktop-01-support.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-desktop",
+    "lastTurnText": "AskANU  I can route you to published services but cannot diagnose a condition or promise professional availability. ANUSA Student Assistance. Category: Academic advocacy Published purpose: Academic advocacy and help for assignment grading, assessment concerns,"
+  },
+  {
+    "journey": "support-desktop",
+    "console": []
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "step": "01-show-more",
+    "file": "cross-domain-showmore-ordinal-desktop-01-show-more.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "6",
+      "7",
+      "8"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "step": "02-jobs-third",
+    "file": "cross-domain-showmore-ordinal-desktop-02-jobs-third.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 14,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "step": "03-jobs-number-4",
+    "file": "cross-domain-showmore-ordinal-desktop-03-jobs-number-4.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 0,
+    "turns": 5,
+    "lastTurnNumbers": [
+      "4"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "step": "04-events-3rd",
+    "file": "cross-domain-showmore-ordinal-desktop-04-events-3rd.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 21,
+    "tables": 0,
+    "turns": 7,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "jobsThird": "AskANU 1 RESULT 3 Verified Role 3 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-17 Ask about this : Verified Role 3 Show as text SOURCES 1 Verified Role 3 jobs",
+    "jobsNumber4": "AskANU 1 RESULT 4 Verified Role 4 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-18 Ask about this : Verified Role 4 Show as text SOURCES 1 Verified Role 4 jobs",
+    "eventsThird": "AskANU 1 RESULT 3 Event 800003 Official ANU Events Starts Mon, 14 Sept, 1:00 pm Ends Not published Venue Not published Address Not published Organiser Organiser 3 Category Community Tags student Audience ANU community Ask about this : Event 800003 Show as text"
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-desktop",
+    "console": []
+  },
+  {
+    "journey": "a1-real-app-desktop",
+    "step": "01-two-lists",
+    "file": "a1-real-app-desktop-01-two-lists.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-desktop",
+    "step": "02-controlled-rejection",
+    "file": "a1-real-app-desktop-02-controlled-rejection.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-desktop",
+    "step": "03-second-one-still-works",
+    "file": "a1-real-app-desktop-03-second-one-still-works.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 11,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-desktop",
+    "afterRejection": "AskANU  Something went wrong  The request could not be completed.",
+    "nextSecondOne": "AskANU 1 RESULT 2 Verified Role 2 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-16 Ask about this : Verified Role 2 Show as text SOURCES 1 Verified Role 2 jobs",
+    "contextIntact": true
+  },
+  {
+    "journey": "a1-real-app-desktop",
+    "console": [
+      "error: [askanu] /api/v1/ask returned an error envelope Object"
+    ]
+  },
+  {
+    "journey": "clear-chat-desktop",
+    "step": "01-cleared",
+    "file": "clear-chat-desktop-01-cleared.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 0,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": null,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "clear-chat-desktop",
+    "step": "02-ordinal-after-clear",
+    "file": "clear-chat-desktop-02-ordinal-after-clear.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "clear-chat-desktop",
+    "stale": 0,
+    "turns": 0,
+    "draft": "",
+    "ordinalAfterClear": "AskANU  Outside what AskANU covers  I can help with ANU course prerequisite questions. Please include a course code."
+  },
+  {
+    "journey": "clear-chat-desktop",
+    "console": []
+  },
+  {
+    "journey": "course-mobile",
+    "step": "01-discovery",
+    "file": "course-mobile-01-discovery.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "course-mobile",
+    "step": "02-followup",
+    "file": "course-mobile-02-followup.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "course-mobile",
+    "lastTurnText": "AskANU 1 RESULT 1 Structured Programming Entity type course Code COMP1110 Academic year 2026 Units 6 Description Structured programming with object-oriented design. Prerequisites COMP1100 OR COMP1130 OR COMP1730 Corequisites Not published Incompatibilities Not"
+  },
+  {
+    "journey": "course-mobile",
+    "console": []
+  },
+  {
+    "journey": "scholarship-explicit-mobile",
+    "step": "01-selected-2-prefilled",
+    "file": "scholarship-explicit-mobile-01-selected-2-prefilled.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-mobile",
+    "step": "02-selected-2-answer",
+    "file": "scholarship-explicit-mobile-02-selected-2-answer.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-mobile",
+    "step": "03-explicit-8",
+    "file": "scholarship-explicit-mobile-03-explicit-8.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "scholarship-explicit-mobile",
+    "prefill": "Tell me about it",
+    "afterSelect": "AskANU 1 RESULT 2 Day 5 International Computing Scholarship 2 Official status open Featured yes Application required yes Study stage Current students Student type International Study level Bachelor Area of study Computing Value $5,000 test value Selection basi",
+    "afterExplicit": "AskANU  I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value  1 RESULT 1 Day 5 International Computing Scholar",
+    "explicitIs8": true
+  },
+  {
+    "journey": "scholarship-explicit-mobile",
+    "console": []
+  },
+  {
+    "journey": "accommodation-select-mobile",
+    "step": "01-selected-answer",
+    "file": "accommodation-select-mobile-01-selected-answer.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 3,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "accommodation-select-mobile",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Day 6 Lodge Category Residence hall Location Acton campus Catering Self-catered Advertised rate $350 per week for the advertised 2026 term Cost period per week for the 2026 term Audience Undergraduate students Features Quiet study spaces, Sha",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "accommodation-select-mobile",
+    "console": []
+  },
+  {
+    "journey": "jobs-select-mobile",
+    "step": "01-selected-answer",
+    "file": "jobs-select-mobile-01-selected-answer.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-select-mobile",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Verified Role 2 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-16 Ask about this : Verified Role 2 Show as text SOURCES 1 Verified Role 2 jobs",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "jobs-select-mobile",
+    "console": []
+  },
+  {
+    "journey": "events-select-mobile",
+    "step": "01-selected-answer",
+    "file": "events-select-mobile-01-selected-answer.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-select-mobile",
+    "prefill": "Tell me about it",
+    "lastTurnText": "AskANU 1 RESULT 2 Event 800002 Official ANU Events Starts Mon, 14 Sept, 12:00 pm Ends Not published Venue Venue 2 Address Not published Organiser Organiser 2 Category Community Tags student Audience ANU community Ask about this : Event 800002 Show as text SOUR",
+    "selectedRecordShown": true
+  },
+  {
+    "journey": "events-select-mobile",
+    "console": []
+  },
+  {
+    "journey": "support-mobile",
+    "step": "01-support",
+    "file": "support-mobile-01-support.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-mobile",
+    "lastTurnText": "AskANU  I can route you to published services but cannot diagnose a condition or promise professional availability. ANUSA Student Assistance. Category: Academic advocacy Published purpose: Academic advocacy and help for assignment grading, assessment concerns,"
+  },
+  {
+    "journey": "support-mobile",
+    "console": []
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "step": "01-show-more",
+    "file": "cross-domain-showmore-ordinal-mobile-01-show-more.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "6",
+      "7",
+      "8"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "step": "02-jobs-third",
+    "file": "cross-domain-showmore-ordinal-mobile-02-jobs-third.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 14,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "step": "03-jobs-number-4",
+    "file": "cross-domain-showmore-ordinal-mobile-03-jobs-number-4.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 0,
+    "turns": 5,
+    "lastTurnNumbers": [
+      "4"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "step": "04-events-3rd",
+    "file": "cross-domain-showmore-ordinal-mobile-04-events-3rd.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 21,
+    "tables": 0,
+    "turns": 7,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "jobsThird": "AskANU 1 RESULT 3 Verified Role 3 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-17 Ask about this : Verified Role 3 Show as text SOURCES 1 Verified Role 3 jobs",
+    "jobsNumber4": "AskANU 1 RESULT 4 Verified Role 4 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-18 Ask about this : Verified Role 4 Show as text SOURCES 1 Verified Role 4 jobs",
+    "eventsThird": "AskANU 1 RESULT 3 Event 800003 Official ANU Events Starts Mon, 14 Sept, 1:00 pm Ends Not published Venue Not published Address Not published Organiser Organiser 3 Category Community Tags student Audience ANU community Ask about this : Event 800003 Show as text"
+  },
+  {
+    "journey": "cross-domain-showmore-ordinal-mobile",
+    "console": []
+  },
+  {
+    "journey": "a1-real-app-mobile",
+    "step": "01-two-lists",
+    "file": "a1-real-app-mobile-01-two-lists.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-mobile",
+    "step": "02-controlled-rejection",
+    "file": "a1-real-app-mobile-02-controlled-rejection.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-mobile",
+    "step": "03-second-one-still-works",
+    "file": "a1-real-app-mobile-03-second-one-still-works.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 11,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-real-app-mobile",
+    "afterRejection": "AskANU  Something went wrong  The request could not be completed.",
+    "nextSecondOne": "AskANU 1 RESULT 2 Verified Role 2 Type Fixed-term Location Canberra / ACT Classification ANU08 Salary Not published Closes 2026-09-16 Ask about this : Verified Role 2 Show as text SOURCES 1 Verified Role 2 jobs",
+    "contextIntact": true
+  },
+  {
+    "journey": "a1-real-app-mobile",
+    "console": [
+      "error: [askanu] /api/v1/ask returned an error envelope Object"
+    ]
+  },
+  {
+    "journey": "clear-chat-mobile",
+    "step": "01-cleared",
+    "file": "clear-chat-mobile-01-cleared.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 0,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": null,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "clear-chat-mobile",
+    "step": "02-ordinal-after-clear",
+    "file": "clear-chat-mobile-02-ordinal-after-clear.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "clear-chat-mobile",
+    "stale": 0,
+    "turns": 0,
+    "draft": "",
+    "ordinalAfterClear": "AskANU  Outside what AskANU covers  I can help with ANU course prerequisite questions. Please include a course code."
+  },
+  {
+    "journey": "clear-chat-mobile",
+    "console": []
+  }
+]
