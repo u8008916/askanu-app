@@ -260,6 +260,19 @@ export function AssistantTurn({
     cards !== null ||
     comparison !== null;
   const noticeStatus: NoticeStatus = isNoticeStatus(status) ? status : 'error';
+  /*
+   * V7 Day 5: RAG writes its own uncertainty into the answer text — "I can
+   * show official requirements, but I cannot determine your personal
+   * eligibility", "…so this refinement is incomplete" — and marks that turn
+   * `answer_state` `PARTIAL`/`UNKNOWN` while still sending `status: "ok"`
+   * with cards. That text must stay in view, exactly like a `partial`
+   * status's caveat, never folded into "Show as text" under the cards. The
+   * App adds no wording of its own; it only stops hiding the backend's.
+   */
+  const uncertain =
+    status === 'partial' ||
+    response.answer_state === 'PARTIAL' ||
+    response.answer_state === 'UNKNOWN';
 
   /*
    * V7 Day 4: eligible only when every card in the list carries the full
@@ -338,10 +351,11 @@ export function AssistantTurn({
         ) : (
           <>
             {hasAnswer &&
-              ((cards === null && comparison === null) || status === 'partial') && (
+              ((cards === null && comparison === null) || uncertain) && (
               /*
-                A `partial` answer's text carries the caveat about what is
-                missing, so it stays in full above any cards/comparison.
+                A `partial` status or a PARTIAL/UNKNOWN `answer_state` means
+                the text carries the backend's caveat about what is missing
+                or undetermined, so it stays in full above any cards/comparison.
               */
               <AnswerBody answer={answer} />
             )}
@@ -356,7 +370,7 @@ export function AssistantTurn({
             {comparison !== null && (
               <ComparisonTable columns={comparison.columns} rows={comparison.rows} />
             )}
-            {hasAnswer && (cards !== null || comparison !== null) && status !== 'partial' && (
+            {hasAnswer && (cards !== null || comparison !== null) && !uncertain && (
               /*
                 The backend's text for a list/comparison answer restates the
                 same records shown above, one line each. It stays on the page

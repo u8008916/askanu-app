@@ -190,3 +190,24 @@
   color: var(--ink-2);
   font-size: var(--text-xs);
 }
+
+/*
+ * V7 Day 5: Course/Scholarship labels ("Assumed knowledge", "Published
+ * eligibility criteria") are much longer than Accommodation's. Without a
+ * floor, a 375px screen crushed the label column until words broke
+ * mid-letter ("Entit/y type"). Labels and cells keep whole words and a
+ * readable width; a table wider than the screen scrolls inside
+ * `.comparisonScroll`, never the page.
+ */
+.comparisonTable tbody th {
+  min-width: 7.5rem;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.comparisonTable td,
+.comparisonTable thead th:not(:first-child) {
+  min-width: 9rem;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
