@@ -1,6 +1,5 @@
 import { act, render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import userEvent from '@testing-library/user-event';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { parseAskResponse } from '../src/chat/askResponse';
 import { toResultCards } from '../src/chat/results/resultItems';
