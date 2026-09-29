@@ -1,0 +1,317 @@
+[
+ {
+  "case": "R1/R4 accommodation: select #2 + 'Tell me about it'",
+  "pass": true,
+  "expected": "ok, exactly day6-lodge",
+  "actual": "ok CONFIRMED [('day6-lodge', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 accommodation: select #2 + 'Tell me more about {t}'",
+  "pass": false,
+  "expected": "ok, exactly day6-lodge",
+  "actual": "insufficient_evidence CONFIRMED [('day6-lodge', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 accommodation: select #2 + 'What does it include?'",
+  "pass": true,
+  "expected": "ok, exactly day6-lodge",
+  "actual": "ok CONFIRMED [('day6-lodge', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 scholarships: select #2 + 'Tell me about it'",
+  "pass": true,
+  "expected": "ok, exactly day5-international-computing-2",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 scholarships: select #2 + 'Tell me more about {t}'",
+  "pass": true,
+  "expected": "ok, exactly day5-international-computing-2",
+  "actual": "ok PARTIAL [('day5-international-computing-2', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 scholarships: select #2 + 'When does it close?'",
+  "pass": true,
+  "expected": "ok, exactly day5-international-computing-2",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 jobs: select #2 + 'Tell me about it'",
+  "pass": true,
+  "expected": "ok, exactly 700002",
+  "actual": "ok CONFIRMED [('700002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 jobs: select #2 + 'Tell me more about {t}'",
+  "pass": false,
+  "expected": "ok, exactly 700002",
+  "actual": "insufficient_evidence PARTIAL []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 jobs: select #2 + 'What are its requirements?'",
+  "pass": true,
+  "expected": "ok, exactly 700002",
+  "actual": "ok CONFIRMED [('700002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 events: select #2 + 'Tell me about it'",
+  "pass": true,
+  "expected": "ok, exactly 800002",
+  "actual": "ok CONFIRMED [('800002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 events: select #2 + 'Tell me more about {t}'",
+  "pass": false,
+  "expected": "ok, exactly 800002",
+  "actual": "ok CONFIRMED [('800001', 1), ('800002', 2), ('800003', 3), ('800004', 4), ('800005', 5)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R1/R4 events: select #2 + 'Where is it?'",
+  "pass": true,
+  "expected": "ok, exactly 800002",
+  "actual": "ok CONFIRMED [('800002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R2 scholarship: selected #2 -> explicit 'eligible for Scholarship 8'",
+  "pass": false,
+  "expected": "Scholarship 8 (UNKNOWN), no Scholarship 2 evidence",
+  "actual": "ok PARTIAL [('day5-international-computing-2', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R2-x jobs: selected #2 -> explicit 'Software Engineer'",
+  "pass": true,
+  "expected": "job 700001",
+  "actual": "ok PARTIAL [('700001', 1)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R2-x events: selected #2 -> explicit 'Event 800005'",
+  "pass": false,
+  "expected": "event 800005",
+  "actual": "ok CONFIRMED [('800001', 1), ('800002', 2), ('800003', 3), ('800004', 4), ('800005', 5)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 accommodation: ordinal chain -> the first one",
+  "pass": true,
+  "expected": "day6-hall",
+  "actual": "ok CONFIRMED [('day6-hall', 1)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 accommodation: ordinal chain -> the second one",
+  "pass": true,
+  "expected": "day6-lodge",
+  "actual": "ok CONFIRMED [('day6-lodge', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 scholarships: ordinal chain -> the first one",
+  "pass": true,
+  "expected": "day5-international-computing-1",
+  "actual": "ok CONFIRMED [('day5-international-computing-1', 1)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 scholarships: ordinal chain -> the second one",
+  "pass": true,
+  "expected": "day5-international-computing-2",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 scholarships: ordinal chain -> the third one",
+  "pass": false,
+  "expected": "day5-international-computing-3",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 scholarships: fresh list -> the third one",
+  "pass": false,
+  "expected": "day5-international-computing-3",
+  "actual": "insufficient_evidence UNKNOWN []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 scholarships: selected #2 -> the third one",
+  "pass": false,
+  "expected": "day5-international-computing-3",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 jobs: ordinal chain -> the first one",
+  "pass": true,
+  "expected": "700001",
+  "actual": "ok CONFIRMED [('700001', 1)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 jobs: ordinal chain -> the second one",
+  "pass": true,
+  "expected": "700002",
+  "actual": "ok CONFIRMED [('700002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 jobs: ordinal chain -> the third one",
+  "pass": false,
+  "expected": "700003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 jobs: fresh list -> the third one",
+  "pass": false,
+  "expected": "700003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 jobs: selected #2 -> the third one",
+  "pass": false,
+  "expected": "700003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 events: ordinal chain -> the first one",
+  "pass": true,
+  "expected": "800001",
+  "actual": "ok CONFIRMED [('800001', 1)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 events: ordinal chain -> the second one",
+  "pass": true,
+  "expected": "800002",
+  "actual": "ok CONFIRMED [('800002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 events: ordinal chain -> the third one",
+  "pass": false,
+  "expected": "800003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 events: fresh list -> the third one",
+  "pass": false,
+  "expected": "800003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "R5 events: selected #2 -> the third one",
+  "pass": false,
+  "expected": "800003",
+  "actual": "off_topic None []",
+  "owner": "RAG"
+ },
+ {
+  "case": "paging scholarships: Show more",
+  "pass": true,
+  "expected": "ordinals 6,7,8",
+  "actual": "ok CONFIRMED [('day5-international-computing-6', 6), ('day5-international-computing-7', 7), ('day5-international-computing-8', 8)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "paging scholarships: 'Any more?' after last page",
+  "pass": true,
+  "expected": "no further items, no restart at 1",
+  "actual": "ok UNKNOWN []",
+  "owner": "RAG"
+ },
+ {
+  "case": "paging scholarships: refinement after paging",
+  "pass": true,
+  "expected": "child set, ordinals restart at 1, PARTIAL",
+  "actual": "ok PARTIAL [('day5-international-computing-1', 1), ('day5-international-computing-2', 2), ('day5-international-computing-3', 3), ('day5-international-computing-4', 4), ('day5-international-computing-5', 5)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "paging scholarships: comparison after refinement",
+  "pass": true,
+  "expected": "comparison of the child set's first two",
+  "actual": "ok CONFIRMED [(None, None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "paging jobs: refinement after Show more",
+  "pass": true,
+  "expected": "PARTIAL child set",
+  "actual": "ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "return: Course -> Scholarship -> Course",
+  "pass": true,
+  "expected": "COMP1110 2026",
+  "actual": "ok CONFIRMED [('COMP1110', None)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "return: Scholarship -> Accommodation -> Scholarship #2",
+  "pass": true,
+  "expected": "scholarship #2",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "return: Jobs -> Events -> Jobs #2",
+  "pass": true,
+  "expected": "job #2",
+  "actual": "ok CONFIRMED [('700002', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "support interruption: Scholarship list -> Support -> 'the second scholarship'",
+  "pass": true,
+  "expected": "scholarship #2 (explicit domain word)",
+  "actual": "ok CONFIRMED [('day5-international-computing-2', 2)]",
+  "owner": "RAG"
+ },
+ {
+  "case": "stale Show more after Clear Chat",
+  "pass": true,
+  "expected": "4xx (rejected); App shows error, keeps nothing",
+  "actual": "HTTP 400 None []",
+  "owner": "RAG/App"
+ },
+ {
+  "case": "stale selected_result after Clear Chat",
+  "pass": true,
+  "expected": "4xx (rejected)",
+  "actual": "HTTP 400 None []",
+  "owner": "RAG/App"
+ },
+ {
+  "case": "older turn's Show more after topic switch",
+  "pass": false,
+  "expected": "either continue the older ResultSet or a controlled envelope; NOT a raw 4xx",
+  "actual": "HTTP 400 None [] body='{\"answer\":\"The request could not be completed.\",\"items\":[],\"answer_state\":null,\"actions\":[],\"sources\":[],\"request_id\":\"req_c890a935dd934a0387d6177fec3907d8\",\"conversation_state\":{\"schema_version\":1,\"t'",
+  "owner": "RAG/App"
+ },
+ {
+  "case": "INCOMPLETE: jobs no-match wording",
+  "pass": false,
+  "expected": "never 'there are no jobs'",
+  "actual": "ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)]",
+  "owner": "RAG"
+ }
+]
