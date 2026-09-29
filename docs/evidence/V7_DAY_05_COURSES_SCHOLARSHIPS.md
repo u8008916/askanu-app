@@ -1,4 +1,12 @@
-# V7 Day 5: Courses + Scholarships (pre-contract checkpoint)
+# V7 Day 5: Courses + Scholarships
+
+**29 Sep 2026: real integration against Carmen's published Day 5 RAG `0efb6ee98f1d364a26edb74d60729d21af3debc3`.** Sections §8–§15 are the Day 5 checkpoint. §0–§7 below them are the 28 Sep pre-contract record, kept unchanged as history.
+
+**App branch:** `ben/v7-day5`, restacked 29 Sep onto App `main` `28dbb8bb41026f243ff80bb8622ff2f111671e01`. That is the squash-merge of the accepted Day 4 checkpoint `70b7da28f0f39fbe27bd9234937d10e27d933a58` (PR #42). The two pre-contract commits carry over unchanged in content, with the same diff as `70b7da2..f653ff1`.
+
+---
+
+## Pre-contract record (28 Sep, historical)
 
 **Date:** 2026-09-28
 **Branch:** `ben/v7-day5`, stacked on the final Day 4 App head `70b7da28f0f39fbe27bd9234937d10e27d933a58` (PR #42, left untouched)
@@ -198,3 +206,128 @@ When Carmen publishes Day 5:
 5. Integrate only the published semantics.
 6. Re-run the D4 Accommodation and D5 Course/Scholarship regressions plus the full suites.
 7. Do real visual browser acceptance (desktop, ~375px, screenshots, keyboard/focus) using the Course and Scholarship journeys in Qasim's review §23.
+
+
+---
+
+# Day 5 real integration (29 Sep)
+
+## 8. What changed on the RAG wire, `d349e88` → `0efb6ee`
+
+Carmen's D5 is 2 commits stacked directly on `d349e88`: `270bae6` (feat) and `0efb6ee` (tests).
+
+**The public types did not change.** `git diff d349e88 0efb6ee -- src/askanu_rag/models` is empty: `ResponseBody`, `PublicResultItem`, `PublicComparisonItem`, `ResultPage`, `AnswerState`, the request fields and `ConversationState` are all byte-identical. **What changed is which domains emit them:**
+
+| Surface | `d349e88` | `0efb6ee` |
+|---|---|---|
+| Course answers | prose + sources | + one `type:"result"` item per record (10-key `fields`), `answer_state` |
+| Course comparison | not emitted | one `type:"comparison"` item (10 labelled rows, `record_id`-keyed cells, `not_published` state) and a ResultSet `rs:courses:N`; `PARTIAL` when any cell is missing |
+| Scholarship discovery | one prose section per record | `type:"result"` items with `result_set_id`/`ordinal`, bounded to 5, plus `result_page` |
+| Scholarship follow-up / selection / eligibility | prose | a single `type:"result"` item; `answer_state` `PARTIAL` (criteria published) or `UNKNOWN` (none) for eligibility |
+| Scholarship refinement ("still open") | none | a child ResultSet (`parent_result_set_id` in state) whose ordinals restart at 1 |
+| Scholarship comparison | none | `type:"comparison"` item, 12 labelled rows |
+| `selected_result` request | Accommodation/Support only | + Scholarships |
+| `result_page` request | Accommodation only | + Scholarships |
+
+The field key sets and their labels are frozen in `journey_presentation.py` (`COURSE_PUBLIC_FIELDS`, `SCHOLARSHIP_PUBLIC_FIELDS`). RAG omits a key whose value is unpublished on a result item, and marks it `state:"not_published"` on a comparison row.
+
+**How this was checked, not just read:**
+- A local worktree at `0efb6ee` (fresh venv) passes Carmen's own `tests/test_v7_day5_courses_scholarships.py`, 9/9.
+- Her harness was then used to capture verbatim response JSON for every journey: `frontend/src/mocks/v7Day5Wire.0efb6ee.json` (synthetic fixtures, not ANU facts).
+- The browser run in §12 hits a live `create_app` from that SHA.
+
+## 9. D5-G1 … G11, re-marked against `0efb6ee`
+
+| Gap | Expected before | What `0efb6ee` actually provides | Status | App production code? | Owner | Pre-contract implementation |
+|---|---|---|---|---|---|---|
+| **G1** Course fact answer | prose + one source | still that, **plus** a typed Course `result` item and `answer_state: CONFIRMED` | **CLOSED** | yes: Course field labels (§10.1) | RAG | domain gate **kept**, now with a Courses key set |
+| **G2** Course entity summary | structured summary with labels | `PublicResultItem`, `domain:"courses"`, 10 frozen keys (`entity_type, code, academic_year, units, description, prerequisites, corequisites, incompatibilities, assumed_knowledge, offerings`). A single lookup has **no** `result_set_id`/`ordinal`. Labels are frozen in RAG code but not sent on result items | **CLOSED** | yes: labels copied verbatim from `COURSE_PUBLIC_FIELDS` | RAG | gate **extended** (not removed) |
+| **G3** Course comparison | backend comparison item | as expected; `answer_state: PARTIAL` whenever any cell is `not_published` | **CLOSED** | yes: columns keyed by `record_id` (§10.2); mobile table CSS (§10.5) | RAG | domain-neutral comparison **kept** |
+| **G4** Academic year as version | structured `academic_year` | `academic_year` is a string field (`"2026"`). Identity: `canonical_id` is the **bare code** (`COMP1110`) and only `record_id` (`courses:course:COMP1110_2026`) carries the year. A cross-year request gets a year clarification, never a cross-year item | **CLOSED** | yes: App identity for comparison columns moved to `record_id` | RAG | n/a |
+| **G5** Scholarship result set | cards with `result_set_id`/`ordinal`, labelled fields | as expected; discovery is bounded to 5 with `result_page`; 12 frozen keys | **CLOSED** | yes: labels copied verbatim from `SCHOLARSHIP_PUBLIC_FIELDS` | RAG | gate **extended** |
+| **G6** Scholarship selected result | `selected_result` accepted for Scholarships | accepted and verified against the current repository; prose "the second one" also resolves to ordinal 2 | **CLOSED**, with residual **R1** and **R2** (§14) | yes: backend ordinal shown on unpaged lists (§10.4) | RAG | n/a |
+| **G7** Scholarship uncertainty | per-criterion matched/unknown and/or `answer_state` | `answer_state` only (eligibility → `PARTIAL`/`UNKNOWN`; incomplete population → `PARTIAL`). The non-determination sentence is in the **prose**. There is no per-criterion structure | **PARTIAL** | yes: `PARTIAL`/`UNKNOWN` keeps the backend prose visible (§10.3) | RAG | n/a |
+| **G8** Scholarship comparison | comparison with `not_published` | as expected | **CLOSED** | none beyond §10.2/§10.5 | RAG | n/a |
+| **G9** Scholarship dates/status | typed date-only vs datetime; status as a field | `status`, `opening_date`, `closing_date` are now **fields**, but the values are plain stored strings (`"2026-10-31"`) with no date-only/datetime marker | **PARTIAL** | none: rendered verbatim; the App derives no open/closed verdict and adds no time | RAG | "no reformatting" guard **kept** |
+| **G10** Scholarship continuation | server-cursor paging | `result_page` for Scholarships; "Any more?" and the structured "Show more" both continue the **same** ResultSet in its original order; a refined child set pages on its own restarted ordinals | **CLOSED** | none: the Day 4 paging path is domain-generic | RAG | n/a |
+| **G11** RESULTS / EMPTY / INCOMPLETE | a public result-population state | **CONTRACT CHANGED.** `ResultSetStatus {RESULTS, EMPTY, INCOMPLETE}` exists, but **only inside the opaque `conversation_state.result_sets[].status`** (it gates `result_page` validity). The public response expresses population completeness through `answer_state` (`PARTIAL` when some records lack the filter evidence; `UNKNOWN` when nothing is established) plus prose. No-match stays `insufficient_evidence` | **CONTRACT CHANGED** | none: the App does not read `conversation_state`, invents no result state, and keeps no-match as the neutral "Not enough evidence" notice. It stops hiding `PARTIAL`/`UNKNOWN` prose (§10.3) | RAG | the "no invented EMPTY" guard is **kept** |
+
+**Nothing speculative carried forward.** Every pre-contract guard is either kept (gate, verbatim dates, neutral unknowns, exact clarification ids) or extended *only* with keys and labels that exist in `0efb6ee` source. The d349e88 prose fixtures stay, as coverage for the still-valid `items: []` envelope. No pre-contract behaviour was removed, because none was speculative.
+
+## 10. Production changes (all under `frontend/src/chat/`)
+
+1. **`results/resultItems.ts`: per-domain field labels.** Courses and Scholarships were added to `PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN`, with keys, order and labels verbatim from RAG. Every frozen key renders; an absent key reads **"Not published"**, never "No", "None", "0" or a shorter card. A key outside a domain's published set still refuses the whole list, as does another domain's key or room-rate evidence off Accommodation.
+2. **`results/resultItems.ts`: comparison column identity is `record_id`**, the same key the cells already use. Before this, columns keyed on `canonical_id`, which for Courses is year-less, so a 2025-vs-2026 pair would have been refused as a duplicate.
+3. **`AssistantTurn.tsx`: `PARTIAL`/`UNKNOWN` keeps the backend prose visible** above cards or the table, the same treatment a `partial` status already had. RAG's "I can show official requirements, but I cannot determine your personal eligibility" and "…so this refinement is incomplete" exist **only** in prose. Previously they were folded under "Show as text" whenever cards rendered. The App adds no wording of its own.
+   - **Deliberate Day 4 presentation delta (approved by Ben 29 Sep; please confirm, Qasim).** The rule is domain-generic, so the Day 4 Accommodation `PARTIAL` comparison now also shows its prose above the table instead of collapsed. Nothing is removed. The one D4 test that asserted "collapsed" now asserts "visible". Reverting it is a one-line change.
+4. **`results/ResultList.tsx`: backend ordinals on unpaged lists.** When every card carries an `ordinal`, that ordinal is the visible number, so "the second one" reads **2**, not 1. The same applies to a refined child set (1–5) and continuation (6). Lists the backend did not number (a single Course lookup, Jobs/Events) keep positional numbering.
+5. **`results/Results.module.css`: comparison readability at 375px.** Course labels were breaking mid-word ("Entit/y type"). Labels and cells now keep whole words at a minimum width, and a wide table scrolls inside `.comparisonScroll`, never the page.
+
+**Not changed:** request building, `conversation_state` handling, Clear Chat, `structuredPrefill.ts`, `askResponse.ts`, the server, and anything in `askanu-rag`.
+
+## 11. Tests (local engineering evidence, not CI)
+
+| Run | Result |
+|---|---|
+| `tests/v7Day5CoursesScholarships.test.tsx` (rewritten around the real `0efb6ee` captures) | 52 passed |
+| Full frontend `npm test` | **30 files, 460 passed** (was 424) |
+| D4 regression (`v7Day4Accommodation.test.tsx`, `v7Day3Results.test.tsx`) | all pass; 2 expectations updated for §10.2/§10.3, nothing else touched |
+| `tsc --noEmit && vite build` | passed |
+| Server `npm test` | **50 passed**, 0 failed |
+| `git diff --check` | clean |
+| RAG `0efb6ee` own D5 suite in the local worktree | 9 passed |
+
+The new suite:
+- Parses every captured `0efb6ee` body through `parseAskResponse`.
+- Locks the Course and Scholarship label sets, record-keyed comparison columns, 2025-vs-2026 identity, "Not published" (never No/None/0), ordinals 2 / 1–5 / 6 / 6–8, and the exact `selected_result` triple and `result_page` cursor sent.
+- Locks visible `PARTIAL`/`UNKNOWN` prose, with no App-authored "eligible / better / easier" wording.
+- Replays the real 7-turn Scholarship journey through `useChatSession`. Each request echoes the previous response's `conversation_state` exactly; a transport failure preserves the last valid state; Clear Chat drops state, history and every structured reference.
+
+## 12. Browser acceptance: live RAG `0efb6ee` + real App (screenshots)
+
+**Setup:**
+- RAG `create_app` from the `0efb6ee` worktree on :8000, over Carmen's D5 synthetic Course/Scholarship records plus two Accommodation fixtures.
+- App dev server on :5173, proxied to it.
+- Headless Chrome driven over CDP. Each journey runs in a fresh browser context at **1280×900** and at **375×812** (mobile emulation).
+
+**Evidence:** 39 screenshots plus `report.json` in `docs/evidence/v7-day05/`.
+
+| Journey | Screenshots (`<journey>-<desktop\|mobile>-NN-…png`) | Verified |
+|---|---|---|
+| Course exact lookup → follow-up → comparison → return | `course-*` 01–04 | 10 labelled rows; "Not published" coreqs; table rows = RAG labels; the `PARTIAL` comparison's prose is visible |
+| Scholarship discovery → "the second one" → "When does it close?" → "Am I eligible?" → refinement → compare first two → "Any more?" | `scholarship-*` 01–07 | ordinals **1–5 → 2 → 2 → 2 → 1–5 (child set) → table → 6**; eligibility non-determination visible; `2026-10-31` verbatim |
+| Structured "Show more" → "Ask about this" → explicit #8 eligibility | `scholarship-structured-*` 01–03 | page 2 shows **6, 7, 8**; R1 and R2 reproduced (§14) |
+| Topic switches Course → Scholarship → Accommodation → "Back to COMP1110" → Clear Chat → "When does it close?" | `cross-*` 01–05 | Accommodation still has 7 D4 rows; return re-renders COMP1110 2026; after Clear Chat there are **0** "Ask about this"/"Show more" buttons and the stale question gets a neutral off-topic notice |
+| Keyboard | `keyboard-desktop-01` | Tab order is card link → its "Ask about this" → next card, in backend order; every stop has a 2px solid focus outline; Enter on "Ask about this" prefills the composer only |
+
+Measured across all 39 steps:
+- 0 horizontal page overflow (`scrollWidth` ≤ viewport; the 15px desktop difference is the scrollbar).
+- 0 empty `<dl>`.
+- 0 console errors, warnings or React warnings. The sidebar feeds now resolve against the live RAG.
+- The mobile comparisons scroll inside their own box.
+
+## 13. Owner questions answered
+
+| Question | Answer |
+|---|---|
+| local ResultSet generation | **NO** |
+| prose parsing | **NO** |
+| local result re-ranking | **NO** |
+| local eligibility inference | **NO** |
+| local source-authority inference | **NO** |
+| local missing→false coercion | **NO** |
+
+`conversation_state` stays opaque: stored, echoed, replaced only by an authoritative response, preserved across transport failure, and cleared by Clear Chat. It is not inspected.
+
+## 14. Residual contract mismatches (RAG-owned, reported, not patched in the App)
+
+- **R1: structured selection loses its ResultSet identity when the question names the title.** The App's Day 4 prefill "Tell me more about <title>" is sent together with the correct `selected_result`. RAG verifies the selection, then re-resolves by the title in the text. The response has the **right record** (and state keeps `selected_result.ordinal = 2`), but the item has `result_set_id: null`, `ordinal: null` and `answer_state: PARTIAL`. With neutral wording ("Tell me more about this one", "What is the value?"), the same request returns ordinal 2 and `CONFIRMED`. **Ask for Carmen:** a verified `selected_result` should take precedence over a title match in the text. The App keeps the accepted D4 prefill and renders what is sent. It never re-attaches an ordinal.
+- **R2: retained selection beats an explicit reference on an eligibility follow-up.** This was reproduced in Carmen's own harness with no App involved: after "the second one" (prose or structured), "Am I eligible for Day 5 International Computing Scholarship **8**?" answers about **Scholarship 2** (`PARTIAL`). Without a prior selection, the same question correctly answers #8 (`UNKNOWN`). "Tell me about … Scholarship 8" after a selection is also correct. Qasim's rule is that explicit references override inherited context, so this is a **RAG defect for Carmen**, and it is on an eligibility question. The App must not work around it by parsing prose.
+- **R3: `PARTIAL` discovery has no student-visible reason (product decision, not a defect).** An incomplete-population discovery is `answer_state: PARTIAL`, but its prose only restates the records. With §10.3 the prose is visible, yet nothing tells the student *why* it is partial. The App deliberately renders no `answer_state` label; that was the Day 4 decision, and one would be App-authored copy. Options: RAG adds a sentence, or Qasim approves a fixed neutral label per `answer_state`.
+
+## 15. Status
+
+- **Day 5 App real integration: done at the head below, for Qasim's review.**
+- The D5 PR is opened separately. It is **not to be merged**.
+- **D6 will branch from this exact head.**
+- Day 8: HOLD.
