@@ -38,6 +38,12 @@ function toCardModel(item: ResultItem): ResultCardModel {
     url: item.url,
     provenance: null,
     fields: item.fields,
+    // V7 Day 4 additions have no counterpart in this dev-only proposed
+    // contract prototype; out of scope, left as a future cleanup.
+    resultSetId: null,
+    canonicalId: null,
+    ordinal: null,
+    qualifyingEvidence: null,
   };
 }
 

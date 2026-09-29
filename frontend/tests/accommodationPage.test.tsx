@@ -244,8 +244,13 @@ describe('Accommodation guided-domain page', () => {
       '1Placeholder residence A',
       '2Placeholder residence B',
     ]);
+    // V7 Day 4: accommodation clarification is `allow_multiple: true` on the
+    // real wire (`askanu-rag` `resource_queries.py`), so this is the
+    // multi-select note, not the single-select one.
     expect(
-      screen.getByText('Select an option, or reply in the message box.'),
+      screen.getByText(
+        'Choose one or more, then use your selection — or reply in the message box.',
+      ),
     ).toBeInTheDocument();
 
     setMockScenarioId('ok-accommodation');

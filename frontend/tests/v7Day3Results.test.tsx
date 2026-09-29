@@ -5,11 +5,13 @@ import { App } from '../src/App';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { ComparisonTable } from '../src/chat/results/ComparisonTable';
 import { ResultList } from '../src/chat/results/ResultList';
-import { toResultCards } from '../src/chat/results/resultItems';
+import { toComparisonModel, toResultCards } from '../src/chat/results/resultItems';
 import { setMockScenarioId } from '../src/dev/mockTransport';
 import {
   insufficientEvidenceResponse,
+  okAccommodationCompareItemsResponse,
   okAccommodationResponse,
+  okAccommodationResultsResponse,
   okEventsResultSetForwardResponse,
   okJobsResultSetResponse,
   errorResponse,
@@ -88,6 +90,89 @@ describe('toResultCards (shared item adapter)', () => {
 
     const roleF = cards[5];
     expect(roleF.fields.find((f) => f.label === 'Closes')?.value).toBeNull();
+  });
+
+  /*
+   * V7 Day 4 (`askanu-rag` PR #38, `carmen/v7-day4-accommodation-vertical`,
+   * tip `3c8e35e` — not yet merged): conversational Jobs items now carry an
+   * added `type: "job"` discriminator, purely additively — every other field
+   * is unchanged. `parseJobItem` destructures only its named fields, so this
+   * must produce byte-identical cards to the untyped shape.
+   */
+  it('treats an added type:"job" discriminator as purely additive (PR #38 forward compatibility)', () => {
+    const typed = jobItems.map((item) => ({ ...item, type: 'job' }));
+    expect(toResultCards(typed)).toEqual(toResultCards(jobItems));
+  });
+
+  it('maps a type:"result" item through the 7 fixed field keys, including qualifying_evidence', () => {
+    const cards = toResultCards(okAccommodationResultsResponse.items)!;
+    expect(cards).not.toBeNull();
+    expect(cards[0].recordId).toBe('accommodation:residence:placeholder-residence-a');
+    expect(cards[0].resultSetId).toBe('rs:accommodation:mock-1');
+    expect(cards[0].canonicalId).toBe('placeholder-residence-a');
+    expect(cards[0].ordinal).toBe(1);
+    expect(cards[0].qualifyingEvidence).toBeNull();
+
+    const field = (card: (typeof cards)[number], label: string) =>
+      card.fields.find((f) => f.label === label)?.value;
+    // All 7 keys appear, in fixed order, whether or not the source published them.
+    expect(cards[0].fields.map((f) => f.label)).toEqual([
+      'Category',
+      'Location',
+      'Catering',
+      'Advertised rate',
+      'Cost period',
+      'Audience',
+      'Features',
+    ]);
+    expect(field(cards[0], 'Catering')).toBe('Self-catered');
+    // Card B has several unpublished fields and real qualifying_evidence.
+    expect(field(cards[1], 'Location')).toBeNull();
+    expect(field(cards[1], 'Catering')).toBeNull();
+    expect(cards[1].qualifyingEvidence).toEqual({
+      roomName: 'Standard',
+      rate: '$380.00',
+      costPeriod: '2027 Indicative costs',
+      contract: '44 weeks',
+      inclusions: 'Internet included',
+      otherFees: 'Refundable Deposit: $1,300',
+    });
+  });
+
+  it('refuses the whole list (never a card) when a type:"comparison" item is present', () => {
+    expect(toResultCards(okAccommodationCompareItemsResponse.items)).toBeNull();
+    expect(
+      toResultCards([
+        ...okAccommodationResultsResponse.items,
+        ...okAccommodationCompareItemsResponse.items,
+      ]),
+    ).toBeNull();
+  });
+});
+
+describe('toComparisonModel (shared comparison adapter)', () => {
+  it('builds columns/rows from a real PublicComparisonItem, preserving backend order and missingness', () => {
+    const model = toComparisonModel(okAccommodationCompareItemsResponse.items)!;
+    expect(model).not.toBeNull();
+    expect(model.columns).toEqual([
+      { id: 'placeholder-residence-a', title: 'Placeholder residence record title A' },
+      { id: 'placeholder-residence-b', title: 'Placeholder residence record title B' },
+    ]);
+    const locationRow = model.rows.find((row) => row.label === 'Location')!;
+    expect(locationRow.values).toEqual(['Placeholder campus', null]);
+    const rateRow = model.rows.find((row) => row.label === 'Advertised rate')!;
+    expect(rateRow.values).toEqual(['$300.00', '$450.00']);
+  });
+
+  it('refuses when items is not exactly one comparison item', () => {
+    expect(toComparisonModel([])).toBeNull();
+    expect(toComparisonModel(okAccommodationResultsResponse.items)).toBeNull();
+    expect(
+      toComparisonModel([
+        ...okAccommodationCompareItemsResponse.items,
+        ...okAccommodationCompareItemsResponse.items,
+      ]),
+    ).toBeNull();
   });
 });
 

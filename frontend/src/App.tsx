@@ -1,7 +1,14 @@
 import { useCallback, useRef, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { ChatPanel } from './chat/ChatPanel';
+import type { PendingStructuredPrefill } from './chat/structuredPrefill';
+import { resolveStructuredPayload } from './chat/structuredPrefill';
 import { useChatSession } from './chat/useChatSession';
+import type {
+  ClarificationSelectionRequest,
+  ResultPageRequest,
+  SelectedResultRequest,
+} from './types/api';
 import { MobileDrawer } from './layout/MobileDrawer';
 import { ResourceRail } from './layout/ResourceRail';
 import { TopBar } from './layout/TopBar';
@@ -44,6 +51,18 @@ function AppShell() {
   const [clearAnnouncement, setClearAnnouncement] = useState('');
   const clearAnnouncementCountRef = useRef(0);
 
+  /*
+   * V7 Day 4 (`askanu-rag` PR #38, not yet merged): a card's "Ask about this"
+   * or the clarification "Use selection" still only prefills the composer —
+   * the "prefill, editable, unsent" rule is unchanged. This pairs that
+   * prefill with the exact structured payload RAG needs, but only attaches
+   * it to the outgoing request if the student sends the prefill text
+   * unchanged (`handleSend` below); an edit drops the structured payload and
+   * falls back to today's plain free-text send. Not React state: setting it
+   * must never itself trigger a render.
+   */
+  const pendingStructuredPrefillRef = useRef<PendingStructuredPrefill | null>(null);
+
   const closeDrawer = useCallback(() => {
     setDrawerOpen(false);
     // Return focus to the control that opened the drawer.
@@ -66,7 +85,12 @@ function AppShell() {
 
   const handleSend = useCallback(
     (text: string) => {
-      sendMessage(text);
+      const structured = resolveStructuredPayload(
+        pendingStructuredPrefillRef.current,
+        text,
+      );
+      pendingStructuredPrefillRef.current = null;
+      sendMessage(text, structured);
       setDraft('');
     },
     [sendMessage],
@@ -81,6 +105,7 @@ function AppShell() {
   const handleClearChat = useCallback(() => {
     clearChat();
     setDraft('');
+    pendingStructuredPrefillRef.current = null;
     clearAnnouncementCountRef.current += 1;
     setClearAnnouncement(
       'Conversation cleared' + '\u200B'.repeat(clearAnnouncementCountRef.current % 2),
@@ -90,12 +115,51 @@ function AppShell() {
   /*
    * A clarification option is another way to fill the composer, not a second
    * send path: it never bypasses the "prefill, focus, never auto-send" rule
-   * domain-launcher cards already use.
+   * domain-launcher cards already use. `selection` (V7 Day 4) is stashed
+   * alongside the prefill and only reaches the wire in `handleSend` if the
+   * composer is sent with this exact text, unedited.
    */
-  const handleSelectClarification = useCallback((text: string) => {
-    setDraft(text);
-    setFocusComposerSignal((signal) => signal + 1);
-  }, []);
+  const handleSelectClarification = useCallback(
+    (text: string, selection: ClarificationSelectionRequest) => {
+      pendingStructuredPrefillRef.current = {
+        prefillText: text,
+        clarificationSelection: selection,
+      };
+      setDraft(text);
+      setFocusComposerSignal((signal) => signal + 1);
+    },
+    [],
+  );
+
+  /*
+   * A card's "Ask about this" (V7 Day 4): same prefill-only rule as above.
+   * `selectedResult` travels structurally and independently of the composer
+   * text \u2014 see `AssistantTurn.tsx`'s `handleCardSelect` doc comment.
+   */
+  const handleSelectResult = useCallback(
+    (payload: { prefillText: string; selectedResult: SelectedResultRequest }) => {
+      pendingStructuredPrefillRef.current = {
+        prefillText: payload.prefillText,
+        selectedResult: payload.selectedResult,
+      };
+      setDraft(payload.prefillText);
+      setFocusComposerSignal((signal) => signal + 1);
+    },
+    [],
+  );
+
+  /*
+   * "Show more" on a server-paged result list (V7 Day 4): a direct action,
+   * not a prefill \u2014 it sends immediately, bypassing the composer entirely,
+   * the same way Clear Chat bypasses it. The next page renders as a new
+   * assistant turn below the current one.
+   */
+  const handleShowMorePage = useCallback(
+    (page: ResultPageRequest) => {
+      sendMessage('Show more results', { resultPage: page });
+    },
+    [sendMessage],
+  );
 
   return (
     <div className={styles.root}>
@@ -121,7 +185,9 @@ function AppShell() {
                   isSending={isSending}
                   onClearChat={handleClearChat}
                   onDraftChange={setDraft}
+                  onRequestMorePage={handleShowMorePage}
                   onSelectClarification={handleSelectClarification}
+                  onSelectResult={handleSelectResult}
                   onSend={handleSend}
                   onToggleTheme={toggleTheme}
                   theme={theme}

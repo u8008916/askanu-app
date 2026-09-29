@@ -1,0 +1,41 @@
+/*
+ * V7 Day 4: a validated backend action (e.g. "Apply now"). Gold-tint, never
+ * the red `StatusNotice` error treatment — an action can appear alongside a
+ * `insufficient_evidence` answer, and that pairing must not read as a fault.
+ * Visual pattern ported from `dev/v7/V7StateGallery.module.css`'s
+ * `.unknownNextAction` (dev-only prototype; not imported from here).
+ */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.action {
+  align-items: center;
+  background: var(--gold-tint);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.icon {
+  color: var(--gold-deep);
+  flex: 0 0 auto;
+}
+
+.link {
+  align-items: center;
+  color: var(--gold-deep);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: var(--space-1);
+  min-height: var(--touch-target-min);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

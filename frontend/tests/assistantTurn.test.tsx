@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { MOCK_SCENARIOS } from '../src/dev/mockTransport';
 import { needsClarificationManyOptionsResponse } from '../src/mocks/askResponses';
-import type { AskResponse, AskStatus } from '../src/types/api';
+import type { AskResponse, AskStatus, ClarificationSelectionRequest } from '../src/types/api';
 
 /**
  * The turn is an <li>; give it the list its markup expects. Defaults to the
@@ -13,7 +13,10 @@ import type { AskResponse, AskStatus } from '../src/types/api';
  */
 function renderTurn(
   response: AskResponse,
-  onSelectClarification: (text: string) => void = vi.fn(),
+  onSelectClarification: (
+    text: string,
+    selection: ClarificationSelectionRequest,
+  ) => void = vi.fn(),
   isClarificationActive = true,
 ) {
   return render(
@@ -101,7 +104,10 @@ describe('AssistantTurn', () => {
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /COMP1100/ }));
 
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1100');
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1100', {
+      clarification_id: 'clar-many-courses',
+      option_ids: ['courses:course:COMP1100_2026'],
+    });
   });
 
   it('a single-select option activates with the keyboard, not just a pointer', async () => {
@@ -114,7 +120,10 @@ describe('AssistantTurn', () => {
     expect(button).toHaveFocus();
     await user.keyboard('{Enter}');
 
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1600');
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1600', {
+      clarification_id: 'clar-many-courses',
+      option_ids: ['courses:course:COMP1600_2026'],
+    });
   });
 
   it('a multi-select checkbox toggles with the keyboard Space key', async () => {
@@ -150,6 +159,10 @@ describe('AssistantTurn', () => {
     await user.click(useSelection);
     expect(onSelect).toHaveBeenCalledExactlyOnceWith(
       'Both COMP1110 and COMP1600',
+      {
+        clarification_id: 'clar-42',
+        option_ids: ['course:COMP1110', 'course:COMP1600'],
+      },
     );
   });
 
@@ -164,7 +177,10 @@ describe('AssistantTurn', () => {
     await user.click(screen.getByRole('checkbox', { name: /COMP1110/ }));
     await user.click(screen.getByRole('button', { name: 'Use selection' }));
 
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1110');
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('COMP1110', {
+      clarification_id: 'clar-42',
+      option_ids: ['course:COMP1110'],
+    });
   });
 
   /*
