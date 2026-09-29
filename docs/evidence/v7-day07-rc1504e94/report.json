@@ -1,0 +1,356 @@
+[
+  {
+    "journey": "a1-stale-show-more-desktop",
+    "step": "01-two-lists",
+    "file": "a1-stale-show-more-desktop-01-two-lists.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-desktop",
+    "step": "02-after-older-show-more",
+    "file": "a1-stale-show-more-desktop-02-after-older-show-more.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-desktop",
+    "step": "03-ordinal-after-reset",
+    "file": "a1-stale-show-more-desktop-03-ordinal-after-reset.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-desktop",
+    "lastTurnText": "AskANU\n\nOutside what AskANU covers\n\nI can help with ANU course prerequisite questions. Please include a course code."
+  },
+  {
+    "journey": "a1-stale-show-more-desktop",
+    "console": [
+      "error: [askanu] /api/v1/ask returned an error envelope Object"
+    ]
+  },
+  {
+    "journey": "r5-third-desktop",
+    "step": "01-third-one",
+    "file": "r5-third-desktop-01-third-one.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r5-third-desktop",
+    "console": []
+  },
+  {
+    "journey": "r2-override-desktop",
+    "step": "01-explicit-8-answers-2",
+    "file": "r2-override-desktop-01-explicit-8-answers-2.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r2-override-desktop",
+    "console": []
+  },
+  {
+    "journey": "support-scope-desktop",
+    "step": "01-scope-text-above-card",
+    "file": "support-scope-desktop-01-scope-text-above-card.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-scope-desktop",
+    "step": "02-double-clear",
+    "file": "support-scope-desktop-02-double-clear.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 0,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": null,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-scope-desktop",
+    "staleAfterDoubleClear": 0
+  },
+  {
+    "journey": "support-scope-desktop",
+    "console": []
+  },
+  {
+    "journey": "a1-stale-show-more-mobile",
+    "step": "01-two-lists",
+    "file": "a1-stale-show-more-mobile-01-two-lists.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-mobile",
+    "step": "02-after-older-show-more",
+    "file": "a1-stale-show-more-mobile-02-after-older-show-more.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-mobile",
+    "step": "03-ordinal-after-reset",
+    "file": "a1-stale-show-more-mobile-03-ordinal-after-reset.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "a1-stale-show-more-mobile",
+    "lastTurnText": "AskANU\n\nOutside what AskANU covers\n\nI can help with ANU course prerequisite questions. Please include a course code."
+  },
+  {
+    "journey": "a1-stale-show-more-mobile",
+    "console": [
+      "error: [askanu] /api/v1/ask returned an error envelope Object"
+    ]
+  },
+  {
+    "journey": "r5-third-mobile",
+    "step": "01-third-one",
+    "file": "r5-third-mobile-01-third-one.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "3"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r5-third-mobile",
+    "console": []
+  },
+  {
+    "journey": "r2-override-mobile",
+    "step": "01-explicit-8-answers-2",
+    "file": "r2-override-mobile-01-explicit-8-answers-2.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r2-override-mobile",
+    "console": []
+  },
+  {
+    "journey": "support-scope-mobile",
+    "step": "01-scope-text-above-card",
+    "file": "support-scope-mobile-01-scope-text-above-card.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-scope-mobile",
+    "step": "02-double-clear",
+    "file": "support-scope-mobile-02-double-clear.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 0,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": null,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-scope-mobile",
+    "staleAfterDoubleClear": 0
+  },
+  {
+    "journey": "support-scope-mobile",
+    "console": []
+  },
+  {
+    "journey": "transport-failure-desktop",
+    "step": "01-transport-error",
+    "file": "transport-failure-desktop-01-transport-error.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "transport-failure-desktop",
+    "step": "02-retry-keeps-context",
+    "file": "transport-failure-desktop-02-retry-keeps-context.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "transport-failure-desktop",
+    "console": []
+  }
+]

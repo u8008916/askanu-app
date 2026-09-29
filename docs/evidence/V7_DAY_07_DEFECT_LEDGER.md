@@ -74,3 +74,30 @@ The App currently does neither (b) nor (c).
 4. Run the D5 52 / D6 34 / D4 regressions, the full frontend, server, build and TypeScript, the six-domain lifecycle, and a mobile/browser smoke.
 
 Day 8: **HOLD**. There is no deployment, merge, release config, secret or IAM work.
+
+## 5. Re-verification against Carmen's restacked RAG chain (2026-09-29)
+
+Local engineering evidence, not CI. **No App production change**: App stays frozen at `d5ed8ff`. Evidence in `v7-day07-rc1504e94/`; matrix runner `v7-day07/rc_reverify.py`.
+
+**RAG SHAs:** D5 `75c017b`, D6 `1875a4b`, D7 RC `1504e94` (chain `eace474` → `75c017b` → `1875a4b` → `03adad0` → `1504e94`). The restacked D5, D6 and pure-D7 trees are byte-identical to `0efb6ee`, `bafa15d`, `ce0eb8f`.
+**Public wire: UNCHANGED.** OpenAPI from both live apps is byte-identical (51 schemas), and no `models/`, `api/`, `conversation/` or `validation/` file changed. The fix touches only interpretation, ordinal resolution and the Event/Scholarship query services.
+
+**Live torture (`torture_rc.py`, unchanged): 29/45 on `ce0eb8f` (control rerun) → 41/45 on `1504e94`. 41 PASS / 4 FAIL.** Broader matrix (`rc_reverify.py`): 116/284 → 187/284.
+
+| ID | New status at `1504e94` |
+|---|---|
+| R1 Scholarship title-bearing | **CLOSED** (ordinal and `result_set_id` kept, CONFIRMED) |
+| R4 Events | **CLOSED** |
+| R4 Accommodation | **OPEN**: "Tell me more about ⟨title⟩" → `insufficient_evidence`; "Tell me about ⟨title⟩" works. No Accommodation code changed. |
+| R4 Jobs | **OPEN (title-dependent)**: passes for `Software Engineer`; fails for `Verified Role 2/3` (title digit read as job ID), even for plain "Tell me about" |
+| R2 Scholarship #2 → Scholarship 8, Event → Event 800005 | **CLOSED** (Jobs control still passes; real-App screenshots `r2-override-*`) |
+| R5 first / second / third | **CLOSED** (12/12 each wording; fresh, after selection, after continuation, after Show more) |
+| R5 `3rd`, `fourth`, `number 3` | **OPEN** (0/12 each; only `third` was added) |
+| R6 | **OPEN, blocker**: Antarctica, Sydney, full-time, ANU99, remote silently dropped, all Jobs returned. Melbourne and casual are handled. Events/Accommodation in Antarctica also return everything. |
+| D7-A1 | **OPEN, blocker**: controlled 400 returns `turn_index 0`, no ResultSets; next "the second one" → `off_topic`. Reproduced in the real App. All 8 controlled rejections tried (stale cursor, older set, bad set id, mismatched ordinal, tampered selection ×2, malformed page ×2) wipe state. |
+| R3 | OPEN (non-blocking) |
+| Jobs duplicated prose | OPEN (non-blocking; 5/5 titles repeated) |
+
+**App regression (unchanged code):** frontend 508/508; D4 31, D5 52, D6 34, D7 14; server 50/50; tsc and Vite build pass; `git diff --check` clean; browser desktop + 375px: 0 overflow, 0 stale controls after double Clear Chat, no React warnings (the only console output is the App's own error-envelope log in the A1 repro). Carmen's suites on `1504e94`: 11 blocker tests pass; full suite 1118 passed / 88 skipped / 0 failed of 1206.
+
+The "Tell me about it" prefill stays temporary: both wordings agree in Scholarships and Events only.
