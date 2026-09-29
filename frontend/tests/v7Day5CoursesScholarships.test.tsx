@@ -99,16 +99,16 @@ function cardNumber(card: HTMLElement): string {
   return card.querySelector('[aria-hidden="true"]')?.textContent ?? '';
 }
 
-/** A generic `PublicResultItem` in a domain with no published field key set yet. */
+/** A generic `PublicResultItem` in a domain RAG does not have, so no key set exists for it. */
 function unlabelledItem(overrides: Record<string, unknown> = {}) {
   return {
     type: 'result',
-    record_id: 'support:service:placeholder-service-a',
-    source_id: 'support_placeholder',
+    record_id: 'unlisted:service:placeholder-service-a',
+    source_id: 'unlisted_placeholder',
     canonical_id: 'placeholder-service-a',
-    title: 'Placeholder support service A',
+    title: 'Placeholder unlisted item A',
     url: 'https://example.invalid/placeholder-service-a',
-    domain: 'support',
+    domain: 'unlisted',
     result_set_id: 'rs-placeholder',
     ordinal: 1,
     fields: {},

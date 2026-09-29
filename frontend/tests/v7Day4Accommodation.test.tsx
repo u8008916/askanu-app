@@ -504,7 +504,7 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     expect(askAboutButtons).toHaveLength(2);
   });
 
-  it('clicking "Ask about this" prefills the composer, only, with the card’s title', async () => {
+  it('clicking "Ask about this" prefills the composer, only, with the neutral follow-up (V7 Day 6)', async () => {
     const user = userEvent.setup();
     render(<App />);
     setMockScenarioId('ok-accommodation-results');
@@ -518,9 +518,9 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
       screen.getAllByRole('button', { name: /Ask about this/ })[0],
     );
 
-    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue(
-      'Tell me more about Placeholder residence record title A',
-    );
+    // V7 Day 6: neutral prefill. The live RAG `bafa15d` re-resolved the title
+    // wording by text and dropped the verified selection (evidence R4).
+    expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue('Tell me about it');
     expect(screen.getAllByText('AskANU')).toHaveLength(repliesBefore);
   });
 
