@@ -1,0 +1,44 @@
+===== port 8000
+PASS | fresh exact digit title | CONFIRMED cards=['700005'] cons=[] state.selected=None
+PASS | fresh exact title | CONFIRMED cards=['700001'] cons=[] state.selected=None
+PASS | title after a ResultSet exists | CONFIRMED cards=['700004'] cons=[] state.selected=None
+PASS | title after another Job is selected (override) | CONFIRMED cards=['700005'] cons=[] state.selected=None
+PASS | digit title, 'Tell me more about', after selection | CONFIRMED cards=['700004'] cons=[] state.selected=None
+PASS | explicit different title (non-digit) after selection | CONFIRMED cards=['700001'] cons=[] state.selected=None
+FAIL | selected job asked by its OWN title (state kept?) | CONFIRMED cards=['700002'] cons=[] state.selected=None
+PASS | follow-up 'closing date' after own-title select | CONFIRMED cards=['700002'] cons=[] state.selected=None | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty
+PASS | follow-up 'closing date' after override | CONFIRMED cards=['700005'] cons=[] state.selected=None | Verified Role 5. Job ID: 700005. Stored status: current. Employment ty
+PASS | next generic 'Show me jobs' clean + unfiltered | PARTIAL cards=['700001', '700002', '700003', '700004', '700005'] cons=[] state.selected=None
+PASS | 'Show me jobs' after fresh digit title | PARTIAL cards=['700001', '700002', '700003', '700004', '700005'] cons=[] state.selected=None
+10/11
+===== port 8001
+FAIL | fresh exact digit title | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+PASS | fresh exact title | CONFIRMED cards=['700001'] cons=[] state.selected=None
+FAIL | title after a ResultSet exists | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+FAIL | title after another Job is selected (override) | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+FAIL | digit title, 'Tell me more about', after selection | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+PASS | explicit different title (non-digit) after selection | CONFIRMED cards=['700001'] cons=[] state.selected=700003
+PASS | selected job asked by its OWN title (state kept?) | CONFIRMED cards=['700002'] cons=[('employment_type', 'verified')] state.selected=700002
+PASS | follow-up 'closing date' after own-title select | CONFIRMED cards=['700002'] cons=[('employment_type', 'verified')] state.selected=700002 | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty
+FAIL | follow-up 'closing date' after override | CONFIRMED cards=['700002'] cons=[('employment_type', 'verified')] state.selected=None | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty
+FAIL | next generic 'Show me jobs' clean + unfiltered | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+FAIL | 'Show me jobs' after fresh digit title | PARTIAL cards=[] cons=[('employment_type', 'verified')] state.selected=None
+4/11
+== port 8000
+  own-title re-ask of #2 then 'Tell me about the third one': ('ok', 'CONFIRMED', ['700003'], [3])
+  own-title re-ask of #2 then 'Tell me about the first one': ('ok', 'CONFIRMED', ['700001'], [1])
+  own-title re-ask of #2 then 'Show more': ('HTTP', 'HTTP Error 400: Bad Request')
+== port 8001
+  own-title re-ask of #2 then 'Tell me about the third one': ('ok', 'CONFIRMED', ['700003'], [3])
+  own-title re-ask of #2 then 'Tell me about the first one': ('ok', 'CONFIRMED', ['700001'], [1])
+  own-title re-ask of #2 then 'Show more': ('ok', ['700006', '700007'])
+== port 8000
+   list -> 'Tell me about it' (select #2) -> Show more -> ('200', ['700006', '700007'])
+   list -> 'Tell me about <#2 own title>' (with select) -> Show more -> ('400', 'The request could not be completed.')
+   list -> 'Tell me about Software Engineer' (typed, no select) -> Show more -> ('400', 'The request could not be completed.')
+   list -> 'Tell me about Verified Role 5' (typed, no select) -> Show more -> ('400', 'The request could not be completed.')
+== port 8001
+   list -> 'Tell me about it' (select #2) -> Show more -> ('200', ['700006', '700007'])
+   list -> 'Tell me about <#2 own title>' (with select) -> Show more -> ('200', ['700006', '700007'])
+   list -> 'Tell me about Software Engineer' (typed, no select) -> Show more -> ('200', ['700006', '700007'])
+   list -> 'Tell me about Verified Role 5' (typed, no select) -> Show more -> ('400', 'The request could not be completed.')

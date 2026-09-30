@@ -1,0 +1,30 @@
+PASS R6-B | What jobs are available at ANU in Canberra? | location=canberra, cards returned | [('location', 'canberra')] | 5 cards
+PASS R6-B | What jobs are available at ANU in Canberra? [no 'anu in canberra'] | no institutional prefix in constraint | [('location', 'canberra')] | 5 cards
+PASS R6-B | What jobs are available at ANU in Canberra? [caveat kept] | population-incomplete caveat still present | [('location', 'canberra')] | 5 cards
+PASS R6-B | What jobs are available in Canberra? | location=canberra, cards returned | [('location', 'canberra')] | 5 cards
+PASS R6-B | What jobs are available in Canberra? [no 'anu in canberra'] | no institutional prefix in constraint | [('location', 'canberra')] | 5 cards
+PASS R6-B | What jobs are available in Canberra? [caveat kept] | population-incomplete caveat still present | [('location', 'canberra')] | 5 cards
+PASS R6-B | Any ANU jobs in Canberra? | location=canberra, cards returned | [('location', 'canberra')] | 5 cards
+PASS R6-B | Any ANU jobs in Canberra? [no 'anu in canberra'] | no institutional prefix in constraint | [('location', 'canberra')] | 5 cards
+PASS R6-B | Any ANU jobs in Canberra? [caveat kept] | population-incomplete caveat still present | [('location', 'canberra')] | 5 cards
+PASS R6-B | Show me jobs at ANU in Canberra | location=canberra, cards returned | [('location', 'canberra')] | 5 cards
+PASS R6-B | Show me jobs at ANU in Canberra [no 'anu in canberra'] | no institutional prefix in constraint | [('location', 'canberra')] | 5 cards
+PASS R6-B | Show me jobs at ANU in Canberra [caveat kept] | population-incomplete caveat still present | [('location', 'canberra')] | 5 cards
+PASS R6-B | Are there jobs around Canberra? | location=canberra, cards returned | [('location', 'canberra')] | 5 cards
+PASS R6-B | Are there jobs around Canberra? [no 'anu in canberra'] | no institutional prefix in constraint | [('location', 'canberra')] | 5 cards
+PASS R6-B | Are there jobs around Canberra? [caveat kept] | population-incomplete caveat still present | [('location', 'canberra')] | 5 cards
+PASS R6-B control | What jobs are available at ANU? | non-Canberra control: cards, no location constraint | [] | 5 cards
+PASS R6-B control | Show me any jobs at ANU | non-Canberra control: cards, no location constraint | [] | 5 cards
+PASS R6-C | Are there any jobs in Canberra? | employment_type=[] | [('location', 'canberra')] | 5 cards
+PASS R6-C | Tell me about jobs in Canberra | employment_type=[] | [('location', 'canberra')] | 5 cards
+PASS R6-C | Do you know about jobs in Canberra? | employment_type=[] | [('location', 'canberra')] | 5 cards
+PASS R6-C | What about jobs in Canberra? | employment_type=[] | [('location', 'canberra')] | 5 cards
+PASS R6-C | Show me any jobs at ANU | employment_type=[] | [] | 5 cards
+PASS R6-C | Do you have jobs in Canberra? | employment_type=[] | [('location', 'canberra')] | 5 cards
+PASS R6-C | Show me jobs | employment_type=[] | [] | 5 cards
+PASS R6-C explicit | Any casual jobs in Canberra? | employment_type=['casual']; cards=0 (kept visible, not dropped) | [('employment_type', 'casual'), ('location', 'canberra')] | 0 cards
+PASS R6-C explicit | Are there any full-time jobs in Canberra? | employment_type=['full-time']; cards=0 (kept visible, not dropped) | [('employment_type', 'full-time'), ('location', 'canberra')] | 0 cards
+PASS R6 unsupported stays visible | Any jobs in Antarctica? | constraint kept, no unconstrained list returned | [('location', 'antarctica')] | 0 cards
+PASS R6 unsupported stays visible | Are there any casual jobs in Sydney? | constraint kept, no unconstrained list returned | [('employment_type', 'casual'), ('location', 'sydney')] | 0 cards
+
+28/28 checks passed
