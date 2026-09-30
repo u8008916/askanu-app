@@ -16,7 +16,7 @@ Method is unchanged from the `216c112` round: a live `create_app` over Carmen's 
 | Round-2 matrix, R4 Jobs override | 6/6 | 2/6 | **6/6** |
 | Round-2 matrix total | 407/455 | 403/455 | **407/455** (recovered the 4 lost cases) |
 | Hidden `employment_type="verified"` | present | present | **gone** (no constraint in any title flow) |
-| Torture (`torture_rc.py`) | 47/48 | 47/48 | **47/48** (same stale "older turn's Show more" case) |
+| Torture (`torture_rc.py`) | 47/48 | 47/48 | **47/48 (48-case reconstruction)**: three extra Accommodation cases vs the recorded 45-case run, all pass; the one failure is the same unchanged "older turn's Show more" case |
 | Broader matrix (`rc_reverify.py`) | 282/284 | 282/284 | **276/284** (-6, see below) |
 
 ## Title-flow cases (`title_flow_a863bb9.py`, output in `title_flow.txt`)
@@ -56,7 +56,9 @@ This matches Carmen's stated intent ("old selected Job is cleared if the explici
 | Typed "Tell me about Software Engineer", then Show more | 200 | **400** |
 | Typed "Tell me about Verified Role 5", then Show more | 400 (broken title flow) | 400 |
 
-The 400 is RAG's controlled rejection ("The request could not be completed."), which preserves state (Day 7 A1). So this follows the existing "older turn's Show more after topic switch" rule: an exact-title answer now takes focus (`focus=... or exact_title is not None`). The consequence for a user is that Show more on the earlier list shows the generic error notice after they asked about one job by name. That flow worked at `216c112` for non-digit titles. It may be accepted behaviour (a title lookup is a topic switch); it needs an explicit decision, not an App workaround.
+The 400 is RAG's controlled rejection ("The request could not be completed."). **Observation only, cause not proven:** in the turn-2 state, `selected_result` and `focus.result_set_id` are cleared at `a863bb9` (they point at `rs:jobs:1` at `216c112`), while `result_sets` and `result_page` are unchanged (see `SIX_CASE_DELTA.md`, section 4). I did not test which code path produces the 400, so this document does not attribute it to the title-focus change. This is a different observation from the torture case "older turn's Show more after topic switch", which is unchanged. The user-visible effect is that Show more on the earlier list shows the generic error notice after they asked about one job by name. It needs a ruling, not an App workaround.
+
+The exact six cases, each replayed live at `e88a0d7` / `216c112` / `a863bb9`, with classification, are in `SIX_CASE_DELTA.md` (raw: `six_case_delta.{py,json,txt}`).
 
 ## Unchanged, still open
 
