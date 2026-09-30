@@ -16,12 +16,8 @@ here may be redrawn or approximated by hand.
 A missing file falls back to the generic placeholder mark or icon, in the same
 fixed-size box, so the layout does not change when an asset lands.
 
-Status (30 Sep 2026):
-
-| Slot | State |
-| ---- | ----- |
-| `anu-crest.png` | Present. Copied unmodified from the file supplied as `Australian_National_University-Logo.wine.png`. |
-| `canvas.png` | Present. `Canvas_LMS.png` trimmed to its round icon (no recolour, no redraw). |
-| `anu-crest-dark`, `anuhub`, `mytimetable`, `anu-careers` | Not supplied; the App shows the generic placeholder or icon in the same fixed box. |
-
-**Provenance is unconfirmed.** Both present files came from logo.wine-style downloads, not an ANU or Instructure brand portal. Confirm they are approved for use before merge; deleting a file restores its fallback with no code change.
+Status (30 Sep 2026): **no brand file is bundled.** A crest and a Canvas icon were tried
+from logo.wine-style downloads and removed again because their provenance was not
+confirmed as approved. Until official ANU and Instructure files are supplied, the App
+shows the generic placeholder mark and icon fallbacks, all in the same fixed boxes.
+Approved files need only be dropped in with the names above; no code change is needed.

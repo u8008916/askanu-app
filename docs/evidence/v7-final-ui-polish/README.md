@@ -58,8 +58,8 @@ New regression versus `971e837`: **none**.
 
 | Item | Status |
 |---|---|
-| ANU crest | **DONE, with a provenance flag.** The header shows the crest file supplied at 09:54 on 30 Sep (`Australian_National_University-Logo.wine.png`, copied byte-for-byte to `frontend/src/assets/brand/anu-crest.png`; alt "Australian National University crest"). It sits in a fixed square so the wordmark never shifts. The supplied file is a mid-brown line mark, so on the dark theme it sits on a light backing chip instead of being recoloured. **The filename indicates logo.wine, not an ANU brand portal. It is not confirmed as an approved official asset; PM needs to confirm provenance before merge.** If it is rejected, deleting `anu-crest.png` restores the placeholder mark with no code change. |
-| Quick Link logos | **PARTIAL.** Fixed-size logo box, equal tile heights, alignment and external-link indicator are done for the 2-column grid and the mobile row. **Canvas** uses the supplied `Canvas_LMS.png` (logo.wine again; same provenance flag), cropped to its round icon because the wordmark is unreadable at 28px; the crop is trimming only, no recolour or redraw. **AnuHub, MyTimetable and ANU Careers have no supplied logo**, so they keep the icon fallback in the same box. Drop `anuhub.*`, `mytimetable.*` or `anu-careers.*` into `src/assets/brand/` to replace them. Logo `<img>` is decorative (`alt=""`) because each link already has its visible name beside it. |
+| ANU crest | **NOT DONE: no approved asset.** A crest supplied as a logo.wine file was wired in and then **removed again** (follow-up commit) because its provenance was not confirmed as approved. The header shows the generic placeholder mark. The slot is built and tested: drop an official `anu-crest.svg` or `.png` (optional `anu-crest-dark.*`) into `frontend/src/assets/brand/` and it renders in the same fixed box with the alt text "Australian National University crest", with no code change. The dark-theme backing chip only applies to a crest that has no dark variant. **The screenshots in this folder were captured while the supplied crest and Canvas icon were still bundled, so they show those marks; the shipped branch does not.** |
+| Quick Link logos | **PARTIAL.** The fixed-size logo box, equal tile heights, alignment and external-link indicator are done for the 2-column grid and the mobile row. No approved logo is bundled (the supplied Canvas icon was removed with the crest), so all four links use the icon fallback in that box. Drop `anuhub.*`, `canvas.*`, `mytimetable.*` or `anu-careers.*` into `src/assets/brand/` to replace them. A logo `<img>` is decorative (`alt=""`) because each link already has its visible name beside it. |
 | User avatar | DONE: gold circle with silhouette, role `img` named "You", right of the bubble, fixed size (no layout shift) |
 | AskANU avatar | DONE: reusable `AskANUIdentity` (gold "A" + "AskANU") on every assistant turn, including notices and the pending state |
 | Assistant answer layout | DONE: one answer surface: heading, optional backend prose, numbered cards, Show more, Sources row, timestamp |
@@ -80,13 +80,13 @@ Heading wording is a count and a domain noun only ("5 events", "1 course", "4 ac
 
 ### Files
 
-New: `chat/MessageIdentity.tsx`, `chat/results/ResultCard.tsx`, `chat/results/cardLayout.ts`, `ui/brandAssets.ts`, `assets/brand/{README.md, anu-crest.png, canvas.png}`. Reworked: `AssistantTurn`, `UserTurn`, `PendingTurn`, `SourceCards`, `ResultList`, `Brand`, `QuickLinksCard`, `useChatSession` (adds `createdAt`), plus their CSS.
+New: `chat/MessageIdentity.tsx`, `chat/results/ResultCard.tsx`, `chat/results/cardLayout.ts`, `ui/brandAssets.ts`, `assets/brand/README.md`. Reworked: `AssistantTurn`, `UserTurn`, `PendingTurn`, `SourceCards`, `ResultList`, `Brand`, `QuickLinksCard`, `useChatSession` (adds `createdAt`), plus their CSS.
 
 ## 3. Regression
 
 | | Before | After |
 |---|---|---|
-| Frontend | 508/508 | **548/548** (+40 in `tests/v7FinalUiPolish.test.tsx`) |
+| Frontend | 508/508 | **547/547** (+39 in `tests/v7FinalUiPolish.test.tsx`) |
 | D4 / D5 / D6 / D7 | 31 / 52 / 34 / 14 | **31 / 52 / 34 / 14** |
 | Server | 50/50 | **50/50** |
 | `tsc --noEmit` | PASS | **PASS** |
@@ -95,7 +95,7 @@ New: `chat/MessageIdentity.tsx`, `chat/results/ResultCard.tsx`, `chat/results/ca
 | React warnings | none | **none** (0 console errors/warnings in 25 real-browser captures) |
 | Horizontal overflow | none | **none** at 1280 and 375 |
 
-One transient failure appeared once in one full-suite run (machine under load, name not captured) and did not reproduce in the three consecutive full runs that followed (548/548 each); flagging it rather than hiding it.
+One transient failure appeared once in one full-suite run (machine under load, name not captured) and did not reproduce in the three consecutive full runs that followed (548/548 each, before the logo files were removed); flagging it rather than hiding it.
 
 Existing tests changed (presentation only; every semantic assertion kept): "N results" headings became "N jobs" and similar; "Show more" queries match "Show more events" and its siblings; `<details>` lookups target the "Show as text" disclosure specifically because cards and Sources are now disclosures too; the ordinal is read from `data-ordinal`; two exact DOM-order lists are compared order-insensitively. The four safe-rendering tests that asserted "no `<img>` anywhere" now assert "no image except the bundled brand files" (`untrustedImages` in `tests/helpers.ts`), so injected `<img>` from model, record or user text is still caught. New helpers `showAsTextDetails` and `resultCardNumber` are also in `tests/helpers.ts`.
 
@@ -119,6 +119,6 @@ Data behind the screenshots is Carmen's synthetic test fixtures ("Event 800001",
 
 ## 5. Housekeeping
 
-- The two supplied originals still sit untracked in the repo root (`Australian_National_University-Logo.wine.png`, `Canvas_LMS.png`); they are not committed. The bundled copies are in `frontend/src/assets/brand/`.
+- The two supplied originals still sit untracked in the repo root (`Australian_National_University-Logo.wine.png`, `Canvas_LMS.png`); they are not committed, and no copy is bundled any more.
 - Mobile Quick Links truncate "MyTimetable" and "ANU Careers" with an ellipsis in the 4-across row. That is unchanged from the accepted Day 15 mobile evidence (`docs/evidence/day15/home-390x844-mobile.png`) and was not touched here.
 - `serve_rc.py` (this folder) is the local RC server used for section 1 and for the screenshots; it imports Carmen's test fixtures from an `askanu-rag` checkout at the SHA under test.

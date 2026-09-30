@@ -397,38 +397,33 @@ describe('cardLayout (presentation mapping)', () => {
 });
 
 describe('branding and Quick Links', () => {
-  it('exposes exactly the brand files that were supplied, and nothing is faked for the rest', () => {
-    expect(brandAsset('anu-crest')).toEqual(expect.stringContaining('anu-crest'));
-    expect(brandAsset('canvas')).toEqual(expect.stringContaining('canvas'));
-    for (const missing of ['anu-crest-dark', 'anuhub', 'mytimetable', 'anu-careers'] as const) {
-      expect(brandAsset(missing), missing).toBeNull();
+  it('bundles no brand file until an approved one is supplied, and fakes none', () => {
+    for (const name of [
+      'anu-crest',
+      'anu-crest-dark',
+      'anuhub',
+      'mytimetable',
+      'canvas',
+      'anu-careers',
+    ] as const) {
+      expect(brandAsset(name), name).toBeNull();
     }
   });
 
-  it('renders the wordmark and tagline beside the supplied crest, with a meaningful alt', () => {
-    render(<Brand />);
+  it('renders the wordmark and tagline beside the generic placeholder mark, with no image', () => {
+    const { container } = render(<Brand />);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('AskANU');
     expect(screen.getByText('Your intelligent guide to ANU information.')).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'Australian National University crest' })).toBeInTheDocument();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('svg')).not.toBeNull();
   });
 
-  it('shows the crest once when there is no dark variant (no duplicate for assistive tech)', () => {
-    render(<Brand showTagline={false} asHeading={false} />);
-    expect(screen.getAllByRole('img', { name: 'Australian National University crest' })).toHaveLength(1);
-  });
-
-  it('uses the supplied Canvas logo (decorative, the link names it) and icons for the rest', () => {
+  it('gives every Quick Link the icon fallback in its logo box, never an image', () => {
     render(<QuickLinksCard />);
     const region = screen.getByRole('region', { name: 'Quick Links' });
-    const byName = (name: string) =>
-      within(region)
-        .getAllByRole('link')
-        .find((link) => link.textContent === name) as HTMLElement;
-    const canvas = byName('Canvas');
-    expect(canvas.querySelector('img')).toHaveAttribute('alt', '');
-    for (const fallback of ['AnuHub', 'MyTimetable', 'ANU Careers']) {
-      expect(byName(fallback).querySelector('img'), fallback).toBeNull();
-      expect(byName(fallback).querySelector('svg'), fallback).not.toBeNull();
+    for (const link of within(region).getAllByRole('link')) {
+      expect(link.querySelector('img'), link.textContent ?? '').toBeNull();
+      expect(link.querySelector('svg'), link.textContent ?? '').not.toBeNull();
     }
   });
 
