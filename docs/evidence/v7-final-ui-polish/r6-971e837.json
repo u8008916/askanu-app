@@ -1,0 +1,467 @@
+{
+  "rag_url": "http://127.0.0.1:8095/api/v1/ask",
+  "label": "971e837",
+  "passed": 14,
+  "total": 28,
+  "rows": [
+    {
+      "group": "R6-B",
+      "question": "What jobs are available at ANU in Canberra?",
+      "pass": false,
+      "why": "location=['anu in canberra']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "What jobs are available at ANU in Canberra? [no 'anu in canberra']",
+      "pass": false,
+      "why": "no institutional prefix in constraint",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "What jobs are available at ANU in Canberra? [caveat kept]",
+      "pass": true,
+      "why": "population-incomplete caveat still present",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "What jobs are available in Canberra?",
+      "pass": true,
+      "why": "location=canberra, cards returned",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "What jobs are available in Canberra? [no 'anu in canberra']",
+      "pass": true,
+      "why": "no institutional prefix in constraint",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "What jobs are available in Canberra? [caveat kept]",
+      "pass": true,
+      "why": "population-incomplete caveat still present",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "Any ANU jobs in Canberra?",
+      "pass": true,
+      "why": "location=canberra, cards returned",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "Any ANU jobs in Canberra? [no 'anu in canberra']",
+      "pass": true,
+      "why": "no institutional prefix in constraint",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "Any ANU jobs in Canberra? [caveat kept]",
+      "pass": true,
+      "why": "population-incomplete caveat still present",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B",
+      "question": "Show me jobs at ANU in Canberra",
+      "pass": false,
+      "why": "location=['anu in canberra']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "Show me jobs at ANU in Canberra [no 'anu in canberra']",
+      "pass": false,
+      "why": "no institutional prefix in constraint",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "Show me jobs at ANU in Canberra [caveat kept]",
+      "pass": true,
+      "why": "population-incomplete caveat still present",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "location",
+          "anu in canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-B",
+      "question": "Are there jobs around Canberra?",
+      "pass": false,
+      "why": "location=[]",
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "constraints": [],
+      "answer_head": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    {
+      "group": "R6-B",
+      "question": "Are there jobs around Canberra? [no 'anu in canberra']",
+      "pass": true,
+      "why": "no institutional prefix in constraint",
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "constraints": [],
+      "answer_head": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    {
+      "group": "R6-B",
+      "question": "Are there jobs around Canberra? [caveat kept]",
+      "pass": false,
+      "why": "population-incomplete caveat still present",
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "constraints": [],
+      "answer_head": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    {
+      "group": "R6-B control",
+      "question": "What jobs are available at ANU?",
+      "pass": true,
+      "why": "non-Canberra control: cards, no location constraint",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 5,
+      "constraints": [],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored sta"
+    },
+    {
+      "group": "R6-B control",
+      "question": "Show me any jobs at ANU",
+      "pass": false,
+      "why": "non-Canberra control: cards, no location constraint",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "any"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-C",
+      "question": "Are there any jobs in Canberra?",
+      "pass": false,
+      "why": "employment_type=['any']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "any"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-C",
+      "question": "Tell me about jobs in Canberra",
+      "pass": false,
+      "why": "employment_type=['about']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "about"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-C",
+      "question": "Do you know about jobs in Canberra?",
+      "pass": false,
+      "why": "employment_type=['about']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "about"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "I could not establish sufficiently relevant current Jobs evidence for that topic."
+    },
+    {
+      "group": "R6-C",
+      "question": "What about jobs in Canberra?",
+      "pass": false,
+      "why": "employment_type=['about']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "about"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "I could not establish sufficiently relevant current Jobs evidence for that topic."
+    },
+    {
+      "group": "R6-C",
+      "question": "Show me any jobs at ANU",
+      "pass": false,
+      "why": "employment_type=['any']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "any"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-C",
+      "question": "Do you have jobs in Canberra?",
+      "pass": false,
+      "why": "employment_type=['have']",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "have"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6-C",
+      "question": "Show me jobs",
+      "pass": false,
+      "why": "employment_type=[]",
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "constraints": [],
+      "answer_head": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    {
+      "group": "R6-C explicit",
+      "question": "Any casual jobs in Canberra?",
+      "pass": true,
+      "why": "employment_type=['casual']; cards=1 (kept visible, not dropped)",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 1,
+      "constraints": [
+        [
+          "employment_type",
+          "casual"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nVerified Role 3. Job ID: 700003. Stored statu"
+    },
+    {
+      "group": "R6-C explicit",
+      "question": "Are there any full-time jobs in Canberra?",
+      "pass": true,
+      "why": "employment_type=['full-time']; cards=1 (kept visible, not dropped)",
+      "status": "ok",
+      "answer_state": "PARTIAL",
+      "cards": 1,
+      "constraints": [
+        [
+          "employment_type",
+          "full-time"
+        ],
+        [
+          "location",
+          "canberra"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nVerified Role 4. Job ID: 700004. Stored statu"
+    },
+    {
+      "group": "R6 unsupported stays visible",
+      "question": "Any jobs in Antarctica?",
+      "pass": true,
+      "why": "constraint kept, no unconstrained list returned",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "any"
+        ],
+        [
+          "location",
+          "antarctica"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    },
+    {
+      "group": "R6 unsupported stays visible",
+      "question": "Are there any casual jobs in Sydney?",
+      "pass": true,
+      "why": "constraint kept, no unconstrained list returned",
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "constraints": [
+        [
+          "employment_type",
+          "casual"
+        ],
+        [
+          "location",
+          "sydney"
+        ]
+      ],
+      "answer_head": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs e"
+    }
+  ]
+}

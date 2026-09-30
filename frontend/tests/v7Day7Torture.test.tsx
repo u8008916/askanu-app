@@ -1,5 +1,6 @@
 import { act, render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { showAsTextDetails } from './helpers';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { parseAskResponse } from '../src/chat/askResponse';
 import { toResultCards } from '../src/chat/results/resultItems';
@@ -52,7 +53,7 @@ describe('approved narrow fix: Support scope text stays visible even when CONFIR
     const response = real('supportRouted');
     expect(response.answer_state).toBe('CONFIRMED');
     const { container } = renderTurn(response);
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     const scope = screen.getByText(/I can route you to published services but cannot diagnose/);
     expect(scope).toBeVisible();
     const list = screen.getByRole('list', { name: 'Results' });
@@ -70,7 +71,7 @@ describe('approved narrow fix: Support scope text stays visible even when CONFIR
       const response = real(name, wire);
       expect(response.answer_state, name).toBe('CONFIRMED');
       const { container, unmount } = renderTurn(response);
-      expect(container.querySelector('details'), name).not.toBeNull();
+      expect(showAsTextDetails(container), name).not.toBeNull();
       unmount();
     }
   });
@@ -92,7 +93,7 @@ describe('malformed payloads fail closed', () => {
   it('self-contradictory but well-typed page metadata never offers a "Show more" that could send a bad cursor', () => {
     const response = real('jobsBroad');
     renderTurn({ ...response, result_page: { ...response.result_page!, has_more: true, next_ordinal: null } });
-    expect(screen.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Show more/ })).not.toBeInTheDocument();
     expect(screen.getAllByRole('listitem').length).toBeGreaterThan(0);
   });
 

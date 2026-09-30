@@ -1,0 +1,159 @@
+[
+  {
+    "request": {
+      "question": "Are there jobs around Canberra?",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "answer": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent_name": "lookup",
+        "result_set_id": null
+      },
+      "constraints": []
+    }
+  },
+  {
+    "request": {
+      "question": "Do you know about jobs in Canberra?",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": "job",
+        "canonical_entity_id": null,
+        "intent_name": "discover",
+        "result_set_id": "rs:jobs:1"
+      },
+      "constraints": [
+        {
+          "semantic_type": "location",
+          "value": "canberra"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "question": "What about jobs in Canberra?",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": "job",
+        "canonical_entity_id": null,
+        "intent_name": "discover",
+        "result_set_id": "rs:jobs:1"
+      },
+      "constraints": [
+        {
+          "semantic_type": "location",
+          "value": "canberra"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "question": "Do you have jobs in Canberra?",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": "PARTIAL",
+      "cards": 0,
+      "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": "job",
+        "canonical_entity_id": null,
+        "intent_name": "discover",
+        "result_set_id": "rs:jobs:1"
+      },
+      "constraints": [
+        {
+          "semantic_type": "employment_type",
+          "value": "have"
+        },
+        {
+          "semantic_type": "location",
+          "value": "canberra"
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "question": "Show me any jobs at ANU",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "answer": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent_name": "discover",
+        "result_set_id": null
+      },
+      "constraints": []
+    }
+  },
+  {
+    "request": {
+      "question": "Show me jobs at ANU",
+      "history": [],
+      "conversation_state": {}
+    },
+    "response": {
+      "status": "insufficient_evidence",
+      "answer_state": null,
+      "cards": 0,
+      "answer": "I do not have retrieved evidence to answer that question. Please ask a standalone course prerequisite question with a course code."
+    },
+    "state": {
+      "focus": {
+        "domain": "jobs",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent_name": "discover",
+        "result_set_id": null
+      },
+      "constraints": []
+    }
+  }
+]

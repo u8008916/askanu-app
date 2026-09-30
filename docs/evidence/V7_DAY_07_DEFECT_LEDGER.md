@@ -128,3 +128,21 @@ Local engineering evidence, not CI. **No App production change**: `git diff d5ed
 **Prefill (API level):** both "Tell me about it" and "Tell me more about ⟨title⟩" resolve to the same record in Accommodation, Jobs, Events and Scholarships (33/33 in the 284-check matrix). The production prefill stays "Tell me about it".
 
 **App regression (unchanged code):** frontend 508/508; D4 31, D5 52, D6 34, D7 14; server 50/50; tsc and Vite build pass; `git diff --check` clean. Browser (36 steps, desktop 1280 and 375px): 0 overflow, 0 empty `<dl>`, 0 stale controls after double Clear Chat, no React warnings; the only console output is the App's own error-envelope log in the A1 repro. Carmen's suites on `971e837`: reference-expansion, hard-constraints, error-state and blocker files 88 passed; full suite 1195 passed / 88 skipped (Postgres integration, `ASKANU_TEST_DATABASE_URL` not set) / 0 failed.
+
+## 7. Re-verification against RAG `e88a0d7` (2026-09-30, round 3)
+
+Carmen's "fix: tighten R6 hard-constraint parsing" (`e88a0d7e6bde2f6135ef152dc1b90d211a56a83e`, `carmen/v7-day7-rc-torture`). App code unchanged by this round. Full write-up, method and exact payloads: `v7-final-ui-polish/README.md` §1 and `v7-final-ui-polish/r6-remaining-failures.e88a0d7.json`. Wire not re-diffed; no contract change was observed.
+
+| Gate | `971e837` | `e88a0d7` |
+|---|---|---|
+| `torture_rc.py` | 47/48 | 47/48 (same known-stale "older turn's Show more" expectation) |
+| Broader matrix | 281/284 | **282/284** |
+| PM R6 phrasing set (`r6_reverify.py`) | 14/28 | 20/28 |
+
+| ID | Status at `e88a0d7` |
+|---|---|
+| **R6-B** | **PARTIALLY CLOSED.** "What jobs are available at ANU in Canberra?", "…in Canberra?", "Any ANU jobs in Canberra?" and "Show me jobs at ANU in Canberra" all extract `location=canberra` and return 5 cards with the population caveat. **Still open:** "Are there jobs around Canberra?" extracts nothing and returns 0 cards (not a regression; identical at `971e837`). |
+| **R6-C** | **PARTIALLY CLOSED.** `any` and `about` are no longer employment types; `casual` / `full-time` are honoured; unsupported values stay visible. **Still open:** "Do you have jobs in Canberra?" yields `employment_type="have"`; "Do you know about jobs in Canberra?" and "What about jobs in Canberra?" have only `location=canberra` yet return 0 cards; "Show me (any) jobs (at ANU)" returns 0 cards. |
+| R3, Jobs duplicate prose, R5-B | OPEN, unchanged |
+
+Owner for all remaining items: RAG interpretation. No App workaround was added.

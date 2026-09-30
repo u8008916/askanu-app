@@ -1,3 +1,4 @@
+import { AskANUIdentity } from './MessageIdentity';
 import styles from './PendingTurn.module.css';
 
 /**
@@ -12,7 +13,7 @@ import styles from './PendingTurn.module.css';
 export function PendingTurn() {
   return (
     <li className={styles.root}>
-      <span className={styles.label}>AskANU</span>
+      <AskANUIdentity />
       <div aria-live="polite" className={styles.bubble}>
         <span className="visually-hidden">AskANU is finding an answer</span>
         <span aria-hidden="true" className={styles.dots}>

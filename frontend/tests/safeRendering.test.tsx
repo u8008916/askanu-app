@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { setMockScenarioId } from '../src/dev/mockTransport';
-import { feedsSettled, isSanctionedAnchor } from './helpers';
+import { feedsSettled, isSanctionedAnchor, untrustedImages } from './helpers';
 
 /**
  * SECURITY_BASELINE.md: user input, model output and stored source text are all
@@ -19,7 +19,7 @@ describe('safe rendering', () => {
     await user.click(screen.getByRole('button', { name: 'Send' }));
 
     expect(screen.getByText(hostile)).toBeInTheDocument();
-    expect(container.querySelector('img')).toBeNull();
+    expect(untrustedImages(container)).toEqual([]);
     expect(container.querySelector('b')).toBeNull();
   });
 
@@ -43,7 +43,7 @@ describe('safe rendering', () => {
     );
 
     // Nothing from the answer or the source titles became an element.
-    expect(container.querySelector('img')).toBeNull();
+    expect(untrustedImages(container)).toEqual([]);
     expect(container.querySelector('b')).toBeNull();
     expect(container.querySelector('script')).toBeNull();
   });
@@ -129,7 +129,7 @@ describe('safe rendering', () => {
     // The formatter did build real list structure from the markers...
     expect(container.querySelector('li')).not.toBeNull();
     // ...and built nothing at all from the HTML in the text.
-    expect(container.querySelector('img')).toBeNull();
+    expect(untrustedImages(container)).toEqual([]);
     expect(container.querySelector('b')).toBeNull();
     expect(container.querySelector('script')).toBeNull();
 
@@ -196,7 +196,7 @@ describe('safe rendering', () => {
 
     // Nothing anywhere became a script, and no executable node was created.
     expect(container.querySelector('script')).toBeNull();
-    expect(container.querySelector('img')).toBeNull();
+    expect(untrustedImages(container)).toEqual([]);
     expect(container.innerHTML).not.toContain('<script>');
     expect(container.innerHTML).toContain('&lt;script&gt;');
   });

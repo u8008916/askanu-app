@@ -1,0 +1,30 @@
+R4 Accommodation                             6/6
+R4 Jobs digit titles                         4/4
+R4 Jobs numeric control                      4/4
+R4 Jobs override                             6/6
+R5                                           336/384
+R5/R2 regression                             6/6
+R6 Jobs                                      10/10
+R6 Accommodation                             1/1
+R6 Events                                    1/1
+R6 valid-location control (false negatives)  5/8
+D7-A1 state preserved                        10/10
+D7-A1 next 'second one'                      10/10
+A1 validation control                        3/3
+Clear Chat reset                             2/2
+TOTAL 404 / 455
+
+R5 matrix (cells passing / cells; 4 domains x 2 wrappers = 8)
+wording            fresh     selection  continuation     Show More
+first     7/           87/           87/           87/           8
+second    7/           87/           87/           87/           8
+third     7/           87/           87/           87/           8
+fourth    7/           87/           87/           87/           8
+1st       7/           87/           87/           87/           8
+2nd       7/           87/           87/           87/           8
+3rd       7/           87/           87/           87/           8
+4th       7/           87/           87/           87/           8
+number 1  7/           87/           87/           87/           8
+number 2  7/           87/           87/           87/           8
+number 3  7/           87/           87/           87/           8
+number 4  7/           87/           87/           87/           8

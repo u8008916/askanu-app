@@ -53,13 +53,14 @@ function renderTurn(
 ) {
   switch (turn.kind) {
     case 'user':
-      return <UserTurn content={turn.content} key={turn.id} />;
+      return <UserTurn content={turn.content} createdAt={turn.createdAt} key={turn.id} />;
     case 'pending':
       return <PendingTurn key={turn.id} />;
     case 'assistant':
       return (
         <AssistantTurn
           isClarificationActive={turn.id === activeClarificationTurnId}
+          createdAt={turn.createdAt}
           key={turn.id}
           onRequestMorePage={onRequestMorePage}
           onSelectClarification={onSelectClarification}

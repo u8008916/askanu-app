@@ -1,5 +1,6 @@
 import { act, render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { resultCardNumber, showAsTextDetails } from './helpers';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
@@ -218,7 +219,7 @@ describe('Accommodation compare', () => {
   it('a PARTIAL comparison keeps the backend prose visible above the table, not collapsed', () => {
     const { container } = renderTurn(okAccommodationCompareItemsResponse);
     expect(okAccommodationCompareItemsResponse.answer_state).toBe('PARTIAL');
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     expect(screen.getByText(/Placeholder comparison answer/)).toBeVisible();
     expect(screen.getByRole('table')).toBeInTheDocument();
   });
@@ -498,7 +499,7 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
   it('renders cards with the 7-field mapping, qualifying_evidence, and an enabled "Ask about this" per card', () => {
     renderTurn(okAccommodationResultsResponse, { onSelectResult: vi.fn() });
 
-    expect(screen.getByRole('heading', { level: 3, name: '2 results' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: '2 accommodation options' })).toBeInTheDocument();
     expect(screen.getByText(/Matched room: Standard/)).toBeInTheDocument();
     const askAboutButtons = screen.getAllByRole('button', { name: /Ask about this/ });
     expect(askAboutButtons).toHaveLength(2);
@@ -533,10 +534,10 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     await waitFor(() =>
       expect(screen.getByRole('list', { name: 'Results' })).toBeInTheDocument(),
     );
-    expect(screen.getByRole('button', { name: 'Show more' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Show more/ })).toBeInTheDocument();
 
     setMockScenarioId('ok-accommodation-results-page-2');
-    await user.click(screen.getByRole('button', { name: 'Show more' }));
+    await user.click(screen.getByRole('button', { name: /^Show more/ }));
 
     let lists: HTMLElement[] = [];
     await waitFor(() => {
@@ -555,7 +556,7 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     // already advanced server-side); page 2 is separately terminal
     // (`has_more: false`). Either reason is enough — together, no button
     // remains that could resend a stale cursor and 400.
-    expect(screen.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Show more/ })).not.toBeInTheDocument();
     // A direct action, not a prefill: the composer was never touched.
     expect(screen.getByLabelText('Ask AskANU a question')).toHaveValue('');
   });
@@ -572,11 +573,13 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
       expect(firstList).toBeInTheDocument();
     });
     // Page 1: two cards, backend ordinals 1 and 2 — same as the visual index here.
-    expect(within(firstList!).getByText('1')).toBeInTheDocument();
-    expect(within(firstList!).getByText('2')).toBeInTheDocument();
+    const firstNumbers = within(firstList!)
+      .getAllByRole('listitem')
+      .map((card) => resultCardNumber(card));
+    expect(firstNumbers).toEqual(['1', '2']);
 
     setMockScenarioId('ok-accommodation-results-page-2');
-    await user.click(screen.getByRole('button', { name: 'Show more' }));
+    await user.click(screen.getByRole('button', { name: /^Show more/ }));
 
     let lists: HTMLElement[] = [];
     await waitFor(() => {
@@ -585,8 +588,11 @@ describe('Accommodation result cards and pagination (real PublicResultItem wire 
     });
     // Page 2's one card is backend ordinal 3 (this ResultSet's third result,
     // continuing from page 1) — it must not renumber back to "1".
-    expect(within(lists[1]).getByText('3')).toBeInTheDocument();
-    expect(within(lists[1]).queryByText('1')).not.toBeInTheDocument();
+    expect(
+      within(lists[1])
+        .getAllByRole('listitem')
+        .map((card) => resultCardNumber(card)),
+    ).toEqual(['3']);
   });
 
   /*

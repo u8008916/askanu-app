@@ -8,6 +8,7 @@ import type {
 } from '../types/api';
 import { AnswerBody } from './AnswerBody';
 import { ResponseActions } from './ResponseActions';
+import { AskANUIdentity, MessageTime } from './MessageIdentity';
 import { ComparisonTable } from './results/ComparisonTable';
 import { ResultList } from './results/ResultList';
 import type { ResultSelection } from './results/resultItems';
@@ -201,6 +202,8 @@ interface AssistantTurnProps {
   }) => void;
   /** V7 Day 4: fired when "Show more" on a server-paged result list is clicked. */
   onRequestMorePage?: (page: ResultPageRequest) => void;
+  /** Local creation time (ms since epoch), shown as a subtle timestamp when given. */
+  createdAt?: number;
 }
 
 /**
@@ -225,9 +228,14 @@ interface AssistantTurnProps {
  * doesn't send one (Jobs/Events), so their cards keep no button, exactly as
  * before.
  *
- * No timestamp and no `request_id` appear here. A single-session chat does not
- * need them, and `request_id` is an internal identifier students should not be
- * shown.
+ * The only time shown is the App's own local creation time for the turn
+ * (`createdAt`), never a backend value. No `request_id` appears: it is an
+ * internal identifier students should not be shown.
+ *
+ * Layout (V7 final polish): the AskANU identity, then one answer surface
+ * holding the result heading, any backend prose, the numbered cards, "Show
+ * more" and the collapsible Sources row, then the timestamp. Every domain
+ * uses this one shell.
  *
  * `answer` and every source field are untrusted model/stored strings. They are
  * rendered as React text children only — never `dangerouslySetInnerHTML`, and
@@ -241,6 +249,7 @@ export function AssistantTurn({
   isClarificationActive,
   onSelectResult,
   onRequestMorePage,
+  createdAt,
 }: AssistantTurnProps) {
   const { status, answer, sources, clarification, items, actions = [] } = response;
   const hasAnswer = answer.trim() !== '';
@@ -346,7 +355,7 @@ export function AssistantTurn({
 
   return (
     <li className={styles.root}>
-      <span className={styles.label}>AskANU</span>
+      <AskANUIdentity />
       <div className={styles.body}>
         {isNoticeStatus(status) || !hasContent ? (
           <>
@@ -363,7 +372,7 @@ export function AssistantTurn({
               the student with no way to check. Renders nothing when the
               envelope carries no sources, which is the usual case here.
             */}
-            <SourceCards sources={sources} />
+            <SourceCards defaultOpen sources={sources} />
             {/*
               V7 Day 4: a validated official action (e.g. "Apply now") can
               accompany a useful-unknown abstention — never styled as part of
@@ -372,19 +381,26 @@ export function AssistantTurn({
             <ResponseActions actions={actions} />
           </>
         ) : (
-          <>
+          <div className={styles.answerCard}>
             {hasAnswer &&
-              ((cards === null && comparison === null) || answerInView) && (
+              ((cards === null && comparison === null) ||
+                (answerInView && cards === null)) && (
               /*
                 A `partial` status or a PARTIAL/UNKNOWN `answer_state` means
                 the text carries the backend's caveat about what is missing
-                or undetermined, so it stays in full above any cards/comparison.
+                or undetermined, so it stays in full above any comparison.
               */
               <AnswerBody answer={answer} />
             )}
             {cards !== null && (
               <ResultList
                 cards={cards}
+                /*
+                  The same caveat / Support scope boundary, when there are
+                  cards: directly under the heading and above the first card,
+                  so the words that qualify the list read as part of it.
+                */
+                intro={hasAnswer && answerInView ? <AnswerBody answer={answer} /> : undefined}
                 onSelect={selectionEligible ? handleCardSelect : undefined}
                 onShowMorePage={onRequestMorePage}
                 resultPage={response.result_page ?? undefined}
@@ -392,18 +408,6 @@ export function AssistantTurn({
             )}
             {comparison !== null && (
               <ComparisonTable columns={comparison.columns} rows={comparison.rows} />
-            )}
-            {hasAnswer && (cards !== null || comparison !== null) && !answerInView && (
-              /*
-                The backend's text for a list/comparison answer restates the
-                same records shown above, one line each. It stays on the page
-                — the backend wrote it — but collapsed, so the turn is not a
-                second wall of text.
-              */
-              <details className={styles.answerText}>
-                <summary className={styles.answerTextSummary}>Show as text</summary>
-                <AnswerBody answer={answer} />
-              </details>
             )}
             {/*
               A `needs_clarification` response with no options would render an
@@ -421,9 +425,22 @@ export function AssistantTurn({
               />
             )}
             <SourceCards sources={sources} />
+            {hasAnswer && (cards !== null || comparison !== null) && !answerInView && (
+              /*
+                The backend's text for a list/comparison answer restates the
+                same records shown above, one line each. It stays on the page
+                — the backend wrote it — but collapsed, so the turn is not a
+                second wall of text.
+              */
+              <details className={styles.answerText}>
+                <summary className={styles.answerTextSummary}>Show as text</summary>
+                <AnswerBody answer={answer} />
+              </details>
+            )}
             <ResponseActions actions={actions} />
-          </>
+          </div>
         )}
+        <MessageTime at={createdAt} />
       </div>
     </li>
   );
