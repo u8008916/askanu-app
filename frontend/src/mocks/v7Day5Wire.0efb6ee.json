@@ -1,0 +1,3004 @@
+{
+ "_provenance": "Verbatim /api/v1/ask response bodies captured from askanu-rag 0efb6ee98f1d364a26edb74d60729d21af3debc3 by running Carmen's own tests/test_v7_day5_courses_scholarships.py harness and synthetic fixtures (not real ANU facts). Regenerate, never hand-edit.",
+ "courseExact": {
+  "question": "Tell me about COMP1110 in 2026",
+  "request_extra": {},
+  "response": {
+   "answer": "COMP1110 (2026) — Structured Programming. Stored excerpt: Structured programming with object-oriented design.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "canonical_id": "COMP1110",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "entity_type": "course",
+      "code": "COMP1110",
+      "academic_year": "2026",
+      "units": "6",
+      "description": "Structured programming with object-oriented design.",
+      "prerequisites": "COMP1100 OR COMP1130 OR COMP1730",
+      "offerings": [
+       "First Semester, 2026; In Person",
+       "Second Semester, 2026; In Person"
+      ]
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses"
+    }
+   ],
+   "request_id": "req_7be0c57c9959475fbae7ad158a2285c2",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2026",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 1
+     }
+    ],
+    "focus": {
+     "domain": "courses",
+     "entity_kind": "course",
+     "canonical_entity_id": "COMP1110",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "courseFollowUp": {
+  "question": "What are the prerequisites?",
+  "request_extra": {},
+  "response": {
+   "answer": "The prerequisites for COMP1110 (2026) are: COMP1100 OR COMP1130 OR COMP1730",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "canonical_id": "COMP1110",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "entity_type": "course",
+      "code": "COMP1110",
+      "academic_year": "2026",
+      "units": "6",
+      "description": "Structured programming with object-oriented design.",
+      "prerequisites": "COMP1100 OR COMP1130 OR COMP1730",
+      "offerings": [
+       "First Semester, 2026; In Person",
+       "Second Semester, 2026; In Person"
+      ]
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses"
+    }
+   ],
+   "request_id": "req_6909de242484450882528e23b0247fb7",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2026",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "courses",
+     "entity_kind": "course",
+     "canonical_entity_id": "COMP1110",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "courseComparison": {
+  "question": "Compare COMP1110 and COMP2120 in 2026",
+  "request_extra": {},
+  "response": {
+   "answer": "COMP1110 (2026) — Structured Programming. Stored excerpt: Structured programming with object-oriented design.\n\nCOMP2120 (2026) — Software Engineering. Stored excerpt: Approved overview for Software Engineering.",
+   "items": [
+    {
+     "type": "comparison",
+     "result_set_id": "rs:courses:3",
+     "records": [
+      {
+       "type": "result",
+       "record_id": "courses:course:COMP1110_2026",
+       "source_id": "courses_programs_and_courses",
+       "canonical_id": "COMP1110",
+       "title": "Structured Programming",
+       "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+       "domain": "courses",
+       "result_set_id": "rs:courses:3",
+       "ordinal": 1,
+       "fields": {},
+       "qualifying_evidence": null
+      },
+      {
+       "type": "result",
+       "record_id": "courses:course:COMP2120_2026",
+       "source_id": "courses_programs_and_courses",
+       "canonical_id": "COMP2120",
+       "title": "Software Engineering",
+       "url": "https://programsandcourses.anu.edu.au/2026/course/comp2120",
+       "domain": "courses",
+       "result_set_id": "rs:courses:3",
+       "ordinal": 2,
+       "fields": {},
+       "qualifying_evidence": null
+      }
+     ],
+     "fields": [
+      {
+       "name": "entity_type",
+       "label": "Entity type",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "course",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "course",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "code",
+       "label": "Code",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "COMP1110",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "COMP2120",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "academic_year",
+       "label": "Academic year",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "2026",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "2026",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "units",
+       "label": "Units",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "6",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "6",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "description",
+       "label": "Description",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "Structured programming with object-oriented design.",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "Approved overview for Software Engineering.",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "prerequisites",
+       "label": "Prerequisites",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": "COMP1100 OR COMP1130 OR COMP1730",
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": "Students must have successfully completed or be currently studying COMP2100",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "corequisites",
+       "label": "Corequisites",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": null,
+         "state": "not_published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": null,
+         "state": "not_published"
+        }
+       ]
+      },
+      {
+       "name": "incompatibilities",
+       "label": "Incompatibilities",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": null,
+         "state": "not_published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": null,
+         "state": "not_published"
+        }
+       ]
+      },
+      {
+       "name": "assumed_knowledge",
+       "label": "Assumed knowledge",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": null,
+         "state": "not_published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": null,
+         "state": "not_published"
+        }
+       ]
+      },
+      {
+       "name": "offerings",
+       "label": "Offerings",
+       "values": [
+        {
+         "record_id": "courses:course:COMP1110_2026",
+         "value": [
+          "First Semester, 2026; In Person",
+          "Second Semester, 2026; In Person"
+         ],
+         "state": "published"
+        },
+        {
+         "record_id": "courses:course:COMP2120_2026",
+         "value": [
+          "First Semester, 2026; In Person",
+          "Second Semester, 2026; In Person"
+         ],
+         "state": "published"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses"
+    },
+    {
+     "record_id": "courses:course:COMP2120_2026",
+     "source_id": "courses_programs_and_courses",
+     "title": "Software Engineering",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp2120",
+     "domain": "courses"
+    }
+   ],
+   "request_id": "req_c1d6353902f247ab9c4055b6d0641148",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2026",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 3
+     },
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP2120",
+      "canonical_name": "Software Engineering",
+      "source_record_id": "courses:course:COMP2120_2026",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "courses",
+     "entity_kind": "course",
+     "canonical_entity_id": null,
+     "intent_name": "compare",
+     "result_set_id": "rs:courses:3"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:courses:3",
+      "domain": "courses",
+      "entity_kind": "course",
+      "ordered_canonical_ids": [
+       "COMP1110",
+       "COMP2120"
+      ],
+      "originating_query": "Compare COMP1110 and COMP2120 in 2026",
+      "intent": {
+       "name": "compare",
+       "operation": "compare",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "courseReturn": {
+  "question": "Back to COMP1110",
+  "request_extra": {},
+  "response": {
+   "answer": "The prerequisites for COMP1110 (2026) are: COMP1100 OR COMP1130 OR COMP1730",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "canonical_id": "COMP1110",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "entity_type": "course",
+      "code": "COMP1110",
+      "academic_year": "2026",
+      "units": "6",
+      "description": "Structured programming with object-oriented design.",
+      "prerequisites": "COMP1100 OR COMP1130 OR COMP1730",
+      "offerings": [
+       "First Semester, 2026; In Person",
+       "Second Semester, 2026; In Person"
+      ]
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "courses:course:COMP1110_2026",
+     "source_id": "courses_programs_and_courses",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2026/course/comp1110",
+     "domain": "courses"
+    }
+   ],
+   "request_id": "req_27f8c6e6e6b349fe81b360e82da4ae0e",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2026",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 4
+     },
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP2120",
+      "canonical_name": "Software Engineering",
+      "source_record_id": "courses:course:COMP2120_2026",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "courses",
+     "entity_kind": "course",
+     "canonical_entity_id": "COMP1110",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:courses:3",
+      "domain": "courses",
+      "entity_kind": "course",
+      "ordered_canonical_ids": [
+       "COMP1110",
+       "COMP2120"
+      ],
+      "originating_query": "Compare COMP1110 and COMP2120 in 2026",
+      "intent": {
+       "name": "compare",
+       "operation": "compare",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "course2025": {
+  "question": "Prerequisites for COMP1110 in 2025",
+  "request_extra": {},
+  "response": {
+   "answer": "The prerequisites for COMP1110 (2025) are: COMP1000",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "courses:course:COMP1110_2025",
+     "source_id": "courses_programs_and_courses",
+     "canonical_id": "COMP1110",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2025/course/comp1110",
+     "domain": "courses",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "entity_type": "course",
+      "code": "COMP1110",
+      "academic_year": "2025",
+      "units": "6",
+      "description": "Approved overview for Structured Programming.",
+      "prerequisites": "COMP1000",
+      "offerings": [
+       "First Semester, 2026; In Person",
+       "Second Semester, 2026; In Person"
+      ]
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "courses:course:COMP1110_2025",
+     "source_id": "courses_programs_and_courses",
+     "title": "Structured Programming",
+     "url": "https://programsandcourses.anu.edu.au/2025/course/comp1110",
+     "domain": "courses"
+    }
+   ],
+   "request_id": "req_013704b4520549e489a74b2c27004dc8",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 5,
+    "recent_entities": [
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2025",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 5
+     },
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP2120",
+      "canonical_name": "Software Engineering",
+      "source_record_id": "courses:course:COMP2120_2026",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "courses",
+     "entity_kind": "course",
+     "canonical_entity_id": "COMP1110",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:courses:3",
+      "domain": "courses",
+      "entity_kind": "course",
+      "ordered_canonical_ids": [
+       "COMP1110",
+       "COMP2120"
+      ],
+      "originating_query": "Compare COMP1110 and COMP2120 in 2026",
+      "intent": {
+       "name": "compare",
+       "operation": "compare",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipDiscovery": {
+  "question": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+  "request_extra": {},
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 5. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-1",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-1",
+     "title": "Day 5 International Computing Scholarship 1",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 1,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 2,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-3",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-3",
+     "title": "Day 5 International Computing Scholarship 3",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-3",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 3,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-4",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-4",
+     "title": "Day 5 International Computing Scholarship 4",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-4",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 4,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-5",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-5",
+     "title": "Day 5 International Computing Scholarship 5",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-5",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 5,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:scholarships:1",
+    "start_ordinal": 1,
+    "returned": 5,
+    "has_more": true,
+    "next_ordinal": 6
+   },
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-1",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 1",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-3",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 3",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-3",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-4",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 4",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-4",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-5",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 5",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-5",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_19c0c50059914e5b963b4beaed2e5107",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:1"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:scholarships:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipSecond": {
+  "question": "Tell me about the second one",
+  "request_extra": {},
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 2,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_8cb86b50893241dfb43b47c44213a022",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:1"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:scholarships:1",
+     "canonical_id": "day5-international-computing-2",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:scholarships:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipClosing": {
+  "question": "When does it close?",
+  "request_extra": {},
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 2. Closing date: 2026-10-31.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 2,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_02a0ce4ea7f0450db2db5b4b0e44fdc1",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:1"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:scholarships:1",
+     "canonical_id": "day5-international-computing-2",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:scholarships:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipEligibility": {
+  "question": "Am I eligible?",
+  "request_extra": {},
+  "response": {
+   "answer": "I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31; Official eligibility information: International Bachelor of Computing students may apply.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:1",
+     "ordinal": 2,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_a9fdb9ab16294d5f89c9bf737485752c",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 4
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:1"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:scholarships:1",
+     "canonical_id": "day5-international-computing-2",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:scholarships:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipRefined": {
+  "question": "Only show me ones I can still apply for",
+  "request_extra": {},
+  "response": {
+   "answer": "These Scholarships have an explicitly published open status. Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 5. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31 Some retained Scholarships have no published status, so this refinement is incomplete.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-1",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-1",
+     "title": "Day 5 International Computing Scholarship 1",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 1,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 2,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-3",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-3",
+     "title": "Day 5 International Computing Scholarship 3",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-3",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 3,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-4",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-4",
+     "title": "Day 5 International Computing Scholarship 4",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-4",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 4,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-5",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-5",
+     "title": "Day 5 International Computing Scholarship 5",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-5",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 5,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:scholarships:5",
+    "start_ordinal": 1,
+    "returned": 5,
+    "has_more": true,
+    "next_ordinal": 6
+   },
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-1",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 1",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-3",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 3",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-3",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-4",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 4",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-4",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-5",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 5",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-5",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_4df3ed0e874540a08c22db2afdb6a089",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 5,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 4
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:5"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:5",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6"
+      ],
+      "originating_query": "Only show me ones I can still apply for",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 5,
+      "last_refined_turn": 5,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:scholarships:1"
+     },
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:scholarships:5",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipComparison": {
+  "question": "Compare the first two",
+  "request_extra": {},
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31",
+   "items": [
+    {
+     "type": "comparison",
+     "result_set_id": "rs:scholarships:5",
+     "records": [
+      {
+       "type": "result",
+       "record_id": "scholarships:scholarship:day5-international-computing-1",
+       "source_id": "scholarships_anu_finder",
+       "canonical_id": "day5-international-computing-1",
+       "title": "Day 5 International Computing Scholarship 1",
+       "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+       "domain": "scholarships",
+       "result_set_id": "rs:scholarships:5",
+       "ordinal": 1,
+       "fields": {},
+       "qualifying_evidence": null
+      },
+      {
+       "type": "result",
+       "record_id": "scholarships:scholarship:day5-international-computing-2",
+       "source_id": "scholarships_anu_finder",
+       "canonical_id": "day5-international-computing-2",
+       "title": "Day 5 International Computing Scholarship 2",
+       "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+       "domain": "scholarships",
+       "result_set_id": "rs:scholarships:5",
+       "ordinal": 2,
+       "fields": {},
+       "qualifying_evidence": null
+      }
+     ],
+     "fields": [
+      {
+       "name": "status",
+       "label": "Official status",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "open",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "open",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "featured",
+       "label": "Featured",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "yes",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "yes",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "application_required",
+       "label": "Application required",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "yes",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "yes",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "study_stage",
+       "label": "Study stage",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": [
+          "Current students"
+         ],
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": [
+          "Current students"
+         ],
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "student_type",
+       "label": "Student type",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": [
+          "International"
+         ],
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": [
+          "International"
+         ],
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "study_level",
+       "label": "Study level",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": [
+          "Bachelor"
+         ],
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": [
+          "Bachelor"
+         ],
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "area_of_study",
+       "label": "Area of study",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": [
+          "Computing"
+         ],
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": [
+          "Computing"
+         ],
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "value",
+       "label": "Value",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "$5,000 test value",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "$5,000 test value",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "selection_basis",
+       "label": "Selection basis",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "Academic merit in this synthetic fixture",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "Academic merit in this synthetic fixture",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "opening_date",
+       "label": "Opening date",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "2026-08-01",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "2026-08-01",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "closing_date",
+       "label": "Closing date",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "2026-10-31",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "2026-10-31",
+         "state": "published"
+        }
+       ]
+      },
+      {
+       "name": "eligibility",
+       "label": "Published eligibility criteria",
+       "values": [
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-1",
+         "value": "International Bachelor of Computing students may apply.",
+         "state": "published"
+        },
+        {
+         "record_id": "scholarships:scholarship:day5-international-computing-2",
+         "value": "International Bachelor of Computing students may apply.",
+         "state": "published"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-1",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 1",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-1",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_f93b9521a57a4abfb6ec3eac26b1fead",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 6,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 4
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:scholarships:5"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:5",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6"
+      ],
+      "originating_query": "Only show me ones I can still apply for",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 5,
+      "last_refined_turn": 5,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:scholarships:1"
+     },
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:scholarships:5",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipContinuation": {
+  "question": "Any more?",
+  "request_extra": {},
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 6. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-6",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-6",
+     "title": "Day 5 International Computing Scholarship 6",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-6",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:5",
+     "ordinal": 6,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:scholarships:5",
+    "start_ordinal": 6,
+    "returned": 1,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-6",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 6",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-6",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_5b53e0d5ebf3420a896cc08b9f6a5ec5",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 7,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-6",
+      "canonical_name": "Day 5 International Computing Scholarship 6",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-6",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 7
+     },
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 4
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": "day5-international-computing-6",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:5",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6"
+      ],
+      "originating_query": "Only show me ones I can still apply for",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 5,
+      "last_refined_turn": 5,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:scholarships:1"
+     },
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:scholarships:5",
+     "next_ordinal": 7
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipStructuredSelection": {
+  "question": "Tell me more about Day 5 International Computing Scholarship 2",
+  "request_extra": {
+   "selected_result": {
+    "result_set_id": "rs:scholarships:1",
+    "canonical_id": "day5-international-computing-2",
+    "ordinal": 2
+   }
+  },
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-2",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-2",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 2",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-2",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_88845c6f88da40a2813e99f034b99040",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": null,
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": null
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 2,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:scholarships:1",
+     "canonical_id": "day5-international-computing-2",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:scholarships:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipPage2": {
+  "question": "Show more",
+  "request_extra": {
+   "result_page": {
+    "result_set_id": "rs:scholarships:3",
+    "start_ordinal": 6,
+    "limit": 5
+   }
+  },
+  "response": {
+   "answer": "Day 5 International Computing Scholarship 6. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 7. Official status: closed; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-6",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-6",
+     "title": "Day 5 International Computing Scholarship 6",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-6",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:3",
+     "ordinal": 6,
+     "fields": {
+      "status": "open",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-7",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-7",
+     "title": "Day 5 International Computing Scholarship 7",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-7",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:3",
+     "ordinal": 7,
+     "fields": {
+      "status": "closed",
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01",
+      "closing_date": "2026-10-31",
+      "eligibility": "International Bachelor of Computing students may apply."
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-8",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-8",
+     "title": "Day 5 International Computing Scholarship 8",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-8",
+     "domain": "scholarships",
+     "result_set_id": "rs:scholarships:3",
+     "ordinal": 8,
+     "fields": {
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:scholarships:3",
+    "start_ordinal": 6,
+    "returned": 3,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-6",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 6",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-6",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-7",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 7",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-7",
+     "domain": "scholarships"
+    },
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-8",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 8",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-8",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_4f3fdd1e44284ef78ff82a69d662ba80",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-2",
+      "canonical_name": "Day 5 International Computing Scholarship 2",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-2",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:scholarships:3"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 3,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 3,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:scholarships:3",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     },
+     {
+      "result_set_id": "rs:scholarships:1",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:scholarships:3",
+     "next_ordinal": 9
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "scholarshipUnknown": {
+  "question": "Am I eligible for Day 5 International Computing Scholarship 8?",
+  "request_extra": {},
+  "response": {
+   "answer": "I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "scholarships:scholarship:day5-international-computing-8",
+     "source_id": "scholarships_anu_finder",
+     "canonical_id": "day5-international-computing-8",
+     "title": "Day 5 International Computing Scholarship 8",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-8",
+     "domain": "scholarships",
+     "result_set_id": null,
+     "ordinal": null,
+     "fields": {
+      "featured": "yes",
+      "application_required": "yes",
+      "study_stage": [
+       "Current students"
+      ],
+      "student_type": [
+       "International"
+      ],
+      "study_level": [
+       "Bachelor"
+      ],
+      "area_of_study": [
+       "Computing"
+      ],
+      "value": "$5,000 test value",
+      "selection_basis": "Academic merit in this synthetic fixture",
+      "opening_date": "2026-08-01"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "UNKNOWN",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "scholarships:scholarship:day5-international-computing-8",
+     "source_id": "scholarships_anu_finder",
+     "title": "Day 5 International Computing Scholarship 8",
+     "url": "https://study.anu.edu.au/scholarships/find-scholarship/day5-international-computing-8",
+     "domain": "scholarships"
+    }
+   ],
+   "request_id": "req_6a0f9aabd4aa4a5fb130ff9a90b51ac0",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [
+     {
+      "domain": "scholarships",
+      "kind": "scholarship",
+      "canonical_id": "day5-international-computing-8",
+      "canonical_name": "Day 5 International Computing Scholarship 8",
+      "source_record_id": "scholarships:scholarship:day5-international-computing-8",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 1
+     }
+    ],
+    "focus": {
+     "domain": "scholarships",
+     "entity_kind": "scholarship",
+     "canonical_entity_id": "day5-international-computing-8",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 1,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "crossAccommodation": {
+  "question": "Show me accommodation options",
+  "request_extra": {},
+  "response": {
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Day 5 Hall. Category: Residence hall; Residence location: Acton campus; Published advertised rate wording: $350 per week for the advertised 2026 term; Published cost period: per week for the 2026 term; Overview: A self-catered residence near campus.; Catering: Self-catered; Audiences: Undergraduate students; Published features: Quiet study spaces, Shared kitchen.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "accommodation:residence:day5-hall",
+     "source_id": "accommodation_anu_study",
+     "canonical_id": "day5-hall",
+     "title": "Day 5 Hall",
+     "url": "https://study.anu.edu.au/accommodation/our-residences/day5-hall",
+     "domain": "accommodation",
+     "result_set_id": "rs:accommodation:3",
+     "ordinal": 1,
+     "fields": {
+      "category": "Residence hall",
+      "location": "Acton campus",
+      "catering_options": [
+       "Self-catered"
+      ],
+      "advertised_rate": "$350 per week for the advertised 2026 term",
+      "cost_period": "per week for the 2026 term",
+      "audiences": [
+       "Undergraduate students"
+      ],
+      "features": [
+       "Quiet study spaces",
+       "Shared kitchen"
+      ]
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "DERIVED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:accommodation:3",
+    "start_ordinal": 1,
+    "returned": 1,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "accommodation:residence:day5-hall",
+     "source_id": "accommodation_anu_study",
+     "title": "Day 5 Hall",
+     "url": "https://study.anu.edu.au/accommodation/our-residences/day5-hall",
+     "domain": "accommodation"
+    }
+   ],
+   "request_id": "req_b38279e36c2f4e31be2b431d00a3a4b1",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "accommodation",
+      "kind": "residence",
+      "canonical_id": "day5-hall",
+      "canonical_name": "Day 5 Hall",
+      "source_record_id": "accommodation:residence:day5-hall",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     },
+     {
+      "domain": "courses",
+      "kind": "course",
+      "canonical_id": "COMP1110",
+      "canonical_name": "Structured Programming",
+      "source_record_id": "courses:course:COMP1110_2026",
+      "resolution_basis": "explicit_identifier",
+      "mentioned_turn": 1
+     }
+    ],
+    "focus": {
+     "domain": "accommodation",
+     "entity_kind": "residence",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:accommodation:3"
+    },
+    "student_facts": [
+     {
+      "semantic_type": "international",
+      "value": true,
+      "domain_scope": null,
+      "stated_turn": 2,
+      "authority": "user_stated"
+     },
+     {
+      "semantic_type": "program",
+      "value": "Bachelor Of Computing",
+      "domain_scope": null,
+      "stated_turn": 2,
+      "authority": "user_stated"
+     }
+    ],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:accommodation:3",
+      "domain": "accommodation",
+      "entity_kind": "residence",
+      "ordered_canonical_ids": [
+       "day5-hall"
+      ],
+      "originating_query": "Show me accommodation options",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     },
+     {
+      "result_set_id": "rs:scholarships:2",
+      "domain": "scholarships",
+      "entity_kind": "scholarship",
+      "ordered_canonical_ids": [
+       "day5-international-computing-1",
+       "day5-international-computing-2",
+       "day5-international-computing-3",
+       "day5-international-computing-4",
+       "day5-international-computing-5",
+       "day5-international-computing-6",
+       "day5-international-computing-7",
+       "day5-international-computing-8"
+      ],
+      "originating_query": "I'm an international Bachelor of Computing student. What scholarships might suit me?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 2,
+      "last_refined_turn": 2,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:accommodation:3",
+     "next_ordinal": 2
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "crossAfterClear": {
+  "question": "When does it close?",
+  "request_extra": {},
+  "response": {
+   "answer": "Which academic year do you mean?",
+   "items": [],
+   "answer_state": null,
+   "actions": [],
+   "sources": [],
+   "request_id": "req_4e53604f922247488a1971307d4bcfc0",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": null,
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": {
+     "id": "clar-current-session-course-selection",
+     "type": "entity_selection",
+     "options": [
+      {
+       "id": "courses:course:COMP1110_2025",
+       "label": "COMP1110 (2025) — Structured Programming"
+      },
+      {
+       "id": "courses:course:COMP1110_2026",
+       "label": "COMP1110 (2026) — Structured Programming"
+      }
+     ],
+     "allow_multiple": false,
+     "original_intent": {
+      "name": "legacy_clarification",
+      "operation": "select_option",
+      "required_slots": [
+       "selection"
+      ],
+      "resolved_slots": []
+     },
+     "resolved_entities": [],
+     "resolved_slots": [],
+     "missing_slots": [
+      "selection"
+     ],
+     "constraints": {
+      "items": []
+     },
+     "created_turn": 1
+    }
+   },
+   "status": "needs_clarification",
+   "clarification": {
+    "id": "clar-current-session-course-selection",
+    "type": "entity_selection",
+    "options": [
+     {
+      "id": "courses:course:COMP1110_2025",
+      "label": "COMP1110 (2025) — Structured Programming"
+     },
+     {
+      "id": "courses:course:COMP1110_2026",
+      "label": "COMP1110 (2026) — Structured Programming"
+     }
+    ],
+    "allow_multiple": false
+   }
+  }
+ }
+}

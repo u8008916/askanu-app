@@ -25,8 +25,10 @@ import { isRenderableComparison } from './ComparisonTable';
  * `3c8e35e` — not yet merged): `items` is now a discriminated union on
  * `type`. `type:"job"` is today's Jobs DTO plus one purely-additive field
  * (`parseJobItem` destructures named fields only, so it already tolerates
- * this — verified, not assumed). `type:"result"` is the new generic
- * Accommodation-shaped card, carrying a fixed 7-key `fields` map plus
+ * this — verified, not assumed). `type:"result"` is the generic result card;
+ * RAG emits it for Accommodation (`d349e88`) and, from `0efb6ee`, Courses and
+ * Scholarships, each with its own frozen `fields` key set. Accommodation
+ * alone may also carry
  * optional `qualifying_evidence` (the one named room whose published rate
  * satisfied an active price constraint — never a claim about affordability,
  * cheapest, vacancy or obtainability). `type:"comparison"` never becomes a
@@ -63,9 +65,11 @@ export interface ResultCardModel {
   fields: ResultCardField[];
   /**
    * V7 Day 4: the exact identity a `selected_result` request must echo back.
-   * Non-null only for a `type:"result"` item (Accommodation/Support today);
-   * `null` for Jobs/Events, which keeps their "Ask about this" button hidden
-   * — `AssistantTurn` only wires `onSelect` when these are all non-null.
+   * Non-null only when RAG put the item in a ResultSet (Accommodation, and
+   * from `0efb6ee` Scholarship discovery and Course comparison records). A
+   * single Course lookup has none, nor do Jobs/Events, which keeps their
+   * "Ask about this" button hidden — `AssistantTurn` only wires `onSelect`
+   * when these are all non-null. Always copied from the wire, never made up.
    */
   resultSetId: string | null;
   canonicalId: string | null;
@@ -95,20 +99,77 @@ const EVENT_PROVENANCE: Record<string, string> = {
   rubric_unified_search: 'ANU community · via Rubric',
 };
 
-/** Fixed order and label for every key `PublicResultItem.fields` may carry. */
-const PUBLIC_RESULT_FIELD_LABELS: ReadonlyArray<{ key: string; label: string }> = [
-  { key: 'category', label: 'Category' },
-  { key: 'location', label: 'Location' },
-  { key: 'catering_options', label: 'Catering' },
-  { key: 'advertised_rate', label: 'Advertised rate' },
-  { key: 'cost_period', label: 'Cost period' },
-  { key: 'audiences', label: 'Audience' },
-  { key: 'features', label: 'Features' },
-];
+type PublicFieldLabels = ReadonlyArray<{ key: string; label: string }>;
 
-const PUBLIC_RESULT_FIELD_KEYS = new Set(
-  PUBLIC_RESULT_FIELD_LABELS.map(({ key }) => key),
-);
+/**
+ * Fixed order and label for every key `PublicResultItem.fields` may carry,
+ * per domain. The wire's `fields` is a generic `dict[str, value]` with no
+ * labels, so a label exists here only for a key set RAG has actually frozen
+ * for that domain: Accommodation (`_PUBLIC_ACCOMMODATION_FIELDS`, RAG
+ * `d349e88`), and Courses/Scholarships (`COURSE_PUBLIC_FIELDS`/
+ * `SCHOLARSHIP_PUBLIC_FIELDS` in `journey_presentation.py`, RAG `0efb6ee`).
+ * Keys, order and labels are copied from those tuples verbatim — RAG sends
+ * the same labels on its comparison rows, so a card and a comparison of the
+ * same record read identically.
+ *
+ * Domain gate: a `type:"result"` item from any other domain gets no field
+ * rows at all rather than another domain's — a scholarship must never show
+ * "Catering: Not published". If such an item carries any `fields` key, the
+ * list is refused (falls back to the backend's answer text) because the App
+ * has no frozen label for it and would otherwise be inventing one. Add a
+ * domain here only from a published RAG contract, never from a proposed one.
+ *
+ * RAG omits a key whose value the source did not publish, so every frozen key
+ * is rendered and an absent one reads "Not published" — never "No", "None",
+ * "0" or a silently shorter card. Values (including RAG's own "yes"/"no" for
+ * Scholarship booleans, and dates) are shown exactly as sent.
+ */
+const PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN: Readonly<Record<string, PublicFieldLabels>> = {
+  accommodation: [
+    { key: 'category', label: 'Category' },
+    { key: 'location', label: 'Location' },
+    { key: 'catering_options', label: 'Catering' },
+    { key: 'advertised_rate', label: 'Advertised rate' },
+    { key: 'cost_period', label: 'Cost period' },
+    { key: 'audiences', label: 'Audience' },
+    { key: 'features', label: 'Features' },
+  ],
+  courses: [
+    { key: 'entity_type', label: 'Entity type' },
+    { key: 'code', label: 'Code' },
+    { key: 'academic_year', label: 'Academic year' },
+    { key: 'units', label: 'Units' },
+    { key: 'description', label: 'Description' },
+    { key: 'prerequisites', label: 'Prerequisites' },
+    { key: 'corequisites', label: 'Corequisites' },
+    { key: 'incompatibilities', label: 'Incompatibilities' },
+    { key: 'assumed_knowledge', label: 'Assumed knowledge' },
+    { key: 'offerings', label: 'Offerings' },
+  ],
+  scholarships: [
+    { key: 'status', label: 'Official status' },
+    { key: 'featured', label: 'Featured' },
+    { key: 'application_required', label: 'Application required' },
+    { key: 'study_stage', label: 'Study stage' },
+    { key: 'student_type', label: 'Student type' },
+    { key: 'study_level', label: 'Study level' },
+    { key: 'area_of_study', label: 'Area of study' },
+    { key: 'value', label: 'Value' },
+    { key: 'selection_basis', label: 'Selection basis' },
+    { key: 'opening_date', label: 'Opening date' },
+    { key: 'closing_date', label: 'Closing date' },
+    { key: 'eligibility', label: 'Published eligibility criteria' },
+  ],
+};
+
+function publicFieldLabels(domain: string): PublicFieldLabels {
+  return Object.prototype.hasOwnProperty.call(PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN, domain)
+    ? PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN[domain]
+    : [];
+}
+
+/** `qualifying_evidence` is a room-rate proof: an Accommodation-only semantic. */
+const QUALIFYING_EVIDENCE_DOMAIN = 'accommodation';
 
 function nonEmpty(value: string | null): string | null {
   return value === null || value.trim() === '' ? null : value;
@@ -215,13 +276,17 @@ function eventCard(event: EventItem): ResultCardModel | null {
   };
 }
 
-function parsePublicFields(value: unknown): Record<string, PublicFieldValue> | null {
+function parsePublicFields(
+  value: unknown,
+  domain: string,
+): Record<string, PublicFieldValue> | null {
   if (!isRecord(value)) {
     return null;
   }
+  const allowedKeys = new Set(publicFieldLabels(domain).map(({ key }) => key));
   const result: Record<string, PublicFieldValue> = {};
   for (const [key, fieldValue] of Object.entries(value)) {
-    if (!PUBLIC_RESULT_FIELD_KEYS.has(key) || !isPublicFieldValue(fieldValue)) {
+    if (!allowedKeys.has(key) || !isPublicFieldValue(fieldValue)) {
       return null;
     }
     result[key] = fieldValue;
@@ -292,13 +357,16 @@ function parsePublicResultItem(value: unknown): PublicResultItem | null {
     return null;
   }
 
-  const parsedFields = parsePublicFields(fields);
+  const parsedFields = parsePublicFields(fields, domain);
   if (parsedFields === null) {
     return null;
   }
 
   const parsedEvidence = parseQualifyingEvidence(qualifying_evidence);
-  if (parsedEvidence === undefined) {
+  if (
+    parsedEvidence === undefined ||
+    (parsedEvidence !== null && domain !== QUALIFYING_EVIDENCE_DOMAIN)
+  ) {
     return null;
   }
 
@@ -339,12 +407,13 @@ function publicResultCard(item: PublicResultItem): ResultCardModel {
             otherFees: item.qualifying_evidence.other_fees,
           },
     /*
-     * All 7 keys always appear, in fixed order, whether or not the source
-     * published them — a card's shape staying constant across a list is
-     * safer than a variable-shaped card silently implying "less is known"
-     * for that one record.
+     * Every key frozen for this domain always appears, in fixed order,
+     * whether or not the source published it — a card's shape staying
+     * constant across a list is safer than a variable-shaped card silently
+     * implying "less is known" for that one record. A domain with no frozen
+     * key set gets no field rows (see `PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN`).
      */
-    fields: PUBLIC_RESULT_FIELD_LABELS.map(({ key, label }) => ({
+    fields: publicFieldLabels(item.domain).map(({ key, label }) => ({
       label,
       value: fieldValueToDisplay(item.fields[key] ?? null),
     })),
@@ -507,14 +576,20 @@ export function toComparisonModel(items: readonly unknown[]): ComparisonModel | 
     return null;
   }
 
+  /*
+   * Columns are keyed by `record_id`, the same key the cells use. It is the
+   * one identity unique per stored record in every domain: a Course's
+   * `canonical_id` is its bare code, so COMP1110 2025 and COMP1110 2026 share
+   * a `canonical_id` but are different records and must stay two columns.
+   */
   const columns: ComparisonColumn[] = [];
   const seenIds = new Set<string>();
   for (const record of parsed.records) {
-    if (seenIds.has(record.canonical_id)) {
+    if (seenIds.has(record.record_id)) {
       return null;
     }
-    seenIds.add(record.canonical_id);
-    columns.push({ id: record.canonical_id, title: record.title });
+    seenIds.add(record.record_id);
+    columns.push({ id: record.record_id, title: record.title });
   }
 
   const rows: ComparisonRow[] = [];

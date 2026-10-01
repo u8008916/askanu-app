@@ -154,9 +154,17 @@ describe('toComparisonModel (shared comparison adapter)', () => {
   it('builds columns/rows from a real PublicComparisonItem, preserving backend order and missingness', () => {
     const model = toComparisonModel(okAccommodationCompareItemsResponse.items)!;
     expect(model).not.toBeNull();
+    // Columns key on `record_id` (V7 Day 5): unique per stored record in every
+    // domain, unlike a Course's year-less `canonical_id`.
     expect(model.columns).toEqual([
-      { id: 'placeholder-residence-a', title: 'Placeholder residence record title A' },
-      { id: 'placeholder-residence-b', title: 'Placeholder residence record title B' },
+      {
+        id: 'accommodation:residence:placeholder-residence-a',
+        title: 'Placeholder residence record title A',
+      },
+      {
+        id: 'accommodation:residence:placeholder-residence-b',
+        title: 'Placeholder residence record title B',
+      },
     ]);
     const locationRow = model.rows.find((row) => row.label === 'Location')!;
     expect(locationRow.values).toEqual(['Placeholder campus', null]);

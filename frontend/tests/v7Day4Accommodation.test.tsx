@@ -209,13 +209,18 @@ describe('Accommodation compare', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('the backend prose stays collapsed under "Show as text" alongside the table', () => {
+  /*
+   * V7 Day 5 cross-domain rule (approved 29 Sep, flagged to Qasim as a D4
+   * presentation delta): a PARTIAL/UNKNOWN `answer_state` keeps the backend's
+   * prose — its own caveat about what is not published — visible above the
+   * table instead of collapsed under "Show as text". Nothing is removed.
+   */
+  it('a PARTIAL comparison keeps the backend prose visible above the table, not collapsed', () => {
     const { container } = renderTurn(okAccommodationCompareItemsResponse);
-    const details = container.querySelector('details') as HTMLDetailsElement;
-    expect(details).not.toBeNull();
-    expect(details.open).toBe(false);
-    expect(within(details).getByText('Show as text')).toBeInTheDocument();
-    expect(details).toHaveTextContent('Placeholder comparison answer');
+    expect(okAccommodationCompareItemsResponse.answer_state).toBe('PARTIAL');
+    expect(container.querySelector('details')).toBeNull();
+    expect(screen.getByText(/Placeholder comparison answer/)).toBeVisible();
+    expect(screen.getByRole('table')).toBeInTheDocument();
   });
 
   /*

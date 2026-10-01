@@ -19,7 +19,7 @@ function ResultCard({
 }: {
   card: ResultCardModel;
   position: number;
-  /** The visible card number — the backend ordinal on a paged list, `position` otherwise. */
+  /** The visible card number — the backend ordinal when RAG numbered the cards, `position` otherwise. */
   displayNumber: number;
   onSelect?: (selection: ResultSelection) => void;
 }) {
@@ -50,16 +50,18 @@ function ResultCard({
           )}
         </div>
       </div>
-      <dl className={styles.fieldList}>
-        {card.fields.map((field) => (
-          <div className={styles.fieldRow} key={field.label}>
-            <dt className={styles.fieldLabel}>{field.label}</dt>
-            <dd className={styles.fieldValue}>
-              {field.value ?? <span className={styles.missing}>{MISSING_VALUE_LABEL}</span>}
-            </dd>
-          </div>
-        ))}
-      </dl>
+      {card.fields.length > 0 && (
+        <dl className={styles.fieldList}>
+          {card.fields.map((field) => (
+            <div className={styles.fieldRow} key={field.label}>
+              <dt className={styles.fieldLabel}>{field.label}</dt>
+              <dd className={styles.fieldValue}>
+                {field.value ?? <span className={styles.missing}>{MISSING_VALUE_LABEL}</span>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {/*
         V7 Day 4: the one named room whose published rate satisfied an active
         price constraint. Deliberately muted, not a "confirmed"/positive
@@ -135,6 +137,14 @@ export function ResultList({
   const [pageRequested, setPageRequested] = useState(false);
   const listId = useId();
   const paged = resultPage !== undefined;
+  /*
+   * V7 Day 5: when RAG numbered every card (a ResultSet page, a selected
+   * result, a refined child set that restarts at 1), the visible number is
+   * the backend ordinal — "the second one" must read "2", not "1" because it
+   * is the only card in this turn. Only a list the backend did not number
+   * falls back to position.
+   */
+  const backendNumbered = cards.every((card) => card.ordinal !== null);
   const hiddenCount = paged ? 0 : Math.max(0, cards.length - INITIAL_VISIBLE_RESULTS);
   const visible = paged || expanded ? cards : cards.slice(0, INITIAL_VISIBLE_RESULTS);
   const noun = cards.length === 1 ? 'result' : 'results';
@@ -152,7 +162,9 @@ export function ResultList({
         {visible.map((card, index) => (
           <ResultCard
             card={card}
-            displayNumber={paged && card.ordinal !== null ? card.ordinal : index + 1}
+            displayNumber={
+              (paged || backendNumbered) && card.ordinal !== null ? card.ordinal : index + 1
+            }
             key={card.recordId}
             onSelect={onSelect}
             position={index + 1}
