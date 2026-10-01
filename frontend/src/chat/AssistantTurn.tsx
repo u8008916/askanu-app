@@ -273,6 +273,17 @@ export function AssistantTurn({
     status === 'partial' ||
     response.answer_state === 'PARTIAL' ||
     response.answer_state === 'UNKNOWN';
+  /*
+   * V7 Day 7 (approved by Qasim 29 Sep as a narrow, Support-only rule): a
+   * Support answer opens with RAG's own scope boundary ("I can route you to
+   * published services but cannot diagnose…"). No card field carries that
+   * boundary, so it stays visible above the service card even when the turn
+   * is CONFIRMED. This deliberately does not generalise to other domains'
+   * CONFIRMED prose.
+   */
+  const supportScope =
+    cards !== null && cards.length > 0 && cards.every((card) => card.domain === 'support');
+  const answerInView = uncertain || supportScope;
 
   /*
    * V7 Day 4: eligible only when every card in the list carries the full
@@ -314,9 +325,14 @@ export function AssistantTurn({
      * selection. It returned `insufficient_evidence` for Jobs and
      * Accommodation, the whole list for Events, and an unnumbered
      * Scholarship. "Tell me about it" returned exactly the selected record in
-     * all five selectable domains. The RAG-side precedence bug is reported
-     * separately (R1/R4). The App still invents no identity: the selected
-     * card is named in the turn above.
+     * all five selectable domains. The App still invents no identity: the
+     * selected card is named in the turn above.
+     *
+     * TEMPORARY COMPATIBILITY WORDING (Qasim, 29 Sep), not a product rule.
+     * It stays only while RAG release blockers R1/R4 (a verified
+     * `selected_result` losing to the question text) are open. Once Carmen
+     * fixes them, re-test both this and title-bearing wording, then choose
+     * the UX wording separately. See `docs/evidence/V7_DAY_07_DEFECT_LEDGER.md`.
      */
     onSelectResult({
       prefillText: 'Tell me about it',
@@ -358,7 +374,7 @@ export function AssistantTurn({
         ) : (
           <>
             {hasAnswer &&
-              ((cards === null && comparison === null) || uncertain) && (
+              ((cards === null && comparison === null) || answerInView) && (
               /*
                 A `partial` status or a PARTIAL/UNKNOWN `answer_state` means
                 the text carries the backend's caveat about what is missing
@@ -377,7 +393,7 @@ export function AssistantTurn({
             {comparison !== null && (
               <ComparisonTable columns={comparison.columns} rows={comparison.rows} />
             )}
-            {hasAnswer && (cards !== null || comparison !== null) && !uncertain && (
+            {hasAnswer && (cards !== null || comparison !== null) && !answerInView && (
               /*
                 The backend's text for a list/comparison answer restates the
                 same records shown above, one line each. It stays on the page

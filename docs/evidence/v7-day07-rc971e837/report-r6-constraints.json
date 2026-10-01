@@ -1,0 +1,208 @@
+[
+  {
+    "journey": "r6-constraints-desktop",
+    "step": "antarctica",
+    "file": "r6-constraints-desktop-antarctica.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-desktop",
+    "step": "canberra-at-anu",
+    "file": "r6-constraints-desktop-canberra-at-anu.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-desktop",
+    "step": "canberra-jobs-in",
+    "file": "r6-constraints-desktop-canberra-jobs-in.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-desktop",
+    "step": "any-jobs",
+    "file": "r6-constraints-desktop-any-jobs.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-desktop",
+    "results": {
+      "antarctica": {
+        "question": "What jobs are available at ANU in Antarctica?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      },
+      "canberra-at-anu": {
+        "question": "What jobs are available at ANU in Canberra?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      },
+      "canberra-jobs-in": {
+        "question": "Any ANU jobs in Canberra?",
+        "answer": "AskANU  The current supported Jobs population is incomplete; these are verified available results from the supported data. Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15. Verifi",
+        "cards": 5
+      },
+      "any-jobs": {
+        "question": "Are there any jobs at ANU?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      }
+    }
+  },
+  {
+    "journey": "r6-constraints-desktop",
+    "console": []
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "step": "antarctica",
+    "file": "r6-constraints-mobile-antarctica.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "step": "canberra-at-anu",
+    "file": "r6-constraints-mobile-canberra-at-anu.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "step": "canberra-jobs-in",
+    "file": "r6-constraints-mobile-canberra-jobs-in.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "step": "any-jobs",
+    "file": "r6-constraints-mobile-any-jobs.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "results": {
+      "antarctica": {
+        "question": "What jobs are available at ANU in Antarctica?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      },
+      "canberra-at-anu": {
+        "question": "What jobs are available at ANU in Canberra?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      },
+      "canberra-jobs-in": {
+        "question": "Any ANU jobs in Canberra?",
+        "answer": "AskANU  The current supported Jobs population is incomplete; these are verified available results from the supported data. Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15. Verifi",
+        "cards": 5
+      },
+      "any-jobs": {
+        "question": "Are there any jobs at ANU?",
+        "answer": "AskANU  Not enough evidence to answer  The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+        "cards": 0
+      }
+    }
+  },
+  {
+    "journey": "r6-constraints-mobile",
+    "console": []
+  }
+]
