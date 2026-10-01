@@ -99,7 +99,41 @@ const EVENT_PROVENANCE: Record<string, string> = {
   rubric_unified_search: 'ANU community · via Rubric',
 };
 
-type PublicFieldLabels = ReadonlyArray<{ key: string; label: string }>;
+type PublicFieldLabels = ReadonlyArray<{
+  key: string;
+  label: string;
+  /** Stored instant/date: shown through `formatStoredDateTime`, which never invents a time or zone. */
+  format?: 'datetime';
+}>;
+
+/**
+ * V7 Day 6: keys RAG sends for a domain that the App validates but
+ * deliberately does not show as a row.
+ * - Events `timezone`: already carried by each timestamp's offset.
+ * - Events `provenance_class`: shown as the card's provenance line, never a row.
+ * - Events `status`: mixes cancellation wording with general source status
+ *   and has no frozen student-facing meaning. The 20 Sep decision for the
+ *   Upcoming Events panel applies to chat cards too.
+ */
+const PUBLIC_RESULT_HIDDEN_KEYS_BY_DOMAIN: Readonly<Record<string, ReadonlySet<string>>> = {
+  events: new Set(['timezone', 'provenance_class', 'status']),
+};
+
+function hiddenKeys(domain: string): ReadonlySet<string> {
+  return Object.prototype.hasOwnProperty.call(PUBLIC_RESULT_HIDDEN_KEYS_BY_DOMAIN, domain)
+    ? PUBLIC_RESULT_HIDDEN_KEYS_BY_DOMAIN[domain]
+    : new Set();
+}
+
+/**
+ * V7 Day 6: RAG's `provenance_class` must agree with the event's `source_id`.
+ * A mismatch, or a source the App has no label for, refuses the list, so a
+ * Rubric community event can never be shown under the official ANU label.
+ */
+const EVENT_PROVENANCE_CLASS: Record<string, string> = {
+  events_anu_official: 'official_anu',
+  rubric_unified_search: 'approved_community',
+};
 
 /**
  * Fixed order and label for every key `PublicResultItem.fields` may carry,
@@ -160,6 +194,36 @@ const PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN: Readonly<Record<string, PublicFieldL
     { key: 'closing_date', label: 'Closing date' },
     { key: 'eligibility', label: 'Published eligibility criteria' },
   ],
+  /*
+   * V7 Day 6 (RAG `bafa15d`): Events and Support key sets are frozen in
+   * `event_queries._event_public_item` / `resource_queries._public_support_item`,
+   * but RAG publishes no labels for them. These labels are plain-English
+   * names of those keys and nothing more. They carry no judgement, and a key
+   * outside the set still refuses the list.
+   */
+  events: [
+    { key: 'start_at', label: 'Starts', format: 'datetime' },
+    { key: 'end_at', label: 'Ends', format: 'datetime' },
+    { key: 'venue', label: 'Venue' },
+    { key: 'address', label: 'Address' },
+    { key: 'organiser', label: 'Organiser' },
+    { key: 'category', label: 'Category' },
+    { key: 'tags', label: 'Tags' },
+    { key: 'audience', label: 'Audience' },
+  ],
+  support: [
+    { key: 'category', label: 'Category' },
+    { key: 'purpose', label: 'Purpose' },
+    { key: 'audiences', label: 'Audience' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'location', label: 'Location' },
+    { key: 'hours', label: 'Hours' },
+    { key: 'access', label: 'Access' },
+    { key: 'cost', label: 'Cost' },
+    { key: 'topics', label: 'Topics' },
+    { key: 'referrals', label: 'Referrals' },
+  ],
 };
 
 function publicFieldLabels(domain: string): PublicFieldLabels {
@@ -210,16 +274,47 @@ function fieldValueToDisplay(value: PublicFieldValue): string | null {
   return nonEmpty(value);
 }
 
-function jobCard(job: JobItem): ResultCardModel {
+interface JobIdentity {
+  canonicalId: string | null;
+  resultSetId: string | null;
+  ordinal: number | null;
+}
+
+const NO_JOB_IDENTITY: JobIdentity = { canonicalId: null, resultSetId: null, ordinal: null };
+
+/**
+ * V7 Day 6 (RAG `bafa15d`): `PublicJobItem` gained `canonical_id`,
+ * `result_set_id` and `ordinal`, so Jobs can be selected and paged like
+ * other ResultSets. Each is optional (the legacy Current Jobs DTO has none)
+ * but must be well-typed when present. `undefined` means malformed, and the
+ * whole list is refused.
+ */
+function parseJobIdentity(value: Record<string, unknown>): JobIdentity | undefined {
+  const { canonical_id, result_set_id, ordinal } = value;
+  if (
+    !(canonical_id === undefined || isString(canonical_id)) ||
+    !(result_set_id === undefined || result_set_id === null || isString(result_set_id)) ||
+    !(ordinal === undefined || ordinal === null || isOrdinal(ordinal))
+  ) {
+    return undefined;
+  }
+  return {
+    canonicalId: canonical_id ?? null,
+    resultSetId: result_set_id ?? null,
+    ordinal: ordinal ?? null,
+  };
+}
+
+function jobCard(job: JobItem, identity: JobIdentity = NO_JOB_IDENTITY): ResultCardModel {
   return {
     recordId: job.record_id,
     domain: 'jobs',
     title: job.title,
     url: job.url,
     provenance: null,
-    resultSetId: null,
-    canonicalId: null,
-    ordinal: null,
+    resultSetId: identity.resultSetId,
+    canonicalId: identity.canonicalId,
+    ordinal: identity.ordinal,
     qualifyingEvidence: null,
     fields: [
       {
@@ -283,7 +378,10 @@ function parsePublicFields(
   if (!isRecord(value)) {
     return null;
   }
-  const allowedKeys = new Set(publicFieldLabels(domain).map(({ key }) => key));
+  const allowedKeys = new Set([
+    ...publicFieldLabels(domain).map(({ key }) => key),
+    ...hiddenKeys(domain),
+  ]);
   const result: Record<string, PublicFieldValue> = {};
   for (const [key, fieldValue] of Object.entries(value)) {
     if (!allowedKeys.has(key) || !isPublicFieldValue(fieldValue)) {
@@ -370,6 +468,14 @@ function parsePublicResultItem(value: unknown): PublicResultItem | null {
     return null;
   }
 
+  if (
+    domain === 'events' &&
+    (!Object.prototype.hasOwnProperty.call(EVENT_PROVENANCE_CLASS, source_id) ||
+      parsedFields.provenance_class !== EVENT_PROVENANCE_CLASS[source_id])
+  ) {
+    return null;
+  }
+
   return {
     type: 'result',
     record_id,
@@ -391,7 +497,8 @@ function publicResultCard(item: PublicResultItem): ResultCardModel {
     domain: item.domain,
     title: item.title,
     url: item.url,
-    provenance: null,
+    // Checked against `provenance_class` in `parsePublicResultItem`.
+    provenance: item.domain === 'events' ? EVENT_PROVENANCE[item.source_id] : null,
     resultSetId: item.result_set_id,
     canonicalId: item.canonical_id,
     ordinal: item.ordinal,
@@ -413,10 +520,13 @@ function publicResultCard(item: PublicResultItem): ResultCardModel {
      * implying "less is known" for that one record. A domain with no frozen
      * key set gets no field rows (see `PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN`).
      */
-    fields: publicFieldLabels(item.domain).map(({ key, label }) => ({
-      label,
-      value: fieldValueToDisplay(item.fields[key] ?? null),
-    })),
+    fields: publicFieldLabels(item.domain).map(({ key, label, format }) => {
+      const value = fieldValueToDisplay(item.fields[key] ?? null);
+      return {
+        label,
+        value: format === 'datetime' && value !== null ? formatStoredDateTime(value) : value,
+      };
+    }),
   };
 }
 
@@ -436,7 +546,8 @@ function toCard(item: unknown): ResultCardModel | null {
     // `parseJobItem` destructures only its named fields, so the added `type`
     // discriminator is silently tolerated — verified, not just assumed.
     const job = parseJobItem(item);
-    return job === null ? null : jobCard(job);
+    const identity = parseJobIdentity(item as Record<string, unknown>);
+    return job === null || identity === undefined ? null : jobCard(job, identity);
   }
 
   if (type !== undefined) {

@@ -1,0 +1,2918 @@
+{
+ "_provenance": "Verbatim /api/v1/ask response bodies captured from askanu-rag bafa15ded1afd6f2eecdf8781a5e4eb12cefffe4 using Carmen's own tests/test_v7_day6_journeys.py fixtures (synthetic, not ANU facts; clock fixed to 2026-09-14). Regenerate, never hand-edit.",
+ "jobsBroad": {
+  "question": "What jobs are available at ANU?",
+  "request_extra": {},
+  "response": {
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15.\nVerified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16.\nVerified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17.\nVerified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18.\nVerified Role 5. Job ID: 700005. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-19.",
+   "items": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "job_id": "700001",
+     "title": "Software Engineer",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-15",
+     "closing_date": "2026-09-15",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    {
+     "record_id": "jobs:job:700002",
+     "source_id": "jobs_anu_search",
+     "job_id": "700002",
+     "title": "Verified Role 2",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-16",
+     "closing_date": "2026-09-16",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700002",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    {
+     "record_id": "jobs:job:700003",
+     "source_id": "jobs_anu_search",
+     "job_id": "700003",
+     "title": "Verified Role 3",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-17",
+     "closing_date": "2026-09-17",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700003",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    {
+     "record_id": "jobs:job:700004",
+     "source_id": "jobs_anu_search",
+     "job_id": "700004",
+     "title": "Verified Role 4",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-18",
+     "closing_date": "2026-09-18",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700004",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700004",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 4
+    },
+    {
+     "record_id": "jobs:job:700005",
+     "source_id": "jobs_anu_search",
+     "job_id": "700005",
+     "title": "Verified Role 5",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-19",
+     "closing_date": "2026-09-19",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700005",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700005",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 5
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:jobs:1",
+    "start_ordinal": 1,
+    "returned": 5,
+    "has_more": true,
+    "next_ordinal": 6
+   },
+   "sources": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "title": "Software Engineer",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs"
+    },
+    {
+     "record_id": "jobs:job:700002",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 2",
+     "url": "https://jobs.anu.edu.au/jobs/700002",
+     "domain": "jobs"
+    },
+    {
+     "record_id": "jobs:job:700003",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 3",
+     "url": "https://jobs.anu.edu.au/jobs/700003",
+     "domain": "jobs"
+    },
+    {
+     "record_id": "jobs:job:700004",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 4",
+     "url": "https://jobs.anu.edu.au/jobs/700004",
+     "domain": "jobs"
+    },
+    {
+     "record_id": "jobs:job:700005",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 5",
+     "url": "https://jobs.anu.edu.au/jobs/700005",
+     "domain": "jobs"
+    }
+   ],
+   "request_id": "req_e5817ca0c55444af94f855e618d48176",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "fact_lookup",
+     "result_set_id": "rs:jobs:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "700001",
+       "700002",
+       "700003",
+       "700004",
+       "700005",
+       "700006",
+       "700007"
+      ],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "jobsFirst": {
+  "question": "Tell me about the first one",
+  "request_extra": {},
+  "response": {
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15.",
+   "items": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "job_id": "700001",
+     "title": "Software Engineer",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-15",
+     "closing_date": "2026-09-15",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "title": "Software Engineer",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs"
+    }
+   ],
+   "request_id": "req_ce4addf1d29a499693c06149a2221fbd",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "jobs",
+      "kind": "job",
+      "canonical_id": "700001",
+      "canonical_name": "Software Engineer",
+      "source_record_id": "jobs:job:700001",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "fact_lookup",
+     "result_set_id": "rs:jobs:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "700001",
+       "700002",
+       "700003",
+       "700004",
+       "700005",
+       "700006",
+       "700007"
+      ],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:jobs:1",
+     "canonical_id": "700001",
+     "ordinal": 1
+    },
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "jobsRequirements": {
+  "question": "What are the requirements?",
+  "request_extra": {},
+  "response": {
+   "answer": "Official requirements published for Software Engineer (Job ID 700001):\n- Published requirement A\n- Published requirement B",
+   "items": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "job_id": "700001",
+     "title": "Software Engineer",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-15",
+     "closing_date": "2026-09-15",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "jobs:job:700001",
+     "source_id": "jobs_anu_search",
+     "title": "Software Engineer",
+     "url": "https://jobs.anu.edu.au/jobs/700001",
+     "domain": "jobs"
+    }
+   ],
+   "request_id": "req_e38a2ee452f848ce9a68bca7a9eb8dd7",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "jobs",
+      "kind": "job",
+      "canonical_id": "700001",
+      "canonical_name": "Software Engineer",
+      "source_record_id": "jobs:job:700001",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "fact_lookup",
+     "result_set_id": "rs:jobs:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "700001",
+       "700002",
+       "700003",
+       "700004",
+       "700005",
+       "700006",
+       "700007"
+      ],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:jobs:1",
+     "canonical_id": "700001",
+     "ordinal": 1
+    },
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "jobsMore": {
+  "question": "Any more?",
+  "request_extra": {},
+  "response": {
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nVerified Role 6. Job ID: 700006. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-20.\nVerified Role 7. Job ID: 700007. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-21.",
+   "items": [
+    {
+     "record_id": "jobs:job:700006",
+     "source_id": "jobs_anu_search",
+     "job_id": "700006",
+     "title": "Verified Role 6",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-20",
+     "closing_date": "2026-09-20",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700006",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700006",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 6
+    },
+    {
+     "record_id": "jobs:job:700007",
+     "source_id": "jobs_anu_search",
+     "job_id": "700007",
+     "title": "Verified Role 7",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-21",
+     "closing_date": "2026-09-21",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/700007",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "700007",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 7
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:jobs:1",
+    "start_ordinal": 6,
+    "returned": 2,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "jobs:job:700006",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 6",
+     "url": "https://jobs.anu.edu.au/jobs/700006",
+     "domain": "jobs"
+    },
+    {
+     "record_id": "jobs:job:700007",
+     "source_id": "jobs_anu_search",
+     "title": "Verified Role 7",
+     "url": "https://jobs.anu.edu.au/jobs/700007",
+     "domain": "jobs"
+    }
+   ],
+   "request_id": "req_c17f90207adf474ab65cb14e71671de8",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "jobs",
+      "kind": "job",
+      "canonical_id": "700001",
+      "canonical_name": "Software Engineer",
+      "source_record_id": "jobs:job:700001",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:jobs:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "700001",
+       "700002",
+       "700003",
+       "700004",
+       "700005",
+       "700006",
+       "700007"
+      ],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:jobs:1",
+     "canonical_id": "700001",
+     "ordinal": 1
+    },
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "jobsClosingWeek": {
+  "question": "Which ones close this week?",
+  "request_extra": {},
+  "response": {
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nCloses this week. Job ID: 710001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18.",
+   "items": [
+    {
+     "record_id": "jobs:job:710001",
+     "source_id": "jobs_anu_search",
+     "job_id": "710001",
+     "title": "Closes this week",
+     "employment_types": [
+      "Fixed-term"
+     ],
+     "location": "Canberra / ACT",
+     "classification": "ANU08",
+     "salary": null,
+     "closing_text": "2026-09-18",
+     "closing_date": "2026-09-18",
+     "closing_at": null,
+     "status": "current",
+     "url": "https://jobs.anu.edu.au/jobs/710001",
+     "domain": "jobs",
+     "type": "job",
+     "canonical_id": "710001",
+     "result_set_id": "rs:jobs:2",
+     "ordinal": 1
+    }
+   ],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "jobs:job:710001",
+     "source_id": "jobs_anu_search",
+     "title": "Closes this week",
+     "url": "https://jobs.anu.edu.au/jobs/710001",
+     "domain": "jobs"
+    }
+   ],
+   "request_id": "req_538fe5833b734c8c8917be76fac11bb1",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "jobs",
+      "kind": "job",
+      "canonical_id": "710001",
+      "canonical_name": "Closes this week",
+      "source_record_id": "jobs:job:710001",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "fact_lookup",
+     "result_set_id": "rs:jobs:2"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "this week",
+       "scope": {
+        "domain": "jobs",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 2
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:2",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "710001"
+      ],
+      "originating_query": "Which ones close this week?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "this week",
+         "scope": {
+          "domain": "jobs",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        }
+       ]
+      },
+      "created_turn": 2,
+      "last_refined_turn": 2,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:jobs:1"
+     },
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [
+       "710001",
+       "710003",
+       "710002"
+      ],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:jobs:2",
+     "next_ordinal": 2
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "jobsEmpty": {
+  "question": "What jobs are available at ANU?",
+  "request_extra": {},
+  "response": {
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist.",
+   "items": [],
+   "answer_state": "PARTIAL",
+   "actions": [],
+   "sources": [],
+   "request_id": "req_12220ee0bf6f47f99ee0f5163a84b584",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": {
+     "domain": "jobs",
+     "entity_kind": "job",
+     "canonical_entity_id": null,
+     "intent_name": "fact_lookup",
+     "result_set_id": "rs:jobs:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:jobs:1",
+      "domain": "jobs",
+      "entity_kind": "job",
+      "ordered_canonical_ids": [],
+      "originating_query": "What jobs are available at ANU?",
+      "intent": {
+       "name": "fact_lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "INCOMPLETE",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "insufficient_evidence",
+   "clarification": null
+  }
+ },
+ "eventsToday": {
+  "question": "What events are on at ANU today?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event today-early. Starts: 2026-09-14T13:00:00+10:00. Venue: Kambri. Organiser: ANU Events. Source status: scheduled.\n\nEvent today-late. Starts: 2026-09-14T18:00:00+10:00. Venue: Kambri. Organiser: ANU Events. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:today-early",
+     "source_id": "events_anu_official",
+     "canonical_id": "today-early",
+     "title": "Event today-early",
+     "url": "https://www.anu.edu.au/events/today-early",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 1,
+     "fields": {
+      "start_at": "2026-09-14T13:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Kambri",
+      "address": null,
+      "organiser": "ANU Events",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:today-late",
+     "source_id": "events_anu_official",
+     "canonical_id": "today-late",
+     "title": "Event today-late",
+     "url": "https://www.anu.edu.au/events/today-late",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 2,
+     "fields": {
+      "start_at": "2026-09-14T18:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Kambri",
+      "address": null,
+      "organiser": "ANU Events",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:1",
+    "start_ordinal": 1,
+    "returned": 2,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "events:event:today-early",
+     "source_id": "events_anu_official",
+     "title": "Event today-early",
+     "url": "https://www.anu.edu.au/events/today-early",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:today-late",
+     "source_id": "events_anu_official",
+     "title": "Event today-late",
+     "url": "https://www.anu.edu.au/events/today-late",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_f853c56168ff4f3f800e078e2772fd69",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-early",
+       "today-late"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:events:1",
+     "next_ordinal": 3
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsAfter5": {
+  "question": "Only after 5pm",
+  "request_extra": {},
+  "response": {
+   "answer": "Event today-late. Starts: 2026-09-14T18:00:00+10:00. Venue: Kambri. Organiser: ANU Events. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:today-late",
+     "source_id": "events_anu_official",
+     "canonical_id": "today-late",
+     "title": "Event today-late",
+     "url": "https://www.anu.edu.au/events/today-late",
+     "domain": "events",
+     "result_set_id": "rs:events:2",
+     "ordinal": 1,
+     "fields": {
+      "start_at": "2026-09-14T18:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Kambri",
+      "address": null,
+      "organiser": "ANU Events",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:2",
+    "start_ordinal": 1,
+    "returned": 1,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "events:event:today-late",
+     "source_id": "events_anu_official",
+     "title": "Event today-late",
+     "url": "https://www.anu.edu.au/events/today-late",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_52594cf94f464b2cba4cdd42ddd29072",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "today-late",
+      "canonical_name": "Event today-late",
+      "source_record_id": "events:event:today-late",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:2"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "time_of_day_window",
+       "value": "after 17:00",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 2
+      },
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:2",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-late"
+      ],
+      "originating_query": "Only after 5pm",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "after 17:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        },
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 2,
+      "last_refined_turn": 2,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:1"
+     },
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-early",
+       "today-late"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:events:2",
+     "next_ordinal": 2
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsTomorrow": {
+  "question": "What about tomorrow?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event tomorrow-late. Starts: 2026-09-15T18:00:00+10:00. Venue: Kambri. Organiser: ANU Events. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:tomorrow-late",
+     "source_id": "events_anu_official",
+     "canonical_id": "tomorrow-late",
+     "title": "Event tomorrow-late",
+     "url": "https://www.anu.edu.au/events/tomorrow-late",
+     "domain": "events",
+     "result_set_id": "rs:events:3",
+     "ordinal": 1,
+     "fields": {
+      "start_at": "2026-09-15T18:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Kambri",
+      "address": null,
+      "organiser": "ANU Events",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:3",
+    "start_ordinal": 1,
+    "returned": 1,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "events:event:tomorrow-late",
+     "source_id": "events_anu_official",
+     "title": "Event tomorrow-late",
+     "url": "https://www.anu.edu.au/events/tomorrow-late",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_bbb55624125b4ef29f0b5cf15d54ce55",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "tomorrow-late",
+      "canonical_name": "Event tomorrow-late",
+      "source_record_id": "events:event:tomorrow-late",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     },
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "today-late",
+      "canonical_name": "Event today-late",
+      "source_record_id": "events:event:today-late",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:3"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "tomorrow",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 3
+      },
+      {
+       "semantic_type": "time_of_day_window",
+       "value": "after 17:00",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 2
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:3",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "tomorrow-late"
+      ],
+      "originating_query": "What about tomorrow?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "tomorrow",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 3
+        },
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "after 17:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        }
+       ]
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:2"
+     },
+     {
+      "result_set_id": "rs:events:2",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-late"
+      ],
+      "originating_query": "Only after 5pm",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "after 17:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        },
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 2,
+      "last_refined_turn": 2,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:1"
+     },
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-early",
+       "today-late"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:events:3",
+     "next_ordinal": 2
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsBefore2": {
+  "question": "Before 2pm instead",
+  "request_extra": {},
+  "response": {
+   "answer": "Event tomorrow-early. Starts: 2026-09-15T13:00:00+10:00. Venue: Kambri. Organiser: ANU Events. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:tomorrow-early",
+     "source_id": "events_anu_official",
+     "canonical_id": "tomorrow-early",
+     "title": "Event tomorrow-early",
+     "url": "https://www.anu.edu.au/events/tomorrow-early",
+     "domain": "events",
+     "result_set_id": "rs:events:4",
+     "ordinal": 1,
+     "fields": {
+      "start_at": "2026-09-15T13:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Kambri",
+      "address": null,
+      "organiser": "ANU Events",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:4",
+    "start_ordinal": 1,
+    "returned": 1,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "events:event:tomorrow-early",
+     "source_id": "events_anu_official",
+     "title": "Event tomorrow-early",
+     "url": "https://www.anu.edu.au/events/tomorrow-early",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_7480d7b54e6d4f249829ce61fe5bd177",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "tomorrow-early",
+      "canonical_name": "Event tomorrow-early",
+      "source_record_id": "events:event:tomorrow-early",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 4
+     },
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "tomorrow-late",
+      "canonical_name": "Event tomorrow-late",
+      "source_record_id": "events:event:tomorrow-late",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     },
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "today-late",
+      "canonical_name": "Event today-late",
+      "source_record_id": "events:event:today-late",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:4"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "time_of_day_window",
+       "value": "before 14:00",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 4
+      },
+      {
+       "semantic_type": "date_window",
+       "value": "tomorrow",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 3
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:4",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "tomorrow-early"
+      ],
+      "originating_query": "Before 2pm instead",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "before 14:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 4
+        },
+        {
+         "semantic_type": "date_window",
+         "value": "tomorrow",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 3
+        }
+       ]
+      },
+      "created_turn": 4,
+      "last_refined_turn": 4,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:3"
+     },
+     {
+      "result_set_id": "rs:events:3",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "tomorrow-late"
+      ],
+      "originating_query": "What about tomorrow?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "tomorrow",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 3
+        },
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "after 17:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        }
+       ]
+      },
+      "created_turn": 3,
+      "last_refined_turn": 3,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:2"
+     },
+     {
+      "result_set_id": "rs:events:2",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-late"
+      ],
+      "originating_query": "Only after 5pm",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "time_of_day_window",
+         "value": "after 17:00",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 2
+        },
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 2,
+      "last_refined_turn": 2,
+      "status": "RESULTS",
+      "parent_result_set_id": "rs:events:1"
+     },
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "today-early",
+       "today-late"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:events:4",
+     "next_ordinal": 2
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsBroad": {
+  "question": "What events are on at ANU today?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled.\n\nEvent 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled.\n\nEvent 800003. Starts: 2026-09-14T13:00:00+10:00. Organiser: Organiser 3. Source status: scheduled.\n\nEvent 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled.\n\nEvent 800005. Starts: 2026-09-14T15:00:00+10:00. Venue: Venue 5. Organiser: Organiser 5. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:800001",
+     "source_id": "events_anu_official",
+     "canonical_id": "800001",
+     "title": "Event 800001",
+     "url": "https://www.anu.edu.au/events/800001",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 1,
+     "fields": {
+      "start_at": "2026-09-14T11:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 1",
+      "address": null,
+      "organiser": "Organiser 1",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "canonical_id": "800002",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 2,
+     "fields": {
+      "start_at": "2026-09-14T12:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 2",
+      "address": null,
+      "organiser": "Organiser 2",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:800003",
+     "source_id": "events_anu_official",
+     "canonical_id": "800003",
+     "title": "Event 800003",
+     "url": "https://www.anu.edu.au/events/800003",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 3,
+     "fields": {
+      "start_at": "2026-09-14T13:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": null,
+      "address": null,
+      "organiser": "Organiser 3",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:800004",
+     "source_id": "events_anu_official",
+     "canonical_id": "800004",
+     "title": "Event 800004",
+     "url": "https://www.anu.edu.au/events/800004",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 4,
+     "fields": {
+      "start_at": "2026-09-14T14:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 4",
+      "address": null,
+      "organiser": "Organiser 4",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:800005",
+     "source_id": "events_anu_official",
+     "canonical_id": "800005",
+     "title": "Event 800005",
+     "url": "https://www.anu.edu.au/events/800005",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 5,
+     "fields": {
+      "start_at": "2026-09-14T15:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 5",
+      "address": null,
+      "organiser": "Organiser 5",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:1",
+    "start_ordinal": 1,
+    "returned": 5,
+    "has_more": true,
+    "next_ordinal": 6
+   },
+   "sources": [
+    {
+     "record_id": "events:event:800001",
+     "source_id": "events_anu_official",
+     "title": "Event 800001",
+     "url": "https://www.anu.edu.au/events/800001",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:800003",
+     "source_id": "events_anu_official",
+     "title": "Event 800003",
+     "url": "https://www.anu.edu.au/events/800003",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:800004",
+     "source_id": "events_anu_official",
+     "title": "Event 800004",
+     "url": "https://www.anu.edu.au/events/800004",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:800005",
+     "source_id": "events_anu_official",
+     "title": "Event 800005",
+     "url": "https://www.anu.edu.au/events/800005",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_ea1d6f486cff4992befdcc6f1a3c880d",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "800001",
+       "800002",
+       "800003",
+       "800004",
+       "800005",
+       "rubric-800006",
+       "800007"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": {
+     "result_set_id": "rs:events:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsSecond": {
+  "question": "Where is the second one?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "canonical_id": "800002",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 2,
+     "fields": {
+      "start_at": "2026-09-14T12:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 2",
+      "address": null,
+      "organiser": "Organiser 2",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_dbe242b8cf5941d7bea07bdcb7189174",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "800002",
+      "canonical_name": "Event 800002",
+      "source_record_id": "events:event:800002",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "800001",
+       "800002",
+       "800003",
+       "800004",
+       "800005",
+       "rubric-800006",
+       "800007"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:events:1",
+     "canonical_id": "800002",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:events:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsOrganiser": {
+  "question": "Who is organising it?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "canonical_id": "800002",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 2,
+     "fields": {
+      "start_at": "2026-09-14T12:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 2",
+      "address": null,
+      "organiser": "Organiser 2",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "events:event:800002",
+     "source_id": "events_anu_official",
+     "title": "Event 800002",
+     "url": "https://www.anu.edu.au/events/800002",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_f7c1e52c1eed4c3aab5c3ec67524b074",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "800002",
+      "canonical_name": "Event 800002",
+      "source_record_id": "events:event:800002",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "800001",
+       "800002",
+       "800003",
+       "800004",
+       "800005",
+       "rubric-800006",
+       "800007"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:events:1",
+     "canonical_id": "800002",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:events:1",
+     "next_ordinal": 6
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "eventsMore": {
+  "question": "Any more?",
+  "request_extra": {},
+  "response": {
+   "answer": "Event 800006. Starts: 2026-09-14T16:00:00+10:00. Venue: Venue 6. Organiser: Organiser 6. Source status: scheduled.\n\nEvent 800007. Starts: 2026-09-14T17:00:00+10:00. Venue: Venue 7. Organiser: Organiser 7. Source status: scheduled.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "events:event:rubric-800006",
+     "source_id": "rubric_unified_search",
+     "canonical_id": "rubric-800006",
+     "title": "Event 800006",
+     "url": "https://campus.hellorubric.com/?eid=800006",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 6,
+     "fields": {
+      "start_at": "2026-09-14T16:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 6",
+      "address": null,
+      "organiser": "Organiser 6",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "approved_community",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    },
+    {
+     "type": "result",
+     "record_id": "events:event:800007",
+     "source_id": "events_anu_official",
+     "canonical_id": "800007",
+     "title": "Event 800007",
+     "url": "https://www.anu.edu.au/events/800007",
+     "domain": "events",
+     "result_set_id": "rs:events:1",
+     "ordinal": 7,
+     "fields": {
+      "start_at": "2026-09-14T17:00:00+10:00",
+      "end_at": null,
+      "timezone": "Australia/Canberra",
+      "venue": "Venue 7",
+      "address": null,
+      "organiser": "Organiser 7",
+      "status": "scheduled",
+      "category": "Community",
+      "provenance_class": "official_anu",
+      "tags": [
+       "student"
+      ],
+      "audience": "ANU community"
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "result_page": {
+    "result_set_id": "rs:events:1",
+    "start_ordinal": 6,
+    "returned": 2,
+    "has_more": false,
+    "next_ordinal": null
+   },
+   "sources": [
+    {
+     "record_id": "events:event:rubric-800006",
+     "source_id": "rubric_unified_search",
+     "title": "Event 800006",
+     "url": "https://campus.hellorubric.com/?eid=800006",
+     "domain": "events"
+    },
+    {
+     "record_id": "events:event:800007",
+     "source_id": "events_anu_official",
+     "title": "Event 800007",
+     "url": "https://www.anu.edu.au/events/800007",
+     "domain": "events"
+    }
+   ],
+   "request_id": "req_0913a98a82084688b011bbaf436fac85",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 4,
+    "recent_entities": [
+     {
+      "domain": "events",
+      "kind": "event",
+      "canonical_id": "800002",
+      "canonical_name": "Event 800002",
+      "source_record_id": "events:event:800002",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "events",
+     "entity_kind": "event",
+     "canonical_entity_id": null,
+     "intent_name": "discover",
+     "result_set_id": "rs:events:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": [
+      {
+       "semantic_type": "date_window",
+       "value": "today",
+       "scope": {
+        "domain": "events",
+        "entity_kind": null,
+        "canonical_entity_id": null,
+        "intent": null
+       },
+       "lifecycle": "until_replaced",
+       "hard": true,
+       "introduced_turn": 1
+      }
+     ]
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:events:1",
+      "domain": "events",
+      "entity_kind": "event",
+      "ordered_canonical_ids": [
+       "800001",
+       "800002",
+       "800003",
+       "800004",
+       "800005",
+       "rubric-800006",
+       "800007"
+      ],
+      "originating_query": "What events are on at ANU today?",
+      "intent": {
+       "name": "discover",
+       "operation": "initial_discovery",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": [
+        {
+         "semantic_type": "date_window",
+         "value": "today",
+         "scope": {
+          "domain": "events",
+          "entity_kind": null,
+          "canonical_entity_id": null,
+          "intent": null
+         },
+         "lifecycle": "until_replaced",
+         "hard": true,
+         "introduced_turn": 1
+        }
+       ]
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": {
+     "result_set_id": "rs:events:1",
+     "canonical_id": "800002",
+     "ordinal": 2
+    },
+    "result_page": {
+     "result_set_id": "rs:events:1",
+     "next_ordinal": 8
+    },
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "supportRouted": {
+  "question": "I think I was graded unfairly on an assignment, who should I talk to?",
+  "request_extra": {},
+  "response": {
+   "answer": "I can route you to published services but cannot diagnose a condition or promise professional availability. ANUSA Student Assistance. Category: Academic advocacy Published purpose: Academic advocacy and help for assignment grading, assessment concerns, grade reviews and study difficulties. Published cost: Free for ANU students",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "canonical_id": "student-assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support",
+     "result_set_id": "rs:support:1",
+     "ordinal": 1,
+     "fields": {
+      "category": "Academic advocacy",
+      "purpose": "Academic advocacy and help for assignment grading, assessment concerns, grade reviews and study difficulties.",
+      "audiences": [
+       "ANU students"
+      ],
+      "email": "student.assistance@anusa.com.au",
+      "phone": null,
+      "location": "ANUSA office, Kambri",
+      "hours": null,
+      "access": "Use the published enquiry form.",
+      "cost": "Free for ANU students",
+      "topics": [
+       "Assessment concerns: Academic advocacy for assessment and grading concerns."
+      ],
+      "referrals": null
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support"
+    }
+   ],
+   "request_id": "req_ef5ba46d11b64e9f93890c07895fb6a4",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 1,
+    "recent_entities": [
+     {
+      "domain": "support",
+      "kind": "support_service",
+      "canonical_id": "student-assistance",
+      "canonical_name": "ANUSA Student Assistance",
+      "source_record_id": "support:support_service:student-assistance",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 1
+     }
+    ],
+    "focus": {
+     "domain": "support",
+     "entity_kind": "support_service",
+     "canonical_entity_id": null,
+     "intent_name": "lookup",
+     "result_set_id": "rs:support:1"
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:support:1",
+      "domain": "support",
+      "entity_kind": "support_service",
+      "ordered_canonical_ids": [
+       "student-assistance"
+      ],
+      "originating_query": "I think I was graded unfairly on an assignment, who should I talk to?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "supportContact": {
+  "question": "How do I contact them?",
+  "request_extra": {},
+  "response": {
+   "answer": "I can route you to published services but cannot diagnose a condition or promise professional availability. ANUSA Student Assistance. Published contact: email: student.assistance@anusa.com.au; location: ANUSA office, Kambri",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "canonical_id": "student-assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support",
+     "result_set_id": "rs:support:1",
+     "ordinal": 1,
+     "fields": {
+      "category": "Academic advocacy",
+      "purpose": "Academic advocacy and help for assignment grading, assessment concerns, grade reviews and study difficulties.",
+      "audiences": [
+       "ANU students"
+      ],
+      "email": "student.assistance@anusa.com.au",
+      "phone": null,
+      "location": "ANUSA office, Kambri",
+      "hours": null,
+      "access": "Use the published enquiry form.",
+      "cost": "Free for ANU students",
+      "topics": [
+       "Assessment concerns: Academic advocacy for assessment and grading concerns."
+      ],
+      "referrals": null
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support"
+    }
+   ],
+   "request_id": "req_d35f7485d3c140ec9d42a5d82b65a4d8",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "support",
+      "kind": "support_service",
+      "canonical_id": "student-assistance",
+      "canonical_name": "ANUSA Student Assistance",
+      "source_record_id": "support:support_service:student-assistance",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "support",
+     "entity_kind": "support_service",
+     "canonical_entity_id": "student-assistance",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:support:1",
+      "domain": "support",
+      "entity_kind": "support_service",
+      "ordered_canonical_ids": [
+       "student-assistance"
+      ],
+      "originating_query": "I think I was graded unfairly on an assignment, who should I talk to?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "supportLocation": {
+  "question": "Where are they?",
+  "request_extra": {},
+  "response": {
+   "answer": "I can route you to published services but cannot diagnose a condition or promise professional availability. ANUSA Student Assistance. Published contact: email: student.assistance@anusa.com.au; location: ANUSA office, Kambri",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "canonical_id": "student-assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support",
+     "result_set_id": "rs:support:1",
+     "ordinal": 1,
+     "fields": {
+      "category": "Academic advocacy",
+      "purpose": "Academic advocacy and help for assignment grading, assessment concerns, grade reviews and study difficulties.",
+      "audiences": [
+       "ANU students"
+      ],
+      "email": "student.assistance@anusa.com.au",
+      "phone": null,
+      "location": "ANUSA office, Kambri",
+      "hours": null,
+      "access": "Use the published enquiry form.",
+      "cost": "Free for ANU students",
+      "topics": [
+       "Assessment concerns: Academic advocacy for assessment and grading concerns."
+      ],
+      "referrals": null
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "CONFIRMED",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support"
+    }
+   ],
+   "request_id": "req_53979486ae16479d8ab96d46421528db",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 3,
+    "recent_entities": [
+     {
+      "domain": "support",
+      "kind": "support_service",
+      "canonical_id": "student-assistance",
+      "canonical_name": "ANUSA Student Assistance",
+      "source_record_id": "support:support_service:student-assistance",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 3
+     }
+    ],
+    "focus": {
+     "domain": "support",
+     "entity_kind": "support_service",
+     "canonical_entity_id": "student-assistance",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:support:1",
+      "domain": "support",
+      "entity_kind": "support_service",
+      "ordered_canonical_ids": [
+       "student-assistance"
+      ],
+      "originating_query": "I think I was graded unfairly on an assignment, who should I talk to?",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "ok",
+   "clarification": null
+  }
+ },
+ "supportMissingContact": {
+  "question": "How do I contact them?",
+  "request_extra": {},
+  "response": {
+   "answer": "The stored approved service page does not publish the requested fact. Missing hours, access, availability, or response details remain unknown.",
+   "items": [
+    {
+     "type": "result",
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "canonical_id": "student-assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support",
+     "result_set_id": "rs:support:1",
+     "ordinal": 1,
+     "fields": {
+      "category": "Academic advocacy",
+      "purpose": "Academic advocacy and help for assignment grading, assessment concerns, grade reviews and study difficulties.",
+      "audiences": [
+       "ANU students"
+      ],
+      "email": null,
+      "phone": null,
+      "location": null,
+      "hours": null,
+      "access": "Use the published enquiry form.",
+      "cost": "Free for ANU students",
+      "topics": [
+       "Assessment concerns: Academic advocacy for assessment and grading concerns."
+      ],
+      "referrals": null
+     },
+     "qualifying_evidence": null
+    }
+   ],
+   "answer_state": "UNKNOWN",
+   "actions": [],
+   "sources": [
+    {
+     "record_id": "support:support_service:student-assistance",
+     "source_id": "support_anusa_student_assistance",
+     "title": "ANUSA Student Assistance",
+     "url": "https://anusa.com.au/student-assistance/student-assistance/",
+     "domain": "support"
+    }
+   ],
+   "request_id": "req_01765e2e1131460fb498ff048b0874c2",
+   "conversation_state": {
+    "schema_version": 1,
+    "turn_index": 2,
+    "recent_entities": [
+     {
+      "domain": "support",
+      "kind": "support_service",
+      "canonical_id": "student-assistance",
+      "canonical_name": "ANUSA Student Assistance",
+      "source_record_id": "support:support_service:student-assistance",
+      "resolution_basis": "retained_state",
+      "mentioned_turn": 2
+     }
+    ],
+    "focus": {
+     "domain": "support",
+     "entity_kind": "support_service",
+     "canonical_entity_id": "student-assistance",
+     "intent_name": null,
+     "result_set_id": null
+    },
+    "student_facts": [],
+    "constraints": {
+     "items": []
+    },
+    "result_sets": [
+     {
+      "result_set_id": "rs:support:1",
+      "domain": "support",
+      "entity_kind": "support_service",
+      "ordered_canonical_ids": [
+       "student-assistance"
+      ],
+      "originating_query": "I need academic help",
+      "intent": {
+       "name": "lookup",
+       "operation": "lookup",
+       "required_slots": [],
+       "resolved_slots": []
+      },
+      "constraints": {
+       "items": []
+      },
+      "created_turn": 1,
+      "last_refined_turn": 1,
+      "status": "RESULTS",
+      "parent_result_set_id": null
+     }
+    ],
+    "selected_result": null,
+    "result_page": null,
+    "pending_clarification": null
+   },
+   "status": "insufficient_evidence",
+   "clarification": null
+  }
+ }
+}

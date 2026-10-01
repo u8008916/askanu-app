@@ -1,0 +1,870 @@
+[
+  {
+    "journey": "jobs-desktop",
+    "step": "01-listing-partial",
+    "file": "jobs-desktop-01-listing-partial.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-desktop",
+    "askAboutThisPrefill": "Tell me about it"
+  },
+  {
+    "journey": "jobs-desktop",
+    "step": "02-ask-about-card-2",
+    "file": "jobs-desktop-02-ask-about-card-2.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-desktop",
+    "step": "03-requirements",
+    "file": "jobs-desktop-03-requirements.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-desktop",
+    "step": "04-closing-this-week",
+    "file": "jobs-desktop-04-closing-this-week.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 12,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-desktop",
+    "console": []
+  },
+  {
+    "journey": "jobs-paging-desktop",
+    "step": "01-show-more-6-7",
+    "file": "jobs-paging-desktop-01-show-more-6-7.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "6",
+      "7"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-paging-desktop",
+    "console": []
+  },
+  {
+    "journey": "events-desktop",
+    "step": "01-today",
+    "file": "events-desktop-01-today.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-desktop",
+    "step": "02-second-one",
+    "file": "events-desktop-02-second-one.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-desktop",
+    "step": "03-more-rubric-provenance",
+    "file": "events-desktop-03-more-rubric-provenance.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "6",
+      "7"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-desktop",
+    "step": "04-time-of-day-refinement",
+    "file": "events-desktop-04-time-of-day-refinement.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 0,
+    "turns": 5,
+    "lastTurnNumbers": [
+      "1",
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-desktop",
+    "console": []
+  },
+  {
+    "journey": "support-desktop",
+    "step": "01-natural-routing",
+    "file": "support-desktop-01-natural-routing.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-desktop",
+    "step": "02-contact",
+    "file": "support-desktop-02-contact.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-desktop",
+    "console": []
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "01-course-followup",
+    "file": "six-domain-desktop-01-course-followup.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "02-scholarship-selection",
+    "file": "six-domain-desktop-02-scholarship-selection.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "03-accommodation-compare",
+    "file": "six-domain-desktop-03-accommodation-compare.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 1,
+    "turns": 6,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": false
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "04-jobs",
+    "file": "six-domain-desktop-04-jobs.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 1,
+    "turns": 7,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": false
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "05-events",
+    "file": "six-domain-desktop-05-events.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 20,
+    "tables": 1,
+    "turns": 8,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": false
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "06-support",
+    "file": "six-domain-desktop-06-support.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 21,
+    "tables": 1,
+    "turns": 9,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": false
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "07-return-to-course",
+    "file": "six-domain-desktop-07-return-to-course.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 22,
+    "tables": 1,
+    "turns": 10,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": false
+  },
+  {
+    "journey": "six-domain-desktop",
+    "step": "08-after-double-clear",
+    "file": "six-domain-desktop-08-after-double-clear.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1280,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-desktop",
+    "staleButtonsAfterClear": 0
+  },
+  {
+    "journey": "six-domain-desktop",
+    "console": []
+  },
+  {
+    "journey": "jobs-mobile",
+    "step": "01-listing-partial",
+    "file": "jobs-mobile-01-listing-partial.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-mobile",
+    "askAboutThisPrefill": "Tell me about it"
+  },
+  {
+    "journey": "jobs-mobile",
+    "step": "02-ask-about-card-2",
+    "file": "jobs-mobile-02-ask-about-card-2.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-mobile",
+    "step": "03-requirements",
+    "file": "jobs-mobile-03-requirements.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-mobile",
+    "step": "04-closing-this-week",
+    "file": "jobs-mobile-04-closing-this-week.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 12,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-mobile",
+    "console": []
+  },
+  {
+    "journey": "jobs-paging-mobile",
+    "step": "01-show-more-6-7",
+    "file": "jobs-paging-mobile-01-show-more-6-7.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 7,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "6",
+      "7"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "jobs-paging-mobile",
+    "console": []
+  },
+  {
+    "journey": "events-mobile",
+    "step": "01-today",
+    "file": "events-mobile-01-today.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-mobile",
+    "step": "02-second-one",
+    "file": "events-mobile-02-second-one.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 6,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-mobile",
+    "step": "03-more-rubric-provenance",
+    "file": "events-mobile-03-more-rubric-provenance.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 3,
+    "lastTurnNumbers": [
+      "6",
+      "7"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-mobile",
+    "step": "04-time-of-day-refinement",
+    "file": "events-mobile-04-time-of-day-refinement.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 0,
+    "turns": 5,
+    "lastTurnNumbers": [
+      "1",
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "events-mobile",
+    "console": []
+  },
+  {
+    "journey": "support-mobile",
+    "step": "01-natural-routing",
+    "file": "support-mobile-01-natural-routing.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 1,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-mobile",
+    "step": "02-contact",
+    "file": "support-mobile-02-contact.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "support-mobile",
+    "console": []
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "01-course-followup",
+    "file": "six-domain-mobile-01-course-followup.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 2,
+    "tables": 0,
+    "turns": 2,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "02-scholarship-selection",
+    "file": "six-domain-mobile-02-scholarship-selection.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 8,
+    "tables": 0,
+    "turns": 4,
+    "lastTurnNumbers": [
+      "2"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "03-accommodation-compare",
+    "file": "six-domain-mobile-03-accommodation-compare.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 10,
+    "tables": 1,
+    "turns": 6,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": true
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "04-jobs",
+    "file": "six-domain-mobile-04-jobs.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 15,
+    "tables": 1,
+    "turns": 7,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": true
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "05-events",
+    "file": "six-domain-mobile-05-events.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 20,
+    "tables": 1,
+    "turns": 8,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": true
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "06-support",
+    "file": "six-domain-mobile-06-support.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 21,
+    "tables": 1,
+    "turns": 9,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": true
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "07-return-to-course",
+    "file": "six-domain-mobile-07-return-to-course.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 22,
+    "tables": 1,
+    "turns": 10,
+    "lastTurnNumbers": [
+      "1"
+    ],
+    "lastTurnProseCollapsed": true,
+    "comparisonScrollsInternally": true
+  },
+  {
+    "journey": "six-domain-mobile",
+    "step": "08-after-double-clear",
+    "file": "six-domain-mobile-08-after-double-clear.png",
+    "innerHeight": 812,
+    "innerWidth": 375,
+    "scrollWidth": 375,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 0,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "six-domain-mobile",
+    "staleButtonsAfterClear": 0
+  },
+  {
+    "journey": "six-domain-mobile",
+    "console": []
+  },
+  {
+    "journey": "keyboard-jobs-desktop",
+    "focusOrder": [
+      {
+        "tag": "A",
+        "text": "Software Engineer",
+        "outline": "solid 2px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Ask about this: Software Engineer",
+        "outline": "solid 2px"
+      },
+      {
+        "tag": "A",
+        "text": "Verified Role 2",
+        "outline": "solid 2px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Ask about this: Verified Role 2",
+        "outline": "solid 2px"
+      }
+    ]
+  },
+  {
+    "journey": "keyboard-jobs-desktop",
+    "step": "01-focus-visible",
+    "file": "keyboard-jobs-desktop-01-focus-visible.png",
+    "innerHeight": 900,
+    "innerWidth": 1280,
+    "scrollWidth": 1265,
+    "overflowX": false,
+    "offenders": [],
+    "emptyDl": 0,
+    "cards": 5,
+    "tables": 0,
+    "turns": 1,
+    "lastTurnNumbers": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "lastTurnProseCollapsed": false,
+    "comparisonScrollsInternally": null
+  },
+  {
+    "journey": "keyboard-jobs-desktop",
+    "console": []
+  }
+]

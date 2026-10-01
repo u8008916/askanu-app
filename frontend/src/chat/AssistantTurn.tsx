@@ -305,14 +305,21 @@ export function AssistantTurn({
      * Identity travels structurally in `selected_result`, independent of the
      * composer text — RAG resolves it from that field before the domain
      * logic ever reads `question` (`main.py`'s `_state_with_verified_result_selection`
-     * runs first). A "Tell me more about <title>" prefill is no longer a
-     * "magic wording" shortcut the way it would have been before this
-     * structured field existed (see Day 3 evidence): the text is just a
-     * normal, editable follow-up question, and the student can replace it
-     * with anything — the identity does not depend on what it says.
+     * runs first). The prefill is a normal, editable follow-up question, and
+     * the identity does not depend on what it says.
+     *
+     * V7 Day 6: the prefill is the neutral "Tell me about it", not "Tell me
+     * more about <title>". Checked live against RAG `bafa15d`: the title
+     * wording made RAG re-resolve by text and drop or override the verified
+     * selection. It returned `insufficient_evidence` for Jobs and
+     * Accommodation, the whole list for Events, and an unnumbered
+     * Scholarship. "Tell me about it" returned exactly the selected record in
+     * all five selectable domains. The RAG-side precedence bug is reported
+     * separately (R1/R4). The App still invents no identity: the selected
+     * card is named in the turn above.
      */
     onSelectResult({
-      prefillText: `Tell me more about ${card.title}`,
+      prefillText: 'Tell me about it',
       selectedResult: {
         result_set_id: card.resultSetId,
         canonical_id: card.canonicalId,
