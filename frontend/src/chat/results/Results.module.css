@@ -4,14 +4,22 @@
   gap: var(--space-2);
 }
 
-/* Same small-caps heading as the Sources block below it. */
+/*
+ * The result heading is the answer's headline: large and semibold, sitting on
+ * the assistant's answer surface, clearly apart from the cards below it.
+ */
 .heading {
-  color: var(--ink-2);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  color: var(--ink);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: var(--leading-tight);
-  text-transform: uppercase;
+}
+
+/* --ink-2, not --ink-3: --ink-3 is 3.79:1 on white and below AA. */
+.range {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
 }
 
 .list {
@@ -23,135 +31,26 @@
   padding: 0;
 }
 
-.card {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-}
-
-.cardHeader {
-  align-items: flex-start;
-  display: flex;
-  gap: var(--space-3);
-}
-
-.index {
-  align-items: center;
-  background: var(--gold-tint);
-  border-radius: var(--radius-sm);
-  color: var(--ink);
-  display: flex;
-  flex: 0 0 auto;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  height: 1.5rem;
-  justify-content: center;
-  width: 1.5rem;
-}
-
-.cardHeading {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.cardTitle,
-.cardTitleLink {
-  color: var(--ink);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
-}
-
-.cardTitleLink {
-  text-decoration: none;
-}
-
-.cardTitleLink:hover {
-  text-decoration: underline;
-}
-
-/* Inline, overriding the global block SVG reset, so the icon trails the title. */
-.external {
-  color: var(--gold-deep);
-  display: inline;
-  margin-left: var(--space-1);
-  vertical-align: -2px;
-}
-
-/* --ink-2, not --ink-3: --ink-3 is 3.79:1 on white and below AA. */
-.provenance {
-  color: var(--ink-2);
-  font-size: var(--text-xs);
-}
-
-.fieldList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin: 0;
-}
-
-.fieldRow {
-  display: flex;
-  gap: var(--space-2);
-  justify-content: space-between;
-}
-
-.fieldLabel {
-  color: var(--ink-2);
-  flex: 0 0 auto;
-  font-size: var(--text-xs);
-  margin: 0;
-}
-
-.fieldValue {
-  color: var(--ink);
-  font-size: var(--text-xs);
-  margin: 0;
-  overflow-wrap: anywhere;
-  text-align: right;
-}
-
-.missing {
-  color: var(--ink-2);
-  font-style: italic;
-}
-
-/*
- * The one named room whose published rate satisfied a price constraint.
- * Deliberately muted, not a positive/confirmed badge — see resultItems.ts.
- */
-.qualifyingEvidence {
-  color: var(--ink-2);
-  font-size: var(--text-xs);
-  margin: 0;
-}
-
-.cardAction,
+/* "Show more" is part of the result group: full width, gold-bordered, under the last card. */
 .showMore {
-  align-self: flex-start;
+  align-items: center;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--gold);
   border-radius: var(--radius-md);
   color: var(--gold-deep);
   cursor: pointer;
-  font-size: var(--text-xs);
+  display: flex;
+  font-size: var(--text-sm);
   font-weight: 600;
+  gap: var(--space-2);
+  justify-content: center;
   min-height: var(--touch-target-min);
   padding: var(--space-2) var(--space-3);
+  width: 100%;
 }
 
-.cardAction:hover,
 .showMore:hover {
-  border-color: var(--gold);
+  background: var(--gold-tint);
 }
 
 /* Comparison */

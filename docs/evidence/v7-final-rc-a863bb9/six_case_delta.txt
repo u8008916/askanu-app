@@ -1,0 +1,30 @@
+
+### jobs #1 'Software Engineer': Tell me more about <title> | Tell me more about Software Engineer
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700001 focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700001 focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=400
+
+### jobs #1 'Software Engineer': Tell me about <title> | Tell me about Software Engineer
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700001 focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700001 focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700001 cons=[] | 'about it'(no sel)=['700001'] closing=200 third=['700003'] showmore=400
+
+### jobs #2 'Verified Role 2': Tell me more about <title> | Tell me more about Verified Role 2
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700002 focus=700002 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700002 focus=700002 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700002 cons=[] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=400
+
+### jobs #2 'Verified Role 2': Tell me about <title> | Tell me about Verified Role 2
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700002 focus=700002 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700002 focus=700002 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700002 cons=[] | 'about it'(no sel)=['700002'] closing=200 third=['700003'] showmore=400
+
+### jobs #3 'Verified Role 3': Tell me more about <title> | Tell me more about Verified Role 3
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700003 focus=700003 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700003 focus=700003 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700003 cons=[] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=400
+
+### jobs #3 'Verified Role 3': Tell me about <title> | Tell me about Verified Role 3
+  e88a0d7: ok/CONFIRMED card_ok=True selected=700003 focus=700003 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=200
+  216c112: ok/CONFIRMED card_ok=True selected=700003 focus=700003 cons=[('employment_type', 'verified')] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=200
+  a863bb9: ok/CONFIRMED card_ok=True selected=None focus=700003 cons=[] | 'about it'(no sel)=['700003'] closing=200 third=['700003'] showmore=400

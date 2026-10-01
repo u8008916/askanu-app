@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { showAsTextDetails } from './helpers';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../src/App';
@@ -189,14 +190,14 @@ describe('AssistantTurn with backend result items', () => {
     const user = userEvent.setup();
     renderTurn(okJobsResultSetResponse);
 
-    expect(screen.getByRole('heading', { level: 3, name: '7 results' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: '7 jobs' })).toBeInTheDocument();
     const list = screen.getByRole('list', { name: 'Results' });
     let cards = within(list).getAllByRole('listitem');
     expect(cards).toHaveLength(5);
     expect(within(cards[0]).getByText('Placeholder role A')).toBeInTheDocument();
     expect(within(cards[4]).getByText('Placeholder role E')).toBeInTheDocument();
 
-    const more = screen.getByRole('button', { name: 'Show 2 more' });
+    const more = screen.getByRole('button', { name: 'Show 2 more jobs' });
     expect(more).toHaveAttribute('aria-expanded', 'false');
     expect(more).toHaveAttribute('aria-controls', list.id);
     await user.click(more);
@@ -220,7 +221,7 @@ describe('AssistantTurn with backend result items', () => {
 
   it('keeps the backend answer text on the page, collapsed under "Show as text"', () => {
     const { container } = renderTurn(okJobsResultSetResponse);
-    const details = container.querySelector('details') as HTMLDetailsElement;
+    const details = showAsTextDetails(container) as HTMLDetailsElement;
     expect(details).not.toBeNull();
     expect(details.open).toBe(false);
     expect(within(details).getByText('Show as text')).toBeInTheDocument();
@@ -239,7 +240,7 @@ describe('AssistantTurn with backend result items', () => {
 
   it('keeps a partial answer\'s caveat text in full above the cards', () => {
     const { container } = renderTurn({ ...okJobsResultSetResponse, status: 'partial' });
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     expect(screen.getByRole('list', { name: 'Results' })).toBeInTheDocument();
     expect(screen.getAllByText(/Placeholder role A\. Job ID: 900101\./).length).toBe(1);
   });

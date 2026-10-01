@@ -26,9 +26,9 @@ import type { SessionStateHolder } from './sessionState';
  * `assistant` turn that answers it, which is why they share an id.
  */
 export type ChatTurn =
-  | { kind: 'user'; id: string; content: string }
+  | { kind: 'user'; id: string; content: string; createdAt: number }
   | { kind: 'pending'; id: string }
-  | { kind: 'assistant'; id: string; response: AskResponse };
+  | { kind: 'assistant'; id: string; response: AskResponse; createdAt: number };
 
 /**
  * V7 Day 4 (`askanu-rag` PR #38, not yet merged): the structured payload a
@@ -162,7 +162,7 @@ export function useChatSession(transport: AskTransport = askTransport) {
       const pendingId = nextTurnId();
       setTurns((current) => [
         ...current,
-        { kind: 'user', id: nextTurnId(), content },
+        { kind: 'user', id: nextTurnId(), content, createdAt: Date.now() },
         { kind: 'pending', id: pendingId },
       ]);
       setIsSending(true);
@@ -188,7 +188,7 @@ export function useChatSession(transport: AskTransport = askTransport) {
       setTurns((current) =>
         current.map((turn) =>
           turn.id === pendingId
-            ? { kind: 'assistant', id: pendingId, response }
+            ? { kind: 'assistant', id: pendingId, response, createdAt: Date.now() }
             : turn,
         ),
       );

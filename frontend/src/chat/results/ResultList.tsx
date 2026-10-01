@@ -1,133 +1,60 @@
+import type { ReactNode } from 'react';
 import { useId, useState } from 'react';
 import type { ResultPage, ResultPageRequest } from '../../types/api';
-import { ExternalLinkIcon } from '../../ui/Icon';
-import { isSafeHttpUrl } from '../../util/safeUrl';
+import { PlusIcon } from '../../ui/Icon';
+import { resultNoun } from './cardLayout';
+import { ResultCard } from './ResultCard';
 import type { ResultCardModel, ResultSelection } from './resultItems';
 import styles from './Results.module.css';
 
-/** Shared neutral label for a field the source did not publish. */
-export const MISSING_VALUE_LABEL = 'Not published';
-
 /** Cards shown before "Show more". Display-only: hidden cards keep their position. */
 export const INITIAL_VISIBLE_RESULTS = 5;
-
-function ResultCard({
-  card,
-  position,
-  displayNumber,
-  onSelect,
-}: {
-  card: ResultCardModel;
-  position: number;
-  /** The visible card number — the backend ordinal when RAG numbered the cards, `position` otherwise. */
-  displayNumber: number;
-  onSelect?: (selection: ResultSelection) => void;
-}) {
-  const linkable = isSafeHttpUrl(card.url);
-
-  return (
-    <li className={styles.card}>
-      <div className={styles.cardHeader}>
-        <span aria-hidden="true" className={styles.index}>
-          {displayNumber}
-        </span>
-        <div className={styles.cardHeading}>
-          {linkable ? (
-            <a
-              className={styles.cardTitleLink}
-              href={card.url}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {card.title}
-              <ExternalLinkIcon className={styles.external} size={14} />
-            </a>
-          ) : (
-            <span className={styles.cardTitle}>{card.title}</span>
-          )}
-          {card.provenance !== null && (
-            <span className={styles.provenance}>{card.provenance}</span>
-          )}
-        </div>
-      </div>
-      {card.fields.length > 0 && (
-        <dl className={styles.fieldList}>
-          {card.fields.map((field) => (
-            <div className={styles.fieldRow} key={field.label}>
-              <dt className={styles.fieldLabel}>{field.label}</dt>
-              <dd className={styles.fieldValue}>
-                {field.value ?? <span className={styles.missing}>{MISSING_VALUE_LABEL}</span>}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      )}
-      {/*
-        V7 Day 4: the one named room whose published rate satisfied an active
-        price constraint. Deliberately muted, not a "confirmed"/positive
-        badge — it proves only that one room, never affordability, cheapest,
-        vacancy or obtainability for the residence as a whole.
-      */}
-      {card.qualifyingEvidence && (
-        <p className={styles.qualifyingEvidence}>
-          Matched room: {card.qualifyingEvidence.roomName} —{' '}
-          {card.qualifyingEvidence.rate} ({card.qualifyingEvidence.costPeriod})
-          {card.qualifyingEvidence.contract && `, ${card.qualifyingEvidence.contract}`}
-          {card.qualifyingEvidence.inclusions && `, ${card.qualifyingEvidence.inclusions}`}
-          {card.qualifyingEvidence.otherFees && `, ${card.qualifyingEvidence.otherFees}`}
-        </p>
-      )}
-      {onSelect && (
-        <button
-          className={styles.cardAction}
-          onClick={() =>
-            onSelect({ record_id: card.recordId, domain: card.domain, position })
-          }
-          type="button"
-        >
-          {/* The accessible name starts with the visible label (WCAG 2.5.3)
-              and names the card, so repeated buttons are distinguishable. */}
-          Ask about this<span className="visually-hidden">: {card.title}</span>
-        </button>
-      )}
-    </li>
-  );
-}
 
 interface ResultListProps {
   cards: ResultCardModel[];
   /**
    * Selected-result action. Omitted for a domain the ask request has no
-   * field to carry a selected identity for yet (Jobs/Events) — the button is
-   * not rendered at all rather than faked with a title-text prefill.
+   * field to carry a selected identity for yet — the button is not rendered
+   * at all rather than faked with a title-text prefill.
    */
   onSelect?: (selection: ResultSelection) => void;
   /**
    * V7 Day 4: server-authored paging metadata for this exact response. When
    * provided, it fully replaces the local reveal toggle below — "Show more"
    * requests the next page from the server instead of revealing already-sent
-   * cards. Omitted (Jobs/Events, which never carry `result_page`) keeps
-   * today's local-reveal behaviour byte-for-byte, locked by
+   * cards. Omitted (legacy untyped lists, which never carry `result_page`)
+   * keeps the local-reveal behaviour byte-for-byte, locked by
    * `tests/v7Day3Results.test.tsx`.
    */
   resultPage?: ResultPage;
   onShowMorePage?: (page: ResultPageRequest) => void;
+  /**
+   * The backend's own prose for this answer (a PARTIAL/UNKNOWN caveat, the
+   * Support scope boundary), placed directly under the heading and above the
+   * cards. Never written by the App.
+   */
+  intro?: ReactNode;
 }
 
 /**
- * The one shared, bounded, backend-ordered result list for every domain.
+ * The one shared, bounded, backend-ordered result group for every domain:
+ * heading, optional backend prose, numbered cards, then "Show more".
  *
  * Order is `cards` order — which is `items` order — and nothing here sorts,
  * filters or reranks. Without `resultPage`, "Show more" only reveals the rest
  * in place; a card's number is its backend position whether or not earlier
  * cards are visible. With `resultPage`, "Show more" requests the next page —
  * the caller renders that page as a new turn (see `AssistantTurn`).
+ *
+ * The heading is a count and a domain noun and nothing else ("5 events"): it
+ * makes no claim about the results being best, eligible, open or available.
  */
 export function ResultList({
   cards,
   onSelect,
   resultPage,
   onShowMorePage,
+  intro,
 }: ResultListProps) {
   const [expanded, setExpanded] = useState(false);
   // Consumed once this exact page's own "Show more" is clicked, so an older
@@ -147,17 +74,32 @@ export function ResultList({
   const backendNumbered = cards.every((card) => card.ordinal !== null);
   const hiddenCount = paged ? 0 : Math.max(0, cards.length - INITIAL_VISIBLE_RESULTS);
   const visible = paged || expanded ? cards : cards.slice(0, INITIAL_VISIBLE_RESULTS);
-  const noun = cards.length === 1 ? 'result' : 'results';
+  const domain = cards[0]?.domain ?? '';
+  const plural = resultNoun(domain, 2);
   // A contract inconsistency (`has_more` true but no `next_ordinal`) never
   // crashes — it just means no further page can be requested.
   const canShowMorePage =
     paged && !pageRequested && resultPage.has_more && resultPage.next_ordinal !== null;
+  // The server's own page window, worded from its metadata alone.
+  const range =
+    paged && resultPage.start_ordinal >= 1 && resultPage.returned >= 1
+      ? resultPage.returned === 1
+        ? `Showing ${resultPage.start_ordinal}`
+        : `Showing ${resultPage.start_ordinal}–${resultPage.start_ordinal + resultPage.returned - 1}`
+      : null;
 
   return (
     <section className={styles.root}>
       <h3 className={styles.heading}>
-        {cards.length} {noun}
+        {cards.length} {resultNoun(domain, cards.length)}
       </h3>
+      {intro}
+      {range !== null && (
+        <p className={styles.range}>
+          {range}
+          {resultPage?.has_more ? ' · more available' : ''}
+        </p>
+      )}
       <ol aria-label="Results" className={styles.list} id={listId}>
         {visible.map((card, index) => (
           <ResultCard
@@ -179,7 +121,8 @@ export function ResultList({
           onClick={() => setExpanded((current) => !current)}
           type="button"
         >
-          {expanded ? 'Show fewer' : `Show ${hiddenCount} more`}
+          {!expanded && <PlusIcon aria-hidden="true" size={16} />}
+          {expanded ? 'Show fewer' : `Show ${hiddenCount} more ${resultNoun(domain, hiddenCount)}`}
         </button>
       )}
       {canShowMorePage && onShowMorePage && resultPage.next_ordinal !== null && (
@@ -195,7 +138,8 @@ export function ResultList({
           }}
           type="button"
         >
-          Show more
+          <PlusIcon aria-hidden="true" size={16} />
+          Show more {plural}
         </button>
       )}
     </section>

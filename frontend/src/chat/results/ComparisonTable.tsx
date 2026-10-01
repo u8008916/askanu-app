@@ -1,4 +1,4 @@
-import { MISSING_VALUE_LABEL } from './ResultList';
+import { MISSING_VALUE_LABEL } from './ResultCard';
 import styles from './Results.module.css';
 
 export interface ComparisonColumn {

@@ -1,5 +1,6 @@
 import { act, render, renderHook, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { resultCardNumber, showAsTextDetails } from './helpers';
 import userEvent from '@testing-library/user-event';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { parseAskResponse } from '../src/chat/askResponse';
@@ -96,7 +97,7 @@ function cards(): HTMLElement[] {
 
 /** The visible number badge of one card (the backend ordinal or the position). */
 function cardNumber(card: HTMLElement): string {
-  return card.querySelector('[aria-hidden="true"]')?.textContent ?? '';
+  return resultCardNumber(card);
 }
 
 /** A generic `PublicResultItem` in a domain RAG does not have, so no key set exists for it. */
@@ -239,7 +240,7 @@ describe('Courses (real 0efb6ee wire)', () => {
       'href',
       'https://programsandcourses.anu.edu.au/2026/course/comp1110',
     );
-    expect(cardFields(card)).toEqual([
+    expect(cardFields(card).sort()).toEqual([
       ['Entity type', 'course'],
       ['Code', 'COMP1110'],
       ['Academic year', '2026'],
@@ -250,7 +251,7 @@ describe('Courses (real 0efb6ee wire)', () => {
       ['Incompatibilities', 'Not published'],
       ['Assumed knowledge', 'Not published'],
       ['Offerings', 'First Semester, 2026; In Person, Second Semester, 2026; In Person'],
-    ]);
+    ].sort());
     // Not-published never reads as "No", "None" or "0".
     expect(within(card).queryByText(/^(No|None|0)$/)).not.toBeInTheDocument();
   });
@@ -310,7 +311,7 @@ describe('Courses (real 0efb6ee wire)', () => {
 
   it('a PARTIAL comparison keeps the backend prose visible above the table', () => {
     const { container } = renderTurn(real('courseComparison'));
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
   });
 });
 
@@ -328,7 +329,7 @@ describe('Scholarships (real 0efb6ee wire)', () => {
     const response = real('scholarshipDiscovery');
     expect(response.answer_state).toBe('PARTIAL');
     const { container } = renderTurn(response);
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     expect(document.body.textContent ?? '').not.toMatch(APP_AUTHORED_VERDICTS);
   });
 
@@ -350,7 +351,7 @@ describe('Scholarships (real 0efb6ee wire)', () => {
     const user = userEvent.setup();
     const onRequestMorePage = vi.fn();
     renderTurn(real('scholarshipDiscovery'), { onRequestMorePage });
-    await user.click(screen.getByRole('button', { name: 'Show more' }));
+    await user.click(screen.getByRole('button', { name: /^Show more/ }));
     expect(onRequestMorePage).toHaveBeenCalledWith({
       result_set_id: 'rs:scholarships:1',
       start_ordinal: 6,
@@ -377,7 +378,7 @@ describe('Scholarships (real 0efb6ee wire)', () => {
     const response = real('scholarshipEligibility');
     expect(response.answer_state).toBe('PARTIAL');
     const { container } = renderTurn(response);
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     expect(screen.getByText(/I cannot determine your personal eligibility/)).toBeVisible();
     expect(document.body.textContent ?? '').not.toMatch(APP_AUTHORED_VERDICTS);
     expect(screen.queryByRole('status', { name: /eligib/i })).not.toBeInTheDocument();
@@ -419,7 +420,7 @@ describe('Scholarships (real 0efb6ee wire)', () => {
     renderTurn(response);
     expect(cards().map(cardNumber)).toEqual(['6']);
     expect(response.result_page).toMatchObject({ result_set_id: 'rs:scholarships:5', has_more: false });
-    expect(screen.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Show more/ })).not.toBeInTheDocument();
   });
 
   it('a structured page 2 keeps the backend ordinals 6–8', () => {

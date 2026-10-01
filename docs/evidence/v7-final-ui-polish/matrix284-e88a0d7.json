@@ -1,0 +1,2278 @@
+{
+ "url": "http://127.0.0.1:8098/api/v1/ask",
+ "label": "e88a0d7",
+ "rows": [
+  {
+   "group": "R1/R4",
+   "case": "accommodation #1 'Alpha Hall': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly alpha-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('alpha-hall', 1)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Alpha Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Residence location: Acton campus; Published adver"
+  },
+  {
+   "group": "R1/R4",
+   "case": "accommodation #1 'Alpha Hall': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly alpha-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('alpha-hall', 1)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Alpha Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Residence location: Acton campus; Published adver"
+  },
+  {
+   "group": "R1/R4",
+   "case": "accommodation #1 'Alpha Hall': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly alpha-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('alpha-hall', 1)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Alpha Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Residence location: Acton campus; Published adver"
+  },
+  {
+   "group": "R1/R4",
+   "case": "accommodation #2 'Bravo Hall': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly bravo-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('bravo-hall', 2)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Bravo Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Published advertised rate wording: $450.00; Publi"
+  },
+  {
+   "group": "R1/R4",
+   "case": "accommodation #2 'Bravo Hall': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly bravo-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('bravo-hall', 2)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Bravo Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Published advertised rate wording: $450.00; Publi"
+  },
+  {
+   "group": "R1/R4",
+   "case": "accommodation #2 'Bravo Hall': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly bravo-hall, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('bravo-hall', 2)] | Published rates are source wording, not a guaranteed final price, and ",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Bravo Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Published advertised rate wording: $450.00; Publi"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #1 'Day 5 International Computing Scholarship 1': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-1, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)] | Day 5 International Computing Scholarship 1. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #1 'Day 5 International Computing Scholarship 1': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-1, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)] | Day 5 International Computing Scholarship 1. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #1 'Day 5 International Computing Scholarship 1': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-1, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)] | Day 5 International Computing Scholarship 1. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #2 'Day 5 International Computing Scholarship 2': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-2, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)] | Day 5 International Computing Scholarship 2. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #2 'Day 5 International Computing Scholarship 2': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-2, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)] | Day 5 International Computing Scholarship 2. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #2 'Day 5 International Computing Scholarship 2': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-2, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)] | Day 5 International Computing Scholarship 2. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #3 'Day 5 International Computing Scholarship 3': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-3, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)] | Day 5 International Computing Scholarship 3. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #3 'Day 5 International Computing Scholarship 3': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-3, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)] | Day 5 International Computing Scholarship 3. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "scholarships #3 'Day 5 International Computing Scholarship 3': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly day5-international-computing-3, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)] | Day 5 International Computing Scholarship 3. Official status: open; St",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #1 'Software Engineer': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700001', 1)] | Software Engineer. Job ID: 700001. Stored status: current. Employment ",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #1 'Software Engineer': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700001', 1)] | Software Engineer. Job ID: 700001. Stored status: current. Employment ",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #1 'Software Engineer': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700001', 1)] | Software Engineer. Job ID: 700001. Stored status: current. Employment ",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #2 'Verified Role 2': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700002', 2)] | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #2 'Verified Role 2': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700002', 2)] | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #2 'Verified Role 2': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700002', 2)] | Verified Role 2. Job ID: 700002. Stored status: current. Employment ty",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #3 'Verified Role 3': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700003', 3)] | Verified Role 3. Job ID: 700003. Stored status: current. Employment ty",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #3 'Verified Role 3': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700003', 3)] | Verified Role 3. Job ID: 700003. Stored status: current. Employment ty",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R1/R4",
+   "case": "jobs #3 'Verified Role 3': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 700003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('700003', 3)] | Verified Role 3. Job ID: 700003. Stored status: current. Employment ty",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #1 'Event 800001': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800001', 1)] | Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organ",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #1 'Event 800001': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800001', 1)] | Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organ",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #1 'Event 800001': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800001, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800001', 1)] | Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organ",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #2 'Event 800002': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800002', 2)] | Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organ",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #2 'Event 800002': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800002', 2)] | Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organ",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #2 'Event 800002': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800002, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800002', 2)] | Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organ",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #3 'Event 800003': select + 'Tell me about it'",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800003', 3)] | Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organ",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #3 'Event 800003': select + 'Tell me more about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800003', 3)] | Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organ",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R1/R4",
+   "case": "events #3 'Event 800003': select + 'Tell me about'<title>",
+   "pass": true,
+   "expected": "ok/CONFIRMED, exactly 800003, rs+ordinal retained",
+   "actual": "200 ok CONFIRMED [('800003', 3)] | Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organ",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R2",
+   "case": "scholarship: ordinal-selected #2 -> 'Am I eligible for <Scholarship 8>?'",
+   "pass": true,
+   "expected": "only day5-international-computing-8; no ['day5-international-computing-2'] in items/sources",
+   "actual": "200 ok UNKNOWN [('day5-international-computing-8', None)]",
+   "answer": "I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value"
+  },
+  {
+   "group": "R2",
+   "case": "scholarship: structured-selected #2 -> 'Am I eligible for <Scholarship 8>?'",
+   "pass": true,
+   "expected": "only day5-international-computing-8; no ['day5-international-computing-2'] in items/sources",
+   "actual": "200 ok UNKNOWN [('day5-international-computing-8', None)]",
+   "answer": "I can show official requirements, but I cannot determine your personal eligibility. Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value"
+  },
+  {
+   "group": "R2",
+   "case": "scholarship: structured-selected #2 -> 'Tell me about <Scholarship 8>'",
+   "pass": true,
+   "expected": "only day5-international-computing-8; no ['day5-international-computing-2'] in items/sources",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-8', None)]",
+   "answer": "Day 5 International Computing Scholarship 8. Study level: Bachelor; Area of study: Computing; Value: $5,000 test value"
+  },
+  {
+   "group": "R2",
+   "case": "scholarship: structured-selected #2 -> 'When does <Scholarship 3> close?'",
+   "pass": true,
+   "expected": "only day5-international-computing-3; no ['day5-international-computing-2'] in items/sources",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', None)]",
+   "answer": "Day 5 International Computing Scholarship 3. Closing date: 2026-10-31."
+  },
+  {
+   "group": "R2",
+   "case": "events: structured-selected -> 'Tell me about Event 800005'",
+   "pass": true,
+   "expected": "only 800005; no ['800002'] in items/sources",
+   "actual": "200 ok CONFIRMED [('800005', 5)]",
+   "answer": "Event 800005. Starts: 2026-09-14T15:00:00+10:00. Venue: Venue 5. Organiser: Organiser 5. Source status: scheduled."
+  },
+  {
+   "group": "R2",
+   "case": "events: ordinal-selected #2 -> 'Tell me about Event 800005'",
+   "pass": true,
+   "expected": "only 800005; no ['800002'] in items/sources",
+   "actual": "200 ok CONFIRMED [('800005', 5)]",
+   "answer": "Event 800005. Starts: 2026-09-14T15:00:00+10:00. Venue: Venue 5. Organiser: Organiser 5. Source status: scheduled."
+  },
+  {
+   "group": "R2 ctrl",
+   "case": "jobs: structured-selected #2 -> 'Tell me about Software Engineer'",
+   "pass": true,
+   "expected": "only 700001; no ['700002'] in items/sources",
+   "actual": "200 ok PARTIAL [('700001', 1)]",
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classifica"
+  },
+  {
+   "group": "R2",
+   "case": "accommodation: structured-selected Lodge -> 'Tell me about Day 6 Hall'",
+   "pass": true,
+   "expected": "only day6-hall; no ['day6-lodge'] in items/sources",
+   "actual": "200 ok CONFIRMED [('day6-hall', None)]",
+   "answer": "Published rates are source wording, not a guaranteed final price, and no vacancy is inferred. Day 6 Hall. Published overview: A self-catered residence near campus.; Category: Residence hall; Residence location: Acton campus; Published adver"
+  },
+  {
+   "group": "R2",
+   "case": "course: Scholarship click -> 'Tell me about COMP1110 in 2026'",
+   "pass": true,
+   "expected": "only COMP1110",
+   "actual": "200 ok CONFIRMED [('COMP1110', None)]",
+   "answer": "COMP1110 (2026) \u2014 Structured Programming. Stored excerpt: Structured programming with object-oriented design."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "scholarships: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "jobs: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 fresh",
+   "case": "events: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "scholarships: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "jobs: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after prior selection",
+   "case": "events: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "scholarships: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "jobs: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after continuation (ordinal chain)",
+   "case": "events: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = day5-international-computing-1",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-1', 1)]",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = day5-international-computing-2",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-2', 2)]",
+   "answer": "Day 5 International Computing Scholarship 2. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = day5-international-computing-4",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-4', 4)]",
+   "answer": "Day 5 International Computing Scholarship 4. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "scholarships: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = day5-international-computing-3",
+   "actual": "200 ok CONFIRMED [('day5-international-computing-3', 3)]",
+   "answer": "Day 5 International Computing Scholarship 3. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31"
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 700001",
+   "actual": "200 ok CONFIRMED [('700001', 1)]",
+   "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-15."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 700002",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 700004",
+   "actual": "200 ok CONFIRMED [('700004', 4)]",
+   "answer": "Verified Role 4. Job ID: 700004. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-18."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "jobs: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 700003",
+   "actual": "200 ok CONFIRMED [('700003', 3)]",
+   "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-17."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'first'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'the first one'",
+   "pass": true,
+   "expected": "original ResultSet item 1 = 800001",
+   "actual": "200 ok CONFIRMED [('800001', 1)]",
+   "answer": "Event 800001. Starts: 2026-09-14T11:00:00+10:00. Venue: Venue 1. Organiser: Organiser 1. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'second'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'the second one'",
+   "pass": true,
+   "expected": "original ResultSet item 2 = 800002",
+   "actual": "200 ok CONFIRMED [('800002', 2)]",
+   "answer": "Event 800002. Starts: 2026-09-14T12:00:00+10:00. Venue: Venue 2. Organiser: Organiser 2. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'third'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'the third one'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about '3rd'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'fourth'",
+   "pass": true,
+   "expected": "original ResultSet item 4 = 800004",
+   "actual": "200 ok CONFIRMED [('800004', 4)]",
+   "answer": "Event 800004. Starts: 2026-09-14T14:00:00+10:00. Venue: Venue 4. Organiser: Organiser 4. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: bare 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R5 after Show more",
+   "case": "events: tell-me-about 'number 3'",
+   "pass": true,
+   "expected": "original ResultSet item 3 = 800003",
+   "actual": "200 ok CONFIRMED [('800003', 3)]",
+   "answer": "Event 800003. Starts: 2026-09-14T13:00:00+10:00. Venue: Venue 3. Organiser: Organiser 3. Source status: scheduled."
+  },
+  {
+   "group": "R6",
+   "case": "Antarctica (the PM case)",
+   "pass": true,
+   "expected": "no matching supported Jobs (+ incomplete-population caveat) OR an explicit 'location cannot be applied'; NOT all jobs as matches",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "unsupported location: Sydney",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "unsupported location: Melbourne",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "valid location: Canberra",
+   "pass": true,
+   "expected": "Canberra jobs listed",
+   "actual": "200 ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)] | The current supported Jobs population is incomplete; these are verified available results from the supported d",
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classifica"
+  },
+  {
+   "group": "R6",
+   "case": "unsupported employment type: casual",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "unsupported employment type: full-time",
+   "pass": true,
+   "expected": "not all jobs (fixtures are Fixed-term only)",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "valid employment type: fixed-term",
+   "pass": true,
+   "expected": "fixed-term jobs listed",
+   "actual": "200 ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)] | The current supported Jobs population is incomplete; these are verified available results from the supported d",
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classifica"
+  },
+  {
+   "group": "R6",
+   "case": "unsupported classification: ANU99",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "valid classification: ANU08",
+   "pass": true,
+   "expected": "ANU08 jobs listed",
+   "actual": "200 ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)] | The current supported Jobs population is incomplete; these are verified available results from the supported d",
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classifica"
+  },
+  {
+   "group": "R6",
+   "case": "unsupported keyword: chef",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6",
+   "case": "unsupported: remote",
+   "pass": true,
+   "expected": "not all jobs",
+   "actual": "200 insufficient_evidence PARTIAL [] | The current supported Jobs population is incomplete. I could not find a verified match in the supported data, ",
+   "answer": "The current supported Jobs population is incomplete. I could not find a verified match in the supported data, so this does not establish that no such ANU jobs exist."
+  },
+  {
+   "group": "R6 generic (extra)",
+   "case": "events: Antarctica",
+   "pass": true,
+   "expected": "not everything returned as a match",
+   "actual": "200 insufficient_evidence UNKNOWN [] | I could not find persisted Event evidence matching the active source-backed constraints.",
+   "answer": "I could not find persisted Event evidence matching the active source-backed constraints."
+  },
+  {
+   "group": "R6 generic (extra)",
+   "case": "accommodation: Antarctica",
+   "pass": true,
+   "expected": "not everything returned as a match",
+   "actual": "200 insufficient_evidence PARTIAL [] | I cannot truthfully report no matches because part of the approved Accommodation population lacks usable publi",
+   "answer": "I cannot truthfully report no matches because part of the approved Accommodation population lacks usable published evidence for the active constraints."
+  },
+  {
+   "group": "R6 generic (extra)",
+   "case": "scholarships: Antarctic student",
+   "pass": true,
+   "expected": "not everything returned as a match",
+   "actual": "200 needs_clarification UNKNOWN [] | Which scholarship, study level, or area of study do you mean?",
+   "answer": "Which scholarship, study level, or area of study do you mean?"
+  },
+  {
+   "group": "D7-A1",
+   "case": "older Scholarship 'Show more' after switching to Jobs",
+   "pass": true,
+   "expected": "continue older set OR controlled error whose conversation_state == inbound",
+   "actual": "400 error None [] | inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "D7-A1",
+   "case": "next 'Tell me about the second one' after that rejection (App adopts RAG's state)",
+   "pass": true,
+   "expected": "resolves against the retained Jobs set (#2)",
+   "actual": "200 ok CONFIRMED [('700002', 2)]",
+   "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classification: ANU08. Closing information: 2026-09-16."
+  },
+  {
+   "group": "error family",
+   "case": "stale result-page cursor (start_ordinal wrong)",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "older set's Show more (not the current focus)",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "invalid result-set id",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "mismatched ordinal in selected_result",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "tampered selected_result canonical_id",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "tampered selected_result result_set_id",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "malformed page request (limit 0)",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "error family",
+   "case": "malformed page request (string ordinal)",
+   "pass": true,
+   "expected": "controlled rejection must not reset state: returned conversation_state == inbound (or omitted)",
+   "actual": "400 error inbound={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'} returned={'turn_index': 3, 'result_sets': ['rs:jobs:3', 'rs:scholarships:1'], 'selected': None, 'focus': 'jobs'}",
+   "answer": "The request could not be completed."
+  },
+  {
+   "group": "R3",
+   "case": "Scholarship discovery PARTIAL carries a human-readable reason",
+   "pass": false,
+   "expected": "a concise RAG-authored reason when PARTIAL",
+   "actual": "200 ok PARTIAL [('day5-international-computing-1', 1), ('day5-international-computing-2', 2), ('day5-international-computing-3', 3), ('day5-international-computing-4', 4), ('day5-international-computing-5', 5)] | first line: Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Val",
+   "answer": "Day 5 International Computing Scholarship 1. Official status: open; Study level: Bachelor; Area of study: Computing; Value: $5,000 test value; Closing date: 2026-10-31\n\nDay 5 International Computing Scholarship 2. Official status: open; Stu"
+  },
+  {
+   "group": "Jobs duplicate prose",
+   "case": "Jobs listing prose vs cards",
+   "pass": false,
+   "expected": "short caveat + count only; details in cards",
+   "actual": "200 ok PARTIAL [('700001', 1), ('700002', 2), ('700003', 3), ('700004', 4), ('700005', 5)] | 5/5 card titles repeated in prose; answer_state=PARTIAL",
+   "answer": "The current supported Jobs population is incomplete; these are verified available results from the supported data.\nSoftware Engineer. Job ID: 700001. Stored status: current. Employment types: Fixed-term. Location: Canberra / ACT. Classifica"
+  }
+ ]
+}

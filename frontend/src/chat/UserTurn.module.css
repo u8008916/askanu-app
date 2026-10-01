@@ -5,11 +5,22 @@
   gap: var(--space-1);
 }
 
+/* Bubble left of the avatar, both pinned to the right edge. */
+.line {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .bubble {
   background: var(--gold-tint);
   border-radius: var(--radius-lg);
   color: var(--ink);
-  max-width: min(42rem, 88%);
+  max-width: min(42rem, 100%);
+  min-width: 0;
   padding: var(--space-3) var(--space-4);
 }
 
@@ -17,7 +28,7 @@
   white-space: pre-wrap;
 }
 
-.label {
-  color: var(--ink-3);
-  font-size: var(--text-xs);
+/* Aligned under the bubble: the avatar's width plus the gap. */
+.meta {
+  padding-right: calc(2rem + var(--space-3));
 }

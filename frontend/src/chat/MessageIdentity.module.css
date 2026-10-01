@@ -1,0 +1,46 @@
+/*
+ * Fixed-size circles: an avatar never changes width with the message beside it,
+ * so a wrapping bubble cannot shift it (no layout shift).
+ */
+.avatar {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 auto;
+  font-weight: 700;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+/* White-on-gold-deep / ink-on-gold pair from tokens.css, AA in both themes. */
+.userAvatar,
+.assistantAvatar {
+  background: var(--brand-btn-bg);
+  color: var(--brand-btn-fg);
+}
+
+.assistantAvatar {
+  font-size: var(--text-md);
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+.assistant {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.assistantName {
+  color: var(--ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* --ink-2, not --ink-3: --ink-3 is below AA for normal-size text. */
+.time {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+}

@@ -7,6 +7,8 @@ import {
   LinkIcon,
   ScholarshipsIcon,
 } from '../ui/Icon';
+import type { BrandAssetName } from '../ui/brandAssets';
+import { brandAsset } from '../ui/brandAssets';
 import { isSafeHttpUrl } from '../util/safeUrl';
 import styles from './Panel.module.css';
 
@@ -21,25 +23,59 @@ import styles from './Panel.module.css';
 const QUICK_LINKS: {
   label: string;
   href: string;
+  /** Approved logo in `src/assets/brand/`, if one has been supplied. */
+  asset: BrandAssetName;
+  /** Shown in the same box when there is no approved logo. */
   Icon: ComponentType<{ size?: number }>;
 }[] = [
   {
     label: 'AnuHub',
     href: 'https://selfservice.sas.anu.edu.au/',
+    asset: 'anuhub',
     Icon: ScholarshipsIcon,
   },
   {
     label: 'MyTimetable',
     href: 'https://mytimetable.anu.edu.au/even/',
+    asset: 'mytimetable',
     Icon: EventsIcon,
   },
-  { label: 'Canvas', href: 'https://canvas.anu.edu.au/', Icon: CoursesIcon },
+  {
+    label: 'Canvas',
+    href: 'https://canvas.anu.edu.au/',
+    asset: 'canvas',
+    Icon: CoursesIcon,
+  },
   {
     label: 'ANU Careers',
     href: 'https://careercentral.anu.edu.au/student/',
+    asset: 'anu-careers',
     Icon: JobsIcon,
   },
 ];
+
+/**
+ * A fixed square for every link's mark, so an approved logo and a fallback icon
+ * occupy identical space: labels align and tiles keep equal heights whichever
+ * links have a logo yet. The image is decorative (`alt=""`) because the link's
+ * own visible text already names it — a second "Canvas" would be read twice.
+ */
+function QuickLinkLogo({
+  asset,
+  Icon,
+  className,
+}: {
+  asset: BrandAssetName;
+  Icon: ComponentType<{ size?: number }>;
+  className: string;
+}) {
+  const url = brandAsset(asset);
+  return (
+    <span aria-hidden="true" className={`${className} ${url === null ? styles.logoFallback : ''}`}>
+      {url === null ? <Icon size={20} /> : <img alt="" className={styles.logoImage} src={url} />}
+    </span>
+  );
+}
 
 interface QuickLinksCardProps {
   /** Mobile home lays the four links out as one row of icon tiles. */
@@ -88,10 +124,10 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
       </div>
       {layout === 'row' ? (
         <ul className={styles.linkRow}>
-          {QUICK_LINKS.map(({ label, href, Icon }) => (
+          {QUICK_LINKS.map(({ label, href, asset, Icon }) => (
             <li key={label}>
               <QuickLinkTile className={styles.linkRowTile} href={href}>
-                <Icon size={20} />
+                <QuickLinkLogo asset={asset} className={styles.logoBox} Icon={Icon} />
                 <span className={styles.linkRowTileText}>{label}</span>
               </QuickLinkTile>
             </li>
@@ -99,11 +135,11 @@ export function QuickLinksCard({ layout = 'grid' }: QuickLinksCardProps) {
         </ul>
       ) : (
         <ul className={styles.linkGrid}>
-          {QUICK_LINKS.map(({ label, href, Icon }) => (
+          {QUICK_LINKS.map(({ label, href, asset, Icon }) => (
             <li key={label}>
               <QuickLinkTile className={styles.linkTile} href={href}>
                 <span className={styles.linkTileLabel}>
-                  <Icon size={18} />
+                  <QuickLinkLogo asset={asset} className={styles.logoBox} Icon={Icon} />
                   <span className={styles.linkTileText}>{label}</span>
                 </span>
                 <ExternalLinkIcon

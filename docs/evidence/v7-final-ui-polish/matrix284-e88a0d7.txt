@@ -1,0 +1,14 @@
+R1/R4                                    33/33
+R2                                       8/8
+R2 ctrl                                  1/1
+R5 fresh                                 54/54
+R5 after prior selection                 54/54
+R5 after continuation (ordinal chain)    54/54
+R5 after Show more                       54/54
+R6                                       11/11
+R6 generic (extra)                       3/3
+D7-A1                                    2/2
+error family                             8/8
+R3                                       0/1
+Jobs duplicate prose                     0/1
+TOTAL 282 / 284

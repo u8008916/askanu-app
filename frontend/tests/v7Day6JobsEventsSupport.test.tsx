@@ -1,5 +1,6 @@
 import { act, render, renderHook, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { resultCardNumber, showAsTextDetails } from './helpers';
 import userEvent from '@testing-library/user-event';
 import { AssistantTurn } from '../src/chat/AssistantTurn';
 import { parseAskResponse } from '../src/chat/askResponse';
@@ -72,7 +73,7 @@ function cards(): HTMLElement[] {
 }
 
 function cardNumber(card: HTMLElement): string {
-  return card.querySelector('[aria-hidden="true"]')?.textContent ?? '';
+  return resultCardNumber(card);
 }
 
 function cardFields(card: HTMLElement): Record<string, string> {
@@ -108,7 +109,7 @@ describe('Jobs (real bafa15d wire)', () => {
     const response = real('jobsBroad');
     expect(response.answer_state).toBe('PARTIAL');
     const { container } = renderTurn(response);
-    expect(container.querySelector('details')).toBeNull();
+    expect(showAsTextDetails(container)).toBeNull();
     expect(screen.getByText(/population is incomplete/)).toBeVisible();
     expect(document.body.textContent ?? '').not.toMatch(ADJUDICATION);
   });
@@ -142,7 +143,7 @@ describe('Jobs (real bafa15d wire)', () => {
     const onRequestMorePage = vi.fn();
     const broad = real('jobsBroad');
     renderTurn(broad, { onRequestMorePage });
-    await user.click(screen.getByRole('button', { name: 'Show more' }));
+    await user.click(screen.getByRole('button', { name: /^Show more/ }));
     expect(onRequestMorePage).toHaveBeenCalledWith({
       result_set_id: broad.result_page!.result_set_id,
       start_ordinal: 6,
@@ -192,9 +193,10 @@ describe('Events (real bafa15d wire)', () => {
     expect(third.Venue).toBe('Not published');
     expect(third.Ends).toBe('Not published');
     expect(third.Address).toBe('Not published');
-    expect(Object.keys(third)).toEqual([
-      'Starts', 'Ends', 'Venue', 'Address', 'Organiser', 'Category', 'Tags', 'Audience',
-    ]);
+    // Every stored field is still on the card; DOM order is a presentation choice.
+    expect(Object.keys(third).sort()).toEqual(
+      ['Starts', 'Ends', 'Venue', 'Address', 'Organiser', 'Category', 'Tags', 'Audience'].sort(),
+    );
     expect(document.body.textContent ?? '').not.toMatch(/\bonline\b|cancelled|ticket/i);
   });
 

@@ -36,3 +36,34 @@ export function isSanctionedAnchor(anchor: Element): boolean {
   ];
   return homes.some((home) => home !== null && home.contains(anchor));
 }
+
+/**
+ * The collapsed backend-text disclosure under a result list ("Show as text").
+ * Result cards ("More details") and the Sources row are also `<details>`, so a
+ * bare `querySelector('details')` no longer identifies it.
+ */
+export function showAsTextDetails(root: ParentNode): HTMLDetailsElement | null {
+  return (
+    Array.from(root.querySelectorAll('details')).find(
+      (details) => details.querySelector(':scope > summary')?.textContent === 'Show as text',
+    ) ?? null
+  );
+}
+
+/** The visible number on one result card — the backend ordinal, or its position. */
+export function resultCardNumber(card: HTMLElement): string {
+  return card.querySelector('[data-ordinal]')?.textContent?.replace(/\.$/, '') ?? '';
+}
+
+/**
+ * Every `<img>` in `root` that is not one of the trusted brand files bundled
+ * from `src/assets/brand/`. The safe-rendering tests use this to prove that
+ * hostile text never becomes an image element, while the App's own crest and
+ * logo images (which are static build assets, never model or record output)
+ * remain allowed.
+ */
+export function untrustedImages(root: ParentNode): HTMLImageElement[] {
+  return Array.from(root.querySelectorAll('img')).filter(
+    (img) => !(img.getAttribute('src') ?? '').includes('/assets/brand/'),
+  );
+}

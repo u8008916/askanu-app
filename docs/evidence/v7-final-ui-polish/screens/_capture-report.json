@@ -1,0 +1,203 @@
+{
+  "report": [
+    {
+      "name": "home-desktop-light",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-01-answer",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-02-show-more-sources",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-03-sources-open",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-04-after-show-more",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "course-desktop-01",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "scholarship-desktop-01",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "scholarship-desktop-02-cards",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "accommodation-desktop-01",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "jobs-desktop-01",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "jobs-desktop-02-cards",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "support-desktop-01",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "home-desktop-dark",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-dark-01-answer",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-desktop-dark-02-show-more-sources",
+      "overflow": {
+        "sw": 1280,
+        "iw": 1280,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "home-mobile-light",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-mobile-01-answer",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-mobile-02-cards",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-mobile-03-show-more-sources",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "jobs-mobile-01",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "accommodation-mobile-01",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    },
+    {
+      "name": "events-mobile-dark-01-answer",
+      "overflow": {
+        "sw": 375,
+        "iw": 375,
+        "over": false,
+        "wide": []
+      }
+    }
+  ],
+  "consoleErrors": []
+}

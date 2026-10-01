@@ -4,24 +4,67 @@
   gap: var(--space-2);
 }
 
-.heading {
+/*
+ * A native disclosure: keyboard operable and announced as expanded/collapsed
+ * with no script. Closed, it is one quiet row; open, it lists every source.
+ */
+.disclosure {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.summary {
+  align-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-2);
+  list-style: none;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Safari keeps its own marker unless it is removed here as well. */
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summaryIcon {
   color: var(--ink-2);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: var(--leading-tight);
-  text-transform: uppercase;
+}
+
+.summaryLabel {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.count {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+/* Pushed to the far edge; turns over when the list is open. */
+.chevron {
+  color: var(--ink-2);
+  margin-left: auto;
+  transition: transform var(--transition-fast);
+}
+
+.disclosure[open] .chevron {
+  transform: rotate(180deg);
 }
 
 .list {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  padding: 0 var(--space-3) var(--space-3);
 }
 
 .card {
   align-items: flex-start;
-  background: var(--surface-2);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   color: var(--ink);
@@ -35,7 +78,7 @@
 }
 
 a.card:hover {
-  background: var(--surface);
+  background: var(--gold-tint);
   border-color: var(--gold);
 }
 

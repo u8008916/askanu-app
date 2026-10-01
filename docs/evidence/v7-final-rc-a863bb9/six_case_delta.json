@@ -1,0 +1,2998 @@
+{
+ "a863bb9": [
+  {
+   "case": "jobs #1 'Software Engineer': Tell me more about <title>",
+   "question": "Tell me more about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  },
+  {
+   "case": "jobs #1 'Software Engineer': Tell me about <title>",
+   "question": "Tell me about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700001",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me about <title>",
+   "question": "Tell me about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700002",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me about <title>",
+   "question": "Tell me about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 400,
+    "status": "error",
+    "answer_state": null,
+    "cards": [],
+    "selected_result": null,
+    "focus": {
+     "id": "700003",
+     "result_set_id": null
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "The request could not be completed."
+   }
+  }
+ ],
+ "216c112": [
+  {
+   "case": "jobs #1 'Software Engineer': Tell me more about <title>",
+   "question": "Tell me more about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #1 'Software Engineer': Tell me about <title>",
+   "question": "Tell me about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me about <title>",
+   "question": "Tell me about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me about <title>",
+   "question": "Tell me about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  }
+ ],
+ "e88a0d7": [
+  {
+   "case": "jobs #1 'Software Engineer': Tell me more about <title>",
+   "question": "Tell me more about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #1 'Software Engineer': Tell me about <title>",
+   "question": "Tell me about Software Engineer",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700001",
+    "ordinal": 1
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700001",
+   "expected_ordinal": 1,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700001",
+      "ordinal": 1,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": "700001",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Software Engineer. Job ID: 700001. Stored status: current. Employment types: Fix"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700001",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 1
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #2 'Verified Role 2': Tell me about <title>",
+   "question": "Tell me about Verified Role 2",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700002",
+    "ordinal": 2
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700002",
+   "expected_ordinal": 2,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700002",
+      "ordinal": 2,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": "700002",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 2. Job ID: 700002. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700002",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 2
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me more about <title>",
+   "question": "Tell me more about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  },
+  {
+   "case": "jobs #3 'Verified Role 3': Tell me about <title>",
+   "question": "Tell me about Verified Role 3",
+   "request_selected_result": {
+    "result_set_id": "rs:jobs:1",
+    "canonical_id": "700003",
+    "ordinal": 3
+   },
+   "turn2": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "expected_id": "700003",
+   "expected_ordinal": 3,
+   "expected_result_set": "rs:jobs:1",
+   "f_tell_me_about_it_no_selection": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_closing_date": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": "700003",
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    },
+    "answer": "Verified Role 3. Job ID: 700003. Stored status: current. Employment types: Fixed"
+   },
+   "f_ordinal_third": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "CONFIRMED",
+    "cards": [
+     {
+      "id": "700003",
+      "ordinal": 3,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 6
+    }
+   },
+   "f_show_more_old_list": {
+    "http": 200,
+    "status": "ok",
+    "answer_state": "PARTIAL",
+    "cards": [
+     {
+      "id": "700006",
+      "ordinal": 6,
+      "result_set_id": "rs:jobs:1"
+     },
+     {
+      "id": "700007",
+      "ordinal": 7,
+      "result_set_id": "rs:jobs:1"
+     }
+    ],
+    "selected_result": {
+     "canonical_id": "700003",
+     "result_set_id": "rs:jobs:1",
+     "ordinal": 3
+    },
+    "focus": {
+     "id": null,
+     "result_set_id": "rs:jobs:1"
+    },
+    "constraints": [
+     [
+      "employment_type",
+      "verified"
+     ]
+    ],
+    "result_sets": [
+     "rs:jobs:1"
+    ],
+    "result_page": {
+     "result_set_id": "rs:jobs:1",
+     "next_ordinal": 8
+    },
+    "answer": null
+   }
+  }
+ ]
+}
