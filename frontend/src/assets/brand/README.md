@@ -1,23 +1,26 @@
 # Brand assets
 
-Drop **approved, official** files here and the App picks them up with no code
-change (`src/ui/brandAssets.ts` globs this folder at build time). Nothing in
-here may be redrawn or approximated by hand.
+Only approved, official brand files belong in this directory. The App discovers
+supported SVG, PNG and WebP files at build time through `src/ui/brandAssets.ts`.
+Brand marks are never redrawn or approximated by hand.
 
-| File (svg, png or webp)        | Used for                                   |
-| ------------------------------ | ------------------------------------------ |
-| `anu-crest.*`                  | Header crest (light mode)                  |
-| `anu-crest-dark.*` (optional)  | Header crest when the dark theme is active |
-| `anuhub.*`                     | Quick Link: AnuHub                         |
-| `mytimetable.*` (optional)     | Quick Link: MyTimetable                    |
-| `canvas.*`                     | Quick Link: Canvas                         |
-| `anu-careers.*` (optional)     | Quick Link: ANU Careers                    |
+| File (svg, png or webp)       | Used for |
+| ----------------------------- | -------- |
+| `anu-logo.*`                  | Header ANU horizontal logo |
+| `anu-crest.*` (optional)      | Header crest fallback when no horizontal logo is supplied |
+| `anu-crest-dark.*` (optional) | Dark-theme crest fallback |
+| `anuhub.*`                    | Quick Link: AnuHub |
+| `mytimetable.*` (optional)    | Quick Link: MyTimetable |
+| `canvas.*`                    | Quick Link: Canvas |
+| `anu-careers.*` (optional)    | Quick Link: ANU Careers |
 
-A missing file falls back to the generic placeholder mark or icon, in the same
-fixed-size box, so the layout does not change when an asset lands.
+Header resolution order is `anu-logo` first, then the approved crest assets,
+then the generic placeholder. Missing Quick Link assets use their generic icon
+fallbacks.
 
-Status (30 Sep 2026): **no brand file is bundled.** A crest and a Canvas icon were tried
-from logo.wine-style downloads and removed again because their provenance was not
-confirmed as approved. Until official ANU and Instructure files are supplied, the App
-shows the generic placeholder mark and icon fallbacks, all in the same fixed boxes.
-Approved files need only be dropped in with the names above; no code change is needed.
+Status (2 Oct 2026): `anu-logo.png` is bundled from the official ANU Imagebank
+colour-logo resource. AnuHub, MyTimetable, Canvas and ANU Careers brand files
+have not been supplied, so those links continue to use the generic fallbacks.
+
+ANU logo source:
+https://imagebank.anu.edu.au/anulogocolourpng

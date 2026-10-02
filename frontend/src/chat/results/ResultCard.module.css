@@ -264,3 +264,123 @@ a.title:hover {
     display: none;
   }
 }
+
+/* Final event-card visual treatment.
+ *
+ * The event wire has no image field, so the leading visual remains a neutral
+ * domain treatment rather than fabricating a thumbnail.
+ */
+.card[data-domain='events'] {
+  align-items: stretch;
+  border-radius: 11px;
+  gap: 1rem;
+  min-height: 5.9rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.card[data-domain='events'] .tile {
+  align-self: stretch;
+  background: linear-gradient(
+    135deg,
+    var(--gold-tint),
+    var(--surface-2)
+  );
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  height: auto;
+  min-height: 4.55rem;
+  width: 6.15rem;
+}
+
+.card[data-domain='events'] .tile svg {
+  height: 26px;
+  opacity: 0.9;
+  width: 26px;
+}
+
+.card[data-domain='events'] .content {
+  gap: 0.22rem;
+  justify-content: center;
+}
+
+.card[data-domain='events'] .titleRow {
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-bottom: 0.08rem;
+}
+
+.card[data-domain='events'] .ordinal {
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.card[data-domain='events'] .title {
+  font-size: 1.1rem;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.card[data-domain='events'] .rows {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.25rem;
+}
+
+.card[data-domain='events'] .row {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding-left: 1.45rem;
+}
+
+.card[data-domain='events'] .rowIcon {
+  top: 0.22em;
+}
+
+.card[data-domain='events'] .row dt,
+.card[data-domain='events'] .row dd {
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.card[data-domain='events'] .secondary {
+  color: var(--ink-2);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  margin-top: 0.02rem;
+}
+
+.card[data-domain='events'] .more {
+  margin-top: 0.08rem;
+}
+
+.card[data-domain='events'] .moreSummary {
+  font-size: 0.72rem;
+  min-height: 1.35rem;
+  opacity: 0.82;
+}
+
+.card[data-domain='events'] .action {
+  align-self: center;
+  height: 2.75rem;
+  width: 2.75rem;
+}
+
+@media (max-width: 700px) {
+  .card[data-domain='events'] .rows {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card[data-domain='events'] {
+    min-height: 0;
+  }
+
+  .card[data-domain='events'] .tile {
+    display: none;
+  }
+}

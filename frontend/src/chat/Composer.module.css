@@ -2,10 +2,11 @@
   align-items: flex-end;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
+  border-radius: 13px;
   display: flex;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  min-height: 4.7rem;
+  padding: 0.75rem 0.8rem 0.65rem 1rem;
 }
 
 .searchIcon {
@@ -28,7 +29,7 @@
   font: inherit;
   line-height: var(--leading-body);
   max-height: 9rem;
-  min-height: 2.75rem;
+  min-height: 3rem;
   outline-offset: 4px;
   padding: 0;
   resize: none;
@@ -62,11 +63,13 @@
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  height: var(--touch-target-min);
+  height: 3.2rem;
   justify-content: center;
   margin-bottom: 2px;
-  transition: background var(--transition-fast);
-  width: var(--touch-target-min);
+  transition:
+    background var(--transition-fast),
+    opacity var(--transition-fast);
+  width: 3.2rem;
 }
 
 .send:hover:not(:disabled) {
@@ -75,8 +78,9 @@
 }
 
 .send:disabled {
-  background: var(--surface-2);
-  border-color: var(--line);
-  color: var(--ink-3);
+  background: var(--brand-btn-bg);
+  border-color: var(--brand-btn-bg);
+  color: var(--brand-btn-fg);
   cursor: not-allowed;
+  opacity: 0.42;
 }

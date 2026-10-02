@@ -132,6 +132,12 @@ export const ClearChatIcon = (p: IconProps) => (
   </Svg>
 );
 
+export const ChatBubbleIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 9.4 9.4 0 0 1-3.5-.7L4 20l1.45-4A7.5 7.5 0 1 1 20 11.5z" />
+  </Svg>
+);
+
 export const MenuIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />
