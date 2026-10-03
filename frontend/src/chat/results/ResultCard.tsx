@@ -154,7 +154,7 @@ export function ResultCard({ card, position, displayNumber, onSelect }: ResultCa
   const DomainIcon = domainIcon(card.domain);
 
   return (
-    <li className={styles.card}>
+    <li className={styles.card} data-domain={card.domain}>
       <span aria-hidden="true" className={styles.tile}>
         <DomainIcon size={22} />
       </span>

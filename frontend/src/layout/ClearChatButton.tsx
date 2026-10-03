@@ -1,4 +1,4 @@
-import { ClearChatIcon } from '../ui/Icon';
+import { ChatBubbleIcon } from '../ui/Icon';
 import styles from './ClearChatButton.module.css';
 
 interface ClearChatButtonProps {
@@ -15,7 +15,7 @@ export function ClearChatButton({ onClearChat, block }: ClearChatButtonProps) {
       onClick={onClearChat}
       type="button"
     >
-      <ClearChatIcon size={17} />
+      <ChatBubbleIcon size={19} />
       Clear Chat
     </button>
   );

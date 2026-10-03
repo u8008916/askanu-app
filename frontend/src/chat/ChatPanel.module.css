@@ -2,14 +2,14 @@
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-panel);
+  border-radius: 12px;
+  box-shadow: none;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  padding: var(--space-5);
+  padding: 1.25rem;
 }
 
 .panelHeader {
@@ -19,7 +19,8 @@
   flex: 0 0 auto;
   gap: var(--space-4);
   justify-content: space-between;
-  padding-bottom: var(--space-4);
+  min-height: 4.75rem;
+  padding-bottom: 0.9rem;
 }
 
 .headerActions {
@@ -35,7 +36,7 @@
   flex-direction: column;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--space-5) 0;
+  padding: 1.25rem 0;
   /*
    * Reserve the scrollbar gutter. Measured on Day 4: without it, the answer
    * that first makes the conversation taller than the pane introduces a

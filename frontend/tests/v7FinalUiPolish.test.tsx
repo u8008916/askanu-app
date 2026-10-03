@@ -397,7 +397,9 @@ describe('cardLayout (presentation mapping)', () => {
 });
 
 describe('branding and Quick Links', () => {
-  it('bundles no brand file until an approved one is supplied, and fakes none', () => {
+  it('loads the supplied ANU logo and leaves unsupplied brand assets absent', () => {
+    expect(brandAsset('anu-logo')).not.toBeNull();
+
     for (const name of [
       'anu-crest',
       'anu-crest-dark',
@@ -410,12 +412,14 @@ describe('branding and Quick Links', () => {
     }
   });
 
-  it('renders the wordmark and tagline beside the generic placeholder mark, with no image', () => {
+  it('renders the wordmark and tagline beside the supplied ANU logo', () => {
     const { container } = render(<Brand />);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('AskANU');
     expect(screen.getByText('Your intelligent guide to ANU information.')).toBeInTheDocument();
-    expect(container.querySelector('img')).toBeNull();
-    expect(container.querySelector('svg')).not.toBeNull();
+
+    const logo = screen.getByRole('img', { name: 'Australian National University' });
+    expect(logo).toBeInTheDocument();
+    expect(container.querySelector('svg')).toBeNull();
   });
 
   it('gives every Quick Link the icon fallback in its logo box, never an image', () => {
