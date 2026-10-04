@@ -27,9 +27,28 @@ import { useFeeds } from './FeedsProvider';
  * normalized semantic field is frozen later (e.g. a dedicated cancellation
  * flag), this is the place to add it.
  */
+function eventTemporalLabel(event: EventItem): string {
+  if (event.start_at !== null) {
+    return formatStoredDateTime(event.start_at);
+  }
+
+  const startDate = event.start_date ?? null;
+  if (startDate === null) {
+    return '';
+  }
+
+  const start = formatStoredDateTime(startDate);
+  const endDate = event.end_date ?? null;
+
+  return endDate !== null && endDate !== startDate
+    ? `${start} – ${formatStoredDateTime(endDate)}`
+    : start;
+}
+
 function eventMeta(event: EventItem) {
+  const temporal = eventTemporalLabel(event);
   const parts = [
-    formatStoredDateTime(event.start_at),
+    ...(temporal === '' ? [] : [temporal]),
     ...(event.venue !== null && event.venue !== '' ? [event.venue] : []),
     ...(event.organiser !== null && event.organiser !== '' ? [event.organiser] : []),
   ];

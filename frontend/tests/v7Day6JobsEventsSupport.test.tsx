@@ -205,6 +205,38 @@ describe('Events (real bafa15d wire)', () => {
     expect(cardFields(cards()[0]).Starts).toMatch(/^Mon,? 14 Sept?,? 6:00\s?pm$/i);
   });
 
+
+  it('date-only official events render calendar evidence with no invented time', () => {
+    const [, official] = real('eventsMore').items as Record<string, unknown>[];
+    const fields = official.fields as Record<string, unknown>;
+
+    const [card] = toResultCards([
+      {
+        ...official,
+        fields: {
+          ...fields,
+          start_at: null,
+          end_at: null,
+          start_date: '2026-09-20',
+          end_date: '2026-09-22',
+          date_precision: 'date',
+        },
+      },
+    ])!;
+
+    const rendered = Object.fromEntries(
+      card.fields.map(({ label, value }) => [label, value]),
+    );
+
+    expect(rendered.Date).toMatch(/20\s+Sept?\s+2026/i);
+    expect(rendered.Through).toMatch(/22\s+Sept?\s+2026/i);
+    expect(rendered).not.toHaveProperty('Starts');
+    expect(rendered).not.toHaveProperty('Ends');
+    expect(`${rendered.Date} ${rendered.Through}`).not.toMatch(
+      /\b\d{1,2}:\d{2}\b|\bam\b|\bpm\b/i,
+    );
+  });
+
   it('DATE_WINDOW and TIME_OF_DAY_WINDOW refinements render the backend’s own result each time', () => {
     const titles = (name: string) => toResultCards(real(name).items)!.map((m) => m.title);
     expect(titles('eventsToday')).toEqual(['Event today-early', 'Event today-late']);

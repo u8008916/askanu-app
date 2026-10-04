@@ -293,7 +293,11 @@ export interface EventItem {
   record_id: string;
   source_id: string;
   title: string;
-  start_at: string;
+  start_at: string | null;
+  /** Canberra-local calendar evidence when the source publishes no exact time. */
+  start_date?: string | null;
+  end_date?: string | null;
+  date_precision?: 'date' | 'timestamp' | null;
   end_at: string | null;
   venue: string | null;
   organiser: string | null;

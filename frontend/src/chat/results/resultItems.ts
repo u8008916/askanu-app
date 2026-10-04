@@ -116,7 +116,14 @@ type PublicFieldLabels = ReadonlyArray<{
  *   Upcoming Events panel applies to chat cards too.
  */
 const PUBLIC_RESULT_HIDDEN_KEYS_BY_DOMAIN: Readonly<Record<string, ReadonlySet<string>>> = {
-  events: new Set(['timezone', 'provenance_class', 'status']),
+  events: new Set([
+    'timezone',
+    'provenance_class',
+    'status',
+    'start_date',
+    'end_date',
+    'date_precision',
+  ]),
 };
 
 function hiddenKeys(domain: string): ReadonlySet<string> {
@@ -359,11 +366,31 @@ function eventCard(event: EventItem): ResultCardModel | null {
     ordinal: null,
     qualifyingEvidence: null,
     fields: [
-      { label: 'Starts', value: formatStoredDateTime(event.start_at) },
-      {
-        label: 'Ends',
-        value: event.end_at === null ? null : formatStoredDateTime(event.end_at),
-      },
+      ...(event.start_at !== null
+        ? [
+            { label: 'Starts', value: formatStoredDateTime(event.start_at) },
+            {
+              label: 'Ends',
+              value: event.end_at === null ? null : formatStoredDateTime(event.end_at),
+            },
+          ]
+        : [
+            {
+              label: 'Date',
+              value:
+                event.start_date == null
+                  ? null
+                  : formatStoredDateTime(event.start_date),
+            },
+            ...(event.end_date != null && event.end_date !== event.start_date
+              ? [
+                  {
+                    label: 'Through',
+                    value: formatStoredDateTime(event.end_date),
+                  },
+                ]
+              : []),
+          ]),
       /* A missing venue stays "not published" — never inferred as online. */
       { label: 'Venue', value: nonEmpty(event.venue) },
       { label: 'Organiser', value: nonEmpty(event.organiser) },
@@ -460,6 +487,51 @@ function parsePublicResultItem(value: unknown): PublicResultItem | null {
     return null;
   }
 
+  if (domain === 'events') {
+    const startAt = parsedFields.start_at;
+    const endAt = parsedFields.end_at;
+    const startDate = parsedFields.start_date;
+    const endDate = parsedFields.end_date;
+    const datePrecision = parsedFields.date_precision;
+
+    if (
+      !(startAt === null || isString(startAt)) ||
+      !(endAt === undefined || endAt === null || isString(endAt)) ||
+      !(startDate === undefined || startDate === null || isString(startDate)) ||
+      !(endDate === undefined || endDate === null || isString(endDate)) ||
+      !(
+        datePrecision === undefined ||
+        datePrecision === null ||
+        datePrecision === 'date' ||
+        datePrecision === 'timestamp'
+      )
+    ) {
+      return null;
+    }
+
+    if (datePrecision === 'date') {
+      if (startAt !== null || !isString(startDate) || endAt !== null) {
+        return null;
+      }
+    } else if (
+      startAt === null &&
+      (
+        isString(startDate) ||
+        isString(endDate) ||
+        (datePrecision !== undefined && datePrecision !== null)
+      )
+    ) {
+      /*
+       * Legacy generic Event results may have no temporal evidence at all.
+       * That is UNKNOWN and remains renderable as "Not published".
+       *
+       * Once any date-only evidence is present, however, it must use the
+       * explicit population-first date contract above.
+       */
+      return null;
+    }
+  }
+
   const parsedEvidence = parseQualifyingEvidence(qualifying_evidence);
   if (
     parsedEvidence === undefined ||
@@ -491,6 +563,54 @@ function parsePublicResultItem(value: unknown): PublicResultItem | null {
   };
 }
 
+function publicResultFields(item: PublicResultItem): ResultCardField[] {
+  const labels = publicFieldLabels(item.domain);
+
+  if (
+    item.domain === 'events' &&
+    item.fields.start_at === null &&
+    isString(item.fields.start_date)
+  ) {
+    const startDate = item.fields.start_date;
+    const endDate = isString(item.fields.end_date) ? item.fields.end_date : null;
+
+    const temporal: ResultCardField[] = [
+      { label: 'Date', value: formatStoredDateTime(startDate) },
+    ];
+
+    if (endDate !== null && endDate !== startDate) {
+      temporal.push({
+        label: 'Through',
+        value: formatStoredDateTime(endDate),
+      });
+    }
+
+    const remaining = labels
+      .filter(({ key }) => key !== 'start_at' && key !== 'end_at')
+      .map(({ key, label, format }) => {
+        const value = fieldValueToDisplay(item.fields[key] ?? null);
+        return {
+          label,
+          value: format === 'datetime' && value !== null
+            ? formatStoredDateTime(value)
+            : value,
+        };
+      });
+
+    return [...temporal, ...remaining];
+  }
+
+  return labels.map(({ key, label, format }) => {
+    const value = fieldValueToDisplay(item.fields[key] ?? null);
+    return {
+      label,
+      value: format === 'datetime' && value !== null
+        ? formatStoredDateTime(value)
+        : value,
+    };
+  });
+}
+
 function publicResultCard(item: PublicResultItem): ResultCardModel {
   return {
     recordId: item.record_id,
@@ -520,13 +640,7 @@ function publicResultCard(item: PublicResultItem): ResultCardModel {
      * implying "less is known" for that one record. A domain with no frozen
      * key set gets no field rows (see `PUBLIC_RESULT_FIELD_LABELS_BY_DOMAIN`).
      */
-    fields: publicFieldLabels(item.domain).map(({ key, label, format }) => {
-      const value = fieldValueToDisplay(item.fields[key] ?? null);
-      return {
-        label,
-        value: format === 'datetime' && value !== null ? formatStoredDateTime(value) : value,
-      };
-    }),
+    fields: publicResultFields(item),
   };
 }
 

@@ -99,6 +99,9 @@ export function parseEventItem(value: unknown): EventItem | null {
     source_id,
     title,
     start_at,
+    start_date,
+    end_date,
+    date_precision,
     end_at,
     venue,
     organiser,
@@ -107,11 +110,22 @@ export function parseEventItem(value: unknown): EventItem | null {
     domain,
   } = value;
 
+  const normalizedStartDate = start_date ?? null;
+  const normalizedEndDate = end_date ?? null;
+  const normalizedDatePrecision = date_precision ?? null;
+
   if (
     !isString(record_id) ||
     !isString(source_id) ||
     !isString(title) ||
-    !isString(start_at) ||
+    !isNullableString(start_at) ||
+    !isNullableString(normalizedStartDate) ||
+    !isNullableString(normalizedEndDate) ||
+    !(
+      normalizedDatePrecision === null ||
+      normalizedDatePrecision === 'date' ||
+      normalizedDatePrecision === 'timestamp'
+    ) ||
     !isNullableString(end_at) ||
     !isNullableString(venue) ||
     !isNullableString(organiser) ||
@@ -122,11 +136,26 @@ export function parseEventItem(value: unknown): EventItem | null {
     return null;
   }
 
+  if (start_at === null) {
+    if (
+      normalizedStartDate === null ||
+      normalizedDatePrecision !== 'date' ||
+      end_at !== null
+    ) {
+      return null;
+    }
+  } else if (normalizedDatePrecision === 'date') {
+    return null;
+  }
+
   return {
     record_id,
     source_id,
     title,
     start_at,
+    start_date: normalizedStartDate,
+    end_date: normalizedEndDate,
+    date_precision: normalizedDatePrecision,
     end_at,
     venue,
     organiser,

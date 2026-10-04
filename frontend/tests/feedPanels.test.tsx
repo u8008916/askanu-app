@@ -162,6 +162,15 @@ describe('Upcoming Events panel', () => {
     // A stored venue with no organiser: time and venue only, no trailing
     // separator or invented organiser.
     expect(links[2]).toHaveTextContent('Wed, 4 Mar, 9:00 am · Placeholder venue C');
+
+    // Listing-backed population-first event: calendar dates only. The App
+    // renders those dates directly and never manufactures midnight or a time.
+    const dateOnly = links[3];
+    expect(dateOnly).toHaveTextContent(/5 Mar 2099/);
+    expect(dateOnly).toHaveTextContent(/7 Mar 2099/);
+    expect(dateOnly).toHaveTextContent('Placeholder date-only venue');
+    expect(dateOnly).not.toHaveTextContent(/\b\d{1,2}:\d{2}\b|\bam\b|\bpm\b/i);
+
     expect(within(events).queryByText(/^(Open|Closed|Cancelled|Live)$/)).not.toBeInTheDocument();
     // `status` is accepted by the parser (mockUpcomingEvents carries
     // 'published' / null / 'cancelled') but is not student-facing yet: the
