@@ -6,7 +6,11 @@ import {
   fetchCurrentJobs,
   fetchUpcomingEvents,
 } from '../src/resources/listApi';
-import { parseJobItem, parseListResponse } from '../src/resources/listResponse';
+import {
+  parseEventItem,
+  parseJobItem,
+  parseListResponse,
+} from '../src/resources/listResponse';
 import { mockCurrentJobs, mockUpcomingEvents } from '../src/mocks/feedResponses';
 
 /**
@@ -104,6 +108,57 @@ describe('fetchUpcomingEvents', () => {
     expect(items.map((event) => event.record_id)).toEqual(
       mockUpcomingEvents.map((event) => event.record_id),
     );
+  });
+});
+
+
+describe('parseEventItem — population-first date precision', () => {
+  const timestamp = mockUpcomingEvents[0];
+
+  it('keeps the legacy timestamp shape valid', () => {
+    expect(parseEventItem(timestamp)).not.toBeNull();
+  });
+
+  it('accepts a date-only official event without inventing a timestamp', () => {
+    const parsed = parseEventItem({
+      ...timestamp,
+      record_id: 'events:event:date-only-test',
+      start_at: null,
+      start_date: '2099-04-10',
+      end_date: '2099-04-12',
+      date_precision: 'date',
+      end_at: null,
+    });
+
+    expect(parsed).toMatchObject({
+      start_at: null,
+      start_date: '2099-04-10',
+      end_date: '2099-04-12',
+      date_precision: 'date',
+      end_at: null,
+    });
+  });
+
+  it('rejects a date-only record without explicit start-date evidence', () => {
+    expect(
+      parseEventItem({
+        ...timestamp,
+        start_at: null,
+        start_date: null,
+        end_date: null,
+        date_precision: 'date',
+        end_at: null,
+      }),
+    ).toBeNull();
+  });
+
+  it('rejects date precision attached to an exact timestamp', () => {
+    expect(
+      parseEventItem({
+        ...timestamp,
+        date_precision: 'date',
+      }),
+    ).toBeNull();
   });
 });
 
