@@ -102,3 +102,20 @@
 .mobileIntro form {
   background: var(--surface-2);
 }
+
+@media (min-width: 900px) {
+  .panel {
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+  }
+
+  .panelHeader {
+    flex-wrap: wrap;
+    min-height: 5.5rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .scroll {
+    padding-block: 1.5rem;
+  }
+}
