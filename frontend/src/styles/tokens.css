@@ -5,6 +5,7 @@
  * custom properties and never raw colour literals — per AGENTS.md the theme
  * can change, the interaction model cannot.
  *
+ * App startup explicitly selects light unless a saved preference exists.
  * THEME RESOLUTION — three states.
  *   1. No `data-theme` on <html>  -> follow the operating system.
  *   2. data-theme="light"         -> forced light, even if the OS is dark.
@@ -13,7 +14,7 @@
  *   script in index.html so the first paint is already correct.
  *
  *   The dark values therefore appear twice: once media-gated for the system
- *   default and once for the explicit override. KEEP THE TWO DARK BLOCKS IN
+ *   fallback and once for the explicit override. KEEP THE TWO DARK BLOCKS IN
  *   SYNC — they are the same value set, not two themes.
  *
  * CONTRAST RULES — encoded here, not left to review time.
@@ -111,7 +112,7 @@
   --transition-drawer: 200ms ease;
 }
 
-/* Dark — system default. Suppressed when the user has forced light. */
+/* Dark — optional system fallback. Suppressed when the user has forced light. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
