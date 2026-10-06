@@ -11,10 +11,10 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 function readStoredPreference(): ThemePreference {
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    return stored === 'light' || stored === 'dark' ? stored : 'system';
+    return stored === 'light' || stored === 'dark' ? stored : 'light';
   } catch {
-    // Private mode or blocked site data: fall back to following the system.
-    return 'system';
+    // Private mode or blocked site data: fall back to light.
+    return 'light';
   }
 }
 
@@ -25,7 +25,7 @@ function readSystemTheme(): ResolvedTheme {
 /**
  * Light/dark preference.
  *
- * Defaults to following the operating system. Once the user picks a side the
+ * Defaults to light regardless of the operating system. The selected
  * choice is written to localStorage and applied as `data-theme` on <html>,
  * which the token blocks in `styles/tokens.css` key off. Storage is
  * per-browser and never leaves the device.

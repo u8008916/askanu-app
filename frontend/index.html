@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-AU">
+<html lang="en-AU" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,14 +7,12 @@
     <script>
       // Apply a saved theme before first paint so the page never flashes the
       // wrong palette. Key must match THEME_STORAGE_KEY in theme/useTheme.ts.
-      // No stored value means follow the operating system.
+      // No stored value means light, regardless of the operating system.
       try {
         var t = localStorage.getItem('askanu-theme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
+        document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
       } catch (e) {
-        /* storage blocked: fall through to the system preference */
+        /* Storage blocked: retain the explicit light default on <html>. */
       }
     </script>
   </head>
