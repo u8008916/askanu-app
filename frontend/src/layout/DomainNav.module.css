@@ -75,3 +75,16 @@
   color: var(--gold-deep);
   font-weight: 600;
 }
+
+@media (min-width: 900px) {
+  .root {
+    border-radius: var(--radius-lg);
+    padding: 1.125rem;
+  }
+
+  .item {
+    font-size: 1rem;
+    min-height: 3.125rem;
+    padding-inline: 0.875rem;
+  }
+}

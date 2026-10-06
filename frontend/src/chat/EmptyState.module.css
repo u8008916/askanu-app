@@ -81,3 +81,21 @@
   color: var(--ink-3);
   margin-top: 0.3em;
 }
+
+@media (min-width: 900px) {
+  .root {
+    gap: 1rem;
+  }
+
+  .suggestion {
+    min-height: 6rem;
+    padding: 1.125rem 1rem;
+  }
+}
+
+/* Keep a predictable single row once the chat has room for four cards. */
+@media (min-width: 1280px) {
+  .suggestions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

@@ -38,11 +38,17 @@
   overflow-y: auto;
 }
 
+/* Bound desktop proportions without changing the mobile single-column shell. */
 @media (min-width: 900px) {
+  .root {
+    margin-inline: auto;
+    max-width: var(--shell-max-width);
+  }
+
   .main {
-    gap: 0.8rem;
+    gap: 1.125rem;
     grid-template-columns: minmax(0, 1fr) var(--rail-width);
     overflow: hidden;
-    padding: 0.55rem 0.75rem 0.75rem;
+    padding: 1rem;
   }
 }

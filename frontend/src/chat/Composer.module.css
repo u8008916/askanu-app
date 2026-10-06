@@ -84,3 +84,16 @@
   cursor: not-allowed;
   opacity: 0.42;
 }
+
+@media (min-width: 900px) {
+  .root {
+    border-radius: var(--radius-lg);
+    min-height: 5.5rem;
+    padding-inline: 1.125rem;
+  }
+
+  .send {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+}
