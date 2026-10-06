@@ -43,6 +43,7 @@
   .root {
     margin-inline: auto;
     max-width: var(--shell-max-width);
+    width: 96vw;
   }
 
   .main {
