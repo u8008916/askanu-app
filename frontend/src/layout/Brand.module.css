@@ -10,19 +10,7 @@
   flex: 0 0 auto;
 }
 
-.logoMark {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
 
-.universityLogo {
-  display: block;
-  height: 100%;
-  object-fit: contain;
-  object-position: left center;
-  width: 100%;
-}
 
 /*
  * The supplied crest is a mid-brown line mark: fine on the light surface, too
@@ -101,19 +89,4 @@
   color: var(--ink-2);
   font-size: 0.88rem;
   margin-top: 0.08rem;
-}
-
-/* Keep the supplied dark ANU artwork intact and readable on dark surfaces. */
-:root[data-theme='dark'] .logoMark {
-  background: var(--ink);
-  border-radius: 6px;
-  padding: 4px 6px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .logoMark {
-    background: var(--ink);
-    border-radius: 6px;
-    padding: 4px 6px;
-  }
 }
