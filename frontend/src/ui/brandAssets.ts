@@ -12,7 +12,6 @@ const FILES = import.meta.glob('../assets/brand/*.{svg,png,webp}', {
 }) as Record<string, string>;
 
 export type BrandAssetName =
-  | 'anu-logo'
   | 'anu-crest'
   | 'anu-crest-dark'
   | 'anuhub'
